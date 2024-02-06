@@ -6,81 +6,19 @@ struct CardView: View {
     var workoutManager: WorkoutManager
     var onDelete: (() -> Void)?
     var color: Color?
-
+    
     @State private var isFormPresented = false
     @State private var isPlayActiveWorkout = false
     @State private var isContextMenuPresented = false
-
+    
     var body: some View {
         let backgroundColor = color ?? Color.black // Use provided color or random color
-
+        
         return VStack {
             if isDefault {
-                HStack {
-                    Text("Add")
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .multilineTextAlignment(.center)
-                        .frame(maxWidth: .infinity)
-                    Spacer()
-                }
-                Spacer()
-                Image(systemName: "plus.circle")
-                    .font(.system(size: 40))
-                    .foregroundColor(.white)
-                    .onTapGesture {
-                        isFormPresented.toggle()
-                    }
-                    .sheet(isPresented: $isFormPresented) {
-                        AddWorkoutView(
-                            isFormPresented: $isFormPresented,
-                            onSave: { newWorkout, newColor in
-                                workoutManager.workouts.append(newWorkout)
-                                workoutManager.saveWorkouts()
-                            },
-                            workoutManager: workoutManager
-                        )
-                    }
+                defaultCardContent()
             } else {
-                HStack {
-                    Text(title)
-                        .font(.title)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .multilineTextAlignment(.center)
-                        .frame(maxWidth: .infinity)
-
-                    Spacer()
-
-                    VStack {
-                        Image(systemName: "ellipsis.circle")
-                            .font(.system(size: 0))
-                            .foregroundColor(.white)
-                            .onTapGesture {
-                                UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                                isContextMenuPresented.toggle()
-                            }
-                    }
-                }
-
-                Spacer()
-
-                Image(systemName: "play.circle")
-                    .font(.system(size: 40))
-                    .foregroundColor(.white)
-                    .onTapGesture {
-                        isPlayActiveWorkout.toggle()
-                    }
-                    .background(
-                        NavigationLink(
-                            destination: ActiveWorkout(workoutDetails: workoutManager.fetchWorkoutDetails(for: title)),
-                            isActive: $isPlayActiveWorkout
-                        ) {
-                            EmptyView()
-                        }
-                        .hidden()
-                    )
+                existingWorkoutCardContent()
             }
             Spacer()
         }
@@ -112,5 +50,77 @@ struct CardView: View {
                 }
             )
         }
+    }
+    
+    @ViewBuilder
+    private func defaultCardContent() -> some View {
+        HStack {
+            Text("Add")
+                .font(.title)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity)
+            Spacer()
+        }
+        Spacer()
+        Image(systemName: "plus.circle")
+            .font(.system(size: 40))
+            .foregroundColor(.white)
+            .onTapGesture {
+                isFormPresented.toggle()
+            }
+            .sheet(isPresented: $isFormPresented) {
+                AddWorkoutView(
+                    isFormPresented: $isFormPresented,
+                    onSave: { newWorkout, newColor in
+                        workoutManager.workouts.append(newWorkout)
+                        workoutManager.saveWorkouts()
+                    },
+                    workoutManager: workoutManager
+                )
+            }
+    }
+    
+    @ViewBuilder
+    private func existingWorkoutCardContent() -> some View {
+        HStack {
+            Text(title)
+                .font(.title)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity)
+            
+            Spacer()
+            
+            VStack {
+                Image(systemName: "ellipsis.circle")
+                    .font(.system(size: 0))
+                    .foregroundColor(.white)
+                    .onTapGesture {
+                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                        isContextMenuPresented.toggle()
+                    }
+            }
+        }
+        
+        Spacer()
+        
+        Image(systemName: "play.circle")
+            .font(.system(size: 40))
+            .foregroundColor(.white)
+            .onTapGesture {
+                isPlayActiveWorkout.toggle()
+            }
+            .background(
+                NavigationLink(
+                    destination: ActiveWorkout(workoutDetails: workoutManager.fetchWorkoutDetails(for: title)),
+                    isActive: $isPlayActiveWorkout
+                ) {
+                    EmptyView()
+                }
+                    .hidden()
+            )
     }
 }

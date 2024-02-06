@@ -3,16 +3,15 @@ import SwiftUI
 struct CardView: View {
     var title: String
     var isDefault: Bool
-    var workoutManager: WorkoutManager
     var onDelete: (() -> Void)?
-    var color: Color?
     
     @State private var isFormPresented = false
     @State private var isPlayActiveWorkout = false
     @State private var isContextMenuPresented = false
+    @EnvironmentObject var workoutManager: WorkoutManager
     
     var body: some View {
-        let backgroundColor = color ?? Color.black // Use provided color or random color
+        let backgroundColor = Color.black // Use provided color or random color
         
         return VStack {
             if isDefault {

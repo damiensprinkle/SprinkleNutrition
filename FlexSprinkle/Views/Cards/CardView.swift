@@ -28,19 +28,8 @@ struct CardView: View {
         .contextMenu { contextMenuContent() }
         .sheet(item: $presentingModal) { modal in
             switch modal {
-            case .add:
-                AddWorkoutView(onSave: { newWorkoutTitle, newWorkoutDetails in
-                            // Add or update the workout details in the dictionary
-                            self.workoutManager.workoutsDict[newWorkoutTitle] = newWorkoutDetails
-                            
-                            // If it's a new workout, append its title to the workouts array
-                            if !self.workoutManager.workouts.contains(newWorkoutTitle) {
-                                self.workoutManager.workouts.append(newWorkoutTitle)
-                            }
-                            
-                            // Save changes
-                            self.workoutManager.saveWorkouts()
-                        })
+                case .add:
+                    AddWorkoutView()
             case .edit(let originalTitle):
                 // Assuming originalTitle is stored somewhere to be passed here
                 let details = workoutManager.fetchWorkoutDetails(for: originalTitle)

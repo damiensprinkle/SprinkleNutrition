@@ -22,7 +22,6 @@ struct WorkoutTrackerMainView: View {
                             title: "Add",
                             isDefault: true
                         )
-                        
                         ForEach(workoutManager.workouts, id: \.self) { workout in
                             CardView(
                                 title: workout,

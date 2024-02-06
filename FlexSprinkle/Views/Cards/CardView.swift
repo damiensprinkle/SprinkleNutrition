@@ -1,53 +1,52 @@
 import SwiftUI
 
+import SwiftUI
+
 struct CardView: View {
     var title: String
     var isDefault: Bool
     var onDelete: (() -> Void)?
-    
-    @State private var isFormPresented = false
-    @State private var isPlayActiveWorkout = false
-    @State private var isContextMenuPresented = false
+    @State private var isNavigateActive = false
+    @State private var presentingModal: ModalType? = nil
     @EnvironmentObject var workoutManager: WorkoutManager
     
     var body: some View {
-        let backgroundColor = Color.black // Use provided color or random color
+        let backgroundColor = Color.black // Default color
         
-        return VStack {
+        VStack {
             if isDefault {
                 defaultCardContent()
             } else {
                 existingWorkoutCardContent()
             }
-            Spacer()
         }
         .padding()
         .background(backgroundColor)
         .cornerRadius(15)
-        .overlay(
-            RoundedRectangle(cornerRadius: 15)
-                .stroke(Color.gray, lineWidth: 1)
-        )
+        .overlay(RoundedRectangle(cornerRadius: 15).stroke(Color.gray, lineWidth: 1))
         .aspectRatio(1, contentMode: .fit)
-        .contextMenu {
-            Button("Edit") {
-                isFormPresented.toggle()
-                isContextMenuPresented.toggle()
+        .contextMenu { contextMenuContent() }
+        .sheet(item: $presentingModal) { modal in
+            switch modal {
+            case .add:
+                AddWorkoutView(onSave: { newWorkoutTitle, newWorkoutDetails in
+                            // Add or update the workout details in the dictionary
+                            self.workoutManager.workoutsDict[newWorkoutTitle] = newWorkoutDetails
+                            
+                            // If it's a new workout, append its title to the workouts array
+                            if !self.workoutManager.workouts.contains(newWorkoutTitle) {
+                                self.workoutManager.workouts.append(newWorkoutTitle)
+                            }
+                            
+                            // Save changes
+                            self.workoutManager.saveWorkouts()
+                        })
+            case .edit(let originalTitle):
+                // Assuming originalTitle is stored somewhere to be passed here
+                let details = workoutManager.fetchWorkoutDetails(for: originalTitle)
+                EditWorkoutView(workoutTitle: originalTitle, workoutDetails: details, originalWorkoutTitle: originalTitle)
+                .environmentObject(workoutManager)
             }
-            Button("Delete") {
-                onDelete?()
-                isContextMenuPresented.toggle()
-            }
-        }
-        .sheet(isPresented: $isFormPresented) {
-            EditWorkoutView(
-                isFormPresented: $isFormPresented,
-                workoutTitle: title,
-                workoutDetails: workoutManager.fetchWorkoutDetails(for: title),
-                onSave: { newTitle, newDetails in
-                    workoutManager.editWorkout(oldTitle: title, newTitle: newTitle, newDetails: newDetails)
-                }
-            )
         }
     }
     
@@ -67,22 +66,14 @@ struct CardView: View {
             .font(.system(size: 40))
             .foregroundColor(.white)
             .onTapGesture {
-                isFormPresented.toggle()
-            }
-            .sheet(isPresented: $isFormPresented) {
-                AddWorkoutView(
-                    isFormPresented: $isFormPresented,
-                    onSave: { newWorkout, newColor in
-                        workoutManager.workouts.append(newWorkout)
-                        workoutManager.saveWorkouts()
-                    },
-                    workoutManager: workoutManager
-                )
+                presentingModal = .add
             }
     }
     
     @ViewBuilder
     private func existingWorkoutCardContent() -> some View {
+        let workoutDetails = workoutManager.fetchWorkoutDetails(for: title)
+        
         HStack {
             Text(title)
                 .font(.title)
@@ -90,36 +81,53 @@ struct CardView: View {
                 .foregroundColor(.white)
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity)
-            
             Spacer()
-            
-            VStack {
-                Image(systemName: "ellipsis.circle")
-                    .font(.system(size: 0))
-                    .foregroundColor(.white)
-                    .onTapGesture {
-                        UIImpactFeedbackGenerator(style: .light).impactOccurred()
-                        isContextMenuPresented.toggle()
-                    }
-            }
         }
         
         Spacer()
         
-        Image(systemName: "play.circle")
-            .font(.system(size: 40))
-            .foregroundColor(.white)
-            .onTapGesture {
-                isPlayActiveWorkout.toggle()
+        // Use the ZStack to overlay the play.circle icon on top of an invisible NavigationLink
+        ZStack {
+            // The invisible NavigationLink controlled by isNavigateActive
+            NavigationLink(destination: ActiveWorkoutView(workoutDetails: workoutDetails), isActive: $isNavigateActive) {
+                EmptyView()
             }
-            .background(
-                NavigationLink(
-                    destination: ActiveWorkout(workoutDetails: workoutManager.fetchWorkoutDetails(for: title)),
-                    isActive: $isPlayActiveWorkout
-                ) {
-                    EmptyView()
+            .hidden() // Use .hidden() to make sure it takes up no space
+            
+            // The play.circle icon that the user interacts with
+            Image(systemName: "play.circle")
+                .font(.system(size: 40))
+                .foregroundColor(.white)
+                .onTapGesture {
+                    // Trigger navigation by setting isNavigateActive to true
+                    isNavigateActive = true
                 }
-                    .hidden()
-            )
+            
+        }
+    }
+    
+    @ViewBuilder
+    private func contextMenuContent() -> some View {
+        Button("Edit") {
+            presentingModal = .edit(originalTitle: title)
+        }
+        Button("Delete", action: {
+            onDelete?()
+        })
     }
 }
+
+enum ModalType: Identifiable {
+    case add
+    case edit(originalTitle: String)
+
+    var id: String {
+        switch self {
+        case .add:
+            return "add"
+        case .edit(let originalTitle):
+            return "edit_\(originalTitle)"
+        }
+    }
+}
+

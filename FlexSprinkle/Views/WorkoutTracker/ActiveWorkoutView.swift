@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ActiveWorkout: View {
+struct ActiveWorkoutView: View {
     var workoutDetails: [WorkoutDetail]
 
     var body: some View {

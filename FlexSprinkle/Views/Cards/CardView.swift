@@ -33,7 +33,7 @@ struct CardView: View {
                         isFormPresented.toggle()
                     }
                     .sheet(isPresented: $isFormPresented) {
-                        WorkoutFormView(
+                        AddWorkoutView(
                             isFormPresented: $isFormPresented,
                             onSave: { newWorkout, newColor in
                                 workoutManager.workouts.append(newWorkout)

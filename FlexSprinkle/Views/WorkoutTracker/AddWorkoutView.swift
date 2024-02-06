@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct WorkoutFormView: View {
+struct AddWorkoutView: View {
     @Binding var isFormPresented: Bool
     @State var workoutTitle: String
     @State var workoutDetails: [WorkoutDetail]

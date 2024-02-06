@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		087111372B728F8F0054E315 /* ModalType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087111362B728F8F0054E315 /* ModalType.swift */; };
 		08B78FF02B6DBA370002DA68 /* FlexSprinkleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B78FEF2B6DBA370002DA68 /* FlexSprinkleApp.swift */; };
 		08B78FF22B6DBA370002DA68 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B78FF12B6DBA370002DA68 /* HomeView.swift */; };
 		08B78FF42B6DBA390002DA68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08B78FF32B6DBA390002DA68 /* Assets.xcassets */; };
@@ -45,6 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		087111362B728F8F0054E315 /* ModalType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalType.swift; sourceTree = "<group>"; };
 		08B78FEC2B6DBA370002DA68 /* FlexSprinkle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlexSprinkle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08B78FEF2B6DBA370002DA68 /* FlexSprinkleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexSprinkleApp.swift; sourceTree = "<group>"; };
 		08B78FF12B6DBA370002DA68 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -94,6 +96,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		087111352B728F810054E315 /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				087111362B728F8F0054E315 /* ModalType.swift */,
+			);
+			path = Enums;
+			sourceTree = "<group>";
+		};
 		08B78FE32B6DBA370002DA68 = {
 			isa = PBXGroup;
 			children = (
@@ -117,6 +127,7 @@
 		08B78FEE2B6DBA370002DA68 /* FlexSprinkle */ = {
 			isa = PBXGroup;
 			children = (
+				087111352B728F810054E315 /* Enums */,
 				08B7903B2B7172920002DA68 /* Extensions */,
 				08B790252B6E948C0002DA68 /* Controllers */,
 				08B790242B6E94840002DA68 /* Models */,
@@ -349,6 +360,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				08B790222B6E911D0002DA68 /* NutritionHelperMainView.swift in Sources */,
+				087111372B728F8F0054E315 /* ModalType.swift in Sources */,
 				08B7903A2B716C1C0002DA68 /* WorkoutDetailView.swift in Sources */,
 				08B78FF22B6DBA370002DA68 /* HomeView.swift in Sources */,
 				08B7901E2B6E8F8D0002DA68 /* SettingsView.swift in Sources */,

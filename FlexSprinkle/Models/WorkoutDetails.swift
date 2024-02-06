@@ -15,7 +15,7 @@ class WorkoutDetail: Identifiable, NSCoding {
     var name: String = ""
     var reps: String = ""
     var weight: String = ""
-    var color: Color = Color.black
+    var color: String = ""
 
     // MARK: - NSCoding
 
@@ -27,7 +27,7 @@ class WorkoutDetail: Identifiable, NSCoding {
         name = aDecoder.decodeObject(forKey: "name") as? String ?? ""
         reps = aDecoder.decodeObject(forKey: "reps") as? String ?? ""
         weight = aDecoder.decodeObject(forKey: "weight") as? String ?? ""
-        color = aDecoder.decodeObject(forKey: "color") as? Color ?? Color.black
+        color = aDecoder.decodeObject(forKey: "color") as? String ?? "MyBlue"
     }
 
     func encode(with aCoder: NSCoder) {

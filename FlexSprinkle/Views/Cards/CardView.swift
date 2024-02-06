@@ -11,7 +11,7 @@ struct CardView: View {
     @EnvironmentObject var workoutManager: WorkoutManager
     
     var body: some View {
-        let backgroundColor = Color.black // Default color
+        let backgroundColor = Color("MyBlue") // Default color
         
         VStack {
             if isDefault {
@@ -116,18 +116,3 @@ struct CardView: View {
         })
     }
 }
-
-enum ModalType: Identifiable {
-    case add
-    case edit(originalTitle: String)
-
-    var id: String {
-        switch self {
-        case .add:
-            return "add"
-        case .edit(let originalTitle):
-            return "edit_\(originalTitle)"
-        }
-    }
-}
-

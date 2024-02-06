@@ -8,12 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		08B78FF02B6DBA370002DA68 /* FlexSprinkleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B78FEF2B6DBA370002DA68 /* FlexSprinkleApp.swift */; };
-		08B78FF22B6DBA370002DA68 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B78FF12B6DBA370002DA68 /* ContentView.swift */; };
+		08B78FF22B6DBA370002DA68 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B78FF12B6DBA370002DA68 /* HomeView.swift */; };
 		08B78FF42B6DBA390002DA68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08B78FF32B6DBA390002DA68 /* Assets.xcassets */; };
 		08B78FF82B6DBA390002DA68 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08B78FF72B6DBA390002DA68 /* Preview Assets.xcassets */; };
 		08B790022B6DBA390002DA68 /* FlexSprinkleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B790012B6DBA390002DA68 /* FlexSprinkleTests.swift */; };
 		08B7900C2B6DBA390002DA68 /* FlexSprinkleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B7900B2B6DBA390002DA68 /* FlexSprinkleUITests.swift */; };
 		08B7900E2B6DBA390002DA68 /* FlexSprinkleUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B7900D2B6DBA390002DA68 /* FlexSprinkleUITestsLaunchTests.swift */; };
+		08B7901B2B6DC28F0002DA68 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B7901A2B6DC28F0002DA68 /* CardView.swift */; };
+		08B7901E2B6E8F8D0002DA68 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B7901D2B6E8F8D0002DA68 /* SettingsView.swift */; };
+		08B790202B6E91010002DA68 /* WorkoutTrackerMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B7901F2B6E91010002DA68 /* WorkoutTrackerMainView.swift */; };
+		08B790222B6E911D0002DA68 /* NutritionHelperMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B790212B6E911D0002DA68 /* NutritionHelperMainView.swift */; };
+		08B790272B7079C90002DA68 /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B790262B7079C90002DA68 /* DatePickerView.swift */; };
+		08B7902B2B7090870002DA68 /* WorkoutFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B7902A2B7090870002DA68 /* WorkoutFormView.swift */; };
+		08B7902D2B7136320002DA68 /* ActiveWorkout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B7902C2B7136320002DA68 /* ActiveWorkout.swift */; };
+		08B7902F2B7137680002DA68 /* WorkoutDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B7902E2B7137680002DA68 /* WorkoutDetails.swift */; };
+		08B790312B7138F70002DA68 /* WorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B790302B7138F70002DA68 /* WorkoutManager.swift */; };
+		08B790332B7153F90002DA68 /* EditWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B790322B7153F90002DA68 /* EditWorkoutView.swift */; };
+		08B7903A2B716C1C0002DA68 /* WorkoutDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B790392B716C1C0002DA68 /* WorkoutDetailView.swift */; };
+		08B7903D2B7172A80002DA68 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B7903C2B7172A80002DA68 /* Color.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +48,7 @@
 /* Begin PBXFileReference section */
 		08B78FEC2B6DBA370002DA68 /* FlexSprinkle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlexSprinkle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08B78FEF2B6DBA370002DA68 /* FlexSprinkleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexSprinkleApp.swift; sourceTree = "<group>"; };
-		08B78FF12B6DBA370002DA68 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		08B78FF12B6DBA370002DA68 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		08B78FF32B6DBA390002DA68 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		08B78FF52B6DBA390002DA68 /* FlexSprinkle.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlexSprinkle.entitlements; sourceTree = "<group>"; };
 		08B78FF72B6DBA390002DA68 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -45,6 +57,18 @@
 		08B790072B6DBA390002DA68 /* FlexSprinkleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlexSprinkleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		08B7900B2B6DBA390002DA68 /* FlexSprinkleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexSprinkleUITests.swift; sourceTree = "<group>"; };
 		08B7900D2B6DBA390002DA68 /* FlexSprinkleUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexSprinkleUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		08B7901A2B6DC28F0002DA68 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		08B7901D2B6E8F8D0002DA68 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		08B7901F2B6E91010002DA68 /* WorkoutTrackerMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTrackerMainView.swift; sourceTree = "<group>"; };
+		08B790212B6E911D0002DA68 /* NutritionHelperMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionHelperMainView.swift; sourceTree = "<group>"; };
+		08B790262B7079C90002DA68 /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
+		08B7902A2B7090870002DA68 /* WorkoutFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutFormView.swift; sourceTree = "<group>"; };
+		08B7902C2B7136320002DA68 /* ActiveWorkout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveWorkout.swift; sourceTree = "<group>"; };
+		08B7902E2B7137680002DA68 /* WorkoutDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutDetails.swift; sourceTree = "<group>"; };
+		08B790302B7138F70002DA68 /* WorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutManager.swift; sourceTree = "<group>"; };
+		08B790322B7153F90002DA68 /* EditWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWorkoutView.swift; sourceTree = "<group>"; };
+		08B790392B716C1C0002DA68 /* WorkoutDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutDetailView.swift; sourceTree = "<group>"; };
+		08B7903C2B7172A80002DA68 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,8 +119,11 @@
 		08B78FEE2B6DBA370002DA68 /* FlexSprinkle */ = {
 			isa = PBXGroup;
 			children = (
+				08B7903B2B7172920002DA68 /* Extensions */,
+				08B790252B6E948C0002DA68 /* Controllers */,
+				08B790242B6E94840002DA68 /* Models */,
+				08B7901C2B6E8F230002DA68 /* Views */,
 				08B78FEF2B6DBA370002DA68 /* FlexSprinkleApp.swift */,
-				08B78FF12B6DBA370002DA68 /* ContentView.swift */,
 				08B78FF32B6DBA390002DA68 /* Assets.xcassets */,
 				08B78FF52B6DBA390002DA68 /* FlexSprinkle.entitlements */,
 				08B78FF62B6DBA390002DA68 /* Preview Content */,
@@ -127,6 +154,71 @@
 				08B7900D2B6DBA390002DA68 /* FlexSprinkleUITestsLaunchTests.swift */,
 			);
 			path = FlexSprinkleUITests;
+			sourceTree = "<group>";
+		};
+		08B7901C2B6E8F230002DA68 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				08B790342B7162740002DA68 /* Cards */,
+				08B790292B708A370002DA68 /* NutritionHelper */,
+				08B790282B708A1F0002DA68 /* WorkoutTracker */,
+				08B78FF12B6DBA370002DA68 /* HomeView.swift */,
+				08B7901D2B6E8F8D0002DA68 /* SettingsView.swift */,
+				08B790262B7079C90002DA68 /* DatePickerView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		08B790242B6E94840002DA68 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				08B7902E2B7137680002DA68 /* WorkoutDetails.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		08B790252B6E948C0002DA68 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				08B790302B7138F70002DA68 /* WorkoutManager.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		08B790282B708A1F0002DA68 /* WorkoutTracker */ = {
+			isa = PBXGroup;
+			children = (
+				08B7901F2B6E91010002DA68 /* WorkoutTrackerMainView.swift */,
+				08B7902A2B7090870002DA68 /* WorkoutFormView.swift */,
+				08B7902C2B7136320002DA68 /* ActiveWorkout.swift */,
+				08B790322B7153F90002DA68 /* EditWorkoutView.swift */,
+				08B790392B716C1C0002DA68 /* WorkoutDetailView.swift */,
+			);
+			path = WorkoutTracker;
+			sourceTree = "<group>";
+		};
+		08B790292B708A370002DA68 /* NutritionHelper */ = {
+			isa = PBXGroup;
+			children = (
+				08B790212B6E911D0002DA68 /* NutritionHelperMainView.swift */,
+			);
+			path = NutritionHelper;
+			sourceTree = "<group>";
+		};
+		08B790342B7162740002DA68 /* Cards */ = {
+			isa = PBXGroup;
+			children = (
+				08B7901A2B6DC28F0002DA68 /* CardView.swift */,
+			);
+			path = Cards;
+			sourceTree = "<group>";
+		};
+		08B7903B2B7172920002DA68 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				08B7903C2B7172A80002DA68 /* Color.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -259,8 +351,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				08B78FF22B6DBA370002DA68 /* ContentView.swift in Sources */,
+				08B790222B6E911D0002DA68 /* NutritionHelperMainView.swift in Sources */,
+				08B7903A2B716C1C0002DA68 /* WorkoutDetailView.swift in Sources */,
+				08B78FF22B6DBA370002DA68 /* HomeView.swift in Sources */,
+				08B7901E2B6E8F8D0002DA68 /* SettingsView.swift in Sources */,
+				08B7902D2B7136320002DA68 /* ActiveWorkout.swift in Sources */,
+				08B790312B7138F70002DA68 /* WorkoutManager.swift in Sources */,
+				08B7901B2B6DC28F0002DA68 /* CardView.swift in Sources */,
+				08B7902F2B7137680002DA68 /* WorkoutDetails.swift in Sources */,
+				08B790272B7079C90002DA68 /* DatePickerView.swift in Sources */,
+				08B7903D2B7172A80002DA68 /* Color.swift in Sources */,
+				08B790332B7153F90002DA68 /* EditWorkoutView.swift in Sources */,
 				08B78FF02B6DBA370002DA68 /* FlexSprinkleApp.swift in Sources */,
+				08B790202B6E91010002DA68 /* WorkoutTrackerMainView.swift in Sources */,
+				08B7902B2B7090870002DA68 /* WorkoutFormView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -440,10 +544,11 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.damiensprinkle.FlexSprinkle;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -476,10 +581,11 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.damiensprinkle.FlexSprinkle;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

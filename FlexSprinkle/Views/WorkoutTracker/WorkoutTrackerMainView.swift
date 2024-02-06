@@ -10,7 +10,6 @@ import SwiftUI
 struct WorkoutTrackerMainView: View {
     @State private var selectedDate = Date()
     @StateObject private var workoutManager = WorkoutManager()
-    @State private var isEditWorkoutPresented = false
 
     var body: some View {
         NavigationView {

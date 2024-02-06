@@ -25,7 +25,6 @@
 		08B790312B7138F70002DA68 /* WorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B790302B7138F70002DA68 /* WorkoutManager.swift */; };
 		08B790332B7153F90002DA68 /* EditWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B790322B7153F90002DA68 /* EditWorkoutView.swift */; };
 		08B7903A2B716C1C0002DA68 /* WorkoutDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B790392B716C1C0002DA68 /* WorkoutDetailView.swift */; };
-		08B7903D2B7172A80002DA68 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B7903C2B7172A80002DA68 /* Color.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,7 +67,6 @@
 		08B790302B7138F70002DA68 /* WorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutManager.swift; sourceTree = "<group>"; };
 		08B790322B7153F90002DA68 /* EditWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWorkoutView.swift; sourceTree = "<group>"; };
 		08B790392B716C1C0002DA68 /* WorkoutDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutDetailView.swift; sourceTree = "<group>"; };
-		08B7903C2B7172A80002DA68 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -216,7 +214,6 @@
 		08B7903B2B7172920002DA68 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				08B7903C2B7172A80002DA68 /* Color.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -360,7 +357,6 @@
 				08B7901B2B6DC28F0002DA68 /* CardView.swift in Sources */,
 				08B7902F2B7137680002DA68 /* WorkoutDetails.swift in Sources */,
 				08B790272B7079C90002DA68 /* DatePickerView.swift in Sources */,
-				08B7903D2B7172A80002DA68 /* Color.swift in Sources */,
 				08B790332B7153F90002DA68 /* EditWorkoutView.swift in Sources */,
 				08B78FF02B6DBA370002DA68 /* FlexSprinkleApp.swift in Sources */,
 				08B790202B6E91010002DA68 /* WorkoutTrackerMainView.swift in Sources */,

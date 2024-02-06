@@ -120,41 +120,42 @@ class WorkoutManager: ObservableObject {
             print("Context is nil, unable to update workout details.")
             return
         }
-        
-        for input in workoutDetailsInput {
-            if let id = input.id {
-                let request = fetchRequestForWorkoutDetail(withID: id)
-                do {
-                    let details = try context.fetch(request)
-                    if let detail = details.first {
-                        // Update the existing detail
-                        detail.exerciseName = input.exerciseName
-                        detail.reps = Int32(input.reps) ?? 0
-                        detail.weight = Int32(input.weight) ?? 0
-                    } else {
-                        // Create a new detail if no ID or not found
-                        let newDetail = WorkoutDetail(context: context)
-                        newDetail.id = UUID()
-                        newDetail.name = newTitle
-                        newDetail.exerciseName = input.exerciseName
-                        newDetail.reps = Int32(input.reps) ?? 0
-                        newDetail.weight = Int32(input.weight) ?? 0
-                    }
-                } catch let error as NSError {
-                    print("Error fetching workout detail with ID \(id): \(error), \(error.userInfo)")
+
+        // If the workout title has changed, update all associated workout details
+        if originalTitle != newTitle {
+            let request = NSFetchRequest<WorkoutDetail>(entityName: "WorkoutDetail")
+            request.predicate = NSPredicate(format: "name == %@", originalTitle)
+            do {
+                let existingDetails = try context.fetch(request)
+                for detail in existingDetails {
+                    detail.name = newTitle // Update the name of existing details
                 }
-            } else {
-                // Handle the case for adding new details
-                let newDetail = WorkoutDetail(context: context)
-                newDetail.id = UUID()
-                newDetail.name = newTitle
-                newDetail.exerciseName = input.exerciseName
-                newDetail.reps = Int32(input.reps) ?? 0
-                newDetail.weight = Int32(input.weight) ?? 0
+            } catch let error as NSError {
+                print("Error updating workout names: \(error), \(error.userInfo)")
             }
         }
-        saveContext() // Save changes after all updates are made
+        
+        // Process input details for updates or new additions
+        for input in workoutDetailsInput {
+            // Assuming you have a way to fetch a specific WorkoutDetail by ID
+            let detail: WorkoutDetail
+            if let id = input.id, let fetchedDetail = try? context.fetch(fetchRequestForWorkoutDetail(withID: id)).first {
+                detail = fetchedDetail // Found existing detail, prepare it for update
+            } else {
+                detail = WorkoutDetail(context: context) // No ID or detail not found, create new
+                detail.id = UUID() // Assign a new ID if creating a new detail
+            }
+            detail.name = newTitle
+            detail.exerciseName = input.exerciseName
+            detail.reps = Int32(input.reps) ?? 0
+            detail.weight = Int32(input.weight) ?? 0
+            // Assign additional properties as necessary
+        }
+
+        // Attempt to save context after all updates
+        saveContext()
     }
+
     
 }
 

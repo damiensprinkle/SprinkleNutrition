@@ -40,7 +40,7 @@ struct CardView: View {
     @ViewBuilder
     private func defaultCardContent() -> some View {
         HStack {
-            Text("Add")
+            Text("Add Workout")
                 .font(.title)
                 .fontWeight(.bold)
                 .foregroundColor(.white)

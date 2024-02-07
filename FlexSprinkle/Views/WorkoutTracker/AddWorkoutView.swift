@@ -15,10 +15,10 @@ struct AddWorkoutView: View {
     @State private var workoutDetails: [WorkoutDetailInput] = [] // Use WorkoutDetailInput
     @State private var showAlert: Bool = false
     private let colorManager = ColorManager()
-    var body: some View {
-        var errorMessage = ""
-        
-        NavigationView {
+    @State private var errorMessage: String = ""
+
+    var body: some View {        
+        NavigationStack {
             Form {
                 Section(header: Text("Workout Title")) {
                     TextField("Enter Workout Title", text: $workoutTitle)
@@ -48,10 +48,12 @@ struct AddWorkoutView: View {
                 if workoutTitle.isEmpty {
                     errorMessage = "Please Enter a Workout Title"
                     showAlert = true
+                    return
                 }
                 if workoutManager.titleExists(workoutTitle) {
                     errorMessage = "Workout Title Already Exists"
                     showAlert = true
+                    return
                 }
                 else {
                     // Check if there are any details provided
@@ -86,8 +88,6 @@ struct AddWorkoutView: View {
 
 
             )
-            
-            
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("Incomplete Workout"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
             }

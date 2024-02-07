@@ -30,7 +30,7 @@ struct EditWorkoutView: View {
 
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             Form {
                 Section(header: Text("Workout Title")) {
                     TextField("Enter Workout Title", text: $workoutTitle)
@@ -75,10 +75,13 @@ struct EditWorkoutView: View {
             errorMessage = "Please Enter a Workout Title"
             showAlert = true
         }
-        if workoutManager.titleExists(workoutTitle) {
-            errorMessage = "Workout Title Already Exists"
-            showAlert = true
+        if originalWorkoutTitle != workoutTitle{
+            if workoutManager.titleExists(workoutTitle) {
+                errorMessage = "Workout Title Already Exists"
+                showAlert = true
+            }
         }
+
         else {
             // Attempt to update existing details or add new ones
             workoutManager.updateWorkoutDetails(for: originalWorkoutTitle, withNewTitle: workoutTitle, workoutDetailsInput: workoutDetailsInput)

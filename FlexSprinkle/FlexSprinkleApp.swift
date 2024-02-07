@@ -18,6 +18,7 @@ struct FlexSprinkleApp: App {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         }
+
     }
 
     var body: some Scene {

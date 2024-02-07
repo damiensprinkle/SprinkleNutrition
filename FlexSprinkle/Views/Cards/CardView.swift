@@ -1,7 +1,5 @@
 import SwiftUI
 
-import SwiftUI
-
 struct CardView: View {
     var title: String
     var isDefault: Bool
@@ -93,7 +91,6 @@ struct CardView: View {
                     // Trigger navigation by setting isNavigateActive to true
                     isNavigateActive = true
                 }
-            
         }
     }
     

@@ -16,6 +16,8 @@ public class WorkoutHistory: NSManagedObject {
     @NSManaged public var workoutDate: Date
     @NSManaged public var workoutTimeToComplete: String
     @NSManaged public var totalWeightLifted: Int32
+    @NSManaged public var reps: Int32
+    @NSManaged public var weight: Int32
     @NSManaged public var detail: WorkoutDetail? // For inverse relationship
 
 }

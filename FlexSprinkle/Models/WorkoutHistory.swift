@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-@objc(WorkoutDetail)
+@objc(WorkoutHistory)
 public class WorkoutHistory: NSManagedObject {
     @NSManaged public var id: UUID
     @NSManaged public var workoutId: UUID

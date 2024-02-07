@@ -16,9 +16,6 @@
 		08B78FF22B6DBA370002DA68 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B78FF12B6DBA370002DA68 /* HomeView.swift */; };
 		08B78FF42B6DBA390002DA68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08B78FF32B6DBA390002DA68 /* Assets.xcassets */; };
 		08B78FF82B6DBA390002DA68 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08B78FF72B6DBA390002DA68 /* Preview Assets.xcassets */; };
-		08B790022B6DBA390002DA68 /* FlexSprinkleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B790012B6DBA390002DA68 /* FlexSprinkleTests.swift */; };
-		08B7900C2B6DBA390002DA68 /* FlexSprinkleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B7900B2B6DBA390002DA68 /* FlexSprinkleUITests.swift */; };
-		08B7900E2B6DBA390002DA68 /* FlexSprinkleUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B7900D2B6DBA390002DA68 /* FlexSprinkleUITestsLaunchTests.swift */; };
 		08B7901B2B6DC28F0002DA68 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B7901A2B6DC28F0002DA68 /* CardView.swift */; };
 		08B7901E2B6E8F8D0002DA68 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B7901D2B6E8F8D0002DA68 /* SettingsView.swift */; };
 		08B790202B6E91010002DA68 /* WorkoutTrackerMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B7901F2B6E91010002DA68 /* WorkoutTrackerMainView.swift */; };
@@ -62,10 +59,7 @@
 		08B78FF52B6DBA390002DA68 /* FlexSprinkle.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlexSprinkle.entitlements; sourceTree = "<group>"; };
 		08B78FF72B6DBA390002DA68 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		08B78FFD2B6DBA390002DA68 /* FlexSprinkleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlexSprinkleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		08B790012B6DBA390002DA68 /* FlexSprinkleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexSprinkleTests.swift; sourceTree = "<group>"; };
 		08B790072B6DBA390002DA68 /* FlexSprinkleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlexSprinkleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		08B7900B2B6DBA390002DA68 /* FlexSprinkleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexSprinkleUITests.swift; sourceTree = "<group>"; };
-		08B7900D2B6DBA390002DA68 /* FlexSprinkleUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexSprinkleUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		08B7901A2B6DC28F0002DA68 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		08B7901D2B6E8F8D0002DA68 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		08B7901F2B6E91010002DA68 /* WorkoutTrackerMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTrackerMainView.swift; sourceTree = "<group>"; };
@@ -124,8 +118,6 @@
 			isa = PBXGroup;
 			children = (
 				08B78FEE2B6DBA370002DA68 /* FlexSprinkle */,
-				08B790002B6DBA390002DA68 /* FlexSprinkleTests */,
-				08B7900A2B6DBA390002DA68 /* FlexSprinkleUITests */,
 				08B78FED2B6DBA370002DA68 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -163,23 +155,6 @@
 				08B78FF72B6DBA390002DA68 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		08B790002B6DBA390002DA68 /* FlexSprinkleTests */ = {
-			isa = PBXGroup;
-			children = (
-				08B790012B6DBA390002DA68 /* FlexSprinkleTests.swift */,
-			);
-			path = FlexSprinkleTests;
-			sourceTree = "<group>";
-		};
-		08B7900A2B6DBA390002DA68 /* FlexSprinkleUITests */ = {
-			isa = PBXGroup;
-			children = (
-				08B7900B2B6DBA390002DA68 /* FlexSprinkleUITests.swift */,
-				08B7900D2B6DBA390002DA68 /* FlexSprinkleUITestsLaunchTests.swift */,
-			);
-			path = FlexSprinkleUITests;
 			sourceTree = "<group>";
 		};
 		08B7901C2B6E8F230002DA68 /* Views */ = {
@@ -396,7 +371,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				08B790022B6DBA390002DA68 /* FlexSprinkleTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -404,8 +378,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				08B7900C2B6DBA390002DA68 /* FlexSprinkleUITests.swift in Sources */,
-				08B7900E2B6DBA390002DA68 /* FlexSprinkleUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

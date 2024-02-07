@@ -45,37 +45,40 @@ struct AddWorkoutView: View {
             .navigationBarItems(leading: Button("Cancel") {
                 presentationMode.wrappedValue.dismiss()
             }, trailing: Button("Done") {
+                // Check if the workout title is empty
                 if workoutTitle.isEmpty {
                     errorMessage = "Please Enter a Workout Title"
                     showAlert = true
-                } else if workoutManager.titleExists(workoutTitle) {
+                    return // Exit early
+                }
+                // Check if the workout title already exists
+                if workoutManager.titleExists(workoutTitle) {
                     errorMessage = "Workout Title Already Exists"
                     showAlert = true
+                    return // Exit early
+                }
+                // Ensure at least one exercise detail has been filled out
+                let filledDetails = workoutDetails.filter {
+                    !$0.exerciseName.isEmpty && !$0.reps.isEmpty && !$0.weight.isEmpty
+                }
+                if filledDetails.isEmpty {
+                    // If no valid exercise details are provided, show an alert
+                    errorMessage = "Please add at least one exercise detail"
+                    showAlert = true
                 } else {
-                    // Filter out empty detail inputs
-                    let filledDetails = workoutDetails.filter { detailInput in
-                        !detailInput.exerciseName.isEmpty || !detailInput.reps.isEmpty || !detailInput.weight.isEmpty
-                    }
-                    
-                    // Proceed only with filled details, skipping entirely if no details are filled
-                    if filledDetails.isEmpty {
-                        // If all inputs were empty, decide on your logic here.
-                        // For now, we do nothing, respecting your requirement to not default if any detail is provided.
-                    } else {
-                        // Iterate through each filled detailInput
-                        for detailInput in filledDetails {
-                            let exerciseName = detailInput.exerciseName // Already validated as not empty
-                            let repsInt = Int32(detailInput.reps) ?? 10 // Default to 10 reps if invalid
-                            let weightInt = Int32(detailInput.weight) ?? 5 // Default to 5 weight if invalid
-                            
-                            workoutManager.addWorkoutDetail(
-                                workoutTitle: workoutTitle,
-                                exerciseName: exerciseName,
-                                reps: repsInt,
-                                weight: weightInt,
-                                color: colorManager.getRandomColor()
-                            )
-                        }
+                    // Proceed with adding the workout and its details
+                    for detailInput in filledDetails {
+                        let exerciseName = detailInput.exerciseName // Already validated as not empty
+                        let repsInt = Int32(detailInput.reps) ?? 10 // Default to 10 reps if invalid
+                        let weightInt = Int32(detailInput.weight) ?? 5 // Default to 5 weight if invalid
+                        
+                        workoutManager.addWorkoutDetail(
+                            workoutTitle: workoutTitle,
+                            exerciseName: exerciseName,
+                            reps: repsInt,
+                            weight: weightInt,
+                            color: colorManager.getRandomColor()
+                        )
                     }
                     presentationMode.wrappedValue.dismiss()
                 }

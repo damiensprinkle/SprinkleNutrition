@@ -50,7 +50,7 @@ struct EditWorkoutView: View {
                     }
                 }
             }
-            .navigationBarTitle("Edit Workout", displayMode: .inline)
+            .navigationTitle("Edit Workout")
             .navigationBarItems(leading: Button("Cancel") {
                 presentationMode.wrappedValue.dismiss()
             }, trailing: Button("Done") {

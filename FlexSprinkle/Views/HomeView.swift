@@ -14,7 +14,7 @@ struct HomeView: View {
                 Text("Home Content Goes Here")
                     .navigationTitle("Home")
                     .navigationBarItems(trailing: NavigationLink(destination: SettingsView()) {
-                        Image(systemName: "gear")
+                        Image(systemName: "gearshape")
                             .resizable()
                             .imageScale(.large)
                             .foregroundColor(Color.blue)
@@ -28,7 +28,7 @@ struct HomeView: View {
                 WorkoutTrackerMainView()
                     .navigationTitle("Workout Tracker")
                     .navigationBarItems(trailing: NavigationLink(destination: SettingsView()) {
-                        Image(systemName: "gear")
+                        Image(systemName: "gearshape")
                             .resizable()
                             .imageScale(.large)
                             .foregroundColor(Color.blue)
@@ -42,7 +42,7 @@ struct HomeView: View {
                 NutritionHelperMainView()
                     .navigationTitle("Nutrition Helper")
                     .navigationBarItems(trailing: NavigationLink(destination: SettingsView()) {
-                        Image(systemName: "gear")
+                        Image(systemName: "gearshape")
                             .resizable()
                             .imageScale(.large)
                             .foregroundColor(Color.blue)

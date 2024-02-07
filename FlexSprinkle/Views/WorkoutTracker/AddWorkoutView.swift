@@ -41,7 +41,7 @@ struct AddWorkoutView: View {
                     }
                 }
             }
-            .navigationBarTitle("Add Workout", displayMode: .inline)
+            .navigationTitle("Add Workout")
             .navigationBarItems(leading: Button("Cancel") {
                 presentationMode.wrappedValue.dismiss()
             }, trailing: Button("Done") {

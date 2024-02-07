@@ -74,21 +74,30 @@ struct EditWorkoutView: View {
         if workoutTitle.isEmpty {
             errorMessage = "Please Enter a Workout Title"
             showAlert = true
-        }
-        if originalWorkoutTitle != workoutTitle{
-            if workoutManager.titleExists(workoutTitle) {
-                errorMessage = "Workout Title Already Exists"
+        } else if originalWorkoutTitle != workoutTitle && workoutManager.titleExists(workoutTitle) {
+            errorMessage = "Workout Title Already Exists"
+            showAlert = true
+        } else {
+            // Filter out empty detail inputs before processing
+            let filledDetails = workoutDetailsInput.filter { detailInput in
+                !detailInput.exerciseName.isEmpty || !detailInput.reps.isEmpty || !detailInput.weight.isEmpty
+            }
+            
+            // Proceed only with filled details
+            if filledDetails.isEmpty && workoutDetailsInput.isEmpty {
+                // If user has not added any new details and all existing details are removed, decide on your logic here.
+                // For now, do nothing or show an error message if needed.
+                errorMessage = "Please add at least one exercise"
                 showAlert = true
+            } else {
+                // Update the workout details with filled details only
+                workoutManager.updateWorkoutDetails(for: originalWorkoutTitle, withNewTitle: workoutTitle, workoutDetailsInput: filledDetails)
+                
+                presentationMode.wrappedValue.dismiss()
             }
         }
-
-        else {
-            // Attempt to update existing details or add new ones
-            workoutManager.updateWorkoutDetails(for: originalWorkoutTitle, withNewTitle: workoutTitle, workoutDetailsInput: workoutDetailsInput)
-
-            presentationMode.wrappedValue.dismiss()
-        }
     }
+
 
 
 }

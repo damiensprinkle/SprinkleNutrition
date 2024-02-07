@@ -31,7 +31,6 @@ struct WorkoutDetailView: View {
             .keyboardType(.numberPad)
             .frame(width: 60) // Fixed smaller width
             .multilineTextAlignment(.center)
-            .border(Color.gray, width: /* desired border width */ 0.5)
 
             // Weight TextField - limited input and smaller
             TextField("Weight", text: Binding(
@@ -47,7 +46,6 @@ struct WorkoutDetailView: View {
             .keyboardType(.numberPad)
             .frame(width: 60) // Fixed smaller width
             .multilineTextAlignment(.center)
-            .border(Color.gray, width: /* desired border width */ 0.5)
         }
     }
 }

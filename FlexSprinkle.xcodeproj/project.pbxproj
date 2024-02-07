@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		087111372B728F8F0054E315 /* ModalType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087111362B728F8F0054E315 /* ModalType.swift */; };
 		0871113A2B72AD830054E315 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 087111382B72AD830054E315 /* Model.xcdatamodeld */; };
+		0871113D2B7306C20054E315 /* ColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0871113C2B7306C20054E315 /* ColorManager.swift */; };
 		08B78FF02B6DBA370002DA68 /* FlexSprinkleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B78FEF2B6DBA370002DA68 /* FlexSprinkleApp.swift */; };
 		08B78FF22B6DBA370002DA68 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B78FF12B6DBA370002DA68 /* HomeView.swift */; };
 		08B78FF42B6DBA390002DA68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08B78FF32B6DBA390002DA68 /* Assets.xcassets */; };
@@ -49,6 +50,7 @@
 /* Begin PBXFileReference section */
 		087111362B728F8F0054E315 /* ModalType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalType.swift; sourceTree = "<group>"; };
 		087111392B72AD830054E315 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		0871113C2B7306C20054E315 /* ColorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorManager.swift; sourceTree = "<group>"; };
 		08B78FEC2B6DBA370002DA68 /* FlexSprinkle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlexSprinkle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08B78FEF2B6DBA370002DA68 /* FlexSprinkleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexSprinkleApp.swift; sourceTree = "<group>"; };
 		08B78FF12B6DBA370002DA68 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -106,6 +108,14 @@
 			path = Enums;
 			sourceTree = "<group>";
 		};
+		0871113B2B7306060054E315 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				0871113C2B7306C20054E315 /* ColorManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
 		08B78FE32B6DBA370002DA68 = {
 			isa = PBXGroup;
 			children = (
@@ -129,8 +139,8 @@
 		08B78FEE2B6DBA370002DA68 /* FlexSprinkle */ = {
 			isa = PBXGroup;
 			children = (
+				0871113B2B7306060054E315 /* Manager */,
 				087111352B728F810054E315 /* Enums */,
-				08B7903B2B7172920002DA68 /* Extensions */,
 				08B790252B6E948C0002DA68 /* Controllers */,
 				08B790242B6E94840002DA68 /* Models */,
 				08B7901C2B6E8F230002DA68 /* Views */,
@@ -223,13 +233,6 @@
 				08B7901A2B6DC28F0002DA68 /* CardView.swift */,
 			);
 			path = Cards;
-			sourceTree = "<group>";
-		};
-		08B7903B2B7172920002DA68 /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -369,6 +372,7 @@
 				08B78FF22B6DBA370002DA68 /* HomeView.swift in Sources */,
 				08B7901E2B6E8F8D0002DA68 /* SettingsView.swift in Sources */,
 				08B7902D2B7136320002DA68 /* ActiveWorkoutView.swift in Sources */,
+				0871113D2B7306C20054E315 /* ColorManager.swift in Sources */,
 				08B790312B7138F70002DA68 /* WorkoutManager.swift in Sources */,
 				08B7901B2B6DC28F0002DA68 /* CardView.swift in Sources */,
 				08B7902F2B7137680002DA68 /* WorkoutDetail.swift in Sources */,

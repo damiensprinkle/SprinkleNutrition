@@ -14,8 +14,9 @@ struct AddWorkoutView: View {
     @State private var workoutTitle: String = ""
     @State private var workoutDetails: [WorkoutDetailInput] = [] // Use WorkoutDetailInput
     @State private var showAlert: Bool = false
-    
+    private let colorManager = ColorManager()
     var body: some View {
+        
         NavigationView {
             Form {
                 Section(header: Text("Workout Title")) {
@@ -54,7 +55,7 @@ struct AddWorkoutView: View {
                             exerciseName: "Default Exercise", // Default exercise name
                             reps: 10, // Default number of reps
                             weight: 5, // Default weight
-                            color: "MyPurple" // Default color
+                            color: colorManager.getRandomColor()// Default color
                         )
                     } else {
                         // Iterate through each detailInput, providing defaults for missing values
@@ -68,7 +69,7 @@ struct AddWorkoutView: View {
                                 exerciseName: exerciseName,
                                 reps: repsInt,
                                 weight: weightInt,
-                                color: "MyPurple"
+                                color: colorManager.getRandomColor()
                             )
                         }
                     }

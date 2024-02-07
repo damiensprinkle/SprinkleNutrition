@@ -11,7 +11,10 @@ struct CardView: View {
     @EnvironmentObject var workoutManager: WorkoutManager
     
     var body: some View {
-        let backgroundColor = Color("MyBlue") // Default color
+        let details = workoutManager.fetchWorkoutDetails(for: title)
+        let colorName = details.first?.color ?? "MyBlue" // Fallback color name just in case
+    
+        let backgroundColor = Color(colorName, bundle: nil)
         
         VStack {
             if isDefault {

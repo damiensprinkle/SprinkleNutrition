@@ -12,7 +12,7 @@ struct HomeView: View {
         TabView {
             NavigationStack {
                 Text("Home Content Goes Here")
-                    .navigationBarTitle("Home")
+                    .navigationTitle("Home")
                     .navigationBarItems(trailing: NavigationLink(destination: SettingsView()) {
                         Image(systemName: "gear")
                             .resizable()
@@ -26,7 +26,7 @@ struct HomeView: View {
 
             NavigationStack {
                 WorkoutTrackerMainView()
-                    .navigationBarTitle("Workout Tracker")
+                    .navigationTitle("Workout Tracker")
                     .navigationBarItems(trailing: NavigationLink(destination: SettingsView()) {
                         Image(systemName: "gear")
                             .resizable()
@@ -40,7 +40,7 @@ struct HomeView: View {
 
             NavigationStack {
                 NutritionHelperMainView()
-                    .navigationBarTitle("Nutrition Helper")
+                    .navigationTitle("Nutrition Helper")
                     .navigationBarItems(trailing: NavigationLink(destination: SettingsView()) {
                         Image(systemName: "gear")
                             .resizable()

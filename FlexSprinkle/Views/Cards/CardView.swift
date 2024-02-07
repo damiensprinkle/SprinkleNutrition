@@ -85,11 +85,13 @@ struct CardView: View {
     
     @ViewBuilder
     private func contextMenuContent() -> some View {
-        Button("Edit") {
-            presentingModal = .edit(originalTitle: title)
+        if !isDefault {
+            Button("Edit") {
+                presentingModal = .edit(originalTitle: title)
+            }
+            Button("Delete", action: {
+                onDelete?()
+            })
         }
-        Button("Delete", action: {
-            onDelete?()
-        })
     }
 }

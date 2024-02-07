@@ -7,23 +7,25 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct EditWorkoutView: View {
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var workoutManager: WorkoutManager // Use if shared across views
-    
+    @EnvironmentObject var workoutManager: WorkoutManager
+
     @State private var workoutTitle: String
-    @State private var workoutDetails: [WorkoutDetail]
+    @State private var workoutDetailsInput: [WorkoutDetailInput]
     @State private var showAlert: Bool = false
 
-    var originalWorkoutTitle: String // To identify the workout being edited
+    var originalWorkoutTitle: String
 
     init(workoutTitle: String, workoutDetails: [WorkoutDetail], originalWorkoutTitle: String) {
         self._workoutTitle = State(initialValue: workoutTitle)
-        self._workoutDetails = State(initialValue: workoutDetails)
+        self._workoutDetailsInput = State(initialValue: workoutDetails.map { detail in
+            WorkoutDetailInput(name: detail.name, id: detail.id, exerciseName: detail.exerciseName, reps: String(detail.reps), weight: String(detail.weight))
+        })
         self.originalWorkoutTitle = originalWorkoutTitle
     }
+
+
 
     var body: some View {
         NavigationView {
@@ -35,8 +37,8 @@ struct EditWorkoutView: View {
 
                 Section(header: Text("Workout Details")) {
                     List {
-                        ForEach($workoutDetails) { $detail in
-                            WorkoutDetailView(detail: $detail)
+                        ForEach($workoutDetailsInput.indices, id: \.self) { index in
+                            WorkoutDetailView(detail: $workoutDetailsInput[index])
                         }
                         .onDelete(perform: deleteDetail)
 
@@ -53,34 +55,29 @@ struct EditWorkoutView: View {
                 doneAction()
             })
             .alert(isPresented: $showAlert) {
-                Alert(title: Text("Incomplete Title"), message: Text("Please enter a workout title."), dismissButton: .default(Text("OK")))
+                Alert(title: Text("Incomplete Workout"), message: Text("Please enter a workout title and at least one exercise"), dismissButton: .default(Text("OK")))
             }
         }
     }
 
     private func deleteDetail(at offsets: IndexSet) {
-        workoutDetails.remove(atOffsets: offsets)
+        workoutDetailsInput.remove(atOffsets: offsets)
     }
 
     private func addDetail() {
-        workoutDetails.append(WorkoutDetail())
+        workoutDetailsInput.append(WorkoutDetailInput())
     }
 
     private func doneAction() {
-        if workoutTitle.isEmpty || workoutDetails.isEmpty {
+        if workoutTitle.isEmpty {
             showAlert = true
         } else {
-            // Update the workout details
-            if originalWorkoutTitle != workoutTitle {
-                workoutManager.deleteWorkout(withTitle: originalWorkoutTitle)
-            }
-            workoutManager.workoutsDict[workoutTitle] = workoutDetails
-            if !workoutManager.workouts.contains(workoutTitle) {
-                workoutManager.workouts.append(workoutTitle)
-            }
-            workoutManager.saveWorkouts()
-            
+            // Attempt to update existing details or add new ones
+            workoutManager.updateWorkoutDetails(for: originalWorkoutTitle, withNewTitle: workoutTitle, workoutDetailsInput: workoutDetailsInput)
+
             presentationMode.wrappedValue.dismiss()
         }
     }
+
+
 }

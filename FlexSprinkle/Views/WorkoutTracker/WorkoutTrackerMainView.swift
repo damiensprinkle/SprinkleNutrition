@@ -6,10 +6,12 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct WorkoutTrackerMainView: View {
     @State private var selectedDate = Date()
-    @StateObject private var workoutManager = WorkoutManager()
+    @Environment(\.managedObjectContext) private var viewContext
+    @StateObject private var workoutManager = WorkoutManager() // Initialize without context first
 
     var body: some View {
         NavigationView {
@@ -26,7 +28,7 @@ struct WorkoutTrackerMainView: View {
                                 title: workout,
                                 isDefault: false,
                                 onDelete: {
-                                    workoutManager.deleteWorkout(withTitle: workout)
+                                    workoutManager.deleteWorkoutDetails(for: workout)
                                 }
                             )
                         }
@@ -34,10 +36,18 @@ struct WorkoutTrackerMainView: View {
                     .padding()
                 }
             }
+            .onAppear {
+                // This ensures the workoutManager is only setup once the viewContext is available.
+                if workoutManager.context == nil {
+                    workoutManager.context = viewContext
+                    workoutManager.loadWorkouts()
+                }
+            }
         }
-        .environmentObject(workoutManager)
+         .environmentObject(workoutManager)
     }
 }
+
 
 
 struct WorkoutTrackerMainView_Previews: PreviewProvider {

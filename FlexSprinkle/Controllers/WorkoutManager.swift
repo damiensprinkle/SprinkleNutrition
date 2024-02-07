@@ -6,71 +6,163 @@
 //
 
 import Foundation
+import CoreData
 
 class WorkoutManager: ObservableObject {
-    @Published var workoutsDict = [String: [WorkoutDetail]]()
-    @Published var workouts: [String] = []
-
-    init() {
-        loadWorkouts()
+    var context: NSManagedObjectContext? {
+        didSet {
+            print("Context set in WorkoutManager")
+            if context != nil {
+                loadWorkouts()
+            }
+        }
     }
-
-    // Load workouts from UserDefaults
+    
+    @Published var workouts: [String] = []
+    
+    // MARK: Core Data Operations
+    
+    func addWorkoutDetail(workoutTitle: String, exerciseName: String, reps: Int32, weight: Int32, color: String) {
+        guard let context = self.context else { return }
+        print("Adding workout detail: \(workoutTitle), Exercise: \(exerciseName), Reps: \(reps), Weight: \(weight)")
+        
+        let newDetail = WorkoutDetail(context: context)
+        newDetail.id = UUID()
+        newDetail.name = workoutTitle
+        newDetail.exerciseName = exerciseName
+        newDetail.reps = reps
+        newDetail.weight = weight
+        newDetail.color = color
+        
+        saveContext()
+    }
+    
     func loadWorkouts() {
-        guard let savedWorkoutsDict = UserDefaults.standard.dictionary(forKey: "workouts") as? [String: [WorkoutDetail]] else {
+        guard let context = self.context else {
+            print("Context is nil in loadWorkouts")
             return
         }
-        workoutsDict = savedWorkoutsDict
-        workouts = Array(workoutsDict.keys)
+        
+        let request = NSFetchRequest<WorkoutDetail>(entityName: "WorkoutDetail")
+        do {
+            let results = try context.fetch(request)
+            self.workouts = Set(results.map { $0.name }).sorted()
+            print("Loaded workouts: \(self.workouts)")
+        } catch {
+            print("Failed to fetch workouts: \(error)")
+        }
     }
-
-    // Fetch workout details for a given title
+    
     func fetchWorkoutDetails(for title: String) -> [WorkoutDetail] {
-        guard let workoutDetails = workoutsDict[title] else {
+        guard let context = self.context else { return [] }
+        
+        let request = NSFetchRequest<WorkoutDetail>(entityName: "WorkoutDetail")
+        request.predicate = NSPredicate(format: "name == %@", title)
+        do {
+            return try context.fetch(request)
+        } catch {
+            print("Failed to fetch workout details: \(error)")
             return []
         }
-        return workoutDetails
     }
     
-    // Delete workout/card based on title
-    func deleteWorkout(withTitle title: String) {
-         workoutsDict[title] = nil
-         workouts = Array(workoutsDict.keys)
-         saveWorkouts()
-     }
     
-    // Edit a workout
-    func editWorkout(oldTitle: String, newTitle: String, newDetails: [WorkoutDetail]) {
-        // Delete the old workout
-        deleteWorkout(withTitle: oldTitle)
-
-        // Add the edited workout
-        workoutsDict[newTitle] = newDetails
-        workouts.append(newTitle)
-
-        // Save the workouts
-        saveWorkouts()
+    func deleteWorkoutDetails(for title: String) {
+        guard let context = self.context else { return }
+        
+        let detailsToDelete = fetchWorkoutDetails(for: title)
+        for detail in detailsToDelete {
+            context.delete(detail)
+        }
+        saveContext()
     }
-
-    // Save workouts to UserDefaults
-    func saveWorkouts() {
-        var encodedWorkoutsDict = [String: [[String: Any]]]()
-
-        for (title, details) in workoutsDict {
-            let encodedDetails = details.map { detail in
-                [
-                    "id": detail.id.uuidString,
-                    "name": detail.name,
-                    "reps": detail.reps,
-                    "weight": detail.weight
-                ]
+    
+    private func saveContext() {
+        guard let context = self.context else { return }
+        
+        do {
+            try context.save()
+            loadWorkouts()
+        } catch {
+            print("Failed to save context: \(error)")
+        }
+    }
+    
+    func updateWorkoutTitle(from originalTitle: String, to newTitle: String) {
+        guard let context = self.context else { return }
+        
+        let request = NSFetchRequest<WorkoutDetail>(entityName: "WorkoutDetail")
+        request.predicate = NSPredicate(format: "name == %@", originalTitle)
+        do {
+            let results = try context.fetch(request)
+            results.forEach { detail in
+                detail.name = newTitle
             }
-
-            encodedWorkoutsDict[title] = encodedDetails
+            
+            try context.save()
+            
+            // Update the local workouts array if necessary
+            if let index = workouts.firstIndex(of: originalTitle) {
+                workouts[index] = newTitle
+            } else {
+                workouts.append(newTitle)
+            }
+        } catch let error as NSError {
+            print("Error updating workout title: \(error), \(error.userInfo)")
+        }
+        saveContext()
+        
+    }
+    
+    
+    func updateWorkoutDetails(for originalTitle: String, withNewTitle newTitle: String, workoutDetailsInput: [WorkoutDetailInput]) {
+        guard let context = self.context else {
+            print("Context is nil, unable to update workout details.")
+            return
         }
 
-        UserDefaults.standard.set(encodedWorkoutsDict, forKey: "workouts")
-        workouts = Array(workoutsDict.keys)
+        // If the workout title has changed, update all associated workout details
+        if originalTitle != newTitle {
+            let request = NSFetchRequest<WorkoutDetail>(entityName: "WorkoutDetail")
+            request.predicate = NSPredicate(format: "name == %@", originalTitle)
+            do {
+                let existingDetails = try context.fetch(request)
+                for detail in existingDetails {
+                    detail.name = newTitle // Update the name of existing details
+                }
+            } catch let error as NSError {
+                print("Error updating workout names: \(error), \(error.userInfo)")
+            }
+        }
+        
+        // Process input details for updates or new additions
+        for input in workoutDetailsInput {
+            // Assuming you have a way to fetch a specific WorkoutDetail by ID
+            let detail: WorkoutDetail
+            if let id = input.id, let fetchedDetail = try? context.fetch(fetchRequestForWorkoutDetail(withID: id)).first {
+                detail = fetchedDetail // Found existing detail, prepare it for update
+            } else {
+                detail = WorkoutDetail(context: context) // No ID or detail not found, create new
+                detail.id = UUID() // Assign a new ID if creating a new detail
+            }
+            detail.name = newTitle
+            detail.exerciseName = input.exerciseName
+            detail.reps = Int32(input.reps) ?? 0
+            detail.weight = Int32(input.weight) ?? 0
+            // Assign additional properties as necessary
+        }
+
+        // Attempt to save context after all updates
+        saveContext()
     }
 
+    
+}
+
+extension WorkoutManager {
+    func fetchRequestForWorkoutDetail(withID id: UUID) -> NSFetchRequest<WorkoutDetail> {
+        let request = NSFetchRequest<WorkoutDetail>(entityName: "WorkoutDetail")
+        request.predicate = NSPredicate(format: "id == %@", id as CVarArg)
+        return request
+    }
 }

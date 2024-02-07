@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		087111372B728F8F0054E315 /* ModalType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087111362B728F8F0054E315 /* ModalType.swift */; };
+		0871113A2B72AD830054E315 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 087111382B72AD830054E315 /* Model.xcdatamodeld */; };
 		08B78FF02B6DBA370002DA68 /* FlexSprinkleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B78FEF2B6DBA370002DA68 /* FlexSprinkleApp.swift */; };
 		08B78FF22B6DBA370002DA68 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B78FF12B6DBA370002DA68 /* HomeView.swift */; };
 		08B78FF42B6DBA390002DA68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08B78FF32B6DBA390002DA68 /* Assets.xcassets */; };
@@ -22,7 +23,7 @@
 		08B790272B7079C90002DA68 /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B790262B7079C90002DA68 /* DatePickerView.swift */; };
 		08B7902B2B7090870002DA68 /* AddWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B7902A2B7090870002DA68 /* AddWorkoutView.swift */; };
 		08B7902D2B7136320002DA68 /* ActiveWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B7902C2B7136320002DA68 /* ActiveWorkoutView.swift */; };
-		08B7902F2B7137680002DA68 /* WorkoutDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B7902E2B7137680002DA68 /* WorkoutDetails.swift */; };
+		08B7902F2B7137680002DA68 /* WorkoutDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B7902E2B7137680002DA68 /* WorkoutDetail.swift */; };
 		08B790312B7138F70002DA68 /* WorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B790302B7138F70002DA68 /* WorkoutManager.swift */; };
 		08B790332B7153F90002DA68 /* EditWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B790322B7153F90002DA68 /* EditWorkoutView.swift */; };
 		08B7903A2B716C1C0002DA68 /* WorkoutDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B790392B716C1C0002DA68 /* WorkoutDetailView.swift */; };
@@ -47,6 +48,7 @@
 
 /* Begin PBXFileReference section */
 		087111362B728F8F0054E315 /* ModalType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalType.swift; sourceTree = "<group>"; };
+		087111392B72AD830054E315 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		08B78FEC2B6DBA370002DA68 /* FlexSprinkle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlexSprinkle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08B78FEF2B6DBA370002DA68 /* FlexSprinkleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexSprinkleApp.swift; sourceTree = "<group>"; };
 		08B78FF12B6DBA370002DA68 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -65,7 +67,7 @@
 		08B790262B7079C90002DA68 /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		08B7902A2B7090870002DA68 /* AddWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWorkoutView.swift; sourceTree = "<group>"; };
 		08B7902C2B7136320002DA68 /* ActiveWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveWorkoutView.swift; sourceTree = "<group>"; };
-		08B7902E2B7137680002DA68 /* WorkoutDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutDetails.swift; sourceTree = "<group>"; };
+		08B7902E2B7137680002DA68 /* WorkoutDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutDetail.swift; sourceTree = "<group>"; };
 		08B790302B7138F70002DA68 /* WorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutManager.swift; sourceTree = "<group>"; };
 		08B790322B7153F90002DA68 /* EditWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWorkoutView.swift; sourceTree = "<group>"; };
 		08B790392B716C1C0002DA68 /* WorkoutDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutDetailView.swift; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				08B78FF32B6DBA390002DA68 /* Assets.xcassets */,
 				08B78FF52B6DBA390002DA68 /* FlexSprinkle.entitlements */,
 				08B78FF62B6DBA390002DA68 /* Preview Content */,
+				087111382B72AD830054E315 /* Model.xcdatamodeld */,
 			);
 			path = FlexSprinkle;
 			sourceTree = "<group>";
@@ -181,7 +184,7 @@
 		08B790242B6E94840002DA68 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				08B7902E2B7137680002DA68 /* WorkoutDetails.swift */,
+				08B7902E2B7137680002DA68 /* WorkoutDetail.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -361,13 +364,14 @@
 			files = (
 				08B790222B6E911D0002DA68 /* NutritionHelperMainView.swift in Sources */,
 				087111372B728F8F0054E315 /* ModalType.swift in Sources */,
+				0871113A2B72AD830054E315 /* Model.xcdatamodeld in Sources */,
 				08B7903A2B716C1C0002DA68 /* WorkoutDetailView.swift in Sources */,
 				08B78FF22B6DBA370002DA68 /* HomeView.swift in Sources */,
 				08B7901E2B6E8F8D0002DA68 /* SettingsView.swift in Sources */,
 				08B7902D2B7136320002DA68 /* ActiveWorkoutView.swift in Sources */,
 				08B790312B7138F70002DA68 /* WorkoutManager.swift in Sources */,
 				08B7901B2B6DC28F0002DA68 /* CardView.swift in Sources */,
-				08B7902F2B7137680002DA68 /* WorkoutDetails.swift in Sources */,
+				08B7902F2B7137680002DA68 /* WorkoutDetail.swift in Sources */,
 				08B790272B7079C90002DA68 /* DatePickerView.swift in Sources */,
 				08B790332B7153F90002DA68 /* EditWorkoutView.swift in Sources */,
 				08B78FF02B6DBA370002DA68 /* FlexSprinkleApp.swift in Sources */,
@@ -723,6 +727,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		087111382B72AD830054E315 /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				087111392B72AD830054E315 /* Model.xcdatamodel */,
+			);
+			currentVersion = 087111392B72AD830054E315 /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 08B78FE42B6DBA370002DA68 /* Project object */;
 }

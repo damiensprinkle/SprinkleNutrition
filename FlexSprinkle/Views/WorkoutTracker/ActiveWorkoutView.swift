@@ -15,13 +15,14 @@ struct ActiveWorkoutView: View {
             Text("Active Workout")
                 .font(.title)
 
-            List(workoutDetails) { detail in
+            List(workoutDetails, id: \.self) { detail in
                 VStack(alignment: .leading) {
-                    Text("Exercise: \(detail.name)")
+                    Text("Exercise: \(detail.exerciseName)")
                     Text("Reps: \(detail.reps)")
                     Text("Weight: \(detail.weight)")
                 }
             }
+
         }
         .padding()
     }

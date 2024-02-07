@@ -165,4 +165,22 @@ extension WorkoutManager {
         request.predicate = NSPredicate(format: "id == %@", id as CVarArg)
         return request
     }
+    
+    func titleExists(_ title: String) -> Bool {
+        guard let context = self.context else { return false }
+        
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "WorkoutDetail")
+        // Update predicate to compare names case-insensitively
+        request.predicate = NSPredicate(format: "name ==[c] %@", title)
+        request.includesSubentities = false
+        
+        do {
+            let count = try context.count(for: request)
+            return count > 0
+        } catch {
+            print("Error checking title existence: \(error)")
+            return false
+        }
+    }
+
 }

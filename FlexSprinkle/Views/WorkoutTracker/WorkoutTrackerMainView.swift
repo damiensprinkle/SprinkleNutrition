@@ -12,16 +12,18 @@ struct WorkoutTrackerMainView: View {
     @State private var selectedDate = Date()
     @Environment(\.managedObjectContext) private var viewContext
     @StateObject private var workoutManager = WorkoutManager() // Initialize without context first
+    @State private var navigationPath = NavigationPath()
 
     var body: some View {
-        NavigationView {
+        NavigationStack(path: $navigationPath) {
             ScrollView {
                 VStack {
                     Divider()
                     LazyVGrid(columns: [GridItem(.flexible(), spacing: 16), GridItem(.flexible(), spacing: 16)], spacing: 16) {
                         CardView(
                             title: "Add",
-                            isDefault: true
+                            isDefault: true,
+                            navigationPath: $navigationPath
                         )
                         ForEach(workoutManager.workouts, id: \.self) { workout in
                             CardView(
@@ -29,13 +31,22 @@ struct WorkoutTrackerMainView: View {
                                 isDefault: false,
                                 onDelete: {
                                     workoutManager.deleteWorkoutDetails(for: workout)
-                                }
+                                },
+                                navigationPath: $navigationPath // Pass the navigation path to the card view
+
+
                             )
                         }
                     }
                     .padding()
                 }
             }
+            .navigationDestination(for: WorkoutDetail.self) { detail in
+                        ActiveWorkoutView(workoutDetails: [detail])
+                    .environmentObject(workoutManager)
+
+                    }
+
             .onAppear {
                 // This ensures the workoutManager is only setup once the viewContext is available.
                 if workoutManager.context == nil {

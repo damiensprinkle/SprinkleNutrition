@@ -14,8 +14,10 @@ struct EditWorkoutView: View {
     @State private var workoutTitle: String
     @State private var workoutDetailsInput: [WorkoutDetailInput]
     @State private var showAlert: Bool = false
+    @State private var errorMessage: String = ""
 
     var originalWorkoutTitle: String
+
 
     init(workoutTitle: String, workoutDetails: [WorkoutDetail], originalWorkoutTitle: String) {
         self._workoutTitle = State(initialValue: workoutTitle)
@@ -55,7 +57,7 @@ struct EditWorkoutView: View {
                 doneAction()
             })
             .alert(isPresented: $showAlert) {
-                Alert(title: Text("Incomplete Workout"), message: Text("Please enter a workout title and at least one exercise"), dismissButton: .default(Text("OK")))
+                Alert(title: Text("Incomplete Workout"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
             }
         }
     }
@@ -70,8 +72,14 @@ struct EditWorkoutView: View {
 
     private func doneAction() {
         if workoutTitle.isEmpty {
+            errorMessage = "Please Enter a Workout Title"
             showAlert = true
-        } else {
+        }
+        if workoutManager.titleExists(workoutTitle) {
+            errorMessage = "Workout Title Already Exists"
+            showAlert = true
+        }
+        else {
             // Attempt to update existing details or add new ones
             workoutManager.updateWorkoutDetails(for: originalWorkoutTitle, withNewTitle: workoutTitle, workoutDetailsInput: workoutDetailsInput)
 

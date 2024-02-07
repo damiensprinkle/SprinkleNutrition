@@ -10,7 +10,7 @@ import SwiftUI
 struct HomeView: View {
     var body: some View {
         TabView {
-            NavigationView {
+            NavigationStack {
                 Text("Home Content Goes Here")
                     .navigationBarTitle("Home")
                     .navigationBarItems(trailing: NavigationLink(destination: SettingsView()) {
@@ -24,7 +24,7 @@ struct HomeView: View {
                 Label("Home", systemImage: "house.fill")
             }
 
-            NavigationView {
+            NavigationStack {
                 WorkoutTrackerMainView()
                     .navigationBarTitle("Workout Tracker")
                     .navigationBarItems(trailing: NavigationLink(destination: SettingsView()) {
@@ -38,7 +38,7 @@ struct HomeView: View {
                 Label("Workout", systemImage: "dumbbell.fill")
             }
 
-            NavigationView {
+            NavigationStack {
                 NutritionHelperMainView()
                     .navigationBarTitle("Nutrition Helper")
                     .navigationBarItems(trailing: NavigationLink(destination: SettingsView()) {

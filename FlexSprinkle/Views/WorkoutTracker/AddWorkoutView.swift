@@ -16,6 +16,7 @@ struct AddWorkoutView: View {
     @State private var showAlert: Bool = false
     private let colorManager = ColorManager()
     var body: some View {
+        var errorMessage = ""
         
         NavigationView {
             Form {
@@ -45,8 +46,14 @@ struct AddWorkoutView: View {
                 presentationMode.wrappedValue.dismiss()
             }, trailing: Button("Done") {
                 if workoutTitle.isEmpty {
+                    errorMessage = "Please Enter a Workout Title"
                     showAlert = true
-                } else {
+                }
+                if workoutManager.titleExists(workoutTitle) {
+                    errorMessage = "Workout Title Already Exists"
+                    showAlert = true
+                }
+                else {
                     // Check if there are any details provided
                     if workoutDetails.isEmpty {
                         // Add a default workout detail if no details are provided
@@ -82,7 +89,7 @@ struct AddWorkoutView: View {
             
             
             .alert(isPresented: $showAlert) {
-                Alert(title: Text("Incomplete Workout"), message: Text("Please enter a workout title and at least one exercise"), dismissButton: .default(Text("OK")))
+                Alert(title: Text("Incomplete Workout"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
             }
         }
     }

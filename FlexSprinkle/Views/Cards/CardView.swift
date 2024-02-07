@@ -4,21 +4,20 @@ struct CardView: View {
     var title: String
     var isDefault: Bool
     var onDelete: (() -> Void)?
-    @State private var isNavigateActive = false
+    @Binding var navigationPath: NavigationPath
     @State private var presentingModal: ModalType? = nil
     @EnvironmentObject var workoutManager: WorkoutManager
     
     var body: some View {
-        let details = workoutManager.fetchWorkoutDetails(for: title)
-        let colorName = details.first?.color ?? "MyBlue" // Fallback color name just in case
-    
-        let backgroundColor = Color(colorName, bundle: nil)
+        let workoutDetails = workoutManager.fetchWorkoutDetails(for: title)
+        let colorName = workoutDetails.first?.color ?? "MyBlue" // Fallback color name just in case
+        let backgroundColor = Color(colorName) // Use your color logic here
         
         VStack {
             if isDefault {
                 defaultCardContent()
             } else {
-                existingWorkoutCardContent()
+                existingWorkoutCardContent(details: workoutDetails)
             }
         }
         .padding()
@@ -31,10 +30,9 @@ struct CardView: View {
             switch modal {
                 case .add:
                     AddWorkoutView()
-            case .edit(let originalTitle):
-                let details = workoutManager.fetchWorkoutDetails(for: originalTitle)
-                EditWorkoutView(workoutTitle: originalTitle, workoutDetails: details, originalWorkoutTitle: originalTitle)
-                .environmentObject(workoutManager)
+                case .edit(let originalTitle):
+                    EditWorkoutView(workoutTitle: originalTitle, workoutDetails: workoutDetails, originalWorkoutTitle: originalTitle)
+                    .environmentObject(workoutManager)
             }
         }
     }
@@ -51,18 +49,15 @@ struct CardView: View {
             Spacer()
         }
         Spacer()
-        Image(systemName: "plus.circle")
-            .font(.system(size: 40))
-            .foregroundColor(.white)
-            .onTapGesture {
-                presentingModal = .add
-            }
+        Button(action: { presentingModal = .add }) {
+            Image(systemName: "plus.circle")
+                .font(.system(size: 40))
+                .foregroundColor(.white)
+        }
     }
     
     @ViewBuilder
-    private func existingWorkoutCardContent() -> some View {
-        let workoutDetails = workoutManager.fetchWorkoutDetails(for: title)
-        
+    private func existingWorkoutCardContent(details: [WorkoutDetail]) -> some View {
         HStack {
             Text(title)
                 .font(.title)
@@ -74,24 +69,18 @@ struct CardView: View {
         }
         
         Spacer()
-        
-        // Use the ZStack to overlay the play.circle icon on top of an invisible NavigationLink
-        ZStack {
-            // The invisible NavigationLink controlled by isNavigateActive
-            NavigationLink(destination: ActiveWorkoutView(workoutDetails: workoutDetails), isActive: $isNavigateActive) {
-                EmptyView()
+        Button(action: {
+            if let detail = workoutManager.fetchWorkoutDetails(for: title).first {
+                navigationPath.append(detail)
             }
-            .hidden()
-            
-            // The play.circle icon that starts
+        }) {
             Image(systemName: "play.circle")
                 .font(.system(size: 40))
                 .foregroundColor(.white)
-                .onTapGesture {
-                    // Trigger navigation by setting isNavigateActive to true
-                    isNavigateActive = true
-                }
         }
+
+
+
     }
     
     @ViewBuilder

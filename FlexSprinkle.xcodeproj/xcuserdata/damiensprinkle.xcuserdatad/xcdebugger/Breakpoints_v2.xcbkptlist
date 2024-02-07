@@ -3,4 +3,54 @@
    uuid = "9C0ACE46-51FA-4798-9F9B-00ED2CD7D04E"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "542E0EC3-8A8A-4A6B-8DD7-86B721C52ABD"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FlexSprinkle/Views/WorkoutTracker/WorkoutTrackerMainView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "44"
+            endingLineNumber = "44"
+            landmarkName = "body"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "542E0EC3-8A8A-4A6B-8DD7-86B721C52ABD - 80a62215216f70c4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.onAppear(perform: Swift.Optional&lt;() -&gt; ()&gt;) -&gt; some&gt;&gt;.0 in FlexSprinkle.WorkoutTrackerMainView.body.getter : some"
+                  moduleName = "FlexSprinkle"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/damiensprinkle/Desktop/FlexSprinkle/FlexSprinkle/Views/WorkoutTracker/WorkoutTrackerMainView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "43"
+                  endingLineNumber = "43"
+                  offsetFromSymbolStart = "500">
+               </Location>
+               <Location
+                  uuid = "542E0EC3-8A8A-4A6B-8DD7-86B721C52ABD - dd2792e941152acb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (FlexSprinkle.WorkoutDetail) -&gt; FlexSprinkle.ActiveWorkoutView in closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.onAppear(perform: Swift.Optional&lt;() -&gt; ()&gt;) -&gt; some&gt;&gt;.0 in FlexSprinkle.WorkoutTrackerMainView.body.getter : some"
+                  moduleName = "FlexSprinkle"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/damiensprinkle/Desktop/FlexSprinkle/FlexSprinkle/Views/WorkoutTracker/WorkoutTrackerMainView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "43"
+                  endingLineNumber = "43"
+                  offsetFromSymbolStart = "48">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

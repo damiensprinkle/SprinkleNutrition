@@ -29,7 +29,3 @@ struct ActiveWorkoutView: View {
         .padding()
     }
 }
-
-
-
-

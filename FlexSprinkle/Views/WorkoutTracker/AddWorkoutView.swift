@@ -91,10 +91,3 @@ struct AddWorkoutView: View {
 }
 
 
-struct WorkoutDetailInput {
-    var name: String = ""
-    var id: UUID? // Optional, as it might not exist for new details
-    var exerciseName: String = ""
-    var reps: String = ""
-    var weight: String = ""
-}

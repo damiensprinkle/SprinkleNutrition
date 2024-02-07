@@ -7,5 +7,15 @@
         <attribute name="name" attributeType="String"/>
         <attribute name="reps" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="weight" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="histories" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutHistory" inverseName="detail" inverseEntity="WorkoutHistory"/>
+    </entity>
+    <entity name="WorkoutHistory" representedClassName="WorkoutHistory" syncable="YES">
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="repsCompleted" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="totalWeightLifted" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="workoutDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="workoutId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="workoutTimeToComplete" optional="YES" attributeType="String"/>
+        <relationship name="detail" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutDetail" inverseName="histories" inverseEntity="WorkoutDetail"/>
     </entity>
 </model>

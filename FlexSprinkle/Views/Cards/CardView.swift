@@ -34,7 +34,6 @@ struct CardView: View {
                 case .add:
                     AddWorkoutView()
             case .edit(let originalTitle):
-                // Assuming originalTitle is stored somewhere to be passed here
                 let details = workoutManager.fetchWorkoutDetails(for: originalTitle)
                 EditWorkoutView(workoutTitle: originalTitle, workoutDetails: details, originalWorkoutTitle: originalTitle)
                 .environmentObject(workoutManager)
@@ -84,9 +83,9 @@ struct CardView: View {
             NavigationLink(destination: ActiveWorkoutView(workoutDetails: workoutDetails), isActive: $isNavigateActive) {
                 EmptyView()
             }
-            .hidden() // Use .hidden() to make sure it takes up no space
+            .hidden()
             
-            // The play.circle icon that the user interacts with
+            // The play.circle icon that starts
             Image(systemName: "play.circle")
                 .font(.system(size: 40))
                 .foregroundColor(.white)

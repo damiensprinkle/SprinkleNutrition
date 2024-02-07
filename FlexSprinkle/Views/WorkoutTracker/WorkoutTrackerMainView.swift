@@ -42,7 +42,7 @@ struct WorkoutTrackerMainView: View {
                 }
             }
             .navigationDestination(for: WorkoutDetail.self) { detail in
-                        ActiveWorkoutView(workoutDetails: [detail])
+                ActiveWorkoutView(workoutName: detail.name)
                     .environmentObject(workoutManager)
 
                     }

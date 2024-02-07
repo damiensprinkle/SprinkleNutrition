@@ -13,16 +13,16 @@ struct FlexSprinkleApp: App {
     let persistenceContainer = NSPersistentContainer(name: "Model")
 
     init() {
-        if let myBlackColor = UIColor(named: "MyBlack") {
-                  UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: myBlackColor]
-              }
-
+            if let myBlackColor = UIColor(named: "MyBlack") {
+                UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: myBlackColor]
+                UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: myBlackColor]
+            }
+        
         persistenceContainer.loadPersistentStores { (storeDescription, error) in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         }
-
     }
 
     var body: some Scene {

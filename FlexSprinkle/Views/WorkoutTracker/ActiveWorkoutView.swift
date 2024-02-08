@@ -49,6 +49,10 @@ struct ActiveWorkoutView: View {
                if !activeSessions.isEmpty {
                    // There is an active session, so set the workout as started
                    self.workoutStarted = true
+                   
+                   userInputs = fetchedWorkoutDetails.reduce(into: [:]) { result, detail in
+                       result[detail.id] = ("", "", "")
+                   }
                    // Optional: Initialize elapsedTime based on the session's start time
                    if let startTime = activeSessions.first?.startTime {
                        self.elapsedTime = Int(Date().timeIntervalSince(startTime))
@@ -100,7 +104,7 @@ struct ActiveWorkoutView: View {
         }
         
         // Get Session Details
-        
+      //  workoutManager.completeWorkoutForId(workoutId: workoutId)
         let sessionDetails = workoutManager.getSessionDetails(for: sessionId)
         
      }

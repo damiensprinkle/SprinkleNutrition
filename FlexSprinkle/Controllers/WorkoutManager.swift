@@ -224,7 +224,7 @@ extension WorkoutManager {
             history.workoutCompleted = false  // Ensure the session is marked as ongoing
 
             try context.save()
-            print("saved successfully")
+            print("Temp Data saved")
         } catch {
             print("Failed to save or update workout history: \(error.localizedDescription)")
         }
@@ -242,6 +242,7 @@ extension WorkoutManager {
             let histories = try context.fetch(fetchRequest)
             histories.forEach { $0.workoutCompleted = true }
             try context.save()
+            print("workout completed in workout history")
         } catch {
             print("Error marking workout as completed: \(error)")
         }

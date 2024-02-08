@@ -17,6 +17,7 @@ public class WorkoutDetail: NSManagedObject {
     @NSManaged public var weight: Int32
     @NSManaged public var color: String
     @NSManaged public var histories: NSSet? // For one-to-many relationship
+    @NSManaged public var sessions: NSSet? // For one-to-many relationship
     @NSManaged public var isCardio: Bool
     @NSManaged public var exerciseTime: String
 }

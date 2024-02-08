@@ -46,13 +46,18 @@ struct ActiveWorkoutView: View {
             setupWorkoutDetails()
             
             let activeSessions = workoutManager.getSessions().filter { $0.workoutId == self.fetchedWorkoutDetails.first?.id && $0.isActive }
-               if !activeSessions.isEmpty {
-                   // There is an active session, so set the workout as started
-                   self.workoutStarted = true
-                   
-                   userInputs = fetchedWorkoutDetails.reduce(into: [:]) { result, detail in
-                       result[detail.id] = ("", "", "")
-                   }
+                if !activeSessions.isEmpty {
+                    self.workoutStarted = true
+                    
+                    if let workoutId = fetchedWorkoutDetails.first?.id {
+                        let tempData = workoutManager.loadTemporaryWorkoutData(for: workoutId)
+                        for detail in fetchedWorkoutDetails {
+                            if let temp = tempData[detail.exerciseName] {
+                                userInputs[detail.id] = temp
+                            }
+                        }
+                    }
+
                    // Optional: Initialize elapsedTime based on the session's start time
                    if let startTime = activeSessions.first?.startTime {
                        self.elapsedTime = Int(Date().timeIntervalSince(startTime))
@@ -101,10 +106,10 @@ struct ActiveWorkoutView: View {
         // End Current Sesion
         if let workoutId = fetchedWorkoutDetails.first?.id {
             workoutManager.setSessionStatus(workoutId: workoutId, isActive: false)
+            workoutManager.completeWorkoutForId(workoutId: workoutId) // TODO To Change
         }
         
         // Get Session Details
-      //  workoutManager.completeWorkoutForId(workoutId: workoutId)
         let sessionDetails = workoutManager.getSessionDetails(for: sessionId)
         
      }
@@ -278,6 +283,15 @@ struct ActiveWorkoutView: View {
                                   get: { self.userInputs[detail.id]?.exerciseTime ?? "" },
                                   set: { newValue in
                                       self.userInputs[detail.id]?.exerciseTime = newValue
+                                      DispatchQueue.main.async {
+                                                 workoutManager.saveOrUpdateWorkoutHistory(
+                                                     workoutId: detail.id,
+                                                     exerciseName: detail.exerciseName,
+                                                     reps: newValue,
+                                                     weight: self.userInputs[detail.id]?.weight,
+                                                     exerciseTime: self.userInputs[detail.id]?.exerciseTime
+                                                 )
+                                             }
                                   }
                               ))
             .keyboardType(.numberPad)

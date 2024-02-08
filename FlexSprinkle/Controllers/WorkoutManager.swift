@@ -247,9 +247,9 @@ extension WorkoutManager {
         }
     }
     
-    func loadTemporaryWorkoutData(for workoutId: UUID) -> [UUID: (reps: String, weight: String, exerciseTime: String)] {
+    func loadTemporaryWorkoutData(for workoutId: UUID) -> [String: (reps: String, weight: String, exerciseTime: String)] {
         guard let context = self.context else { return [:] }
-        var temporaryData: [UUID: (reps: String, weight: String, exerciseTime: String)] = [:]
+        var temporaryData: [String: (reps: String, weight: String, exerciseTime: String)] = [:]
         
         let historyRequest = NSFetchRequest<WorkoutHistory>(entityName: "WorkoutHistory")
         historyRequest.predicate = NSPredicate(format: "workoutId == %@ AND workoutCompleted == NO", workoutId as CVarArg)
@@ -257,9 +257,8 @@ extension WorkoutManager {
         do {
             let histories = try context.fetch(historyRequest)
             for history in histories {
-                if let detailId = history.detail?.id {
-                    temporaryData[detailId] = (reps: String(history.repsCompleted), weight: String(history.totalWeightLifted), exerciseTime: history.exerciseTime )
-                }
+                // Use exerciseName as the key instead of detailId
+                temporaryData[history.exerciseName] = (reps: String(history.reps), weight: String(history.weight), exerciseTime: history.exerciseTime)
             }
         } catch {
             print("Error loading temporary workout data: \(error)")
@@ -267,6 +266,7 @@ extension WorkoutManager {
         
         return temporaryData
     }
+
 
 
 

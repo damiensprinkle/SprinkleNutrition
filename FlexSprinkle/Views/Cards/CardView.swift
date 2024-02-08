@@ -23,6 +23,7 @@ struct CardView: View {
         .padding()
         .background(backgroundColor)
         .cornerRadius(15)
+        .clipShape(RoundedRectangle(cornerRadius: 15))
         .overlay(RoundedRectangle(cornerRadius: 15).stroke(Color.gray, lineWidth: 1))
         .aspectRatio(1, contentMode: .fit)
         .contextMenu { contextMenuContent() }

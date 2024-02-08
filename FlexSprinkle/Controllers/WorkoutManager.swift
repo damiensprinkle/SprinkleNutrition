@@ -22,9 +22,9 @@ class WorkoutManager: ObservableObject {
     
     // MARK: Core Data Operations
     
-    func addWorkoutDetail(workoutTitle: String, exerciseName: String, reps: Int32, weight: Int32, color: String) {
+    func addWorkoutDetail(workoutTitle: String, exerciseName: String, reps: Int32, weight: Int32, color: String, isCardio: Bool, exerciseTime: String) {
         guard let context = self.context else { return }
-        print("Adding workout detail: \(workoutTitle), Exercise: \(exerciseName), Reps: \(reps), Weight: \(weight)")
+        print("Adding workout detail: \(workoutTitle), Exercise: \(exerciseName), Reps: \(reps), Weight: \(weight), IsCardio: \(isCardio), ExerciseTime: \(exerciseTime)")
         
         let newDetail = WorkoutDetail(context: context)
         newDetail.id = UUID()
@@ -33,6 +33,8 @@ class WorkoutManager: ObservableObject {
         newDetail.reps = reps
         newDetail.weight = weight
         newDetail.color = color
+        newDetail.isCardio = isCardio
+        newDetail.exerciseTime = exerciseTime
         
         saveContext()
     }
@@ -149,6 +151,8 @@ class WorkoutManager: ObservableObject {
             detail.exerciseName = input.exerciseName
             detail.reps = Int32(input.reps) ?? 0
             detail.weight = Int32(input.weight) ?? 0
+            detail.exerciseTime = input.exerciseTime
+            detail.isCardio = input.isCardio
             // Assign additional properties as necessary
         }
 

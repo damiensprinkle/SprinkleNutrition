@@ -12,6 +12,7 @@ struct CardView: View {
     @State private var animate = false
     @State private var showAlert = false
 
+    @State private var showingDeletionConfirmation = false
 
 
     
@@ -33,6 +34,12 @@ struct CardView: View {
         .overlay(RoundedRectangle(cornerRadius: 15).stroke(Color.gray, lineWidth: 1))
         .aspectRatio(1, contentMode: .fit)
         .contextMenu { contextMenuContent() }
+        .alert("Are you sure you want to delete this workout?", isPresented: $showingDeletionConfirmation) {
+            Button("Delete", role: .destructive) {
+                onDelete?()
+            }
+            Button("Cancel", role: .cancel) { }
+        }
         .sheet(item: $presentingModal) { modal in
             switch modal {
                 case .add:
@@ -132,9 +139,10 @@ struct CardView: View {
             Button("Edit") {
                 presentingModal = .edit(workoutId: workoutId)
             }
-            Button("Delete", action: {
-                onDelete?()
-            })
+            Button("Delete", role: .destructive) {
+                showingDeletionConfirmation = true
+            }
         }
     }
+
 }

@@ -9,7 +9,7 @@ import SwiftUI
 struct DatePickerView: View {
     @Binding var selectedDate: Date
     var cardColor: Color
-
+    
     var body: some View {
         VStack {
             HStack {

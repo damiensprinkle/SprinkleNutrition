@@ -14,23 +14,23 @@ import SwiftUI
 struct AddWorkoutView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var workoutManager: WorkoutManager
-
+    
     @State private var workoutTitle: String = ""
     @State private var workoutDetails: [WorkoutDetailInput] = []
     @State private var showingAddExerciseSheet = false
     @State private var errorMessage: String = ""
     @State private var showAlert: Bool = false
     private let colorManager = ColorManager()
-
-
-
+    
+    
+    
     var body: some View {
         NavigationView {
             Form {
                 Section(header: Text("Workout Title")) {
                     TextField("Enter Workout Title", text: $workoutTitle)
                 }
-
+                
                 Section(header: Text("Workout Details")) {
                     ForEach($workoutDetails.indices, id: \.self) { index in
                         WorkoutDetailView(detail: $workoutDetails[index])
@@ -38,7 +38,7 @@ struct AddWorkoutView: View {
                     .onDelete { indexSet in
                         workoutDetails.remove(atOffsets: indexSet)
                     }
-
+                    
                     Button("Add Exercise") {
                         showingAddExerciseSheet = true
                     }
@@ -57,8 +57,8 @@ struct AddWorkoutView: View {
                 trailing: Button("Save", action: saveWorkout)
             )
             .alert(isPresented: $showAlert) {
-                           Alert(title: Text("Incomplete Workout"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
-                       }
+                Alert(title: Text("Incomplete Workout"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
+            }
         }
     }
     
@@ -85,8 +85,8 @@ struct AddWorkoutView: View {
             presentationMode.wrappedValue.dismiss()
         }
     }
-
-
+    
+    
     private func addExercise(isCardio: Bool) {
         let newDetail = WorkoutDetailInput(reps: isCardio ? "" : "", weight: isCardio ? "" : "", isCardio: isCardio, exerciseTime: isCardio ? "" : "")
         workoutDetails.append(newDetail)

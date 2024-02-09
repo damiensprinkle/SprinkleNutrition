@@ -23,7 +23,7 @@ struct HomeView: View {
             .tabItem {
                 Label("Home", systemImage: "house.fill")
             }
-
+            
             NavigationStack {
                 WorkoutTrackerMainView()
                     .navigationTitle("Workout Tracker")
@@ -37,7 +37,7 @@ struct HomeView: View {
             .tabItem {
                 Label("Workout", systemImage: "dumbbell.fill")
             }
-
+            
             NavigationStack {
                 NutritionHelperMainView()
                     .navigationTitle("Nutrition Helper")
@@ -51,7 +51,7 @@ struct HomeView: View {
             .tabItem {
                 Label("Nutrition", systemImage: "leaf.fill")
             }
-
+            
         }
     }
 }

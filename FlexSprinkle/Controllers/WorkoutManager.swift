@@ -189,11 +189,11 @@ class WorkoutManager: ObservableObject {
     
     func saveOrUpdateWorkoutHistory(workoutId: UUID, exerciseId: UUID, exerciseName: String, reps: String?, weight: String?, exerciseTime: String?) {
         guard let context = self.context else { return }
-
+        
         // Fetch the active session for the given workout
         let sessionRequest: NSFetchRequest<WorkoutSession> = WorkoutSession.fetchRequest()
         sessionRequest.predicate = NSPredicate(format: "isActive == %@ AND workoutsR.id == %@", NSNumber(value: true), workoutId as CVarArg)
-
+        
         do {
             if let activeSession = try context.fetch(sessionRequest).first {
                 // Now find the WorkoutDetail within this session that matches the exerciseId
@@ -228,7 +228,7 @@ class WorkoutManager: ObservableObject {
             print("Failed to save or update workout history: \(error)")
         }
     }
-
+    
     
     private func saveContext() {
         guard let context = self.context else { return }
@@ -269,10 +269,10 @@ class WorkoutManager: ObservableObject {
     
     func loadTemporaryWorkoutData(for workoutId: UUID, exerciseId: UUID) -> (reps: String, weight: String, exerciseTime: String) {
         guard let context = self.context else { return ("", "", "") }
-
+        
         let sessionRequest: NSFetchRequest<WorkoutSession> = WorkoutSession.fetchRequest()
         sessionRequest.predicate = NSPredicate(format: "isActive == %@ AND workoutsR.id == %@", NSNumber(value: true), workoutId as CVarArg)
-
+        
         do {
             if let activeSession = try context.fetch(sessionRequest).first {
                 // Fetch the WorkoutDetail that matches the given exerciseId within the active session
@@ -289,7 +289,7 @@ class WorkoutManager: ObservableObject {
         // Return default empty values if no matching detail is found or in case of an error
         return ("", "", "")
     }
-
+    
     
     
     func updateWorkoutDetails(workoutId: UUID, workoutDetailsInput: [WorkoutDetailInput]) {
@@ -373,18 +373,18 @@ extension WorkoutManager {
     }
     
     // Checks if there are any active sessions
-     func getSessions() -> [WorkoutSession] {
-         guard let context = self.context else { return [] }
-         let request = NSFetchRequest<WorkoutSession>(entityName: "WorkoutSession")
-         request.predicate = NSPredicate(format: "isActive == %@", NSNumber(value: true))
-         
-         do {
-             return try context.fetch(request)
-         } catch {
-             print("Error fetching active sessions: \(error)")
-             return []
-         }
-     }
+    func getSessions() -> [WorkoutSession] {
+        guard let context = self.context else { return [] }
+        let request = NSFetchRequest<WorkoutSession>(entityName: "WorkoutSession")
+        request.predicate = NSPredicate(format: "isActive == %@", NSNumber(value: true))
+        
+        do {
+            return try context.fetch(request)
+        } catch {
+            print("Error fetching active sessions: \(error)")
+            return []
+        }
+    }
     
     func getWorkoutIdOfActiveSession() -> UUID? {
         guard let context = self.context else { return nil }
@@ -423,14 +423,14 @@ extension WorkoutManager {
         
         return ""
     }
-
-
+    
+    
     func setSessionStatus(workoutId: UUID, isActive: Bool) {
         guard let context = self.context else { return }
         
         let workoutRequest = NSFetchRequest<Workouts>(entityName: "Workouts")
         workoutRequest.predicate = NSPredicate(format: "id == %@", workoutId as CVarArg)
-
+        
         do {
             if let workout = try context.fetch(workoutRequest).first {
                 if isActive {
@@ -456,21 +456,21 @@ extension WorkoutManager {
             print("Error setting session status: \(error)")
         }
     }
-
-
-
-     // Gets details for a specific session
-     func getSessionDetails(for sessionId: UUID) -> WorkoutSession? {
-         guard let context = self.context else { return nil }
-         let request = NSFetchRequest<WorkoutSession>(entityName: "WorkoutSession")
-         request.predicate = NSPredicate(format: "id == %@", sessionId as CVarArg)
-         
-         do {
-             return try context.fetch(request).first
-         } catch {
-             print("Error fetching session details: \(error)")
-             return nil
-         }
-     }
-
+    
+    
+    
+    // Gets details for a specific session
+    func getSessionDetails(for sessionId: UUID) -> WorkoutSession? {
+        guard let context = self.context else { return nil }
+        let request = NSFetchRequest<WorkoutSession>(entityName: "WorkoutSession")
+        request.predicate = NSPredicate(format: "id == %@", sessionId as CVarArg)
+        
+        do {
+            return try context.fetch(request).first
+        } catch {
+            print("Error fetching session details: \(error)")
+            return nil
+        }
+    }
+    
 }

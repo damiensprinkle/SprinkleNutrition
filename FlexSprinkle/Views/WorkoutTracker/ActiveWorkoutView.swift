@@ -21,15 +21,15 @@ struct ActiveWorkoutView: View {
     
     @State private var showEndWorkoutOption = false
     @State private var workoutName = ""
-
+    
     @State private var endWorkoutConfirmationShown = false
     @State private var completedExercises: Set<UUID> = []
-
+    
     init(workoutId: UUID) {
         self.workoutId = workoutId
-
+        
     }
-
+    
     var body: some View {
         VStack {
             List {
@@ -50,7 +50,7 @@ struct ActiveWorkoutView: View {
             if sessionsWorkoutId == workoutId {
                 self.workoutStarted = true
                 let activeSession = workoutManager.getSessions().first!
-
+                
                 // Ensure userInputs is initialized with empty values for all exercises
                 userInputs = fetchedWorkoutDetails.reduce(into: [:]) { result, detail in
                     result[detail.exerciseId!] = ("", "", "")
@@ -72,18 +72,18 @@ struct ActiveWorkoutView: View {
                 }
                 
             }
-
+            
             
         }
-
+        
         .onDisappear {
             cancellableTimer?.cancel()
         }
         .background(Color.white.edgesIgnoringSafeArea(.all))
     }
-
+    
     // MARK: - Private Methods
-
+    
     private func startWorkout() {
         workoutStarted = true
         elapsedTime = 0
@@ -91,42 +91,42 @@ struct ActiveWorkoutView: View {
             self.elapsedTime += 1
         }
         
-          
-          workoutManager.setSessionStatus(workoutId: workoutId, isActive: true)
-          
-                
+        
+        workoutManager.setSessionStatus(workoutId: workoutId, isActive: true)
+        
+        
         userInputs = fetchedWorkoutDetails.reduce(into: [:]) { result, detail in
             result[detail.exerciseId!] = ("", "", "")
         }
     }
     
     private func endWorkout() {
-         // Logic to end the workout
-         workoutStarted = false
-         showEndWorkoutOption = false
-                
+        // Logic to end the workout
+        workoutStarted = false
+        showEndWorkoutOption = false
+        
         workoutManager.setSessionStatus(workoutId: workoutId, isActive: false)
         
-     }
+    }
     
     private func buttonAction() {
-           if workoutStarted {
-               if showEndWorkoutOption {
-                   // Show confirmation to end workout
-                   endWorkoutConfirmationShown = true
-               } else {
-                   // Show "End Workout" option for 5 seconds
-                   showEndWorkoutOption = true
-                   DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                       // If no action taken, revert to showing the timer
-                       self.showEndWorkoutOption = false
-                   }
-               }
-           } else {
-               showingStartConfirmation = true
-           }
-       }
-
+        if workoutStarted {
+            if showEndWorkoutOption {
+                // Show confirmation to end workout
+                endWorkoutConfirmationShown = true
+            } else {
+                // Show "End Workout" option for 5 seconds
+                showEndWorkoutOption = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                    // If no action taken, revert to showing the timer
+                    self.showEndWorkoutOption = false
+                }
+            }
+        } else {
+            showingStartConfirmation = true
+        }
+    }
+    
     private func setupWorkoutDetails() {
         guard let workout = workoutManager.fetchWorkoutById(for: workoutId) else {
             print("Workout not found")
@@ -138,28 +138,28 @@ struct ActiveWorkoutView: View {
         if let detailsSet = workout.details as? Set<WorkoutDetail> {
             fetchedWorkoutDetails = detailsSet.sorted { $0.exerciseName! < $1.exerciseName! }
         }
-
+        
         userInputs = fetchedWorkoutDetails.reduce(into: [:]) { result, detail in
             result[detail.exerciseId!] = (reps: "", weight: "", exerciseTime: "")
         }
         print(fetchedWorkoutDetails.map { "\($0.exerciseName ?? "Unknown") - ID: \($0.exerciseId ?? UUID())" })
-
+        
     }
-
     
-
+    
+    
     // MARK: - Computed Properties
-
+    
     private var hasLiftingExercises: Bool {
         fetchedWorkoutDetails.contains(where: { !$0.isCardio })
     }
-
+    
     private var hasCardioExercises: Bool {
         fetchedWorkoutDetails.contains(where: { $0.isCardio })
     }
-
+    
     // MARK: - Views
-
+    
     private var startWorkoutButton: some View {
         Button(action: buttonAction) {
             if workoutStarted {
@@ -187,15 +187,15 @@ struct ActiveWorkoutView: View {
                 self.showEndWorkoutOption = false
             }
         }
-
+        
         // Handle the start confirmation dialog
         .confirmationDialog("Are you sure you want to start this workout?", isPresented: $showingStartConfirmation, titleVisibility: .visible) {
             Button("Start", action: startWorkout)
             Button("Cancel", role: .cancel) {}
         }
     }
-
-
+    
+    
     private var liftingExercisesSection: some View {
         Section(header: headerRowNonCardio()) {
             ForEach(fetchedWorkoutDetails.filter { !$0.isCardio }, id: \.exerciseId) { detail in
@@ -203,7 +203,7 @@ struct ActiveWorkoutView: View {
             }
         }
     }
-
+    
     private var cardioExercisesSection: some View {
         Section(header: headerRowCardio()) {
             ForEach(fetchedWorkoutDetails.filter { $0.isCardio }, id: \.exerciseId) { detail in
@@ -211,28 +211,28 @@ struct ActiveWorkoutView: View {
             }
         }
     }
-
+    
     // MARK: - Row Views
     
     private func headerRowNonCardio() -> some View {
-            HStack {
-                Text("Exercise Name").bold().frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                Divider()
-                Text("Reps").bold().frame(width: 80, alignment: .center)
-                Divider()
-                Text("Weight").bold().frame(width: 80, alignment: .center)
-            }
+        HStack {
+            Text("Exercise Name").bold().frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+            Divider()
+            Text("Reps").bold().frame(width: 80, alignment: .center)
+            Divider()
+            Text("Weight").bold().frame(width: 80, alignment: .center)
         }
+    }
     
     
     private func headerRowCardio() -> some View {
-            HStack {
-                Text("Exercise Name").bold().frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                    .frame(minWidth: 0, maxWidth: .infinity)
-                Divider()
-                Text("Exercise Time").bold().frame(width: 160, alignment: .center)
-            }
+        HStack {
+            Text("Exercise Name").bold().frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+                .frame(minWidth: 0, maxWidth: .infinity)
+            Divider()
+            Text("Exercise Time").bold().frame(width: 160, alignment: .center)
         }
+    }
     
     private func isAnyOtherSessionActive() -> Bool {
         
@@ -247,7 +247,7 @@ struct ActiveWorkoutView: View {
             return false // this session or no sessions are active
         }
     }
-
+    
     
     private func liftingExerciseRow(for detail: WorkoutDetail) -> some View {
         HStack {
@@ -259,49 +259,49 @@ struct ActiveWorkoutView: View {
             Divider()
             TextField("\(detail.reps)", text: Binding(
                 get: { self.userInputs[detail.exerciseId!]?.reps ?? "" },
-                         set: { newValue in
-                             self.userInputs[detail.exerciseId!]?.reps = newValue
-                             DispatchQueue.main.async {
-                                        workoutManager.saveOrUpdateWorkoutHistory(
-                                            workoutId: workoutId,
-                                            exerciseId: detail.exerciseId!,
-                                            exerciseName: detail.exerciseName!,
-                                            reps: newValue,
-                                            weight: self.userInputs[detail.exerciseId!]?.weight,
-                                            exerciseTime: self.userInputs[detail.exerciseId!]?.exerciseTime
-                                        )
-                                    }
-                         }
-                     ))
+                set: { newValue in
+                    self.userInputs[detail.exerciseId!]?.reps = newValue
+                    DispatchQueue.main.async {
+                        workoutManager.saveOrUpdateWorkoutHistory(
+                            workoutId: workoutId,
+                            exerciseId: detail.exerciseId!,
+                            exerciseName: detail.exerciseName!,
+                            reps: newValue,
+                            weight: self.userInputs[detail.exerciseId!]?.weight,
+                            exerciseTime: self.userInputs[detail.exerciseId!]?.exerciseTime
+                        )
+                    }
+                }
+            ))
             .keyboardType(.numberPad)
             .frame(width: 80)
             .disabled(!workoutStarted)
             Divider()
             TextField("\(detail.weight)", text: Binding(
                 get: { self.userInputs[detail.exerciseId!]?.weight ?? "" },
-                         set: { newValue in
-                             self.userInputs[detail.exerciseId!]?.weight = newValue
-                             DispatchQueue.main.async {
-                                        workoutManager.saveOrUpdateWorkoutHistory(
-                                            workoutId: workoutId,
-                                            exerciseId: detail.exerciseId!,
-                                            exerciseName: detail.exerciseName!,
-                                            reps: self.userInputs[detail.exerciseId!]?.reps,
-                                            weight: newValue,
-                                            exerciseTime: self.userInputs[detail.exerciseId!]?.exerciseTime
-                                        )
-                                    }
-                         }
-                     ))
+                set: { newValue in
+                    self.userInputs[detail.exerciseId!]?.weight = newValue
+                    DispatchQueue.main.async {
+                        workoutManager.saveOrUpdateWorkoutHistory(
+                            workoutId: workoutId,
+                            exerciseId: detail.exerciseId!,
+                            exerciseName: detail.exerciseName!,
+                            reps: self.userInputs[detail.exerciseId!]?.reps,
+                            weight: newValue,
+                            exerciseTime: self.userInputs[detail.exerciseId!]?.exerciseTime
+                        )
+                    }
+                }
+            ))
             .keyboardType(.numberPad)
             .frame(width: 80)
             .disabled(!workoutStarted)
         }
         .listRowBackground(completedExercises.contains(detail.exerciseId!) ? Color.green.opacity(0.2) : Color.white)
         .disabled(!workoutStarted)
-
+        
     }
-
+    
     private func cardioExerciseRow(for detail: WorkoutDetail) -> some View {
         HStack {
             Text(detail.exerciseName!)
@@ -333,11 +333,11 @@ struct ActiveWorkoutView: View {
             .keyboardType(.default) // This allows for non-numeric input, adjust as necessary for your input format
             .frame(width: 150) // Adjust the frame as needed
             .disabled(!workoutStarted)
-
+            
             .keyboardType(.numberPad) // Check if appropriate for your use case
             .frame(width: 150)
             .disabled(!workoutStarted)
-
+            
             .frame(width: 150) // Adjusted for potentially longer input
             .disabled(!workoutStarted)
         }
@@ -346,7 +346,7 @@ struct ActiveWorkoutView: View {
         .cornerRadius(5)
         .disabled(!workoutStarted)
     }
-
+    
     private func toggleCompletion(for detail: WorkoutDetail) {
         if completedExercises.contains(detail.exerciseId!) {
             completedExercises.remove(detail.exerciseId!)
@@ -367,17 +367,17 @@ struct ActiveWorkoutView: View {
             }
         }
     }
-
-
-
-
+    
+    
+    
+    
     private var elapsedTimeFormatted: String {
         let hours = elapsedTime / 3600
         let minutes = (elapsedTime % 3600) / 60
         let seconds = elapsedTime % 60
         return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
     }
-
+    
 }
 
 

@@ -19,23 +19,23 @@ struct EditWorkoutView: View {
     @State private var showingAddExerciseSheet = false
     
     init(workoutId: UUID) {
-           self.workoutId = workoutId
-       }
-
-
+        self.workoutId = workoutId
+    }
+    
+    
     var body: some View {
         NavigationView {
             Form {
                 Section(header: Text("Workout Title")) {
                     TextField("Enter Workout Title", text: $workoutTitle)
                 }
-
+                
                 Section(header: Text("Workout Details")) {
                     ForEach($workoutDetailsInput.indices, id: \.self) { index in
                         WorkoutDetailView(detail: $workoutDetailsInput[index])
                     }
                     .onDelete(perform: deleteDetail)
-
+                    
                     Button("Add Exercise") {
                         showingAddExerciseSheet = true
                     }
@@ -83,47 +83,47 @@ struct EditWorkoutView: View {
             }
         }
     }
-
-
+    
+    
     private func addExercise(isCardio: Bool) {
         var newDetail = WorkoutDetailInput(isCardio: isCardio)
         newDetail.isCardio = isCardio
         workoutDetailsInput.append(newDetail)
     }
-
+    
     private func saveWorkout() {
         if workoutTitle.isEmpty {
-             errorMessage = "Please Enter a Workout Title"
-             showAlert = true
-         } else if workoutTitle != workoutTitle && workoutManager.titleExists(workoutTitle) {
-             errorMessage = "Workout Title Already Exists"
-             showAlert = true
-         } else {
-             // Filter out empty detail inputs before processing
-             let filledDetails = workoutDetailsInput.filter { detail in
-                 if detail.isCardio {
-                     return !detail.exerciseName.isEmpty && !detail.exerciseTime.isEmpty
-                 } else {
-                     return !detail.exerciseName.isEmpty && (!detail.reps.isEmpty || !detail.weight.isEmpty)
-                 }
-             }
-             
-             // Proceed only with filled details
-             if filledDetails.isEmpty && workoutDetailsInput.isEmpty {
-                 // If user has not added any new details and all existing details are removed, decide on your logic here.
-                 // For now, do nothing or show an error message if needed.
-                 errorMessage = "Please add at least one exercise"
-                 showAlert = true
-             } else {
-                 // Update the workout details with filled details only
-                 workoutManager.updateWorkoutDetails(workoutId: workoutId, workoutDetailsInput: filledDetails)
-                 workoutManager.updateWorkoutTitle(workoutId: workoutId, to: workoutTitle)
-                 
-                 presentationMode.wrappedValue.dismiss()
-             }
-         }
+            errorMessage = "Please Enter a Workout Title"
+            showAlert = true
+        } else if workoutTitle != workoutTitle && workoutManager.titleExists(workoutTitle) {
+            errorMessage = "Workout Title Already Exists"
+            showAlert = true
+        } else {
+            // Filter out empty detail inputs before processing
+            let filledDetails = workoutDetailsInput.filter { detail in
+                if detail.isCardio {
+                    return !detail.exerciseName.isEmpty && !detail.exerciseTime.isEmpty
+                } else {
+                    return !detail.exerciseName.isEmpty && (!detail.reps.isEmpty || !detail.weight.isEmpty)
+                }
+            }
+            
+            // Proceed only with filled details
+            if filledDetails.isEmpty && workoutDetailsInput.isEmpty {
+                // If user has not added any new details and all existing details are removed, decide on your logic here.
+                // For now, do nothing or show an error message if needed.
+                errorMessage = "Please add at least one exercise"
+                showAlert = true
+            } else {
+                // Update the workout details with filled details only
+                workoutManager.updateWorkoutDetails(workoutId: workoutId, workoutDetailsInput: filledDetails)
+                workoutManager.updateWorkoutTitle(workoutId: workoutId, to: workoutTitle)
+                
+                presentationMode.wrappedValue.dismiss()
+            }
+        }
     }
-
+    
     private func deleteDetail(at offsets: IndexSet) {
         workoutDetailsInput.remove(atOffsets: offsets)
     }

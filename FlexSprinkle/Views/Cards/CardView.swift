@@ -5,20 +5,21 @@ struct CardView: View {
     var workoutId: UUID
     var isDefault: Bool
     var onDelete: (() -> Void)?
+    var hasActiveSession: Bool
+    
     @Binding var navigationPath: NavigationPath
     @State private var presentingModal: ModalType? = nil
     @EnvironmentObject var workoutManager: WorkoutManager
-    @State private var hasActiveSession = false
     @State private var animate = false
     @State private var showAlert = false
-
+    
     @State private var showingDeletionConfirmation = false
-
-
+    
+    
     
     var body: some View {
         let workout = workoutManager.fetchWorkoutById(for: workoutId)
-                let backgroundColor = Color(workout?.color ?? "MyBlue") // Use the w
+        let backgroundColor = Color(workout?.color ?? "MyBlue") // Use the w
         
         VStack {
             if isDefault {
@@ -42,21 +43,14 @@ struct CardView: View {
         }
         .sheet(item: $presentingModal) { modal in
             switch modal {
-                case .add:
-                    AddWorkoutView()
-                case .edit(let workoutId):
+            case .add:
+                AddWorkoutView()
+            case .edit(let workoutId):
                 EditWorkoutView(workoutId: workoutId)
                     .environmentObject(workoutManager)
             }
         }
         .onAppear{
-            DispatchQueue.main.async {
-                let activeSession = workoutManager.getSessions().first { $0.isActive }
-                if activeSession?.workoutsR?.id == workoutId {
-                 hasActiveSession = true
-                }
-               
-            }
             
         }
     }
@@ -96,10 +90,8 @@ struct CardView: View {
         Button(action: {
             let sessionId = workoutManager.getSessions().first?.workoutsR?.id
             if  sessionId != workoutId && sessionId != nil {
-                // There's an active session for a different workout, show alert
                 showAlert = true
             } else {
-                // No active session for a different workout, proceed with navigation
                 navigationPath.append(workoutId)
             }
         }) {
@@ -108,7 +100,7 @@ struct CardView: View {
                     .font(.system(size: 40))
                     .foregroundColor(.green)
                     .scaleEffect(animate ? 1.2 : 1.0) 
-// Use animate state to toggle scale
+                // Use animate state to toggle scale
                     .onAppear {
                         // Properly initiate the animation
                         withAnimation(Animation.easeInOut(duration: 1.0).repeatForever(autoreverses: true)) {
@@ -122,7 +114,7 @@ struct CardView: View {
                     .font(.system(size: 40))
                     .foregroundColor(.white)
             }
-        
+            
         }
         .alert(isPresented: $showAlert) {
             Alert(
@@ -144,5 +136,5 @@ struct CardView: View {
             }
         }
     }
-
+    
 }

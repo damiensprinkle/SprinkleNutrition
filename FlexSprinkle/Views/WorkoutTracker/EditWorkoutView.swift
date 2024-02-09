@@ -10,30 +10,18 @@ import SwiftUI
 struct EditWorkoutView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var workoutManager: WorkoutManager
-
-    @State private var workoutTitle: String
-    @State private var workoutDetailsInput: [WorkoutDetailInput]
+    
+    let workoutId: UUID
+    @State private var workoutTitle: String = ""
+    @State private var workoutDetailsInput: [WorkoutDetailInput] = []
     @State private var errorMessage: String = ""
     @State private var showAlert: Bool = false
-    @State private var showingAddExerciseSheet = false // To show action sheet
+    @State private var showingAddExerciseSheet = false
+    
+    init(workoutId: UUID) {
+           self.workoutId = workoutId
+       }
 
-    var originalWorkoutTitle: String
-
-    init(workoutTitle: String, workoutDetails: [WorkoutDetail], originalWorkoutTitle: String) {
-        _workoutTitle = State(initialValue: workoutTitle)
-        _workoutDetailsInput = State(initialValue: workoutDetails.map { detail in
-            WorkoutDetailInput(
-                name: detail.name,
-                id: detail.id,
-                exerciseName: detail.exerciseName,
-                reps: detail.isCardio ? "" : String(detail.reps),
-                weight: detail.isCardio ? "" : String(detail.weight),
-                isCardio: detail.isCardio,
-                exerciseTime: detail.isCardio ? detail.exerciseTime : ""
-            )
-        })
-        self.originalWorkoutTitle = originalWorkoutTitle
-    }
 
     var body: some View {
         NavigationView {
@@ -68,8 +56,34 @@ struct EditWorkoutView: View {
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("Error"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
             }
+            .onAppear(perform: loadWorkoutDetails)
         }
     }
+    
+    private func loadWorkoutDetails() {
+        guard let workout = workoutManager.fetchWorkoutById(for: workoutId) else {
+            print("Could not find workout with ID \(workoutId)")
+            return
+        }
+        
+        self.workoutTitle = workout.name ?? ""
+        
+        if let detailsSet = workout.details as? Set<WorkoutDetail> {
+            let details = detailsSet.sorted { $0.exerciseName! < $1.exerciseName! } // Sort if needed
+            self.workoutDetailsInput = details.map { detail in
+                WorkoutDetailInput(
+                    id: detail.id,
+                    exerciseId: detail.exerciseId,
+                    exerciseName: detail.exerciseName!,
+                    reps: detail.isCardio ? "" : String(detail.reps),
+                    weight: detail.isCardio ? "" : String(detail.weight),
+                    isCardio: detail.isCardio,
+                    exerciseTime: detail.isCardio ? detail.exerciseTime! : ""
+                )
+            }
+        }
+    }
+
 
     private func addExercise(isCardio: Bool) {
         var newDetail = WorkoutDetailInput(isCardio: isCardio)
@@ -81,7 +95,7 @@ struct EditWorkoutView: View {
         if workoutTitle.isEmpty {
              errorMessage = "Please Enter a Workout Title"
              showAlert = true
-         } else if originalWorkoutTitle != workoutTitle && workoutManager.titleExists(workoutTitle) {
+         } else if workoutTitle != workoutTitle && workoutManager.titleExists(workoutTitle) {
              errorMessage = "Workout Title Already Exists"
              showAlert = true
          } else {
@@ -102,7 +116,8 @@ struct EditWorkoutView: View {
                  showAlert = true
              } else {
                  // Update the workout details with filled details only
-                 workoutManager.updateWorkoutDetails(for: originalWorkoutTitle, withNewTitle: workoutTitle, workoutDetailsInput: filledDetails)
+                 workoutManager.updateWorkoutDetails(workoutId: workoutId, workoutDetailsInput: filledDetails)
+                 workoutManager.updateWorkoutTitle(workoutId: workoutId, to: workoutTitle)
                  
                  presentationMode.wrappedValue.dismiss()
              }

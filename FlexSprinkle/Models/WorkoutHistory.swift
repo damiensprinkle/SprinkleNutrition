@@ -16,11 +16,5 @@ public class WorkoutHistory: NSManagedObject {
     @NSManaged public var workoutDate: Date //date completed
     @NSManaged public var workoutTimeToComplete: String // timer that will track how long workout takes
     @NSManaged public var totalWeightLifted: Int32 // weight * reps
-    @NSManaged public var reps: Int32 //reps  tracked per exercise
-    @NSManaged public var weight: Int32 //weight tracker per exercise
-    @NSManaged public var exerciseName: String //weight tracker per exercise
-    @NSManaged public var detail: WorkoutDetail? // For inverse relationship
-    @NSManaged public var workoutCompleted: Bool
-    @NSManaged public var exerciseTime: String
 
 }

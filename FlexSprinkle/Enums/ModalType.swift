@@ -9,14 +9,15 @@ import SwiftUI
 
 enum ModalType: Identifiable {
     case add
-    case edit(originalTitle: String)
+    case edit(workoutId: UUID, originalTitle: String)
 
-    var id: String {
+    var id: Int {
         switch self {
         case .add:
-            return "add"
-        case .edit(let originalTitle):
-            return "edit_\(originalTitle)"
+            return 0
+        case .edit(_, _):
+            return 1
         }
     }
 }
+

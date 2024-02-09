@@ -63,50 +63,33 @@ struct AddWorkoutView: View {
     }
     
     private func saveWorkout() {
-        if workoutTitle.isEmpty {
-                            errorMessage = "Please Enter a Workout Title"
-                            showAlert = true
-                            return // Exit early
-                        }
-                        // Check if the workout title already exists
-                        if workoutManager.titleExists(workoutTitle) {
-                            errorMessage = "Workout Title Already Exists"
-                            showAlert = true
-                            return // Exit early
-                        }
-                        // Ensure at least one exercise detail has been filled out
-                        let filledDetails = workoutDetails.filter {
-                            !$0.exerciseName.isEmpty && !$0.reps.isEmpty && !$0.weight.isEmpty || !$0.exerciseName.isEmpty && !$0.exerciseTime.isEmpty
-                        }
-                        if filledDetails.isEmpty {
-                            // If no valid exercise details are provided, show an alert
-                            errorMessage = "Please add at least one exercise detail"
-                            showAlert = true
-                        } else {
-                            // Proceed with adding the workout and its details
-                            for detailInput in filledDetails {
-                                let exerciseName = detailInput.exerciseName // Already validated as not empty
-                                let repsInt = Int32(detailInput.reps) ?? 0 // Default to 10 reps if invalid
-                                let weightInt = Int32(detailInput.weight) ?? 0 // Default to 30 weight if invalid
-                                let exerciseTime = detailInput.exerciseTime // Already validated as not empty
-                                let cardio = detailInput.isCardio // this might not work
-                                print(cardio)
-                                workoutManager.addWorkoutDetail(
-                                    workoutTitle: workoutTitle,
-                                    exerciseName: exerciseName,
-                                    reps: repsInt,
-                                    weight: weightInt,
-                                    color: colorManager.getRandomColor(),
-                                    isCardio: cardio,
-                                    exerciseTime: exerciseTime
-                                )
-                            }
-                            presentationMode.wrappedValue.dismiss()
-                        }
+        if workoutTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            errorMessage = "Please Enter a Workout Title"
+            showAlert = true
+        } else if workoutDetails.isEmpty {
+            errorMessage = "Please add at least one exercise detail"
+            showAlert = true
+        } else {
+            // Iterate over filled details and add them
+            for detail in workoutDetails {
+                workoutManager.addWorkoutDetail(
+                    workoutTitle: workoutTitle,
+                    exerciseName: detail.exerciseName,
+                    reps: Int32(detail.reps) ?? 0,
+                    weight: Int32(detail.weight) ?? 0,
+                    color: colorManager.getRandomColor(),
+                    isCardio: detail.isCardio,
+                    exerciseTime: detail.exerciseTime
+                )
+            }
+            presentationMode.wrappedValue.dismiss()
+        }
     }
+
 
     private func addExercise(isCardio: Bool) {
         let newDetail = WorkoutDetailInput(reps: isCardio ? "" : "", weight: isCardio ? "" : "", isCardio: isCardio, exerciseTime: isCardio ? "" : "")
         workoutDetails.append(newDetail)
+        
     }
 }

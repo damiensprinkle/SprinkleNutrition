@@ -13,47 +13,112 @@ class WorkoutManager: ObservableObject {
         didSet {
             print("Context set in WorkoutManager")
             if context != nil {
-                loadWorkouts()
+                loadWorkoutsWithId()
             }
         }
     }
     
-    @Published var workouts: [String] = []
+    @Published var workouts: [WorkoutInfo] = []
+    
     
     // MARK: Core Data Operations
     
+    //good
     func addWorkoutDetail(workoutTitle: String, exerciseName: String, reps: Int32, weight: Int32, color: String, isCardio: Bool, exerciseTime: String) {
         guard let context = self.context else { return }
-        print("Adding workout detail: \(workoutTitle), Exercise: \(exerciseName), Reps: \(reps), Weight: \(weight), IsCardio: \(isCardio), ExerciseTime: \(exerciseTime)")
         
-        let newDetail = WorkoutDetail(context: context)
-        newDetail.id = UUID()
-        newDetail.name = workoutTitle
-        newDetail.exerciseName = exerciseName
-        newDetail.reps = reps
-        newDetail.weight = weight
-        newDetail.color = color
-        newDetail.isCardio = isCardio
-        newDetail.exerciseTime = exerciseTime
+        let workout = findOrCreateWorkout(withTitle: workoutTitle, color: color)
+        
+        // Create and configure a new WorkoutDetail instance
+        let newExerciseDetail = WorkoutDetail(context: context)
+        newExerciseDetail.exerciseId = UUID()
+        newExerciseDetail.exerciseName = exerciseName
+        newExerciseDetail.reps = reps
+        newExerciseDetail.weight = weight
+        newExerciseDetail.isCardio = isCardio
+        newExerciseDetail.exerciseTime = exerciseTime
+        
+        // Associate the new exercise detail with the workout
+        workout.addToDetails(newExerciseDetail)
+        
         
         saveContext()
+        print("Workout ID: \(String(describing: workout.id)), Exercise Created with ID: \(String(describing: newExerciseDetail.exerciseId))")
     }
     
-    func loadWorkouts() {
+    //good
+    private func findOrCreateWorkout(withTitle title: String, color: String) -> Workouts {
+        let request = NSFetchRequest<Workouts>(entityName: "Workouts")
+        request.predicate = NSPredicate(format: "name == %@", title)
+        
+        if let existingWorkout = (try? context?.fetch(request))?.first {
+            return existingWorkout
+        } else {
+            let newWorkout = Workouts(context: context!)
+            newWorkout.id = UUID()
+            newWorkout.name = title
+            newWorkout.color = color
+            return newWorkout
+        }
+    }
+    
+    func fetchWorkoutById(for workoutId: UUID) -> Workouts? {
         guard let context = self.context else {
-            print("Context is nil in loadWorkouts")
+            return nil
+        }
+        let request = NSFetchRequest<Workouts>(entityName: "Workouts")
+        request.predicate = NSPredicate(format: "id == %@", workoutId as CVarArg)
+        do {
+            let result = try context.fetch(request)
+            return result.first
+        } catch {
+            print("Error fetching workout by ID: \(error)")
+            return nil
+        }
+    }
+    
+    
+    
+    //good?
+    func loadWorkoutsWithId() {
+        guard let context = self.context else {
+            print("Context is nil in loadWorkoutsWithId")
             return
         }
         
-        let request = NSFetchRequest<WorkoutDetail>(entityName: "WorkoutDetail")
+        let request = NSFetchRequest<Workouts>(entityName: "Workouts")
         do {
             let results = try context.fetch(request)
-            self.workouts = Set(results.map { $0.name }).sorted()
-            print("Loaded workouts: \(self.workouts)")
+            // Assuming WorkoutDetail has a unique id and a name property. Adjust as necessary.
+            self.workouts = results.map { WorkoutInfo(id: $0.id!, name: $0.name!) } // Make sure to safely unwrap optionals as needed
+            
+            // Log each loaded workout for more insights
+            for workout in self.workouts {
+                print("Workout ID: \(workout.id), Name: \(workout.name)")
+                
+            }
+            
+            print("Total Loaded workouts: \(self.workouts.count)")
         } catch {
             print("Failed to fetch workouts: \(error)")
         }
     }
+    
+    func fetchWorkoutColor(for title: String) -> [Workouts] {
+        guard let context = self.context else { return [] }
+        
+        let request = NSFetchRequest<Workouts>(entityName: "Workouts")
+        request.predicate = NSPredicate(format: "name == %@", title)
+        do {
+            
+            return try context.fetch(request)
+        } catch {
+            print("Failed to fetch workout details: \(error)")
+            return []
+        }
+    }
+    
+    
     
     
     
@@ -63,41 +128,125 @@ class WorkoutManager: ObservableObject {
         let request = NSFetchRequest<WorkoutDetail>(entityName: "WorkoutDetail")
         request.predicate = NSPredicate(format: "name == %@", title)
         do {
+            
             return try context.fetch(request)
         } catch {
             print("Failed to fetch workout details: \(error)")
             return []
         }
     }
-
+    
+    func fetchWorkoutDetailsByWorkoutId(for workoutID: UUID) -> [WorkoutDetail] {
+        guard let context = self.context else {
+            print("Context is nil")
+            return []
+        }
+        
+        // Assuming 'WorkoutDetail' has a relationship to 'Workouts' entity named 'workout'
+        // And 'Workouts' entity has an 'id' attribute
+        let request = NSFetchRequest<WorkoutDetail>(entityName: "WorkoutDetail")
+        request.predicate = NSPredicate(format: "workout.id == %@", workoutID as CVarArg)
+        
+        do {
+            let details = try context.fetch(request)
+            print("Fetched \(details.count) workout details for workoutID \(workoutID)")
+            // Log each fetched detail for more insights
+            details.forEach { detail in
+                print("Exercise ID: \(String(describing: detail.exerciseId)), Name: \(detail.exerciseName ?? ""), Reps: \(detail.reps), Weight: \(detail.weight), IsCardio: \(detail.isCardio), ExerciseTime: \(detail.exerciseTime ?? "")")
+            }
+            return details
+        } catch {
+            print("Failed to fetch workout details: \(error)")
+            return []
+        }
+    }
     
     
-    func deleteWorkoutDetails(for title: String) {
+    
+    
+    
+    func deleteWorkout(for workoutId: UUID) {
         guard let context = self.context else { return }
         
-        let detailsToDelete = fetchWorkoutDetails(for: title)
-        for detail in detailsToDelete {
-            context.delete(detail)
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "Workouts")
+        fetchRequest.predicate = NSPredicate(format: "id == %@", workoutId as CVarArg)
+        
+        do {
+            let workoutsToDelete = try context.fetch(fetchRequest) as? [Workouts] ?? []
+            
+            for workout in workoutsToDelete {
+                context.delete(workout)
+            }
+            
+            try context.save()
+            print("Workout and its details deleted successfully")
+        } catch let error as NSError {
+            print("Error deleting workout: \(error), \(error.userInfo)")
         }
-        saveContext()
     }
+    
+    
+    
+    func saveOrUpdateWorkoutHistory(workoutId: UUID, exerciseId: UUID, exerciseName: String, reps: String?, weight: String?, exerciseTime: String?) {
+        guard let context = self.context else { return }
+
+        // Fetch the active session for the given workout
+        let sessionRequest: NSFetchRequest<WorkoutSession> = WorkoutSession.fetchRequest()
+        sessionRequest.predicate = NSPredicate(format: "isActive == %@ AND workoutsR.id == %@", NSNumber(value: true), workoutId as CVarArg)
+
+        do {
+            if let activeSession = try context.fetch(sessionRequest).first {
+                // Now find the WorkoutDetail within this session that matches the exerciseId
+                if let details = activeSession.workoutDetails as? Set<WorkoutDetail>,
+                   let detailToUpdate = details.first(where: { $0.exerciseId == exerciseId }) {
+                    
+                    // Update the WorkoutDetail with the new values
+                    detailToUpdate.reps = Int32(reps ?? "") ?? 0
+                    detailToUpdate.weight = Int32(weight ?? "") ?? 0
+                    detailToUpdate.exerciseTime = exerciseTime
+                    
+                    // Save the context if there are changes
+                    if context.hasChanges {
+                        try context.save()
+                    }
+                } else {
+                    // If no existing detail matches, create a new WorkoutDetail and associate it with the session
+                    let newDetail = WorkoutDetail(context: context)
+                    newDetail.id = UUID()
+                    newDetail.exerciseId = exerciseId
+                    newDetail.exerciseName = exerciseName
+                    newDetail.reps = Int32(reps ?? "") ?? 0
+                    newDetail.weight = Int32(weight ?? "") ?? 0
+                    newDetail.isCardio = !(exerciseTime?.isEmpty ?? true) // Assuming cardio if exerciseTime is set
+                    newDetail.exerciseTime = exerciseTime
+                    newDetail.sessions = activeSession // Associate the new detail with the session
+                    
+                    try context.save()
+                }
+            }
+        } catch {
+            print("Failed to save or update workout history: \(error)")
+        }
+    }
+
     
     private func saveContext() {
         guard let context = self.context else { return }
         
         do {
             try context.save()
-            loadWorkouts()
+            loadWorkoutsWithId()
         } catch {
             print("Failed to save context: \(error)")
         }
     }
     
-    func updateWorkoutTitle(from originalTitle: String, to newTitle: String) {
+    func updateWorkoutTitle(workoutId: UUID, to newTitle: String) {
         guard let context = self.context else { return }
         
-        let request = NSFetchRequest<WorkoutDetail>(entityName: "WorkoutDetail")
-        request.predicate = NSPredicate(format: "name == %@", originalTitle)
+        // Fetch WorkoutDetail by ID
+        let request = NSFetchRequest<Workouts>(entityName: "Workouts")
+        request.predicate = NSPredicate(format: "id == %@", workoutId as CVarArg)
         do {
             let results = try context.fetch(request)
             results.forEach { detail in
@@ -106,66 +255,98 @@ class WorkoutManager: ObservableObject {
             
             try context.save()
             
-            // Update the local workouts array if necessary
-            if let index = workouts.firstIndex(of: originalTitle) {
-                workouts[index] = newTitle
-            } else {
-                workouts.append(newTitle)
+            // Update the local workouts array
+            if let index = workouts.firstIndex(where: { $0.id == workoutId }) {
+                workouts[index].name = newTitle
             }
-        } catch let error as NSError {
-            print("Error updating workout title: \(error), \(error.userInfo)")
+            
+            // Notify observers of the change
+            objectWillChange.send()
+        } catch {
+            print("Error updating workout title: \(error)")
         }
-        saveContext()
-        
     }
     
+    func loadTemporaryWorkoutData(for workoutId: UUID, exerciseId: UUID) -> (reps: String, weight: String, exerciseTime: String) {
+        guard let context = self.context else { return ("", "", "") }
+
+        let sessionRequest: NSFetchRequest<WorkoutSession> = WorkoutSession.fetchRequest()
+        sessionRequest.predicate = NSPredicate(format: "isActive == %@ AND workoutsR.id == %@", NSNumber(value: true), workoutId as CVarArg)
+
+        do {
+            if let activeSession = try context.fetch(sessionRequest).first {
+                // Fetch the WorkoutDetail that matches the given exerciseId within the active session
+                if let details = activeSession.workoutDetails as? Set<WorkoutDetail>,
+                   let matchingDetail = details.first(where: { $0.exerciseId == exerciseId }) {
+                    // Return the existing values from the matching detail
+                    return (String(matchingDetail.reps), String(matchingDetail.weight), matchingDetail.exerciseTime ?? "")
+                }
+            }
+        } catch {
+            print("Failed to load temporary workout history: \(error)")
+        }
+        
+        // Return default empty values if no matching detail is found or in case of an error
+        return ("", "", "")
+    }
+
     
-    func updateWorkoutDetails(for originalTitle: String, withNewTitle newTitle: String, workoutDetailsInput: [WorkoutDetailInput]) {
-        guard let context = self.context else {
-            print("Context is nil, unable to update workout details.")
+    
+    func updateWorkoutDetails(workoutId: UUID, workoutDetailsInput: [WorkoutDetailInput]) {
+        guard let context = self.context else { return }
+        guard let workout = fetchWorkoutById(for: workoutId) else {
+            print("Failed to fetch workout with ID \(workoutId)")
             return
         }
-
-        // If the workout title has changed, update all associated workout details
-        if originalTitle != newTitle {
-            let request = NSFetchRequest<WorkoutDetail>(entityName: "WorkoutDetail")
-            request.predicate = NSPredicate(format: "name == %@", originalTitle)
-            do {
-                let existingDetails = try context.fetch(request)
-                for detail in existingDetails {
-                    detail.name = newTitle // Update the name of existing details
-                }
-            } catch let error as NSError {
-                print("Error updating workout names: \(error), \(error.userInfo)")
+        
+        // Assuming `fetchWorkoutById` returns a `Workout?`
+        let existingDetails = workout.details as? Set<WorkoutDetail> ?? []
+        let existingDetailsMap = existingDetails.reduce(into: [UUID: WorkoutDetail]()) { result, detail in
+            if let exerciseId = detail.exerciseId {
+                result[exerciseId] = detail
             }
         }
         
-        // Process input details for updates or new additions
+        var newDetails: [WorkoutDetail] = []
+        
         for input in workoutDetailsInput {
-            // Assuming you have a way to fetch a specific WorkoutDetail by ID
-            let detail: WorkoutDetail
-            if let id = input.id, let fetchedDetail = try? context.fetch(fetchRequestForWorkoutDetail(withID: id)).first {
-                detail = fetchedDetail // Found existing detail, prepare it for update
+            if let detail = existingDetailsMap[input.exerciseId ?? UUID()] {
+                // Update existing detail
+                detail.exerciseName = input.exerciseName
+                detail.reps = Int32(input.reps) ?? 0
+                detail.weight = Int32(input.weight) ?? 0
+                detail.isCardio = input.isCardio
+                detail.exerciseTime = input.exerciseTime
             } else {
-                detail = WorkoutDetail(context: context) // No ID or detail not found, create new
-                detail.id = UUID() // Assign a new ID if creating a new detail
+                // Add new detail
+                let newDetail = WorkoutDetail(context: context)
+                newDetail.exerciseId = input.exerciseId ?? UUID()
+                newDetail.exerciseName = input.exerciseName
+                newDetail.reps = Int32(input.reps) ?? 0
+                newDetail.weight = Int32(input.weight) ?? 0
+                newDetail.isCardio = input.isCardio
+                newDetail.exerciseTime = input.exerciseTime
+                newDetail.workoutR = workout
+                newDetails.append(newDetail)
             }
-            detail.name = newTitle
-            detail.exerciseName = input.exerciseName
-            detail.reps = Int32(input.reps) ?? 0
-            detail.weight = Int32(input.weight) ?? 0
-            detail.exerciseTime = input.exerciseTime
-            detail.isCardio = input.isCardio
-            // Assign additional properties as necessary
         }
-
-        // Attempt to save context after all updates
-        saveContext()
+        
+        // Remove details not present in input
+        let inputIds = Set(workoutDetailsInput.compactMap { $0.exerciseId })
+        existingDetails.forEach { detail in
+            if let id = detail.exerciseId, !inputIds.contains(id) {
+                context.delete(detail)
+            }
+        }
+        
+        do {
+            try context.save()
+        } catch let error as NSError {
+            print("Error updating workout details: \(error), \(error.userInfo)")
+        }
     }
-    
-
-    
 }
+
 
 extension WorkoutManager {
     func fetchRequestForWorkoutDetail(withID id: UUID) -> NSFetchRequest<WorkoutDetail> {
@@ -205,126 +386,77 @@ extension WorkoutManager {
          }
      }
     
-    func saveOrUpdateWorkoutHistory(workoutId: UUID, exerciseName: String, reps: String?, weight: String?, exerciseTime: String?) {
-        guard let context = self.context else { return }
+    func getWorkoutIdOfActiveSession() -> UUID? {
+        guard let context = self.context else { return nil }
+        let request = NSFetchRequest<WorkoutSession>(entityName: "WorkoutSession")
         
-        // Fetch request for an ongoing WorkoutHistory for the given workoutId
-        let fetchRequest = NSFetchRequest<WorkoutHistory>(entityName: "WorkoutHistory")
-        fetchRequest.predicate = NSPredicate(format: "workoutId == %@ AND workoutCompleted == NO", workoutId as CVarArg)
-        
-        do {
-            let history = try context.fetch(fetchRequest).first ?? WorkoutHistory(context: context)
-            history.workoutId = workoutId
-            history.id = UUID()
-            history.exerciseName = exerciseName  // Assume exerciseName is provided for each TextField update
-            history.repsCompleted = Int32(reps ?? "0") ?? 0
-            history.totalWeightLifted = Int32(weight ?? "0") ?? 0
-            history.exerciseTime = exerciseTime ?? ""
-            history.workoutDate = Date()  // Set or update the date to the current session's date
-            history.workoutCompleted = false  // Ensure the session is marked as ongoing
-
-            try context.save()
-            print("Temp Data saved")
-        } catch {
-            print("Failed to save or update workout history: \(error.localizedDescription)")
-        }
-    }
-
-
-    
-    func completeWorkoutForId(workoutId: UUID) {
-        guard let context = self.context else { return }
-        
-        let fetchRequest = NSFetchRequest<WorkoutHistory>(entityName: "WorkoutHistory")
-        fetchRequest.predicate = NSPredicate(format: "workoutId == %@ AND workoutCompleted == NO", workoutId as CVarArg)
+        request.predicate = NSPredicate(format: "isActive == %@", NSNumber(value: true))
         
         do {
-            let histories = try context.fetch(fetchRequest)
-            histories.forEach { $0.workoutCompleted = true }
-            try context.save()
-            print("workout completed in workout history")
-        } catch {
-            print("Error marking workout as completed: \(error)")
-        }
-    }
-    
-    func loadTemporaryWorkoutData(for workoutId: UUID) -> [String: (reps: String, weight: String, exerciseTime: String)] {
-        guard let context = self.context else { return [:] }
-        var temporaryData: [String: (reps: String, weight: String, exerciseTime: String)] = [:]
-        
-        let historyRequest = NSFetchRequest<WorkoutHistory>(entityName: "WorkoutHistory")
-        historyRequest.predicate = NSPredicate(format: "workoutId == %@ AND workoutCompleted == NO", workoutId as CVarArg)
-        
-        do {
-            let histories = try context.fetch(historyRequest)
-            for history in histories {
-                // Use exerciseName as the key instead of detailId
-                temporaryData[history.exerciseName] = (reps: String(history.reps), weight: String(history.weight), exerciseTime: history.exerciseTime)
+            // Fetch the active session
+            if let activeSession = try context.fetch(request).first {
+                // Directly access the related workout entity to fetch the workout ID
+                return activeSession.workoutsR?.id
             }
         } catch {
-            print("Error loading temporary workout data: \(error)")
+            print("Error fetching active sessions: \(error)")
         }
         
-        return temporaryData
+        return nil
     }
-
-
-
-
     
-    func getWorkoutNameOfActiveSession() -> String {
+    func getWorkoutNameOfActiveSession() -> String? {
         guard let context = self.context else { return "" }
         let request = NSFetchRequest<WorkoutSession>(entityName: "WorkoutSession")
         
         request.predicate = NSPredicate(format: "isActive == %@", NSNumber(value: true))
         
         do {
-            let details = try context.fetch(request)
-            let workoutId = details.first!.workoutId
-            let requestName = NSFetchRequest<WorkoutDetail>(entityName: "WorkoutDetail")
-            requestName.predicate = NSPredicate(format: "id == %@", workoutId as CVarArg)
-            return try context.fetch(requestName).first!.name
+            // Fetch the active session
+            if let activeSession = try context.fetch(request).first {
+                // Directly access the related workout entity to fetch the workout ID
+                return activeSession.workoutsR?.name
+            }
         } catch {
             print("Error fetching active sessions: \(error)")
-            return ""
         }
+        
+        return ""
     }
+
 
     func setSessionStatus(workoutId: UUID, isActive: Bool) {
         guard let context = self.context else { return }
-
-        if isActive {
-            // Starting a new session
-            let newSession = WorkoutSession(context: context)
-            newSession.id = UUID()
-            newSession.workoutId = workoutId
-            newSession.startTime = Date()
-            newSession.isActive = true
-            newSession.endTime = nil // Explicitly setting to nil for clarity
-        } else {
-            // Ending an existing session
-            let request = NSFetchRequest<WorkoutSession>(entityName: "WorkoutSession")
-            request.predicate = NSPredicate(format: "workoutId == %@ AND isActive == YES", workoutId as CVarArg)
-            
-            do {
-                let sessions = try context.fetch(request)
-                if let existingSession = sessions.first {
-                    existingSession.isActive = false
-                    existingSession.endTime = Date()
-                }
-            } catch {
-                // Handle fetch error
-                print("Failed to fetch active session for workoutId: \(workoutId), error: \(error)")
-            }
-        }
+        
+        let workoutRequest = NSFetchRequest<Workouts>(entityName: "Workouts")
+        workoutRequest.predicate = NSPredicate(format: "id == %@", workoutId as CVarArg)
 
         do {
-            try context.save()
+            if let workout = try context.fetch(workoutRequest).first {
+                if isActive {
+                    // Starting a new session
+                    let newSession = WorkoutSession(context: context)
+                    newSession.id = UUID()
+                    newSession.workoutsR = workout // Link the session to the workout
+                    newSession.startTime = Date()
+                    newSession.isActive = true
+                    workout.sessions = newSession // Ensure the workout points to this new session
+                } else {
+                    // Ending the existing session associated with the workout
+                    if let existingSession = workout.sessions, existingSession.isActive {
+                        existingSession.isActive = false
+                        existingSession.endTime = Date()
+                    }
+                }
+                
+                try context.save()
+            }
         } catch {
-            // Handle save error
-            print("Failed to save context: \(error)")
+            // Handle errors
+            print("Error setting session status: \(error)")
         }
     }
+
 
 
      // Gets details for a specific session

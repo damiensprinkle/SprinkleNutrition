@@ -2,6 +2,7 @@ import SwiftUI
 
 struct CardView: View {
     var title: String
+    var workoutId: UUID
     var isDefault: Bool
     var onDelete: (() -> Void)?
     @Binding var navigationPath: NavigationPath
@@ -9,15 +10,14 @@ struct CardView: View {
     @EnvironmentObject var workoutManager: WorkoutManager
     
     var body: some View {
-        let workoutDetails = workoutManager.fetchWorkoutDetails(for: title)
-        let colorName = workoutDetails.first?.color ?? "MyBlue" // Fallback color name just in case
-        let backgroundColor = Color(colorName) // Use your color logic here
+        let workout = workoutManager.fetchWorkoutById(for: workoutId)
+                let backgroundColor = Color(workout?.color ?? "MyBlue") // Use the w
         
         VStack {
             if isDefault {
                 defaultCardContent()
             } else {
-                existingWorkoutCardContent(details: workoutDetails)
+                existingWorkoutCardContent(workout: workout)
             }
         }
         .padding()
@@ -31,8 +31,8 @@ struct CardView: View {
             switch modal {
                 case .add:
                     AddWorkoutView()
-                case .edit(let originalTitle):
-                    EditWorkoutView(workoutTitle: originalTitle, workoutDetails: workoutDetails, originalWorkoutTitle: originalTitle)
+                case .edit(let workoutId, let originalTitle):
+                EditWorkoutView(workoutId: workoutId)
                     .environmentObject(workoutManager)
             }
         }
@@ -58,9 +58,9 @@ struct CardView: View {
     }
     
     @ViewBuilder
-    private func existingWorkoutCardContent(details: [WorkoutDetail]) -> some View {
+    private func existingWorkoutCardContent(workout: Workouts?) -> some View {
         HStack {
-            Text(title)
+            Text(workout?.name ?? "Workout")
                 .font(.title)
                 .fontWeight(.bold)
                 .foregroundColor(.white)
@@ -71,24 +71,20 @@ struct CardView: View {
         
         Spacer()
         Button(action: {
-            if let detail = workoutManager.fetchWorkoutDetails(for: title).first {
-                navigationPath.append(detail)
-            }
+            // Directly navigate using workoutId
+            navigationPath.append(workoutId)
         }) {
             Image(systemName: "play.circle")
                 .font(.system(size: 40))
                 .foregroundColor(.white)
         }
-
-
-
     }
     
     @ViewBuilder
     private func contextMenuContent() -> some View {
         if !isDefault {
             Button("Edit") {
-                presentingModal = .edit(originalTitle: title)
+                presentingModal = .edit(workoutId: workoutId, originalTitle: title)
             }
             Button("Delete", action: {
                 onDelete?()

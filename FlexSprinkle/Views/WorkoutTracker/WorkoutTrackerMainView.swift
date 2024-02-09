@@ -16,41 +16,45 @@ struct WorkoutTrackerMainView: View {
     
     @State private var hasActiveSession = false // Track active session state
     @State private var activeWorkoutName: String? // Store the active workout name
+    @State private var activeWorkoutId: UUID? // Store the active workout ID for navigation
+
+    @State private var workouts: [WorkoutInfo] = [] // WorkoutInfo is a hypothetical struct holding both name and ID
 
 
     var body: some View {
         NavigationStack(path: $navigationPath) {
             ScrollView {
                 VStack(spacing: 0) {
-                                    if hasActiveSession, let activeWorkoutName = activeWorkoutName {
-                                        Button(action: {
-                                            navigationPath.append(activeWorkoutName)
-                                            
-                                        }) 
-                                        {
-                                            Text("Session in Progress: '\(activeWorkoutName)'")
-                                                .foregroundColor(.white)
-                                                .frame(maxWidth: .infinity)
-                                                .padding()
-                                                .background(Color("MyBlue"))
-                                                .edgesIgnoringSafeArea(.horizontal)
+                    if hasActiveSession, let activeWorkoutId = activeWorkoutId {
+                                            Button(action: {
+                                                navigationPath.append(activeWorkoutId)
+                                            }) {
+                                                Text("Workout in Progress: Tap Here To Resume")
+                                                    .foregroundColor(.white)
+                                                    .frame(maxWidth: .infinity)
+                                                    .padding()
+                                                    .background(Color.blue)
+                                                    .edgesIgnoringSafeArea(.horizontal)
+                                            }
+                                            Spacer()
                                         }
-                                        Spacer()
-                                    }
                     
                     // Content below the banner
                     LazyVGrid(columns: [GridItem(.flexible(), spacing: 16), GridItem(.flexible(), spacing: 16)], spacing: 16) {
                         CardView(
                             title: "Add",
+                            workoutId: UUID(), //throw away id
                             isDefault: true,
                             navigationPath: $navigationPath
                         )
-                        ForEach(workoutManager.workouts, id: \.self) { workout in
+                        ForEach(workoutManager.workouts) { workout in
                             CardView(
-                                title: workout,
+                                title: workout.name,
+                                workoutId: workout.id,
                                 isDefault: false,
                                 onDelete: {
-                                    workoutManager.deleteWorkoutDetails(for: workout)
+                                    workoutManager.deleteWorkout(for: workout.id)
+                                    workoutManager.loadWorkoutsWithId()
                                 },
                                 navigationPath: $navigationPath
                             )
@@ -59,27 +63,26 @@ struct WorkoutTrackerMainView: View {
                     .padding(.horizontal) // Apply padding here to only affect grid content
                 }
             }
-            .navigationDestination(for: WorkoutDetail.self) { detail in
-                ActiveWorkoutView(workoutName: detail.name)
-                    .environmentObject(workoutManager)
-            }
-            .navigationDestination(for: String.self) { workoutName in
-                          ActiveWorkoutView(workoutName: workoutName)
-                              .environmentObject(workoutManager)
-                      }
+            .navigationDestination(for: UUID.self) { workoutId in
+                            // Ensure ActiveWorkoutView accepts a workoutId in its initializer
+                            ActiveWorkoutView(workoutId: workoutId)
+                                .environmentObject(workoutManager)
+                        }
             .onAppear {
                 if workoutManager.context == nil {
                     workoutManager.context = viewContext
-                    workoutManager.loadWorkouts()
                 }
-                // Check for active sessions
-                let activeSession = workoutManager.getSessions()
-                hasActiveSession = !activeSession.isEmpty
-                if(hasActiveSession){
-                    activeWorkoutName = workoutManager.getWorkoutNameOfActiveSession()
+                workoutManager.loadWorkoutsWithId()
+                
+                // Directly check and update active session state
+                DispatchQueue.main.async {
+                    let activeSession = workoutManager.getSessions().first { $0.isActive }
+                    hasActiveSession = activeSession != nil
+                    activeWorkoutId = activeSession?.workoutsR?.id
+                    activeWorkoutName = activeSession?.workoutsR?.name
                 }
-
             }
+
         }
         .environmentObject(workoutManager)
     }
@@ -96,3 +99,7 @@ struct WorkoutTrackerMainView_Previews: PreviewProvider {
 }
 
 
+struct WorkoutInfo: Identifiable {
+    var id: UUID // Assuming each workout has a unique UUID
+    var name: String
+}

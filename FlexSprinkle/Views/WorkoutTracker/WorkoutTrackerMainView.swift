@@ -64,7 +64,6 @@ struct WorkoutTrackerMainView: View {
                 }
             }
             .navigationDestination(for: UUID.self) { workoutId in
-                            // Ensure ActiveWorkoutView accepts a workoutId in its initializer
                             ActiveWorkoutView(workoutId: workoutId)
                                 .environmentObject(workoutManager)
                         }

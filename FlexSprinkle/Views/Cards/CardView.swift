@@ -8,6 +8,12 @@ struct CardView: View {
     @Binding var navigationPath: NavigationPath
     @State private var presentingModal: ModalType? = nil
     @EnvironmentObject var workoutManager: WorkoutManager
+    @State private var hasActiveSession = false
+    @State private var animate = false
+    @State private var showAlert = false
+
+
+
     
     var body: some View {
         let workout = workoutManager.fetchWorkoutById(for: workoutId)
@@ -31,10 +37,20 @@ struct CardView: View {
             switch modal {
                 case .add:
                     AddWorkoutView()
-                case .edit(let workoutId, let originalTitle):
+                case .edit(let workoutId):
                 EditWorkoutView(workoutId: workoutId)
                     .environmentObject(workoutManager)
             }
+        }
+        .onAppear{
+            DispatchQueue.main.async {
+                let activeSession = workoutManager.getSessions().first { $0.isActive }
+                if activeSession?.workoutsR?.id == workoutId {
+                 hasActiveSession = true
+                }
+               
+            }
+            
         }
     }
     
@@ -71,12 +87,42 @@ struct CardView: View {
         
         Spacer()
         Button(action: {
-            // Directly navigate using workoutId
-            navigationPath.append(workoutId)
+            let sessionId = workoutManager.getSessions().first?.workoutsR?.id
+            if  sessionId != workoutId && sessionId != nil {
+                // There's an active session for a different workout, show alert
+                showAlert = true
+            } else {
+                // No active session for a different workout, proceed with navigation
+                navigationPath.append(workoutId)
+            }
         }) {
-            Image(systemName: "play.circle")
-                .font(.system(size: 40))
-                .foregroundColor(.white)
+            if(hasActiveSession) {
+                Image(systemName: "figure.run.circle.fill")
+                    .font(.system(size: 40))
+                    .foregroundColor(.green)
+                    .scaleEffect(animate ? 1.2 : 1.0) 
+// Use animate state to toggle scale
+                    .onAppear {
+                        // Properly initiate the animation
+                        withAnimation(Animation.easeInOut(duration: 1.0).repeatForever(autoreverses: true)) {
+                            animate = true
+                        }
+                        
+                    }
+            }
+            else{
+                Image(systemName: "play.circle")
+                    .font(.system(size: 40))
+                    .foregroundColor(.white)
+            }
+        
+        }
+        .alert(isPresented: $showAlert) {
+            Alert(
+                title: Text("Active Session Detected"),
+                message: Text("You must complete or end your current session before starting a new one."),
+                dismissButton: .default(Text("OK"))
+            )
         }
     }
     
@@ -84,7 +130,7 @@ struct CardView: View {
     private func contextMenuContent() -> some View {
         if !isDefault {
             Button("Edit") {
-                presentingModal = .edit(workoutId: workoutId, originalTitle: title)
+                presentingModal = .edit(workoutId: workoutId)
             }
             Button("Delete", action: {
                 onDelete?()

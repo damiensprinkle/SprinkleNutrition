@@ -340,6 +340,27 @@ extension WorkoutManager {
         return nil
     }
     
+    func saveWorkoutHistory(workoutId: UUID, dateCompleted: Date, totalWeightLifted: Int32, repsCompleted: Int32, workoutTimeToComplete: String, totalCardioTime: String) {
+        guard let context = self.context else { return }
+        guard let workout = fetchWorkoutById(for: workoutId) else { return }
+
+        let history = WorkoutHistory(context: context)
+        history.id = UUID()
+        history.workoutDate = dateCompleted
+        history.totalWeightLifted = totalWeightLifted
+        history.repsCompleted = repsCompleted
+        history.workoutTimeToComplete = workoutTimeToComplete
+        history.timeDoingCardio = totalCardioTime
+        history.workoutR = workout
+        
+        do {
+            try context.save()
+        } catch {
+            print("Failed to save workout history: \(error)")
+        }
+    }
+
+    
     
     func setSessionStatus(workoutId: UUID, isActive: Bool) {
         guard let context = self.context else { return }

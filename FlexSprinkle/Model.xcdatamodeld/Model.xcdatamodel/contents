@@ -9,28 +9,26 @@
         <attribute name="isCardio" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="reps" attributeType="Integer 32" defaultValueString="5" usesScalarValueType="YES"/>
         <attribute name="weight" attributeType="Integer 32" defaultValueString="10" usesScalarValueType="YES"/>
+        <relationship name="history" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutHistory" inverseName="details" inverseEntity="WorkoutHistory"/>
         <relationship name="sessions" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutSession" inverseName="workoutDetails" inverseEntity="WorkoutSession"/>
         <relationship name="workoutR" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Workouts" inverseName="details" inverseEntity="Workouts"/>
     </entity>
     <entity name="WorkoutHistory" representedClassName="WorkoutHistory" syncable="YES">
-        <attribute name="exerciseId" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="exerciseName" attributeType="String"/>
-        <attribute name="exerciseTime" optional="YES" attributeType="String"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="reps" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="repsCompleted" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="timeDoingCardio" optional="YES" attributeType="String"/>
         <attribute name="totalWeightLifted" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="weight" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="workoutCompleted" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="workoutDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="workoutId" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="workoutTimeToComplete" optional="YES" attributeType="String"/>
+        <relationship name="details" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutDetail" inverseName="history" inverseEntity="WorkoutDetail"/>
+        <relationship name="workoutR" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Workouts" inverseName="history" inverseEntity="Workouts"/>
     </entity>
     <entity name="Workouts" representedClassName="Workouts" syncable="YES">
         <attribute name="color" attributeType="String"/>
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" attributeType="String"/>
         <relationship name="details" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WorkoutDetail" inverseName="workoutR" inverseEntity="WorkoutDetail"/>
+        <relationship name="history" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WorkoutHistory" inverseName="workoutR" inverseEntity="WorkoutHistory"/>
         <relationship name="sessions" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutSession" inverseName="workoutsR" inverseEntity="WorkoutSession"/>
     </entity>
     <entity name="WorkoutSession" representedClassName="WorkoutSession" syncable="YES">

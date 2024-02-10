@@ -2,7 +2,7 @@
 //  WorkoutDetail+CoreDataProperties.swift
 //  FlexSprinkle
 //
-//  Created by Damien Sprinkle on 2/9/24.
+//  Created by Damien Sprinkle on 2/10/24.
 //
 //
 
@@ -26,6 +26,7 @@ extension WorkoutDetail {
     @NSManaged public var exerciseId: UUID?
     @NSManaged public var workoutR: Workouts?
     @NSManaged public var sessions: WorkoutSession?
+    @NSManaged public var history: WorkoutHistory?
 
 }
 

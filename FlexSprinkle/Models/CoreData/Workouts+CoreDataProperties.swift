@@ -2,7 +2,7 @@
 //  Workouts+CoreDataProperties.swift
 //  FlexSprinkle
 //
-//  Created by Damien Sprinkle on 2/9/24.
+//  Created by Damien Sprinkle on 2/10/24.
 //
 //
 
@@ -21,6 +21,7 @@ extension Workouts {
     @NSManaged public var color: String?
     @NSManaged public var details: NSSet?
     @NSManaged public var sessions: WorkoutSession?
+    @NSManaged public var history: NSSet?
 
 }
 
@@ -38,6 +39,23 @@ extension Workouts {
 
     @objc(removeDetails:)
     @NSManaged public func removeFromDetails(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for history
+extension Workouts {
+
+    @objc(addHistoryObject:)
+    @NSManaged public func addToHistory(_ value: WorkoutHistory)
+
+    @objc(removeHistoryObject:)
+    @NSManaged public func removeFromHistory(_ value: WorkoutHistory)
+
+    @objc(addHistory:)
+    @NSManaged public func addToHistory(_ values: NSSet)
+
+    @objc(removeHistory:)
+    @NSManaged public func removeFromHistory(_ values: NSSet)
 
 }
 

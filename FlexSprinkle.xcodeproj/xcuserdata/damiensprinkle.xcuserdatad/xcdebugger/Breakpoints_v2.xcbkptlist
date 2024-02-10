@@ -14,8 +14,8 @@
             filePath = "FlexSprinkle/Views/WorkoutTracker/ActiveWorkoutView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "315"
-            endingLineNumber = "315"
+            startingLineNumber = "339"
+            endingLineNumber = "339"
             landmarkName = "cardioExerciseRow(for:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -30,8 +30,8 @@
             filePath = "FlexSprinkle/Views/WorkoutTracker/ActiveWorkoutView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "263"
-            endingLineNumber = "263"
+            startingLineNumber = "287"
+            endingLineNumber = "287"
             landmarkName = "liftingExerciseRow(for:)"
             landmarkType = "7">
             <Locations>
@@ -64,6 +64,54 @@
                   startingLineNumber = "251"
                   endingLineNumber = "251"
                   offsetFromSymbolStart = "168">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "068D0E39-769B-4E85-93D5-00C9A178A890"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FlexSprinkle/Views/WorkoutTracker/WorkoutTrackerMainView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "64"
+            endingLineNumber = "64"
+            landmarkName = "body"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "068D0E39-769B-4E85-93D5-00C9A178A890 - 80a62215216f77b3"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.onAppear(perform: Swift.Optional&lt;() -&gt; ()&gt;) -&gt; some&gt;&gt;.0 in FlexSprinkle.WorkoutTrackerMainView.body.getter : some"
+                  moduleName = "FlexSprinkle"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/damiensprinkle/Desktop/FlexSprinkle/FlexSprinkle/Views/WorkoutTracker/WorkoutTrackerMainView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "64"
+                  endingLineNumber = "64"
+                  offsetFromSymbolStart = "500">
+               </Location>
+               <Location
+                  uuid = "068D0E39-769B-4E85-93D5-00C9A178A890 - de0c33f16c1162d6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 (FlexSprinkle.WorkoutNavigationContext) -&gt; &lt;&lt;opaque return type of SwiftUI.View.environmentObject&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Combine.ObservableObject&gt;(&#x3c4;_1_0) -&gt; some&gt;&gt;.0 in closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.onAppear(perform: Swift.Optional&lt;() -&gt; ()&gt;) -&gt; some&gt;&gt;.0 in FlexSprinkle.WorkoutTrackerMainView.body.getter : some"
+                  moduleName = "FlexSprinkle"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/damiensprinkle/Desktop/FlexSprinkle/FlexSprinkle/Views/WorkoutTracker/WorkoutTrackerMainView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "64"
+                  endingLineNumber = "64"
+                  offsetFromSymbolStart = "500">
                </Location>
             </Locations>
          </BreakpointContent>

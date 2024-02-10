@@ -24,7 +24,7 @@ struct WorkoutTrackerMainView: View {
                 VStack(spacing: 0) {
                     if hasActiveSession, let activeWorkoutId = activeWorkoutId {
                         Button(action: {
-                            navigationPath.append(activeWorkoutId)
+                            let context = WorkoutNavigationContext(workoutId: activeWorkoutId, workoutCompleted: false);                                    navigationPath.append(context)
                         }) {
                             Text("\(activeWorkoutName ?? "Workout") in Progress: Tap Here To Resume")
 
@@ -61,10 +61,17 @@ struct WorkoutTrackerMainView: View {
                     .padding(.horizontal) // Apply padding here to only affect grid content
                 }
             }
-            .navigationDestination(for: UUID.self) { workoutId in
-                ActiveWorkoutView(workoutId: workoutId)
-                    .environmentObject(workoutManager)
+            .navigationDestination(for: WorkoutNavigationContext.self) { context in
+                if context.workoutCompleted {
+                    WorkoutOverviewView(workoutId: context.workoutId)
+                } else {
+                    ActiveWorkoutView(workoutId: context.workoutId, navigationPath: $navigationPath, context: .constant(context))
+                        .environmentObject(workoutManager)
+                }
             }
+
+
+
             .onAppear {
                 if workoutManager.context == nil {
                     workoutManager.context = viewContext

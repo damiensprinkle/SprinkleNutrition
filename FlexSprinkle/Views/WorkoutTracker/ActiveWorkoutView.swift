@@ -11,6 +11,9 @@ import Combine
 
 struct ActiveWorkoutView: View {
     var workoutId: UUID
+    @Binding var navigationPath: NavigationPath
+    @Binding var context: WorkoutNavigationContext
+
     @EnvironmentObject var workoutManager: WorkoutManager
     @State private var userInputs: [UUID: (reps: String, weight: String, exerciseTime: String)] = [:]
     @State private var fetchedWorkoutDetails: [WorkoutDetail] = []
@@ -18,17 +21,19 @@ struct ActiveWorkoutView: View {
     @State private var workoutStarted = false
     @State private var elapsedTime = 0
     @State private var cancellableTimer: AnyCancellable?
-    
+
     @State private var showEndWorkoutOption = false
     @State private var workoutName = ""
     
     @State private var endWorkoutConfirmationShown = false
     @State private var completedExercises: Set<UUID> = []
     
-    init(workoutId: UUID) {
+    init(workoutId: UUID, navigationPath: Binding<NavigationPath>, context: Binding<WorkoutNavigationContext>) {
         self.workoutId = workoutId
-        
+        self._navigationPath = navigationPath // Note the underscore (_) for binding
+        self._context = context
     }
+
     
     var body: some View {
         VStack {
@@ -105,7 +110,26 @@ struct ActiveWorkoutView: View {
         workoutStarted = false
         showEndWorkoutOption = false
         
+        let totalWeightLifted = userInputs.values.reduce(0) { $0 + (Int($1.weight) ?? 0) * (Int($1.reps) ?? 0) }
+            let totalReps = userInputs.values.reduce(0) { $0 + (Int($1.reps) ?? 0) }
+            // Assuming workoutTimeToComplete is calculated elsewhere in your view model
+            let workoutTimeToComplete = elapsedTimeFormatted
+        let totalCardioTime = userInputs.values.reduce(0) { $0 + (Int($1.exerciseTime) ?? 0) }
+
+        workoutManager.saveWorkoutHistory(
+             workoutId: workoutId,
+             dateCompleted: Date(),
+             totalWeightLifted: Int32(totalWeightLifted),
+             repsCompleted: Int32(totalReps),
+             workoutTimeToComplete: workoutTimeToComplete,
+             totalCardioTime: "\(totalCardioTime)"
+         )
+        
         workoutManager.setSessionStatus(workoutId: workoutId, isActive: false)
+        
+        //Navigate To WorkoutOverview Page
+        navigationPath.append(WorkoutNavigationContext(workoutId: workoutId, workoutCompleted: true)) // Example context
+
         
     }
     

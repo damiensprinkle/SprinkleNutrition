@@ -91,7 +91,8 @@ struct CardView: View {
             if  sessionId != workoutId && sessionId != nil {
                 showAlert = true
             } else {
-                navigationPath.append(workoutId)
+                let context = WorkoutNavigationContext(workoutId: workoutId, workoutCompleted: false)
+                        navigationPath.append(context)
             }
         }) {
             if(hasActiveSession) {

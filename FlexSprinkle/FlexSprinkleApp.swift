@@ -28,6 +28,8 @@ struct FlexSprinkleApp: App {
     var body: some Scene {
         WindowGroup {
             HomeView().environment(\.managedObjectContext, persistenceContainer.viewContext)
+                .environmentObject(AppViewModel())
+
         }
     }
 }

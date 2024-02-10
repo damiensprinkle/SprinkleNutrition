@@ -10,6 +10,7 @@ import SwiftUI
 struct WorkoutDetailView: View {
     @Binding var detail: WorkoutDetailInput
     
+    
     var body: some View {
         HStack {
             TextField("Exercise Name", text: $detail.exerciseName)

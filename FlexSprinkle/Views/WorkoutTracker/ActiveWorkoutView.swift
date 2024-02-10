@@ -11,9 +11,6 @@ import Combine
 
 struct ActiveWorkoutView: View {
     var workoutId: UUID
-    @Binding var navigationPath: NavigationPath
-    @Binding var context: WorkoutNavigationContext
-
     @EnvironmentObject var workoutManager: WorkoutManager
     @State private var userInputs: [UUID: (reps: String, weight: String, exerciseTime: String)] = [:]
     @State private var fetchedWorkoutDetails: [WorkoutDetail] = []
@@ -28,10 +25,8 @@ struct ActiveWorkoutView: View {
     @State private var endWorkoutConfirmationShown = false
     @State private var completedExercises: Set<UUID> = []
     
-    init(workoutId: UUID, navigationPath: Binding<NavigationPath>, context: Binding<WorkoutNavigationContext>) {
+    init(workoutId: UUID) {
         self.workoutId = workoutId
-        self._navigationPath = navigationPath // Note the underscore (_) for binding
-        self._context = context
     }
 
     
@@ -128,7 +123,6 @@ struct ActiveWorkoutView: View {
         workoutManager.setSessionStatus(workoutId: workoutId, isActive: false)
         
         //Navigate To WorkoutOverview Page
-        navigationPath.append(WorkoutNavigationContext(workoutId: workoutId, workoutCompleted: true)) // Example context
 
         
     }

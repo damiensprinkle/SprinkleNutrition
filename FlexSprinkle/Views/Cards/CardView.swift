@@ -6,14 +6,14 @@ struct CardView: View {
     var onDelete: (() -> Void)?
     var hasActiveSession: Bool
     
-    @Binding var navigationPath: NavigationPath
     @State private var presentingModal: ModalType? = nil
     @EnvironmentObject var workoutManager: WorkoutManager
     @State private var animate = false
     @State private var showAlert = false
     
     @State private var showingDeletionConfirmation = false
-    
+    @EnvironmentObject var appViewModel: AppViewModel
+
     
     
     var body: some View {
@@ -91,8 +91,7 @@ struct CardView: View {
             if  sessionId != workoutId && sessionId != nil {
                 showAlert = true
             } else {
-                let context = WorkoutNavigationContext(workoutId: workoutId, workoutCompleted: false)
-                        navigationPath.append(context)
+                appViewModel.navigateTo(.workoutActiveView(workoutId))
             }
         }) {
             if(hasActiveSession) {

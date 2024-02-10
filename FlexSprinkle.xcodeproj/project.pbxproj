@@ -21,6 +21,11 @@
 		087111A12B77B58C0054E315 /* WorkoutSession+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087111992B77B58C0054E315 /* WorkoutSession+CoreDataClass.swift */; };
 		087111A22B77B58C0054E315 /* WorkoutSession+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0871119A2B77B58C0054E315 /* WorkoutSession+CoreDataProperties.swift */; };
 		087111A42B77BADE0054E315 /* WorkoutNavigationContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087111A32B77BADE0054E315 /* WorkoutNavigationContext.swift */; };
+		087111A62B77C32D0054E315 /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087111A52B77C32D0054E315 /* AppViewModel.swift */; };
+		087111A82B77C6DF0054E315 /* WorkoutInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087111A72B77C6DF0054E315 /* WorkoutInfo.swift */; };
+		087111AA2B77CA170054E315 /* WorkoutTrackerContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087111A92B77CA170054E315 /* WorkoutTrackerContentView.swift */; };
+		087111AD2B77E9EC0054E315 /* CustomTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087111AC2B77E9EC0054E315 /* CustomTabView.swift */; };
+		087111AF2B77EAF20054E315 /* HomeContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087111AE2B77EAF20054E315 /* HomeContentView.swift */; };
 		08B78FF02B6DBA370002DA68 /* FlexSprinkleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B78FEF2B6DBA370002DA68 /* FlexSprinkleApp.swift */; };
 		08B78FF22B6DBA370002DA68 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B78FF12B6DBA370002DA68 /* HomeView.swift */; };
 		08B78FF42B6DBA390002DA68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08B78FF32B6DBA390002DA68 /* Assets.xcassets */; };
@@ -69,6 +74,11 @@
 		087111992B77B58C0054E315 /* WorkoutSession+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkoutSession+CoreDataClass.swift"; sourceTree = "<group>"; };
 		0871119A2B77B58C0054E315 /* WorkoutSession+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkoutSession+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		087111A32B77BADE0054E315 /* WorkoutNavigationContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutNavigationContext.swift; sourceTree = "<group>"; };
+		087111A52B77C32D0054E315 /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
+		087111A72B77C6DF0054E315 /* WorkoutInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutInfo.swift; sourceTree = "<group>"; };
+		087111A92B77CA170054E315 /* WorkoutTrackerContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTrackerContentView.swift; sourceTree = "<group>"; };
+		087111AC2B77E9EC0054E315 /* CustomTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabView.swift; sourceTree = "<group>"; };
+		087111AE2B77EAF20054E315 /* HomeContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeContentView.swift; sourceTree = "<group>"; };
 		08B78FEC2B6DBA370002DA68 /* FlexSprinkle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlexSprinkle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08B78FEF2B6DBA370002DA68 /* FlexSprinkleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexSprinkleApp.swift; sourceTree = "<group>"; };
 		08B78FF12B6DBA370002DA68 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -145,6 +155,15 @@
 			path = CoreData;
 			sourceTree = "<group>";
 		};
+		087111AB2B77E9DB0054E315 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				087111AC2B77E9EC0054E315 /* CustomTabView.swift */,
+				087111AE2B77EAF20054E315 /* HomeContentView.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
 		08B78FE32B6DBA370002DA68 = {
 			isa = PBXGroup;
 			children = (
@@ -191,6 +210,7 @@
 		08B7901C2B6E8F230002DA68 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				087111AB2B77E9DB0054E315 /* Main */,
 				08B790342B7162740002DA68 /* Cards */,
 				08B790292B708A370002DA68 /* NutritionHelper */,
 				08B790282B708A1F0002DA68 /* WorkoutTracker */,
@@ -207,6 +227,8 @@
 				087111442B7519900054E315 /* CoreData */,
 				087111402B7405990054E315 /* WorkoutDetailsInput.swift */,
 				087111A32B77BADE0054E315 /* WorkoutNavigationContext.swift */,
+				087111A52B77C32D0054E315 /* AppViewModel.swift */,
+				087111A72B77C6DF0054E315 /* WorkoutInfo.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -228,6 +250,7 @@
 				08B790322B7153F90002DA68 /* EditWorkoutView.swift */,
 				08B790392B716C1C0002DA68 /* WorkoutDetailView.swift */,
 				087111712B77B3120054E315 /* WorkoutOverviewView.swift */,
+				087111A92B77CA170054E315 /* WorkoutTrackerContentView.swift */,
 			);
 			path = WorkoutTracker;
 			sourceTree = "<group>";
@@ -383,6 +406,7 @@
 				08B790222B6E911D0002DA68 /* NutritionHelperMainView.swift in Sources */,
 				0871119C2B77B58C0054E315 /* Workouts+CoreDataProperties.swift in Sources */,
 				087111372B728F8F0054E315 /* ModalType.swift in Sources */,
+				087111AA2B77CA170054E315 /* WorkoutTrackerContentView.swift in Sources */,
 				0871113A2B72AD830054E315 /* Model.xcdatamodeld in Sources */,
 				0871119F2B77B58C0054E315 /* WorkoutDetail+CoreDataClass.swift in Sources */,
 				087111412B7405990054E315 /* WorkoutDetailsInput.swift in Sources */,
@@ -390,16 +414,20 @@
 				087111A42B77BADE0054E315 /* WorkoutNavigationContext.swift in Sources */,
 				08B7903A2B716C1C0002DA68 /* WorkoutDetailView.swift in Sources */,
 				08B78FF22B6DBA370002DA68 /* HomeView.swift in Sources */,
+				087111AD2B77E9EC0054E315 /* CustomTabView.swift in Sources */,
 				087111A02B77B58C0054E315 /* WorkoutDetail+CoreDataProperties.swift in Sources */,
 				08B7901E2B6E8F8D0002DA68 /* SettingsView.swift in Sources */,
+				087111AF2B77EAF20054E315 /* HomeContentView.swift in Sources */,
 				08B7902D2B7136320002DA68 /* ActiveWorkoutView.swift in Sources */,
 				0871113D2B7306C20054E315 /* ColorManager.swift in Sources */,
 				08B790312B7138F70002DA68 /* WorkoutManager.swift in Sources */,
 				08B7901B2B6DC28F0002DA68 /* CardView.swift in Sources */,
 				08B790272B7079C90002DA68 /* DatePickerView.swift in Sources */,
 				08B790332B7153F90002DA68 /* EditWorkoutView.swift in Sources */,
+				087111A62B77C32D0054E315 /* AppViewModel.swift in Sources */,
 				08B78FF02B6DBA370002DA68 /* FlexSprinkleApp.swift in Sources */,
 				0871119E2B77B58C0054E315 /* WorkoutHistory+CoreDataProperties.swift in Sources */,
+				087111A82B77C6DF0054E315 /* WorkoutInfo.swift in Sources */,
 				08B790202B6E91010002DA68 /* WorkoutTrackerMainView.swift in Sources */,
 				08B7902B2B7090870002DA68 /* AddWorkoutView.swift in Sources */,
 				0871119D2B77B58C0054E315 /* WorkoutHistory+CoreDataClass.swift in Sources */,

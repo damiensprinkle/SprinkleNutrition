@@ -21,6 +21,7 @@ struct WorkoutTrackerMainView: View {
     
     
     var body: some View {
+        Divider()
         ScrollView {
             VStack(spacing: 0) {
                 if hasActiveSession, let workoutId = activeWorkoutId {
@@ -51,6 +52,7 @@ struct WorkoutTrackerMainView: View {
                                 appViewModel.navigateTo(.workoutActiveView(workout.id))
                             }
                             .environmentObject(workoutManager)
+                        
 
                     }
                 }

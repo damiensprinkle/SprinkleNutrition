@@ -21,11 +21,12 @@ struct WorkoutContentMainView: View {
         case .workoutOverview(let workoutId):
             WorkoutOverviewView(workoutId: workoutId)
                 .environmentObject(workoutManager)
+                .environmentObject(appViewModel)
 
         case .workoutActiveView(let workoutId):
             ActiveWorkoutView(workoutId: workoutId) 
                 .environmentObject(workoutManager)
-            // Ensure ActiveWorkoutView can accept and work with the workoutId
+                .environmentObject(appViewModel)
         }
     }
 }

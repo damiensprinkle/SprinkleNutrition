@@ -7,7 +7,7 @@ struct NutritionHelperMainView: View {
     var body: some View {
         VStack {
             Divider()
-            DatePickerView(selectedDate: $selectedDate, cardColor: .blue)
+            DatePickerView(selectedDate: $selectedDate, cardColor: Color("MyBlue"))
             Spacer()
         }
     }

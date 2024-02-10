@@ -359,9 +359,24 @@ extension WorkoutManager {
             print("Failed to save workout history: \(error)")
         }
     }
+    
+    func fetchLatestWorkoutHistory(for workoutId: UUID) -> WorkoutHistory? {
+        guard let context = self.context else { return nil }
 
-    
-    
+        let fetchRequest: NSFetchRequest<WorkoutHistory> = WorkoutHistory.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "workoutR.id == %@", workoutId as CVarArg)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "workoutDate", ascending: false)]
+        fetchRequest.fetchLimit = 1
+
+        do {
+            let histories = try context.fetch(fetchRequest)
+            return histories.first
+        } catch {
+            print("Failed to fetch latest workout history: \(error)")
+            return nil
+        }
+    }
+
     func setSessionStatus(workoutId: UUID, isActive: Bool) {
         guard let context = self.context else { return }
         

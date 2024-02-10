@@ -17,8 +17,6 @@ struct HomeView: View {
                     CustomTabView()
                         .environmentObject(appViewModel)
                 }
-                
-                // Your other content here
             }
         }
     }

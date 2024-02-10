@@ -38,10 +38,4 @@ class AppViewModel: ObservableObject {
          case workout
          case nutrition
     }
-
-    // Add any additional methods needed for tab navigation
-    func resetWorkoutNavigation() {
-        // Implement the logic to reset the navigation state of the workout tab
-        // This might involve setting currentView to a specific state
-    }
 }

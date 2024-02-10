@@ -12,7 +12,7 @@ struct CustomTabView: View {
     @EnvironmentObject var appViewModel: AppViewModel
 
     enum Tab: String {
-        case home, workout, nutrition
+        case home, workout, nutrition, settings
     }
 
     var body: some View {
@@ -25,6 +25,9 @@ struct CustomTabView: View {
                 WorkoutContentMainView().navigationTitle("Workout Tracker")
             case .nutrition:
                 NutritionHelperMainView().navigationTitle("Nutrition Helper")
+            case .settings:
+                SettingsView().navigationTitle("Settings")
+
             }
 
             Spacer() // Pushes the tab bar to the bottom
@@ -43,6 +46,10 @@ struct CustomTabView: View {
                 
                 // Nutrition Tab Button
                 tabButton(for: .nutrition, systemImage: "leaf.fill")
+                
+                Spacer()
+                
+                tabButton(for: .settings, systemImage :"gearshape")
             }
             .padding()
             .background(Color.gray.opacity(0.1)) // Customize as needed

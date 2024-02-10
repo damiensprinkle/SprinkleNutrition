@@ -26,6 +26,7 @@
 		087111AA2B77CA170054E315 /* WorkoutTrackerContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087111A92B77CA170054E315 /* WorkoutTrackerContentView.swift */; };
 		087111AD2B77E9EC0054E315 /* CustomTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087111AC2B77E9EC0054E315 /* CustomTabView.swift */; };
 		087111AF2B77EAF20054E315 /* HomeContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087111AE2B77EAF20054E315 /* HomeContentView.swift */; };
+		087111B22B77F79F0054E315 /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 087111B12B77F79F0054E315 /* ConfettiSwiftUI */; };
 		08B78FF02B6DBA370002DA68 /* FlexSprinkleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B78FEF2B6DBA370002DA68 /* FlexSprinkleApp.swift */; };
 		08B78FF22B6DBA370002DA68 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B78FF12B6DBA370002DA68 /* HomeView.swift */; };
 		08B78FF42B6DBA390002DA68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08B78FF32B6DBA390002DA68 /* Assets.xcassets */; };
@@ -104,6 +105,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				087111B22B77F79F0054E315 /* ConfettiSwiftUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,6 +160,9 @@
 		087111AB2B77E9DB0054E315 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				087111A92B77CA170054E315 /* WorkoutTrackerContentView.swift */,
+				08B7901D2B6E8F8D0002DA68 /* SettingsView.swift */,
+				08B78FF12B6DBA370002DA68 /* HomeView.swift */,
 				087111AC2B77E9EC0054E315 /* CustomTabView.swift */,
 				087111AE2B77EAF20054E315 /* HomeContentView.swift */,
 			);
@@ -214,8 +219,6 @@
 				08B790342B7162740002DA68 /* Cards */,
 				08B790292B708A370002DA68 /* NutritionHelper */,
 				08B790282B708A1F0002DA68 /* WorkoutTracker */,
-				08B78FF12B6DBA370002DA68 /* HomeView.swift */,
-				08B7901D2B6E8F8D0002DA68 /* SettingsView.swift */,
 				08B790262B7079C90002DA68 /* DatePickerView.swift */,
 			);
 			path = Views;
@@ -250,7 +253,6 @@
 				08B790322B7153F90002DA68 /* EditWorkoutView.swift */,
 				08B790392B716C1C0002DA68 /* WorkoutDetailView.swift */,
 				087111712B77B3120054E315 /* WorkoutOverviewView.swift */,
-				087111A92B77CA170054E315 /* WorkoutTrackerContentView.swift */,
 			);
 			path = WorkoutTracker;
 			sourceTree = "<group>";
@@ -287,6 +289,9 @@
 			dependencies = (
 			);
 			name = FlexSprinkle;
+			packageProductDependencies = (
+				087111B12B77F79F0054E315 /* ConfettiSwiftUI */,
+			);
 			productName = FlexSprinkle;
 			productReference = 08B78FEC2B6DBA370002DA68 /* FlexSprinkle.app */;
 			productType = "com.apple.product-type.application";
@@ -359,6 +364,9 @@
 				Base,
 			);
 			mainGroup = 08B78FE32B6DBA370002DA68;
+			packageReferences = (
+				087111B02B77F79F0054E315 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
+			);
 			productRefGroup = 08B78FED2B6DBA370002DA68 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -779,6 +787,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		087111B02B77F79F0054E315 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/simibac/ConfettiSwiftUI.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		087111B12B77F79F0054E315 /* ConfettiSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 087111B02B77F79F0054E315 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */;
+			productName = ConfettiSwiftUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		087111382B72AD830054E315 /* Model.xcdatamodeld */ = {

@@ -9,7 +9,6 @@ import SwiftUI
 import SwiftData
 
 struct WorkoutTrackerMainView: View {
-    @State private var selectedDate = Date()
     @Environment(\.managedObjectContext) private var viewContext
     @StateObject private var workoutManager = WorkoutManager() // Initialize without context first
     @State private var navigationPath = NavigationPath()
@@ -17,8 +16,6 @@ struct WorkoutTrackerMainView: View {
     @State private var hasActiveSession = false // Track active session state
     @State private var activeWorkoutName: String? // Store the active workout name
     @State private var activeWorkoutId: UUID? // Store the active workout ID for navigation
-    
-    @State private var workouts: [WorkoutInfo] = [] // WorkoutInfo is a hypothetical struct holding both name and ID
     
     
     var body: some View {
@@ -29,7 +26,8 @@ struct WorkoutTrackerMainView: View {
                         Button(action: {
                             navigationPath.append(activeWorkoutId)
                         }) {
-                            Text("Workout in Progress: Tap Here To Resume")
+                            Text("\(activeWorkoutName ?? "Workout") in Progress: Tap Here To Resume")
+
                                 .foregroundColor(.white)
                                 .frame(maxWidth: .infinity)
                                 .padding()
@@ -42,7 +40,6 @@ struct WorkoutTrackerMainView: View {
                     // Content below the banner
                     LazyVGrid(columns: [GridItem(.flexible(), spacing: 16), GridItem(.flexible(), spacing: 16)], spacing: 16) {
                         CardView(
-                            title: "Add",
                             workoutId: UUID(), //throw away id
                             isDefault: true,
                             hasActiveSession: false,
@@ -50,7 +47,6 @@ struct WorkoutTrackerMainView: View {
                         )
                         ForEach(workoutManager.workouts) { workout in
                             CardView(
-                                title: workout.name,
                                 workoutId: workout.id,
                                 isDefault: false,
                                 onDelete: {
@@ -88,17 +84,6 @@ struct WorkoutTrackerMainView: View {
         .environmentObject(workoutManager)
     }
 }
-
-
-
-
-struct WorkoutTrackerMainView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeView()
-        WorkoutTrackerMainView()
-    }
-}
-
 
 struct WorkoutInfo: Identifiable {
     var id: UUID // Assuming each workout has a unique UUID

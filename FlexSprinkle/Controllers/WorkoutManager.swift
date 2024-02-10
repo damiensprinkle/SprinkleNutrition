@@ -104,66 +104,6 @@ class WorkoutManager: ObservableObject {
         }
     }
     
-    func fetchWorkoutColor(for title: String) -> [Workouts] {
-        guard let context = self.context else { return [] }
-        
-        let request = NSFetchRequest<Workouts>(entityName: "Workouts")
-        request.predicate = NSPredicate(format: "name == %@", title)
-        do {
-            
-            return try context.fetch(request)
-        } catch {
-            print("Failed to fetch workout details: \(error)")
-            return []
-        }
-    }
-    
-    
-    
-    
-    
-    func fetchWorkoutDetails(for title: String) -> [WorkoutDetail] {
-        guard let context = self.context else { return [] }
-        
-        let request = NSFetchRequest<WorkoutDetail>(entityName: "WorkoutDetail")
-        request.predicate = NSPredicate(format: "name == %@", title)
-        do {
-            
-            return try context.fetch(request)
-        } catch {
-            print("Failed to fetch workout details: \(error)")
-            return []
-        }
-    }
-    
-    func fetchWorkoutDetailsByWorkoutId(for workoutID: UUID) -> [WorkoutDetail] {
-        guard let context = self.context else {
-            print("Context is nil")
-            return []
-        }
-        
-        // Assuming 'WorkoutDetail' has a relationship to 'Workouts' entity named 'workout'
-        // And 'Workouts' entity has an 'id' attribute
-        let request = NSFetchRequest<WorkoutDetail>(entityName: "WorkoutDetail")
-        request.predicate = NSPredicate(format: "workout.id == %@", workoutID as CVarArg)
-        
-        do {
-            let details = try context.fetch(request)
-            print("Fetched \(details.count) workout details for workoutID \(workoutID)")
-            // Log each fetched detail for more insights
-            details.forEach { detail in
-                print("Exercise ID: \(String(describing: detail.exerciseId)), Name: \(detail.exerciseName ?? ""), Reps: \(detail.reps), Weight: \(detail.weight), IsCardio: \(detail.isCardio), ExerciseTime: \(detail.exerciseTime ?? "")")
-            }
-            return details
-        } catch {
-            print("Failed to fetch workout details: \(error)")
-            return []
-        }
-    }
-    
-    
-    
-    
     
     func deleteWorkout(for workoutId: UUID) {
         guard let context = self.context else { return }
@@ -349,11 +289,6 @@ class WorkoutManager: ObservableObject {
 
 
 extension WorkoutManager {
-    func fetchRequestForWorkoutDetail(withID id: UUID) -> NSFetchRequest<WorkoutDetail> {
-        let request = NSFetchRequest<WorkoutDetail>(entityName: "WorkoutDetail")
-        request.predicate = NSPredicate(format: "id == %@", id as CVarArg)
-        return request
-    }
     
     func titleExists(_ title: String) -> Bool {
         guard let context = self.context else { return false }
@@ -405,25 +340,6 @@ extension WorkoutManager {
         return nil
     }
     
-    func getWorkoutNameOfActiveSession() -> String? {
-        guard let context = self.context else { return "" }
-        let request = NSFetchRequest<WorkoutSession>(entityName: "WorkoutSession")
-        
-        request.predicate = NSPredicate(format: "isActive == %@", NSNumber(value: true))
-        
-        do {
-            // Fetch the active session
-            if let activeSession = try context.fetch(request).first {
-                // Directly access the related workout entity to fetch the workout ID
-                return activeSession.workoutsR?.name
-            }
-        } catch {
-            print("Error fetching active sessions: \(error)")
-        }
-        
-        return ""
-    }
-    
     
     func setSessionStatus(workoutId: UUID, isActive: Bool) {
         guard let context = self.context else { return }
@@ -457,20 +373,5 @@ extension WorkoutManager {
         }
     }
     
-    
-    
-    // Gets details for a specific session
-    func getSessionDetails(for sessionId: UUID) -> WorkoutSession? {
-        guard let context = self.context else { return nil }
-        let request = NSFetchRequest<WorkoutSession>(entityName: "WorkoutSession")
-        request.predicate = NSPredicate(format: "id == %@", sessionId as CVarArg)
-        
-        do {
-            return try context.fetch(request).first
-        } catch {
-            print("Error fetching session details: \(error)")
-            return nil
-        }
-    }
     
 }

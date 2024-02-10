@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct CardView: View {
-    var title: String
     var workoutId: UUID
     var isDefault: Bool
     var onDelete: (() -> Void)?

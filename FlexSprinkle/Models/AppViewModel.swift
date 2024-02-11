@@ -26,14 +26,14 @@ class AppViewModel: ObservableObject {
 
     // Update the navigation logic as needed to work with both views and tabs
 
-    enum ContentViewType {
+    enum ContentViewType : Equatable {
         case main
         case workoutOverview(UUID)
         case workoutActiveView(UUID)
         // Define other views as needed
     }
     
-    enum Tab {
+    enum Tab : Equatable {
          case home
          case workout
          case nutrition

@@ -10,23 +10,32 @@ import SwiftUI
 struct WorkoutContentMainView: View {
     @EnvironmentObject var appViewModel: AppViewModel
     @Environment(\.managedObjectContext) var managedObjectContext
-    @StateObject private var workoutManager = WorkoutManager() // Initialize without context first
-
+    @StateObject private var workoutManager = WorkoutManager()
 
     var body: some View {
-        switch appViewModel.currentView {
-        case .main:
-            WorkoutTrackerMainView().environment(\.managedObjectContext, managedObjectContext)
-                .environmentObject(workoutManager)
-        case .workoutOverview(let workoutId):
-            WorkoutOverviewView(workoutId: workoutId).navigationTitle("Overview")
-                .environmentObject(workoutManager)
-                .environmentObject(appViewModel)
+        ZStack {
+            // Decide which view to present based on the currentView state
+            switch appViewModel.currentView {
+            case .main:
+                AnyView(WorkoutTrackerMainView()
+                            .environment(\.managedObjectContext, managedObjectContext)
+                            .environmentObject(workoutManager))
+                    .transition(.slide)
 
-        case .workoutActiveView(let workoutId):
-            ActiveWorkoutView(workoutId: workoutId) 
-                .environmentObject(workoutManager)
-                .environmentObject(appViewModel)
+            case .workoutOverview(let workoutId):
+                AnyView(WorkoutOverviewView(workoutId: workoutId)
+                            .navigationTitle("Overview")
+                            .environmentObject(workoutManager)
+                            .environmentObject(appViewModel))
+                    .transition(.slide)
+
+            case .workoutActiveView(let workoutId):
+                AnyView(ActiveWorkoutView(workoutId: workoutId)
+                            .environmentObject(workoutManager)
+                            .environmentObject(appViewModel))
+                    .transition(.slide)
+            }
         }
+        .animation(.default, value: appViewModel.currentView)
     }
 }

@@ -59,7 +59,6 @@ struct WorkoutTrackerMainView: View {
                                 appViewModel.navigateTo(.workoutActiveView(workout.id))
                             }
                             .environmentObject(workoutManager)
-                        
 
                     }
                 }

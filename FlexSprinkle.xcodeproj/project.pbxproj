@@ -163,7 +163,6 @@
 			isa = PBXGroup;
 			children = (
 				087111A92B77CA170054E315 /* WorkoutTrackerContentView.swift */,
-				08B7901D2B6E8F8D0002DA68 /* SettingsView.swift */,
 				08B78FF12B6DBA370002DA68 /* HomeView.swift */,
 				087111AC2B77E9EC0054E315 /* CustomTabView.swift */,
 				087111AE2B77EAF20054E315 /* HomeContentView.swift */,
@@ -217,6 +216,7 @@
 		08B7901C2B6E8F230002DA68 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				08B7901D2B6E8F8D0002DA68 /* SettingsView.swift */,
 				087111AB2B77E9DB0054E315 /* Main */,
 				08B790342B7162740002DA68 /* Cards */,
 				08B790292B708A370002DA68 /* NutritionHelper */,

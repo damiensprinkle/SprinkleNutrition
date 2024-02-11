@@ -192,7 +192,7 @@ struct ActiveWorkoutView: View {
         .font(.title2)
         .frame(maxWidth: .infinity)
         .padding()
-        .background(Color.blue)
+        .background(Color.myBlue)
         .foregroundColor(Color.white)
         .cornerRadius(10)
         .padding()

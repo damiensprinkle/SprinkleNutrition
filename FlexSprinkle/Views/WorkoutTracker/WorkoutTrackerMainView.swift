@@ -17,7 +17,8 @@ struct WorkoutTrackerMainView: View {
     @State private var activeWorkoutName: String? // Store the active workout name
     @State private var activeWorkoutId: UUID? // Store the active workout ID for navigation
     @EnvironmentObject var appViewModel: AppViewModel
-    
+    @State private var showAlert = false
+
     
     
     var body: some View {
@@ -44,8 +45,14 @@ struct WorkoutTrackerMainView: View {
                     
                     ForEach($workoutManager.workouts) { workout in
                         CardView(workoutId: workout.id, isDefault: false, onDelete: {
-                            workoutManager.deleteWorkout(for: workout.id)
-                            workoutManager.loadWorkoutsWithId()
+                            if(hasActiveSession && activeWorkoutId == workout.id){
+                                showAlert = true
+                            }
+                            else{
+                                workoutManager.deleteWorkout(for: workout.id)
+                                workoutManager.loadWorkoutsWithId()
+                            }
+     
                         }, hasActiveSession: activeWorkoutId == workout.id)
                             .environmentObject(appViewModel)
                             .onTapGesture {
@@ -61,6 +68,13 @@ struct WorkoutTrackerMainView: View {
         }
         .environmentObject(workoutManager)
         .onAppear(perform: loadWorkouts)
+        .alert(isPresented: $showAlert) {
+            Alert(
+                title: Text("Active Session Detected"),
+                message: Text("You cannot delete an active workout, please end your workout first"),
+                dismissButton: .default(Text("OK"))
+            )
+        }
     }
     
     

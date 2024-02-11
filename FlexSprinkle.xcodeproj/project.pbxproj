@@ -27,6 +27,7 @@
 		087111AD2B77E9EC0054E315 /* CustomTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087111AC2B77E9EC0054E315 /* CustomTabView.swift */; };
 		087111AF2B77EAF20054E315 /* HomeContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087111AE2B77EAF20054E315 /* HomeContentView.swift */; };
 		087111B22B77F79F0054E315 /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 087111B12B77F79F0054E315 /* ConfettiSwiftUI */; };
+		08B3CF232B791FB8002F5C92 /* DataCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B3CF222B791FB8002F5C92 /* DataCardView.swift */; };
 		08B78FF02B6DBA370002DA68 /* FlexSprinkleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B78FEF2B6DBA370002DA68 /* FlexSprinkleApp.swift */; };
 		08B78FF22B6DBA370002DA68 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B78FF12B6DBA370002DA68 /* HomeView.swift */; };
 		08B78FF42B6DBA390002DA68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08B78FF32B6DBA390002DA68 /* Assets.xcassets */; };
@@ -80,6 +81,7 @@
 		087111A92B77CA170054E315 /* WorkoutTrackerContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTrackerContentView.swift; sourceTree = "<group>"; };
 		087111AC2B77E9EC0054E315 /* CustomTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabView.swift; sourceTree = "<group>"; };
 		087111AE2B77EAF20054E315 /* HomeContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeContentView.swift; sourceTree = "<group>"; };
+		08B3CF222B791FB8002F5C92 /* DataCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCardView.swift; sourceTree = "<group>"; };
 		08B78FEC2B6DBA370002DA68 /* FlexSprinkle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlexSprinkle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08B78FEF2B6DBA370002DA68 /* FlexSprinkleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexSprinkleApp.swift; sourceTree = "<group>"; };
 		08B78FF12B6DBA370002DA68 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -269,6 +271,7 @@
 			isa = PBXGroup;
 			children = (
 				08B7901A2B6DC28F0002DA68 /* CardView.swift */,
+				08B3CF222B791FB8002F5C92 /* DataCardView.swift */,
 			);
 			path = Cards;
 			sourceTree = "<group>";
@@ -437,6 +440,7 @@
 				0871119E2B77B58C0054E315 /* WorkoutHistory+CoreDataProperties.swift in Sources */,
 				087111A82B77C6DF0054E315 /* WorkoutInfo.swift in Sources */,
 				08B790202B6E91010002DA68 /* WorkoutTrackerMainView.swift in Sources */,
+				08B3CF232B791FB8002F5C92 /* DataCardView.swift in Sources */,
 				08B7902B2B7090870002DA68 /* AddWorkoutView.swift in Sources */,
 				0871119D2B77B58C0054E315 /* WorkoutHistory+CoreDataClass.swift in Sources */,
 				0871119B2B77B58C0054E315 /* Workouts+CoreDataClass.swift in Sources */,

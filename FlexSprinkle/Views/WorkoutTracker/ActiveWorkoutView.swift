@@ -347,15 +347,9 @@ struct ActiveWorkoutView: View {
                     }
                 }
             ))
-            .keyboardType(.default) // This allows for non-numeric input, adjust as necessary for your input format
-            .frame(width: 150) // Adjust the frame as needed
-            .disabled(!workoutStarted)
             
-            .keyboardType(.numberPad) // Check if appropriate for your use case
+            .keyboardType(.numberPad)
             .frame(width: 150)
-            .disabled(!workoutStarted)
-            
-            .frame(width: 150) // Adjusted for potentially longer input
             .disabled(!workoutStarted)
         }
         .padding()
@@ -373,16 +367,37 @@ struct ActiveWorkoutView: View {
             if detail.isCardio {
                 if (self.userInputs[detail.exerciseId!]?.exerciseTime.isEmpty ?? true) {
                     userInputs[detail.exerciseId!]?.exerciseTime = detail.exerciseTime!
+                    saveOrUpdateWorkoutOnToggleCompletion(for: workoutId, detail: detail)
                 }
             } else {
                 if (self.userInputs[detail.exerciseId!]?.reps.isEmpty ?? true) {
                     userInputs[detail.exerciseId!]?.reps = String(detail.reps)
+                    
+                    saveOrUpdateWorkoutOnToggleCompletion(for: workoutId, detail: detail)
                 }
                 if (self.userInputs[detail.exerciseId!]?.weight.isEmpty ?? true) {
                     userInputs[detail.exerciseId!]?.weight = String(detail.weight)
+                    
+                    saveOrUpdateWorkoutOnToggleCompletion(for: workoutId, detail: detail)
+                    
                 }
             }
         }
+    }
+    
+    private func saveOrUpdateWorkoutOnToggleCompletion(for workoutId: UUID, detail: WorkoutDetail)
+    {
+        DispatchQueue.main.async {
+            workoutManager.saveOrUpdateWorkoutHistory(
+                workoutId: workoutId,
+                exerciseId: detail.exerciseId!,
+                exerciseName: detail.exerciseName!,
+                reps: self.userInputs[detail.exerciseId!]?.reps,
+                weight: self.userInputs[detail.exerciseId!]?.weight,
+                exerciseTime: detail.exerciseTime
+            )
+        }
+        
     }
     
     private var elapsedTimeFormatted: String {

@@ -20,7 +20,7 @@ struct WorkoutDetailView: View {
             
             
             if detail.isCardio {
-                TextField("Time/Description", text: $detail.exerciseTime)
+                TextField("Time(Minutes)", text: $detail.exerciseTime)
                     .keyboardType(.numberPad)
                     .frame(width: 135)
             } else {

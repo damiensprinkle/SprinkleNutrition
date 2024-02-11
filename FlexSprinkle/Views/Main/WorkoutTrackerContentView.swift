@@ -19,7 +19,7 @@ struct WorkoutContentMainView: View {
             WorkoutTrackerMainView().environment(\.managedObjectContext, managedObjectContext)
                 .environmentObject(workoutManager)
         case .workoutOverview(let workoutId):
-            WorkoutOverviewView(workoutId: workoutId)
+            WorkoutOverviewView(workoutId: workoutId).navigationTitle("Overview")
                 .environmentObject(workoutManager)
                 .environmentObject(appViewModel)
 

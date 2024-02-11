@@ -13,13 +13,13 @@ struct SettingsView: View {
         @State private var optionThree = false
     var body: some View {
         Divider()
-
+        
         NavigationView {
-                  Form {
-                      Toggle("Option One", isOn: $optionOne)
-                      Toggle("Option Two", isOn: $optionTwo)
-                      Toggle("Option Three", isOn: $optionThree)
-                  }
-              }
+            Form {
+                Toggle("Option One", isOn: $optionOne)
+                Toggle("Option Two", isOn: $optionTwo)
+                Toggle("Option Three", isOn: $optionThree)
+            }
+        }
     }
 }

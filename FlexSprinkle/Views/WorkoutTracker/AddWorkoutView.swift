@@ -38,6 +38,9 @@ struct AddWorkoutView: View {
                     .onDelete { indexSet in
                         workoutDetails.remove(atOffsets: indexSet)
                     }
+                    .onMove { (source: IndexSet, destination: Int) in
+                           workoutDetails.move(fromOffsets: source, toOffset: destination)
+                       }
                     
                     Button("Add Exercise") {
                         showingAddExerciseSheet = true
@@ -54,7 +57,10 @@ struct AddWorkoutView: View {
             .navigationTitle("Add Workout")
             .navigationBarItems(
                 leading: Button("Cancel") { presentationMode.wrappedValue.dismiss() },
-                trailing: Button("Save", action: saveWorkout)
+                trailing: HStack {
+                    EditButton() // This toggles the edit mode on your form
+                    Button("Save", action: saveWorkout)
+                }
             )
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("Incomplete Workout"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
@@ -77,17 +83,18 @@ struct AddWorkoutView: View {
         }
          else {
             // Iterate over filled details and add them
-            for detail in workoutDetails {
-                workoutManager.addWorkoutDetail(
+             for (index, detail) in workoutDetails.enumerated() {
+                 workoutManager.addWorkoutDetail(
                     workoutTitle: workoutTitle,
                     exerciseName: detail.exerciseName,
                     reps: Int32(detail.reps) ?? 0,
                     weight: Int32(detail.weight) ?? 0,
                     color: colorManager.getRandomColor(),
                     isCardio: detail.isCardio,
-                    exerciseTime: detail.exerciseTime
-                )
-            }
+                    exerciseTime: detail.exerciseTime,
+                    orderIndex: Int32(index) // Pass the index as orderIndex
+                 )
+             }
             presentationMode.wrappedValue.dismiss()
         }
     }

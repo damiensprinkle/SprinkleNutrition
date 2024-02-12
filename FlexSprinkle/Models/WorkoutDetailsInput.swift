@@ -15,4 +15,5 @@ struct WorkoutDetailInput {
     var weight: String = "" //reps for exercise if isCardio = false
     var isCardio: Bool = false  //boolean to determine if exercise is cardio
     var exerciseTime: String = "" //time used if isCardio = true
+    var orderIndex: Int32 = 0 // order of exercise
 }

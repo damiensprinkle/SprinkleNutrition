@@ -20,6 +20,8 @@ struct EditWorkoutView: View {
     @State private var errorMessage: String = ""
     @State private var showAlert: Bool = false
     @State private var showingAddExerciseSheet = false
+    @State private var isEditMode: EditMode = .active
+
     
     init(workoutId: UUID) {
         self.workoutId = workoutId
@@ -38,7 +40,7 @@ struct EditWorkoutView: View {
                         WorkoutDetailView(detail: $workoutDetailsInput[index])
                     }
                     .onDelete(perform: deleteDetail)
-                    
+                    .onMove(perform: moveDetail)
                     Button("Add Exercise") {
                         showingAddExerciseSheet = true
                     }
@@ -54,12 +56,18 @@ struct EditWorkoutView: View {
             .navigationTitle("Edit Workout")
             .navigationBarItems(
                 leading: Button("Cancel") { presentationMode.wrappedValue.dismiss() },
-                trailing: Button("Save", action: saveWorkout)
+                trailing: HStack {
+                    Button("Save", action: saveWorkout)
+                }
             )
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("Error"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
             }
-            .onAppear(perform: loadWorkoutDetails)
+            .environment(\.editMode, $isEditMode) // Apply custom edit mode here
+
+            .onAppear{
+                loadWorkoutDetails()
+            }
         }
     }
     
@@ -72,8 +80,10 @@ struct EditWorkoutView: View {
         self.workoutTitle = workout.name ?? ""
         self.workoutTitleOriginal = self.workoutTitle
         
+        // Assuming 'workout.details' can be cast to Set<WorkoutDetail>
+        // and that 'orderIndex' correctly reflects the intended order.
         if let detailsSet = workout.details as? Set<WorkoutDetail> {
-            let details = detailsSet.sorted { $0.exerciseName! < $1.exerciseName! } // Sort if needed
+            let details = detailsSet.sorted { $0.orderIndex < $1.orderIndex }
             self.workoutDetailsInput = details.map { detail in
                 WorkoutDetailInput(
                     id: detail.id,
@@ -82,12 +92,24 @@ struct EditWorkoutView: View {
                     reps: detail.isCardio ? "" : String(detail.reps),
                     weight: detail.isCardio ? "" : String(detail.weight),
                     isCardio: detail.isCardio,
-                    exerciseTime: detail.isCardio ? detail.exerciseTime! : ""
+                    exerciseTime: detail.isCardio ? detail.exerciseTime! : "",
+                    orderIndex: Int32(detail.orderIndex) // Ensure this matches the type of orderIndex in your model
                 )
             }
         }
     }
+
     
+    private func moveDetail(from source: IndexSet, to destination: Int) {
+        workoutDetailsInput.move(fromOffsets: source, toOffset: destination)
+        
+        // Update the orderIndex for each detail to reflect their new position
+        for (index, _) in workoutDetailsInput.enumerated() {
+            workoutDetailsInput[index].orderIndex = Int32(index)
+        }
+    }
+
+
     
     private func addExercise(isCardio: Bool) {
         var newDetail = WorkoutDetailInput(isCardio: isCardio)
@@ -118,7 +140,9 @@ struct EditWorkoutView: View {
                 // For now, do nothing or show an error message if needed.
                 errorMessage = "Please add at least one exercise"
                 showAlert = true
-            } else {
+            } 
+            
+            else {
                 // Update the workout details with filled details only
                 workoutManager.updateWorkoutDetails(workoutId: workoutId, workoutDetailsInput: filledDetails)
                 workoutManager.updateWorkoutTitle(workoutId: workoutId, to: workoutTitle)

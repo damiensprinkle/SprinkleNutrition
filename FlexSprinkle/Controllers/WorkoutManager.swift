@@ -24,7 +24,7 @@ class WorkoutManager: ObservableObject {
     // MARK: Core Data Operations
     
     //good
-    func addWorkoutDetail(workoutTitle: String, exerciseName: String, reps: Int32, weight: Int32, color: String, isCardio: Bool, exerciseTime: String) {
+    func addWorkoutDetail(workoutTitle: String, exerciseName: String, reps: Int32, weight: Int32, color: String, isCardio: Bool, exerciseTime: String, orderIndex: Int32) {
         guard let context = self.context else { return }
         
         let workout = findOrCreateWorkout(withTitle: workoutTitle, color: color)
@@ -37,6 +37,8 @@ class WorkoutManager: ObservableObject {
         newExerciseDetail.weight = weight
         newExerciseDetail.isCardio = isCardio
         newExerciseDetail.exerciseTime = exerciseTime
+        newExerciseDetail.orderIndex = orderIndex
+        
         
         // Associate the new exercise detail with the workout
         workout.addToDetails(newExerciseDetail)
@@ -257,6 +259,7 @@ class WorkoutManager: ObservableObject {
                 detail.weight = Int32(input.weight) ?? 0
                 detail.isCardio = input.isCardio
                 detail.exerciseTime = input.exerciseTime
+                detail.orderIndex = input.orderIndex
             } else {
                 // Add new detail
                 let newDetail = WorkoutDetail(context: context)
@@ -267,6 +270,7 @@ class WorkoutManager: ObservableObject {
                 newDetail.isCardio = input.isCardio
                 newDetail.exerciseTime = input.exerciseTime
                 newDetail.workoutR = workout
+                newDetail.orderIndex = input.orderIndex
                 newDetails.append(newDetail)
             }
         }

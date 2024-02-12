@@ -22,7 +22,7 @@ struct CustomTabView: View {
             case .home:
                 HomeContentView().navigationTitle("Home")
             case .workout:
-                WorkoutContentMainView().navigationTitle("Workout Tracker")
+                WorkoutContentMainView()
             case .nutrition:
                 NutritionHelperMainView().navigationTitle("Nutrition Helper")
             case .settings:

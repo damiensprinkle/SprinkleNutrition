@@ -18,64 +18,83 @@ struct WorkoutTrackerMainView: View {
     @State private var activeWorkoutId: UUID? // Store the active workout ID for navigation
     @EnvironmentObject var appViewModel: AppViewModel
     @State private var showAlert = false
-
-    
+    @State private var deletingWorkouts: Set<UUID> = [] // for dissolve animation
+    @State private var presentingModal: ModalType? = nil
     
     var body: some View {
-        Divider()
-        ScrollView {
-            VStack(spacing: 0) {
-                if hasActiveSession, let workoutId = activeWorkoutId {
-                    Button(action: {
-                        appViewModel.navigateTo(.workoutActiveView(workoutId))
-                    }) {
-                        Text("\(activeWorkoutName ?? "Workout") in Progress: Tap Here To Resume")
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.blue)
-                            .edgesIgnoringSafeArea(.horizontal)
+        NavigationView {
+            ScrollView {
+                VStack(spacing: 0) {
+                    if hasActiveSession, let workoutId = activeWorkoutId {
+                        Button(action: {
+                            appViewModel.navigateTo(.workoutActiveView(workoutId))
+                        }) {
+                            Text("\(activeWorkoutName ?? "Workout") in Progress: Tap Here To Resume")
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color.blue)
+                                .edgesIgnoringSafeArea(.horizontal)
+                        }
+                        Spacer()
                     }
-                    Spacer()
-                }
-                
-                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
-                    CardView(workoutId: UUID(), isDefault: true, hasActiveSession: false)
-                        .environmentObject(appViewModel)
                     
-                    ForEach($workoutManager.workouts) { workout in
-                        CardView(workoutId: workout.id, isDefault: false, onDelete: {
-                            if(hasActiveSession && activeWorkoutId == workout.id){
-                                showAlert = true
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
+                        ForEach($workoutManager.workouts) { workout in
+                            if !deletingWorkouts.contains(workout.id) {
+                                CardView(workoutId: workout.id, isDefault: false, onDelete: {
+                                    deleteWorkouts(workout.id)
+                                }, hasActiveSession: activeWorkoutId == workout.id)
+                                .transition(.asymmetric(insertion: .opacity.combined(with: .scale), removal: .opacity.combined(with: .scale)))
+                                .environmentObject(appViewModel)
+                                .onTapGesture {
+                                    appViewModel.navigateTo(.workoutActiveView(workout.id))
+                                }
+                                .environmentObject(workoutManager)
                             }
-                            else{
-                                workoutManager.deleteWorkout(for: workout.id)
-                                workoutManager.loadWorkoutsWithId()
-                            }
-     
-                        }, hasActiveSession: activeWorkoutId == workout.id)
-                            .environmentObject(appViewModel)
-                            .onTapGesture {
-                                appViewModel.navigateTo(.workoutActiveView(workout.id))
-                            }
-                            .environmentObject(workoutManager)
-
+                        }
                     }
+                    .padding()
+                    .animation(.easeInOut, value: workoutManager.workouts)
                 }
-                .padding()
             }
-        }
-        .environmentObject(workoutManager)
-        .onAppear(perform: loadWorkouts)
-        .alert(isPresented: $showAlert) {
-            Alert(
-                title: Text("Active Session Detected"),
-                message: Text("You cannot delete an active workout, please end your workout first"),
-                dismissButton: .default(Text("OK"))
-            )
+            .navigationTitle("Workout Tracker")
+            .navigationBarItems(trailing: Button(action: {
+                presentingModal = .add
+            }) {
+                Image(systemName: "plus")
+            })
+            .sheet(item: $presentingModal) { modal in
+                switch modal {
+                case .add:
+                    AddWorkoutView().environmentObject(workoutManager)
+                case .edit(let workoutId):
+                    EditWorkoutView(workoutId: workoutId).environmentObject(workoutManager)
+                }
+            }
+            .alert(isPresented: $showAlert) {
+                Alert(
+                    title: Text("Active Session Detected"),
+                    message: Text("You cannot delete an active workout, please end your workout first"),
+                    dismissButton: .default(Text("OK"))
+                )
+            }
+            .onAppear(perform: loadWorkouts)
         }
     }
     
+    private func deleteWorkouts(_ workoutId: UUID) {
+        withAnimation {
+            deletingWorkouts.insert(workoutId)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                withAnimation {
+                    self.workoutManager.deleteWorkout(for: workoutId)
+                    self.workoutManager.loadWorkoutsWithId()
+                    self.deletingWorkouts.remove(workoutId)
+                }
+            }
+        }
+    }
     
     private func loadWorkouts() {
         if workoutManager.context == nil {

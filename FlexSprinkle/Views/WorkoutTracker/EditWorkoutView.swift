@@ -13,6 +13,9 @@ struct EditWorkoutView: View {
     
     let workoutId: UUID
     @State private var workoutTitle: String = ""
+    @State private var workoutTitleOriginal: String = ""
+
+
     @State private var workoutDetailsInput: [WorkoutDetailInput] = []
     @State private var errorMessage: String = ""
     @State private var showAlert: Bool = false
@@ -67,6 +70,7 @@ struct EditWorkoutView: View {
         }
         
         self.workoutTitle = workout.name ?? ""
+        self.workoutTitleOriginal = self.workoutTitle
         
         if let detailsSet = workout.details as? Set<WorkoutDetail> {
             let details = detailsSet.sorted { $0.exerciseName! < $1.exerciseName! } // Sort if needed
@@ -95,7 +99,7 @@ struct EditWorkoutView: View {
         if workoutTitle.isEmpty {
             errorMessage = "Please Enter a Workout Title"
             showAlert = true
-        } else if workoutTitle != workoutTitle && workoutManager.titleExists(workoutTitle) {
+        } else if workoutTitleOriginal != workoutTitle && workoutManager.titleExists(workoutTitle) {
             errorMessage = "Workout Title Already Exists"
             showAlert = true
         } else {

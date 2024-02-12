@@ -66,10 +66,16 @@ struct AddWorkoutView: View {
         if workoutTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             errorMessage = "Please Enter a Workout Title"
             showAlert = true
-        } else if workoutDetails.isEmpty {
+        }
+        else if workoutDetails.isEmpty {
             errorMessage = "Please add at least one exercise detail"
             showAlert = true
-        } else {
+        }
+        else if workoutManager.titleExists(workoutTitle) {
+            errorMessage = "Title Already Exists"
+            showAlert = true
+        }
+         else {
             // Iterate over filled details and add them
             for detail in workoutDetails {
                 workoutManager.addWorkoutDetail(

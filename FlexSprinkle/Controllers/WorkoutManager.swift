@@ -293,7 +293,7 @@ extension WorkoutManager {
     func titleExists(_ title: String) -> Bool {
         guard let context = self.context else { return false }
         
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "WorkoutDetail")
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Workouts")
         // Update predicate to compare names case-insensitively
         request.predicate = NSPredicate(format: "name ==[c] %@", title)
         request.includesSubentities = false

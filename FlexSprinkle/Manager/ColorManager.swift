@@ -8,7 +8,7 @@
 import SwiftUI
 
 class ColorManager {
-    private let colorNames: [String] = ["MyPurple", "MyOffPurple", "MyLightBlue"]
+    private let colorNames: [String] = ["MyPurple", "MyOffPurple", "MyLightBlue", "MyBlue"]
     
     func getRandomColor() -> String {
         if let randomColorName = colorNames.randomElement() {

@@ -24,6 +24,7 @@ struct WorkoutTrackerMainView: View {
     var body: some View {
         NavigationView {
             ScrollView {
+                Divider()
                 VStack(spacing: 0) {
                     if hasActiveSession, let workoutId = activeWorkoutId {
                         Button(action: {
@@ -42,7 +43,7 @@ struct WorkoutTrackerMainView: View {
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
                         ForEach($workoutManager.workouts) { workout in
                             if !deletingWorkouts.contains(workout.id) {
-                                CardView(workoutId: workout.id, isDefault: false, onDelete: {
+                                CardView(workoutId: workout.id, onDelete: {
                                     deleteWorkouts(workout.id)
                                 }, hasActiveSession: activeWorkoutId == workout.id)
                                 .transition(.asymmetric(insertion: .opacity.combined(with: .scale), removal: .opacity.combined(with: .scale)))
@@ -67,9 +68,9 @@ struct WorkoutTrackerMainView: View {
             .sheet(item: $presentingModal) { modal in
                 switch modal {
                 case .add:
-                    AddWorkoutView().environmentObject(workoutManager)
-                case .edit(let workoutId):
-                    EditWorkoutView(workoutId: workoutId).environmentObject(workoutManager)
+                    AddWorkoutView()
+                case .edit:
+                    EditWorkoutView(workoutId: UUID()) // not used
                 }
             }
             .alert(isPresented: $showAlert) {

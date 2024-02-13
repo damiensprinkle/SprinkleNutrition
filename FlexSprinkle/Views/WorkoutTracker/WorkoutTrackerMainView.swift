@@ -48,9 +48,6 @@ struct WorkoutTrackerMainView: View {
                                 }, hasActiveSession: activeWorkoutId == workout.id)
                                 .transition(.asymmetric(insertion: .opacity.combined(with: .scale), removal: .opacity.combined(with: .scale)))
                                 .environmentObject(appViewModel)
-                                .onTapGesture {
-                                    appViewModel.navigateTo(.workoutActiveView(workout.id))
-                                }
                                 .environmentObject(workoutManager)
                             }
                         }

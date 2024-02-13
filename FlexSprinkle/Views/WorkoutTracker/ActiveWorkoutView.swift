@@ -42,9 +42,15 @@ struct ActiveWorkoutView: View {
                     cardioExercisesSection
                 }
             }
+            .onTapGesture {
+                            self.hideKeyboard()
+                        }
             Spacer()
             startWorkoutButton
         }
+        .background(Color.white.edgesIgnoringSafeArea(.all).onTapGesture {
+                    self.hideKeyboard()
+                })
         .navigationBarTitle(Text(workoutName), displayMode: .inline)
         .onAppear {
             setupWorkoutDetails()
@@ -179,38 +185,37 @@ struct ActiveWorkoutView: View {
     
     private var startWorkoutButton: some View {
         Button(action: buttonAction) {
-            if workoutStarted {
-                if showEndWorkoutOption {
-                    Text("End Workout")
-                } else {
-                    Text(elapsedTimeFormatted)
-                }
-            } else {
-                Text("Start Workout")
-            }
+            Text(workoutButtonText)
+                .font(.title2)
+                .foregroundColor(Color.white)
+                .padding() // Apply padding to the content inside the button
+                .frame(maxWidth: .infinity) // Ensure the button expands to the maximum width available
+                .background(Color.myBlue) // Apply the background color to the button
+                .cornerRadius(10) // Apply corner radius to the button's background
         }
-        .font(.title2)
-        .frame(maxWidth: .infinity)
-        .padding()
-        .background(Color.myBlue)
-        .foregroundColor(Color.white)
-        .cornerRadius(10)
-        .padding()
+        .padding(.horizontal) // Apply horizontal padding outside the button to maintain some space from the screen edges
         .disabled(!workoutStarted && showEndWorkoutOption || isAnyOtherSessionActive())
         .confirmationDialog("Are you sure you want to end this workout?", isPresented: $endWorkoutConfirmationShown, titleVisibility: .visible) {
             Button("End Workout", action: endWorkout)
             Button("Cancel", role: .cancel) {
-                // If cancel, go back to showing the timer
                 self.showEndWorkoutOption = false
             }
         }
-        
-        // Handle the start confirmation dialog
         .confirmationDialog("Are you sure you want to start this workout?", isPresented: $showingStartConfirmation, titleVisibility: .visible) {
             Button("Start", action: startWorkout)
             Button("Cancel", role: .cancel) {}
         }
     }
+
+    private var workoutButtonText: String {
+        if workoutStarted {
+            return showEndWorkoutOption ? "End Workout" : elapsedTimeFormatted
+        } else {
+            return "Start Workout"
+        }
+    }
+
+
     
     
     private var liftingExercisesSection: some View {
@@ -406,5 +411,9 @@ struct ActiveWorkoutView: View {
         let seconds = elapsedTime % 60
         return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
     }
+    
+    private func hideKeyboard() {
+           UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+       }
     
 }

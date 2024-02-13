@@ -11,6 +11,8 @@ struct CardView: View {
     @State private var showAlert = false
     @State private var showingDeletionConfirmation = false
     @EnvironmentObject var appViewModel: AppViewModel
+    @State private var alertTitle = ""
+
     
     var body: some View {
         let workout = workoutManager.fetchWorkoutById(for: workoutId)
@@ -26,11 +28,17 @@ struct CardView: View {
         .aspectRatio(1, contentMode: .fit)
         .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 15))
         .contextMenu { contextMenuContent() }
-        .alert("Are you sure you want to delete this workout?", isPresented: $showingDeletionConfirmation) {
-            Button("Delete", role: .destructive) {
-                onDelete?()
+        .alert(alertTitle, isPresented: $showAlert) {
+            if alertTitle.contains("Are you sure you want to delete this workout?") {
+                Button("Delete", role: .destructive) {
+                    onDelete?()
+                }
+                Button("Cancel", role: .cancel) { }
             }
-            Button("Cancel", role: .cancel) { }
+            else{
+                Button("Dismiss", role: .cancel) { }
+            }
+     
         }
         .sheet(item: $presentingModal) { modal in
             switch modal {
@@ -59,6 +67,7 @@ struct CardView: View {
         Button(action: {
             let sessionId = workoutManager.getSessions().first?.workoutsR?.id
             if  sessionId != workoutId && sessionId != nil {
+                alertTitle = "You must complete your current session before starting a new one"
                 showAlert = true
             } else {
                 appViewModel.navigateTo(.workoutActiveView(workoutId))
@@ -83,13 +92,6 @@ struct CardView: View {
             }
             
         }
-        .alert(isPresented: $showAlert) {
-            Alert(
-                title: Text("Active Session Detected"),
-                message: Text("You must complete or end your current session before starting a new one."),
-                dismissButton: .default(Text("OK"))
-            )
-        }
     }
     
     @ViewBuilder
@@ -101,10 +103,21 @@ struct CardView: View {
         }
         
         Button(action: {
-            showingDeletionConfirmation = true
+            let sessionId = workoutManager.getSessions().first?.workoutsR?.id
+            if  sessionId == workoutId {
+                alertTitle = "You Cannot Delete a Workout That Is In Progress"
+                showAlert = true
+            }
+            else{
+                alertTitle =  "Are you sure you want to delete this workout?"
+                showAlert = true
+            }
+       
+
         }) {
             Label("Delete", systemImage: "trash")
         }
     }
 
 }
+

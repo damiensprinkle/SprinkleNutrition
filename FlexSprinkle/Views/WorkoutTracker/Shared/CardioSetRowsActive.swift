@@ -45,7 +45,7 @@ struct CardioSetRowActive: View {
                             
                         } else {
                             // Update the model with new input
-                            setInput.distance = Int32(distanceInput)!
+                            setInput.distance = Float(distanceInput) ?? 0.0
                             saveWorkoutDetail()
                             
                         }

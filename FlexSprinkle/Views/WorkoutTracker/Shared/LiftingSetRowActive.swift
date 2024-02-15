@@ -85,7 +85,7 @@ struct LiftingSetRowActive: View {
 
     func saveWorkoutDetail() {
         // Ensure setInput is updated with the latest input values
-        setInput.distance = Int32(weightInput) ?? 0
+        setInput.distance = Float(weightInput) ?? 0.0
         setInput.reps = Int32(repsInput) ?? 0
 
         // Proceed with saving

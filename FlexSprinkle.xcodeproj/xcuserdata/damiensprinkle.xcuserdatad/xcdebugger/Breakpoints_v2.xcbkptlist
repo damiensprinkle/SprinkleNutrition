@@ -452,7 +452,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "C52FC79E-C9EE-4691-A083-F14EE3A7D0CC"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FlexSprinkle/Views/WorkoutTracker/Shared/CardioSetRowsActive.swift"

@@ -16,7 +16,7 @@ extension WorkoutSet {
         return NSFetchRequest<WorkoutSet>(entityName: "WorkoutSet")
     }
 
-    @NSManaged public var distance: Int32
+    @NSManaged public var distance: Float
     @NSManaged public var id: UUID?
     @NSManaged public var reps: Int32
     @NSManaged public var setNumber: Int32

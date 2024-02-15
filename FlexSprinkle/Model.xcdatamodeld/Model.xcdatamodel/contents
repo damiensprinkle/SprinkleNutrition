@@ -52,7 +52,7 @@
         <relationship name="workoutsR" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Workouts" inverseName="sessions" inverseEntity="Workouts"/>
     </entity>
     <entity name="WorkoutSet" representedClassName="WorkoutSet" syncable="YES">
-        <attribute name="distance" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="distance" optional="YES" attributeType="Float" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="reps" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="setNumber" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>

@@ -62,7 +62,7 @@ struct CardioSetRow: View {
                                 }
                             }
                             .onChange(of: distanceInput) {
-                                setInput.distance = Int32(distanceInput) ?? 0
+                                setInput.distance = Float(distanceInput) ?? 0.0
                             }
                             .onAppear {
                                 distanceInput = String(setInput.distance) // Initialize the input when the view appears

@@ -21,10 +21,10 @@ struct SetInput: Identifiable {
     var reps: Int32
     var weight: Int32
     var time: Int32
-    var distance: Int32
+    var distance: Float
     
     // Initialize with default values
-    init(id: UUID? = nil, reps: Int32 = 0, weight: Int32 = 0, time: Int32 = 0, distance: Int32 = 0) {
+    init(id: UUID? = nil, reps: Int32 = 0, weight: Int32 = 0, time: Int32 = 0, distance: Float = 0) {
         self.id = id
         self.reps = reps
         self.weight = weight

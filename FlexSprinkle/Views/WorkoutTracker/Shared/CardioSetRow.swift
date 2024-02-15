@@ -10,6 +10,7 @@ import SwiftUI
 import SwiftUI
 
 struct CardioSetRow: View {
+    @AppStorage("distancePreference") private var distancePreference: String = "Mile"
     let setIndex: Int
     @Binding var setInput: SetInput
     @State private var distanceInput: String = ""

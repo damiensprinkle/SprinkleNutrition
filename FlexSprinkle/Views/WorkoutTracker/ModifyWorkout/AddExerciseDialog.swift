@@ -15,7 +15,7 @@ struct AddExerciseDialog: View {
     
     var body: some View {
         VStack(spacing: 15) {
-            Text("Input Exercise Name").font(.headline)
+            Text("Exercise Details").font(.headline)
             
             ZStack {
                 RoundedRectangle(cornerRadius: 8)
@@ -32,8 +32,6 @@ struct AddExerciseDialog: View {
             }
             .frame(height: 36) // Fixed height for TextField
             
-            Text("Select Workout Type").font(.headline)
-
             Picker("Workout Type", selection: $selectedWorkoutType) {
                 Text("Lifting").tag("Lifting")
                 Text("Cardio").tag("Cardio")
@@ -41,16 +39,15 @@ struct AddExerciseDialog: View {
             .pickerStyle(SegmentedPickerStyle())
             .padding()
             
-            HStack(spacing: 10) {
+            HStack {
                 Button("Cancel") {
                     self.showingDialog = false
                 }
-                .buttonStyle(FilledButtonStyle(backgroundColor: Color.myRed))
+                Spacer()
                 
                 Button("  Add  ") {
                     addNewExercise()
                 }
-                .buttonStyle(FilledButtonStyle(backgroundColor: Color.myBlue))
             
             }
         }

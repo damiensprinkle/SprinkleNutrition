@@ -8,24 +8,23 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @State private var weightPreference = false
-    @State private var distancePreference = false
-
-    @State private var optionTwo = false
-    @State private var optionThree = false
+    @AppStorage("weightPreference") private var weightPreference: String = "lbs"
+    @AppStorage("distancePreference") private var distancePreference: String = "mile"
+    
     var body: some View {
         Divider()
         
         NavigationView {
             Form {
                 Picker("Weight Preference", selection: $weightPreference) {
-                    Text("Lbs").tag("Lbs")
-                    Text("KG").tag("KG")
+                    Text("lbs").tag("lbs")
+                    Text("kg").tag("kg")
                 }
                 Picker("Distance Preference", selection: $distancePreference) {
-                    Text("Mile").tag("Mile")
-                    Text("KM").tag("KM")
-                }            }
+                    Text("mile").tag("mile")
+                    Text("km").tag("km")
+                }
+            }
         }
     }
 }

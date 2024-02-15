@@ -9,19 +9,22 @@ import SwiftUI
 
 struct SetHeaders: View {
     let isCardio: Bool
+    @AppStorage("weightPreference") private var weightPreference: String = "Lbs"
+    @AppStorage("distancePreference") private var distancePreference: String = "Mile"
+
     
     var body: some View {
         HStack {
             Text("Set").frame(width: 50, alignment: .leading)
             Spacer()
             if isCardio {
-                Text("Distance").frame(width: 100)
+                Text(distancePreference).frame(width: 100)
                 Spacer()
                 Text("Time").frame(width: 100)
             } else {
                 Text("Reps").frame(width: 100)
                 Spacer()
-                Text("Weight").frame(width: 100)
+                Text(weightPreference).frame(width: 100)
             }
         }
         .font(.headline)

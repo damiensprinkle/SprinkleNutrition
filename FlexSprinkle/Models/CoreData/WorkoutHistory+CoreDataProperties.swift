@@ -2,7 +2,7 @@
 //  WorkoutHistory+CoreDataProperties.swift
 //  FlexSprinkle
 //
-//  Created by Damien Sprinkle on 2/10/24.
+//  Created by Damien Sprinkle on 2/14/24.
 //
 //
 
@@ -17,13 +17,14 @@ extension WorkoutHistory {
     }
 
     @NSManaged public var id: UUID?
-    @NSManaged public var workoutDate: Date? // date complted
-    @NSManaged public var totalWeightLifted: Int32 //all reps * weight
-    @NSManaged public var repsCompleted: Int32 // all reps added together
-    @NSManaged public var workoutTimeToComplete: String? // time it took to complet workout
-    @NSManaged public var timeDoingCardio: String? // all exercise time added together, will have to convert to int and convert back to string
-    @NSManaged public var workoutR: Workouts? //relationship to workouts
-    @NSManaged public var details: WorkoutDetail? //relationship to workoutDetail
+    @NSManaged public var repsCompleted: Int32
+    @NSManaged public var timeDoingCardio: String?
+    @NSManaged public var totalWeightLifted: Int32
+    @NSManaged public var workoutDate: Date?
+    @NSManaged public var workoutTimeToComplete: String?
+    @NSManaged public var details: WorkoutDetail?
+    @NSManaged public var workoutR: Workouts?
+    @NSManaged public var detailsTemp: TemporaryWorkoutDetail?
 
 }
 

@@ -1,5 +1,5 @@
 //
-//  WorkoutDetail+CoreDataProperties.swift
+//  TemporaryWorkoutDetail+CoreDataProperties.swift
 //  FlexSprinkle
 //
 //  Created by Damien Sprinkle on 2/14/24.
@@ -10,10 +10,10 @@ import Foundation
 import CoreData
 
 
-extension WorkoutDetail {
+extension TemporaryWorkoutDetail {
 
-    @nonobjc public class func fetchRequest() -> NSFetchRequest<WorkoutDetail> {
-        return NSFetchRequest<WorkoutDetail>(entityName: "WorkoutDetail")
+    @nonobjc public class func fetchRequest() -> NSFetchRequest<TemporaryWorkoutDetail> {
+        return NSFetchRequest<TemporaryWorkoutDetail>(entityName: "TemporaryWorkoutDetail")
     }
 
     @NSManaged public var exerciseId: UUID?
@@ -29,7 +29,7 @@ extension WorkoutDetail {
 }
 
 // MARK: Generated accessors for sets
-extension WorkoutDetail {
+extension TemporaryWorkoutDetail {
 
     @objc(addSetsObject:)
     @NSManaged public func addToSets(_ value: WorkoutSet)
@@ -45,6 +45,6 @@ extension WorkoutDetail {
 
 }
 
-extension WorkoutDetail : Identifiable {
+extension TemporaryWorkoutDetail : Identifiable {
 
 }

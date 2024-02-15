@@ -34,6 +34,12 @@ struct WorkoutContentMainView: View {
                             .environmentObject(workoutManager)
                             .environmentObject(appViewModel))
                     .transition(.slide)
+                
+            case .addWorkoutView:
+                AnyView(AddWorkoutView(workoutId: UUID(), navigationTitle: "Create Workout Plan")
+                            .environmentObject(workoutManager)
+                            .environmentObject(appViewModel))
+                    .transition(.slide)
             }
         }
         .animation(.default, value: appViewModel.currentView)

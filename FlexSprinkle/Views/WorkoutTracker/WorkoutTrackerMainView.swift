@@ -58,18 +58,11 @@ struct WorkoutTrackerMainView: View {
             }
             .navigationTitle("Workout Tracker")
             .navigationBarItems(trailing: Button(action: {
-                presentingModal = .add
+                appViewModel.navigateTo(.addWorkoutView)
             }) {
                 Image(systemName: "plus")
             })
-            .sheet(item: $presentingModal) { modal in
-                switch modal {
-                case .add:
-                    AddWorkoutView()
-                case .edit:
-                    EditWorkoutView(workoutId: UUID()) // not used
-                }
-            }
+
             .alert(isPresented: $showAlert) {
                 Alert(
                     title: Text("Active Session Detected"),

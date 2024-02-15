@@ -1,5 +1,5 @@
 //
-//  WorkoutSession+CoreDataClass.swift
+//  WorkoutSet+CoreDataClass.swift
 //  FlexSprinkle
 //
 //  Created by Damien Sprinkle on 2/14/24.
@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-@objc(WorkoutSession)
-public class WorkoutSession: NSManagedObject {
+@objc(WorkoutSet)
+public class WorkoutSet: NSManagedObject {
 
 }

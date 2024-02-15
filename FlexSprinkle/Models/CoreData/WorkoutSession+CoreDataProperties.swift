@@ -2,7 +2,7 @@
 //  WorkoutSession+CoreDataProperties.swift
 //  FlexSprinkle
 //
-//  Created by Damien Sprinkle on 2/10/24.
+//  Created by Damien Sprinkle on 2/14/24.
 //
 //
 
@@ -16,12 +16,13 @@ extension WorkoutSession {
         return NSFetchRequest<WorkoutSession>(entityName: "WorkoutSession")
     }
 
+    @NSManaged public var endTime: Date?
     @NSManaged public var id: UUID?
     @NSManaged public var isActive: Bool
     @NSManaged public var startTime: Date?
-    @NSManaged public var endTime: Date?
-    @NSManaged public var workoutsR: Workouts?
     @NSManaged public var workoutDetails: NSSet?
+    @NSManaged public var workoutsR: Workouts?
+    @NSManaged public var detailsTemp: TemporaryWorkoutDetail?
 
 }
 

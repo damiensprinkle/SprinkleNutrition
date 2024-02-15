@@ -2,7 +2,7 @@
 //  Workouts+CoreDataProperties.swift
 //  FlexSprinkle
 //
-//  Created by Damien Sprinkle on 2/10/24.
+//  Created by Damien Sprinkle on 2/14/24.
 //
 //
 
@@ -16,12 +16,13 @@ extension Workouts {
         return NSFetchRequest<Workouts>(entityName: "Workouts")
     }
 
+    @NSManaged public var color: String?
     @NSManaged public var id: UUID?
     @NSManaged public var name: String?
-    @NSManaged public var color: String?
     @NSManaged public var details: NSSet?
-    @NSManaged public var sessions: WorkoutSession?
     @NSManaged public var history: NSSet?
+    @NSManaged public var sessions: WorkoutSession?
+    @NSManaged public var detailsTemp: NSSet?
 
 }
 
@@ -56,6 +57,23 @@ extension Workouts {
 
     @objc(removeHistory:)
     @NSManaged public func removeFromHistory(_ values: NSSet)
+
+}
+
+// MARK: Generated accessors for detailsTemp
+extension Workouts {
+
+    @objc(addDetailsTempObject:)
+    @NSManaged public func addToDetailsTemp(_ value: TemporaryWorkoutDetail)
+
+    @objc(removeDetailsTempObject:)
+    @NSManaged public func removeFromDetailsTemp(_ value: TemporaryWorkoutDetail)
+
+    @objc(addDetailsTemp:)
+    @NSManaged public func addToDetailsTemp(_ values: NSSet)
+
+    @objc(removeDetailsTemp:)
+    @NSManaged public func removeFromDetailsTemp(_ values: NSSet)
 
 }
 

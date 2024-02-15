@@ -15,7 +15,8 @@ struct CardioSetRow: View {
     @Binding var setInput: SetInput
     @State private var distanceInput: String = ""
     @FocusState private var distanceFieldFocused: Bool
-
+    @State private var timeInput: String = ""
+    @FocusState private var timeFieldFocused: Bool
     
     // Simplified time selection
     @State private var selectedTimeIndex: Int = 0
@@ -73,15 +74,24 @@ struct CardioSetRow: View {
 
             Spacer()
             Divider()
-            Picker("", selection: $selectedTimeIndex) {
-                ForEach(0..<timeOptions.count, id: \.self) { index in
-                    Text(self.timeOptions[index]).tag(index)
-                }
-            }
-            .pickerStyle(MenuPickerStyle())
-            .onChange(of: selectedTimeIndex) {
-                onChange()
-            }
+            TextField("Time", text: $timeInput)
+                            .focused($timeFieldFocused)
+                            .onChange(of: timeFieldFocused) {
+                                if timeFieldFocused {
+                                    timeInput = "" // Clear the input when the field becomes focused
+                                }
+                            }
+                            .onChange(of: timeInput) {
+                                formatInput(timeInput)
+
+                            }
+                            .onAppear {
+                                let formattedTime = formatTimeFromSeconds(totalSeconds: Int(setInput.time))
+                                timeInput = "\(formattedTime)"
+                            }
+                            .keyboardType(.numberPad)
+                            .frame(width: 100) // Fixed width for distance input
+                            .addDoneButton() // Add the done button to this TextField
         }
     }
     private func onChange() {
@@ -94,6 +104,59 @@ struct CardioSetRow: View {
             let totalSeconds = hours * 3600 + minutes * 60 + seconds
             setInput.time = Int32(totalSeconds)
         }
+    }
+    
+    
+    private func convertToSeconds(_ input: String) -> Int {
+        // Pad the input string to ensure it has at least 6 characters
+        let paddedInput = input.padding(toLength: 6, withPad: "0", startingAt: 0)
+
+        // Extract hours, minutes, and seconds
+        let hours = Int(paddedInput.prefix(2)) ?? 0
+        let minutes = Int(paddedInput.dropFirst(2).prefix(2)) ?? 0
+        let seconds = Int(paddedInput.suffix(2)) ?? 0
+
+        return hours * 3600 + minutes * 60 + seconds
+    }
+    
+    private func formatInput(_ newValue: String) {
+        // Remove non-numeric characters
+        let filtered = newValue.filter { "0123456789".contains($0) }
+
+        // Ensure that the input is not longer than 6 characters (HHMMSS)
+        let constrainedInput = String(filtered.suffix(6))
+
+        // Convert the constrained input into seconds
+        let totalSeconds = convertToSeconds(constrainedInput)
+
+        // Update the formatted time string and the model
+        timeInput = formatToHHMMSS(totalSeconds)
+        setInput.time = Int32(totalSeconds)
+    }
+
+    private func formatToHHMMSS(_ totalSeconds: Int) -> String {
+        let hours = totalSeconds / 3600
+        let minutes = (totalSeconds % 3600) / 60
+        let seconds = totalSeconds % 60
+
+        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+    }
+
+    
+    private func interpretAsTotalSeconds(_ formattedTime: String) -> Int {
+        let components = formattedTime.split(separator: ":").compactMap { Int($0) }
+        guard components.count == 3 else { return 0 }
+        
+        let hours = components[0]
+        let minutes = components[1]
+        let seconds = components[2]
+        
+        // Ensure components are within valid ranges
+        let validHours = max(0, min(99, hours))
+        let validMinutes = max(0, min(59, minutes))
+        let validSeconds = max(0, min(59, seconds))
+        
+        return validHours * 3600 + validMinutes * 60 + validSeconds
     }
 
 }

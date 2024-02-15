@@ -462,38 +462,6 @@
             endingLineNumber = "116"
             landmarkName = "formatInput(_:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "C52FC79E-C9EE-4691-A083-F14EE3A7D0CC - 17528e11973c63ad"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "FlexSprinkle.CardioSetRowActive.formatInput(Swift.String) -&gt; ()"
-                  moduleName = "FlexSprinkle"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/damiensprinkle/Desktop/FlexSprinkle/FlexSprinkle/Views/WorkoutTracker/Shared/CardioSetRowsActive.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "118"
-                  endingLineNumber = "118"
-                  offsetFromSymbolStart = "508">
-               </Location>
-               <Location
-                  uuid = "C52FC79E-C9EE-4691-A083-F14EE3A7D0CC - 17528e11973c63ef"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "FlexSprinkle.CardioSetRowActive.formatInput(Swift.String) -&gt; ()"
-                  moduleName = "FlexSprinkle"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/damiensprinkle/Desktop/FlexSprinkle/FlexSprinkle/Views/WorkoutTracker/Shared/CardioSetRowsActive.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "116"
-                  endingLineNumber = "116"
-                  offsetFromSymbolStart = "800">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

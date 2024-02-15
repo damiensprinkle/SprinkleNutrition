@@ -209,6 +209,7 @@ struct ActiveWorkoutView: View {
                 endWorkoutConfirmationShown = true
             } else {
                 // Show "End Workout" option for 5 seconds
+                focusManager.clearFocus()
                 showEndWorkoutOption = true
                 DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                     // If no action taken, revert to showing the timer

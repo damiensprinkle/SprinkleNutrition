@@ -28,7 +28,7 @@ struct WorkoutTrackerMainView: View {
                 VStack(spacing: 0) {
                     if hasActiveSession, let workoutId = activeWorkoutId {
                         Button(action: {
-                            appViewModel.navigateTo(.workoutActiveView(workoutId))
+                            presentingModal = .edit(workoutId: workoutId)
                         }) {
                             Text("\(activeWorkoutName ?? "Workout") in Progress: Tap Here To Resume")
                                 .foregroundColor(.white)
@@ -58,7 +58,7 @@ struct WorkoutTrackerMainView: View {
             }
             .navigationTitle("Workout Tracker")
             .navigationBarItems(trailing: Button(action: {
-                appViewModel.navigateTo(.addWorkoutView)
+                presentingModal = .add
             }) {
                 Image(systemName: "plus")
             })
@@ -71,6 +71,19 @@ struct WorkoutTrackerMainView: View {
                 )
             }
             .onAppear(perform: loadWorkouts)
+        }
+        .sheet(item: $presentingModal) { modal in
+            switch modal {
+            case .add:
+                AddWorkoutView(workoutId: UUID(), navigationTitle: "Create Workout Plan")
+                    .environmentObject(workoutManager)
+                    .environmentObject(appViewModel)
+            case .edit(let workoutId):
+                AddWorkoutView(workoutId: workoutId, navigationTitle: "Edit Workout Plan")
+                    .environmentObject(workoutManager)
+                    .environmentObject(appViewModel)
+
+            }
         }
     }
     
@@ -101,5 +114,6 @@ struct WorkoutTrackerMainView: View {
             activeWorkoutName = activeSession?.workoutsR?.name
         }
     }
+    
 }
 

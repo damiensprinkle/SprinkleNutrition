@@ -30,7 +30,7 @@ class AppViewModel: ObservableObject {
         case main
         case workoutOverview(UUID)
         case workoutActiveView(UUID)
-        case addWorkoutView
+       // case addWorkoutView
         // Define other views as needed
     }
     

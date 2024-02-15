@@ -35,11 +35,13 @@ struct AddWorkoutView: View {
         NavigationView {
             ZStack {
                 VStack(spacing: 0) {
-                   addWorkoutForm
+                    addWorkoutForm
                     Spacer()
                     
                     Button("Add Exercise") {
-                        showingAddExerciseDialog = true
+                        withAnimation(.easeOut(duration: 0.2)){
+                            showingAddExerciseDialog = true
+                        }
                     }
                     .font(.title2)
                     .foregroundColor(Color.white)
@@ -48,9 +50,9 @@ struct AddWorkoutView: View {
                     .background(Color.myBlue) // Apply the background color to the button
                     .cornerRadius(10) // Apply corner radius to the button's background
                     .padding(.horizontal) // Apply horizontal padding outside the button to maintain some space from the screen edges
-
+                    
                 }
-
+                
                 if showingAddExerciseDialog {
                     Color.black.opacity(0.4)
                         .edgesIgnoringSafeArea(.all)
@@ -63,12 +65,11 @@ struct AddWorkoutView: View {
                         .cornerRadius(20)
                         .shadow(radius: 10)
                         .transition(.scale)
+                        .padding(.horizontal)
                 }
                 if showingRenameDialog {
-                          renameDialog()
-                        .background(Color.white)
-                        .cornerRadius(20)
-                        .shadow(radius: 10)
+                    renameDialog()
+                        .padding(.horizontal)
                         .transition(.scale)
                 }
             }
@@ -79,7 +80,9 @@ struct AddWorkoutView: View {
                         presentationMode.wrappedValue.dismiss()
                     }
                     else{
-                        appViewModel.resetToWorkoutMainView()
+                        self.presentationMode.wrappedValue.dismiss()
+                        //appViewModel.resetToWorkoutMainView()
+                        
                     }
                 },
                 trailing: Button("Save") { saveWorkout() }
@@ -111,6 +114,7 @@ struct AddWorkoutView: View {
                     renameText = ""
                 }
                 .foregroundColor(.myRed)
+                .padding()
                 
                 Button("OK") {
                     if let index = renameIndex, !renameText.isEmpty {
@@ -120,15 +124,16 @@ struct AddWorkoutView: View {
                     showingRenameDialog = false
                     renameText = ""
                 }
+                .padding()
                 .foregroundColor(.myBlue)
             }
         }
         .padding()
         .background(Color.white)
-        .cornerRadius(12)
-        .shadow(radius: 8)
+        .cornerRadius(15)
+        .shadow(radius: 10)
     }
-
+    
     
     private var addWorkoutForm: some View {
         Form {
@@ -168,8 +173,11 @@ struct AddWorkoutView: View {
                         .foregroundColor(.myBlack)
                         .onTapGesture {
                             self.renameIndex = index
-                            self.renameText = workoutDetails[index].exerciseName // Initialize with current name
-                            self.showingRenameDialog = true
+                            self.renameText = workoutDetails[index].exerciseName
+                            withAnimation(.easeOut(duration: 0.2)) {
+                                self.showingRenameDialog = true
+                                
+                            }
                         }
                     
                 })
@@ -186,6 +194,10 @@ struct AddWorkoutView: View {
                             LiftingSetRow(setIndex: setIndex + 1, setInput: $workoutDetails[index].sets[setIndex])
                         }
                     }
+                    .onDelete { offsets in
+                        // Delete the set at the specified offsets
+                        workoutDetails[index].sets.remove(atOffsets: offsets)
+                    }
                     
                     Button("Add Set") {
                         let newSet = SetInput(reps: 0, weight: 0, time: 0, distance: 0)
@@ -199,11 +211,11 @@ struct AddWorkoutView: View {
     }
     
     private func resetView() {
-           // Reset all relevant state properties to their initial values
-           self.workoutTitle = ""
-           self.workoutTitleOriginal = ""
-           self.workoutDetails = []
-       }
+        // Reset all relevant state properties to their initial values
+        self.workoutTitle = ""
+        self.workoutTitleOriginal = ""
+        self.workoutDetails = []
+    }
     
     private func loadWorkoutDetails() {
         guard let workout = workoutManager.fetchWorkoutById(for: workoutId) else {
@@ -289,7 +301,7 @@ struct AddWorkoutView: View {
                 }
             }
             
-            appViewModel.resetToWorkoutMainView()
+           // appViewModel.resetToWorkoutMainView()
             presentationMode.wrappedValue.dismiss()
             
         }

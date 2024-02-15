@@ -14,8 +14,8 @@ struct AddExerciseDialog: View {
     @State private var exerciseName: String = "" // State to hold the exercise name input
     
     var body: some View {
-        VStack(spacing: 20) {
-            Text("Add New Exercise").font(.headline)
+        VStack(spacing: 15) {
+            Text("Input Exercise Name").font(.headline)
             
             ZStack {
                 RoundedRectangle(cornerRadius: 8)
@@ -32,6 +32,8 @@ struct AddExerciseDialog: View {
             }
             .frame(height: 36) // Fixed height for TextField
             
+            Text("Select Workout Type").font(.headline)
+
             Picker("Workout Type", selection: $selectedWorkoutType) {
                 Text("Lifting").tag("Lifting")
                 Text("Cardio").tag("Cardio")
@@ -40,15 +42,16 @@ struct AddExerciseDialog: View {
             .padding()
             
             HStack(spacing: 10) {
-                Button("  Add  ") {
-                    addNewExercise()
-                }
-                .buttonStyle(FilledButtonStyle(backgroundColor: Color.myBlue))
-                
                 Button("Cancel") {
                     self.showingDialog = false
                 }
                 .buttonStyle(FilledButtonStyle(backgroundColor: Color.myRed))
+                
+                Button("  Add  ") {
+                    addNewExercise()
+                }
+                .buttonStyle(FilledButtonStyle(backgroundColor: Color.myBlue))
+            
             }
         }
         .padding()

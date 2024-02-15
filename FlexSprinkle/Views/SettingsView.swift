@@ -8,18 +8,24 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @State private var optionOne = false
-        @State private var optionTwo = false
-        @State private var optionThree = false
+    @State private var weightPreference = false
+    @State private var distancePreference = false
+
+    @State private var optionTwo = false
+    @State private var optionThree = false
     var body: some View {
         Divider()
         
         NavigationView {
             Form {
-                Toggle("Option One", isOn: $optionOne)
-                Toggle("Option Two", isOn: $optionTwo)
-                Toggle("Option Three", isOn: $optionThree)
-            }
+                Picker("Weight Preference", selection: $weightPreference) {
+                    Text("Lbs").tag("Lbs")
+                    Text("KG").tag("KG")
+                }
+                Picker("Distance Preference", selection: $distancePreference) {
+                    Text("Mile").tag("Mile")
+                    Text("KM").tag("KM")
+                }            }
         }
     }
 }

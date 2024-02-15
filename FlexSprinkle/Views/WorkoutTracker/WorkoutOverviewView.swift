@@ -7,8 +7,11 @@ struct WorkoutOverviewView: View {
     @EnvironmentObject var appViewModel: AppViewModel
     @State private var counter = 0
     @State private var history: WorkoutHistory?
+    
+    @State private var totalCardioTime = ""
 
     @State private var showFirstCard = false
+
     @State private var showSecondCard = false
     @State private var showThirdCard = false
     @State private var showFourthCard = false
@@ -32,7 +35,7 @@ struct WorkoutOverviewView: View {
                     }
                     HStack {
                         if showThirdCard {
-                            DataCardView(icon: Image(systemName: "timer"), number: "\(history?.timeDoingCardio ?? "0")", description: "Time Doing Cardio")
+                            DataCardView(icon: Image(systemName: "timer"), number: "\(totalCardioTime)", description: "Time Doing Cardio")
                                 .transition(.scale.combined(with: .opacity))
                         }
                         if showFourthCard {
@@ -41,8 +44,17 @@ struct WorkoutOverviewView: View {
                         }
                     }
                 }
+                
                 .onAppear {
                     history = workoutManager.fetchLatestWorkoutHistory(for: workoutId)
+                    let totalCardioTimeInSeconds = Int((history?.timeDoingCardio!)!)
+                    
+                    let hours = totalCardioTimeInSeconds! / 3600
+                    let minutes = (totalCardioTimeInSeconds! % 3600) / 60
+                    let seconds = totalCardioTimeInSeconds! % 60
+
+                    totalCardioTime = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+
                     
                     withAnimation(.easeOut(duration: 0.5)) {
                         showFirstCard = true

@@ -14,6 +14,8 @@ class WorkoutManager: ObservableObject {
             print("Context set in WorkoutManager")
             if context != nil {
                 loadWorkoutsWithId()
+                context!.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+
             }
         }
     }
@@ -480,6 +482,7 @@ extension WorkoutManager {
         
         do {
             if let workout = try context.fetch(workoutRequest).first {
+                context.refresh(workout, mergeChanges: true)
                 if isActive {
                     // Starting a new session
                     let newSession = WorkoutSession(context: context)

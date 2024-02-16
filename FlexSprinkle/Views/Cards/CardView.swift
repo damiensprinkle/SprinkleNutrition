@@ -12,7 +12,7 @@ struct CardView: View {
     @State private var showingDeletionConfirmation = false
     @EnvironmentObject var appViewModel: AppViewModel
     @State private var alertTitle = ""
-
+    
     
     var body: some View {
         let workout = workoutManager.fetchWorkoutById(for: workoutId)
@@ -38,7 +38,7 @@ struct CardView: View {
             else{
                 Button("Dismiss", role: .cancel) { }
             }
-     
+            
         }
         .sheet(item: $presentingModal) { modal in
             switch modal {
@@ -48,7 +48,7 @@ struct CardView: View {
                 AddWorkoutView(workoutId: workoutId, navigationTitle: "Edit Workout Plan")
                     .environmentObject(workoutManager)
                     .environmentObject(appViewModel)
-
+                
             }
         }
     }
@@ -114,12 +114,12 @@ struct CardView: View {
                 alertTitle =  "Are you sure you want to delete this workout?"
                 showAlert = true
             }
-       
-
+            
+            
         }) {
             Label("Delete", systemImage: "trash")
         }
     }
-
+    
 }
 

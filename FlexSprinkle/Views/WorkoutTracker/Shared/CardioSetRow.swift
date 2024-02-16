@@ -56,42 +56,42 @@ struct CardioSetRow: View {
             Spacer()
             Divider()
             TextField("Distance", text: $distanceInput)
-                            .focused($distanceFieldFocused)
-                            .onChange(of: distanceFieldFocused) {
-                                if distanceFieldFocused {
-                                    distanceInput = "" // Clear the input when the field becomes focused
-                                }
-                            }
-                            .onChange(of: distanceInput) {
-                                setInput.distance = Float(distanceInput) ?? 0.0
-                            }
-                            .onAppear {
-                                distanceInput = String(setInput.distance) // Initialize the input when the view appears
-                            }
-                            .keyboardType(.numberPad)
-                            .frame(width: 100) // Fixed width for distance input
-                            .addDoneButton() // Add the done button to this TextField
-
+                .focused($distanceFieldFocused)
+                .onChange(of: distanceFieldFocused) {
+                    if distanceFieldFocused {
+                        distanceInput = "" // Clear the input when the field becomes focused
+                    }
+                }
+                .onChange(of: distanceInput) {
+                    setInput.distance = Float(distanceInput) ?? 0.0
+                }
+                .onAppear {
+                    distanceInput = String(setInput.distance) // Initialize the input when the view appears
+                }
+                .keyboardType(.numberPad)
+                .frame(width: 100) // Fixed width for distance input
+                .addDoneButton() // Add the done button to this TextField
+            
             Spacer()
             Divider()
             TextField("Time", text: $timeInput)
-                            .focused($timeFieldFocused)
-                            .onChange(of: timeFieldFocused) {
-                                if timeFieldFocused {
-                                    timeInput = "" // Clear the input when the field becomes focused
-                                }
-                            }
-                            .onChange(of: timeInput) {
-                                formatInput(timeInput)
-
-                            }
-                            .onAppear {
-                                let formattedTime = formatTimeFromSeconds(totalSeconds: Int(setInput.time))
-                                timeInput = "\(formattedTime)"
-                            }
-                            .keyboardType(.numberPad)
-                            .frame(width: 100) // Fixed width for distance input
-                            .addDoneButton() // Add the done button to this TextField
+                .focused($timeFieldFocused)
+                .onChange(of: timeFieldFocused) {
+                    if timeFieldFocused {
+                        timeInput = "" // Clear the input when the field becomes focused
+                    }
+                }
+                .onChange(of: timeInput) {
+                    formatInput(timeInput)
+                    
+                }
+                .onAppear {
+                    let formattedTime = formatTimeFromSeconds(totalSeconds: Int(setInput.time))
+                    timeInput = "\(formattedTime)"
+                }
+                .keyboardType(.numberPad)
+                .frame(width: 100) // Fixed width for distance input
+                .addDoneButton() // Add the done button to this TextField
         }
     }
     private func onChange() {
@@ -110,38 +110,38 @@ struct CardioSetRow: View {
     private func convertToSeconds(_ input: String) -> Int {
         // Pad the input string to ensure it has at least 6 characters
         let paddedInput = input.padding(toLength: 6, withPad: "0", startingAt: 0)
-
+        
         // Extract hours, minutes, and seconds
         let hours = Int(paddedInput.prefix(2)) ?? 0
         let minutes = Int(paddedInput.dropFirst(2).prefix(2)) ?? 0
         let seconds = Int(paddedInput.suffix(2)) ?? 0
-
+        
         return hours * 3600 + minutes * 60 + seconds
     }
     
     private func formatInput(_ newValue: String) {
         // Remove non-numeric characters
         let filtered = newValue.filter { "0123456789".contains($0) }
-
+        
         // Ensure that the input is not longer than 6 characters (HHMMSS)
         let constrainedInput = String(filtered.suffix(6))
-
+        
         // Convert the constrained input into seconds
         let totalSeconds = convertToSeconds(constrainedInput)
-
+        
         // Update the formatted time string and the model
         timeInput = formatToHHMMSS(totalSeconds)
         setInput.time = Int32(totalSeconds)
     }
-
+    
     private func formatToHHMMSS(_ totalSeconds: Int) -> String {
         let hours = totalSeconds / 3600
         let minutes = (totalSeconds % 3600) / 60
         let seconds = totalSeconds % 60
-
+        
         return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
     }
-
+    
     
     private func interpretAsTotalSeconds(_ formattedTime: String) -> Int {
         let components = formattedTime.split(separator: ":").compactMap { Int($0) }
@@ -158,7 +158,7 @@ struct CardioSetRow: View {
         
         return validHours * 3600 + validMinutes * 60 + validSeconds
     }
-
+    
 }
 
 // Include the extension for adding a Done button to the keyboard

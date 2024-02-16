@@ -12,12 +12,12 @@ class FocusManager: ObservableObject {
     @Published var currentlyFocusedField: FocusableField?
     
     func clearFocus() {
-         currentlyFocusedField = nil
-     }
-     
-     func setFocus(to field: FocusableField) {
-         currentlyFocusedField = field
-     }
+        currentlyFocusedField = nil
+    }
+    
+    func setFocus(to field: FocusableField) {
+        currentlyFocusedField = field
+    }
 }
 
 

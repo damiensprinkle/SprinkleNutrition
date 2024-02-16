@@ -14,7 +14,6 @@ struct CardioSetRowActive: View {
     let workoutId: UUID
     let workoutStarted: Bool
     @FocusState private var distanceFieldFocused: Bool
-    //@FocusState private var timeFieldFocused: Bool
     @FocusState private var focusedField: FocusableField?
     
     @State private var distanceInput: String = ""
@@ -22,8 +21,6 @@ struct CardioSetRowActive: View {
     @EnvironmentObject var workoutManager: WorkoutManager
     @EnvironmentObject var focusManager: FocusManager
     @State private var rawInput: String = ""
-    
-    
     
     var body: some View {
         HStack {
@@ -42,14 +39,12 @@ struct CardioSetRowActive: View {
                         if distanceInput.isEmpty {
                             distanceInput = "\(setInput.distance)"
                             saveWorkoutDetail()
-                            
-                        } else {
-                            // Update the model with new input
-                            setInput.distance = Float(distanceInput) ?? 0.0
-                            saveWorkoutDetail()
-                            
                         }
                     }
+                }
+                .onChange(of: distanceInput){
+                    setInput.distance = Float(distanceInput) ?? 0.0
+                    saveWorkoutDetail()
                 }
                 .onAppear {
                     distanceInput = "\(setInput.distance)"
@@ -64,13 +59,11 @@ struct CardioSetRowActive: View {
                     if (focusedField != nil) {
                         focusManager.isAnyTextFieldFocused = true
                         focusManager.currentlyFocusedField = focusedField
+                        timeInput = "00:00:00"
                     } else {
                         // When focus is lost and no input was entered, reset to the original value
                         if timeInput.isEmpty {
                             timeInput = "\(setInput.time)"
-                            
-                        } else {
-                     
                             
                         }
                     }
@@ -104,38 +97,38 @@ struct CardioSetRowActive: View {
     private func formatInput(_ newValue: String) {
         // Remove non-numeric characters
         let filtered = newValue.filter { "0123456789".contains($0) }
-
+        
         // Ensure that the input is not longer than 6 characters (HHMMSS)
         let constrainedInput = String(filtered.suffix(6))
-
+        
         // Convert the constrained input into seconds
         let totalSeconds = convertToSeconds(constrainedInput)
-
+        
         // Update the formatted time string and the model
         timeInput = formatToHHMMSS(totalSeconds)
         setInput.time = Int32(totalSeconds)
     }
-
+    
     private func convertToSeconds(_ input: String) -> Int {
         // Pad the input string to ensure it has at least 6 characters
         let paddedInput = input.padding(toLength: 6, withPad: "0", startingAt: 0)
-
+        
         // Extract hours, minutes, and seconds
         let hours = Int(paddedInput.prefix(2)) ?? 0
         let minutes = Int(paddedInput.dropFirst(2).prefix(2)) ?? 0
         let seconds = Int(paddedInput.suffix(2)) ?? 0
-
+        
         return hours * 3600 + minutes * 60 + seconds
     }
-
+    
     private func formatToHHMMSS(_ totalSeconds: Int) -> String {
         let hours = totalSeconds / 3600
         let minutes = (totalSeconds % 3600) / 60
         let seconds = totalSeconds % 60
-
+        
         return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
     }
-
+    
     
     private func interpretAsTotalSeconds(_ formattedTime: String) -> Int {
         let components = formattedTime.split(separator: ":").compactMap { Int($0) }

@@ -14,7 +14,7 @@ struct LiftingSetRow: View {
     @FocusState private var weightFieldFocused: Bool
     @State private var repsInput: String = ""
     @State private var weightInput: String = ""
-
+    
     var body: some View {
         HStack {
             Text("\(setIndex)")

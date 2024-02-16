@@ -62,7 +62,7 @@ struct WorkoutTrackerMainView: View {
             }) {
                 Image(systemName: "plus")
             })
-
+            
             .alert(isPresented: $showAlert) {
                 Alert(
                     title: Text("Active Session Detected"),
@@ -82,7 +82,7 @@ struct WorkoutTrackerMainView: View {
                 AddWorkoutView(workoutId: workoutId, navigationTitle: "Edit Workout Plan")
                     .environmentObject(workoutManager)
                     .environmentObject(appViewModel)
-
+                
             }
         }
     }

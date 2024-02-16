@@ -11,7 +11,7 @@ struct SetHeaders: View {
     let isCardio: Bool
     @AppStorage("weightPreference") private var weightPreference: String = "Lbs"
     @AppStorage("distancePreference") private var distancePreference: String = "Mile"
-
+    
     
     var body: some View {
         HStack {

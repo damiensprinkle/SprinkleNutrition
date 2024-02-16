@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var appViewModel: AppViewModel
-
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -21,5 +21,3 @@ struct HomeView: View {
         }
     }
 }
-
-

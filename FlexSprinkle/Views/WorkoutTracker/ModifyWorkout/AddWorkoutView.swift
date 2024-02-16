@@ -301,7 +301,7 @@ struct AddWorkoutView: View {
                 }
             }
             
-           // appViewModel.resetToWorkoutMainView()
+            // appViewModel.resetToWorkoutMainView()
             presentationMode.wrappedValue.dismiss()
             
         }
@@ -318,7 +318,3 @@ struct AddWorkoutView: View {
     }
     
 }
-
-
-
-

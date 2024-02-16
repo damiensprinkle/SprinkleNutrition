@@ -10,11 +10,11 @@ import SwiftUI
 struct CustomTabView: View {
     @State private var selectedTab: Tab = .home
     @EnvironmentObject var appViewModel: AppViewModel
-
+    
     enum Tab: String {
         case home, workout, nutrition, settings
     }
-
+    
     var body: some View {
         VStack(spacing: 0) { // Ensure there's no spacing between content and the tab bar
             // Content based on selected tab
@@ -27,11 +27,11 @@ struct CustomTabView: View {
                 NutritionHelperMainView().navigationTitle("Nutrition Helper")
             case .settings:
                 SettingsView().navigationTitle("Settings")
-
+                
             }
-
+            
             Spacer() // Pushes the tab bar to the bottom
-
+            
             // Custom Tab Bar
             HStack {
                 // Home Tab Button
@@ -57,7 +57,7 @@ struct CustomTabView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity) // Ensure VStack takes full screen size
     }
-
+    
     @ViewBuilder
     private func tabButton(for tab: Tab, systemImage: String) -> some View {
         Button(action: {

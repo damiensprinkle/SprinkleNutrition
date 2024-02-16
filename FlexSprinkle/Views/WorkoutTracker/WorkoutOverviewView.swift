@@ -9,14 +9,14 @@ struct WorkoutOverviewView: View {
     @State private var history: WorkoutHistory?
     
     @State private var totalCardioTime = ""
-
+    
     @State private var showFirstCard = false
-
+    
     @State private var showSecondCard = false
     @State private var showThirdCard = false
     @State private var showFourthCard = false
     @State private var showProceedButton = false // State to control the visibility of the Proceed button
-
+    
     var body: some View {
         ZStack {
             VStack {
@@ -52,9 +52,9 @@ struct WorkoutOverviewView: View {
                     let hours = totalCardioTimeInSeconds! / 3600
                     let minutes = (totalCardioTimeInSeconds! % 3600) / 60
                     let seconds = totalCardioTimeInSeconds! % 60
-
+                    
                     totalCardioTime = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-
+                    
                     
                     withAnimation(.easeOut(duration: 0.5)) {
                         showFirstCard = true
@@ -78,7 +78,7 @@ struct WorkoutOverviewView: View {
                         }
                     }
                 }
-
+                
                 Spacer()
             }
             

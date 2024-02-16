@@ -48,7 +48,7 @@ struct AddExerciseDialog: View {
                 Button("  Add  ") {
                     addNewExercise()
                 }
-            
+                
             }
         }
         .padding()

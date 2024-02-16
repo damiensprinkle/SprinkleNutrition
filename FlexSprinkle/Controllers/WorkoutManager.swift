@@ -15,7 +15,7 @@ class WorkoutManager: ObservableObject {
             if context != nil {
                 loadWorkoutsWithId()
                 context!.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-
+                
             }
         }
     }
@@ -54,7 +54,7 @@ class WorkoutManager: ObservableObject {
         saveContext()
         print("Workout ID: \(String(describing: workout.id)), Exercise Created with ID: \(String(describing: newExerciseDetail.exerciseId))")
     }
-
+    
     func saveOrUpdateSetsDuringActiveWorkout(workoutId: UUID, exerciseId: UUID, exerciseName: String, setsInput: [SetInput], isCardio: Bool, orderIndex: Int32) {
         guard let context = self.context else { return }
         
@@ -98,12 +98,12 @@ class WorkoutManager: ObservableObject {
             print("Failed to save or update temporary workout details: \(error)")
         }
     }
-
-
+    
+    
     
     private func updateOrAddSetsForTempDetail(forDetail tempDetail: TemporaryWorkoutDetail, withSetsInput setsInput: [SetInput], inContext context: NSManagedObjectContext) {
         let existingSets = tempDetail.sets as? Set<WorkoutSet> ?? Set()
-
+        
         setsInput.forEach { setInput in
             let set: WorkoutSet
             if let existingSet = existingSets.first(where: { $0.id == setInput.id }) {
@@ -124,13 +124,13 @@ class WorkoutManager: ObservableObject {
     
     func deleteAllTemporaryWorkoutDetails() {
         guard let context = self.context else { return }
-
+        
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = TemporaryWorkoutDetail.fetchRequest()
         
         // Create a batch delete request using the fetch request
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         deleteRequest.resultType = .resultTypeObjectIDs // Specify result type to get the IDs of the deleted objects
-
+        
         do {
             let result = try context.execute(deleteRequest) as? NSBatchDeleteResult
             let objectIDArray = result?.result as? [NSManagedObjectID]
@@ -147,8 +147,8 @@ class WorkoutManager: ObservableObject {
             print("Error deleting all TemporaryWorkoutDetail entities: \(error), \(error.userInfo)")
         }
     }
-
-
+    
+    
     
     
     private func saveContext() {
@@ -274,14 +274,14 @@ class WorkoutManager: ObservableObject {
             print("Failed to fetch or context is nil for workout ID \(workoutId)")
             return
         }
-
+        
         let existingDetails = workout.details as? Set<WorkoutDetail> ?? Set()
         let existingDetailsMap = existingDetails.reduce(into: [UUID: WorkoutDetail]()) { result, detail in
             if let exerciseId = detail.exerciseId {
                 result[exerciseId] = detail
             }
         }
-
+        
         workoutDetailsInput.forEach { inputDetail in
             let detail: WorkoutDetail
             if let exerciseId = inputDetail.exerciseId, let existingDetail = existingDetailsMap[exerciseId] {
@@ -291,20 +291,20 @@ class WorkoutManager: ObservableObject {
                 workout.addToDetails(detail)
                 detail.exerciseId = inputDetail.exerciseId ?? UUID()
             }
-
+            
             detail.exerciseName = inputDetail.exerciseName
             detail.isCardio = inputDetail.isCardio
             detail.orderIndex = inputDetail.orderIndex
             updateOrAddSets(forDetail: detail, withSetsInput: inputDetail.sets, inContext: context)
         }
-
+        
         existingDetails.forEach { existingDetail in
             if !workoutDetailsInput.contains(where: { $0.exerciseId == existingDetail.exerciseId }) {
                 existingDetail.sets?.forEach { context.delete($0 as! NSManagedObject) }
                 context.delete(existingDetail)
             }
         }
-
+        
         do {
             try context.save()
         } catch {
@@ -312,9 +312,9 @@ class WorkoutManager: ObservableObject {
         }
     }
     
-
-
-
+    
+    
+    
     
     private func updateOrAddSets(forDetail detail: WorkoutDetail, withSetsInput setsInput: [SetInput], inContext context: NSManagedObjectContext) {
         let existingSets = detail.sets as? Set<WorkoutSet> ?? Set()
@@ -405,7 +405,7 @@ extension WorkoutManager {
         // Adjust the fetch request to directly access TemporaryWorkoutDetail entities associated with the workoutId
         let workoutRequest: NSFetchRequest<Workouts> = Workouts.fetchRequest()
         workoutRequest.predicate = NSPredicate(format: "id == %@", workoutId as CVarArg)
-
+        
         do {
             // Fetch the workout with the given ID
             guard let workout = try context.fetch(workoutRequest).first else {
@@ -433,14 +433,14 @@ extension WorkoutManager {
         
         return []
     }
-
-
-
+    
+    
+    
     
     func saveWorkoutHistory(workoutId: UUID, dateCompleted: Date, totalWeightLifted: Int32, repsCompleted: Int32, workoutTimeToComplete: String, totalCardioTime: String) {
         guard let context = self.context else { return }
         guard let workout = fetchWorkoutById(for: workoutId) else { return }
-
+        
         let history = WorkoutHistory(context: context)
         history.id = UUID()
         history.workoutDate = dateCompleted
@@ -459,12 +459,12 @@ extension WorkoutManager {
     
     func fetchLatestWorkoutHistory(for workoutId: UUID) -> WorkoutHistory? {
         guard let context = self.context else { return nil }
-
+        
         let fetchRequest: NSFetchRequest<WorkoutHistory> = WorkoutHistory.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "workoutR.id == %@", workoutId as CVarArg)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "workoutDate", ascending: false)]
         fetchRequest.fetchLimit = 1
-
+        
         do {
             let histories = try context.fetch(fetchRequest)
             return histories.first
@@ -473,7 +473,7 @@ extension WorkoutManager {
             return nil
         }
     }
-
+    
     func setSessionStatus(workoutId: UUID, isActive: Bool) {
         guard let context = self.context else { return }
         

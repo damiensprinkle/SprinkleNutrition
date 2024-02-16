@@ -28,7 +28,7 @@ struct WorkoutTrackerMainView: View {
                 VStack(spacing: 0) {
                     if hasActiveSession, let workoutId = activeWorkoutId {
                         Button(action: {
-                            presentingModal = .edit(workoutId: workoutId)
+                            appViewModel.navigateTo(.workoutActiveView(workoutId))
                         }) {
                             Text("\(activeWorkoutName ?? "Workout") in Progress: Tap Here To Resume")
                                 .foregroundColor(.white)

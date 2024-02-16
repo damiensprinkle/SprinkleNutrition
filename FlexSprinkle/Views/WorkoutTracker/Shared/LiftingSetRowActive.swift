@@ -17,9 +17,9 @@ struct LiftingSetRowActive: View {
     @FocusState private var repsFieldFocused: Bool
     @State private var weightInput: String = ""
     @State private var repsInput: String = ""
+    
     @EnvironmentObject var workoutManager: WorkoutManager
     @EnvironmentObject var focusManager: FocusManager
-    
     
     var body: some View {
         HStack {
@@ -63,8 +63,6 @@ struct LiftingSetRowActive: View {
                         // When focus is lost and no input was entered, reset to the original value
                         if weightInput.isEmpty {
                             weightInput = "\(setInput.weight)"
-                            
-                        } else {
                         }
                     }
                 }

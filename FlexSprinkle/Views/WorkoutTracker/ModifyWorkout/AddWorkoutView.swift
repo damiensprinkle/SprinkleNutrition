@@ -176,10 +176,8 @@ struct AddWorkoutView: View {
                             self.renameText = workoutDetails[index].exerciseName
                             withAnimation(.easeOut(duration: 0.2)) {
                                 self.showingRenameDialog = true
-                                
                             }
                         }
-                    
                 })
                 {
                     
@@ -200,8 +198,16 @@ struct AddWorkoutView: View {
                     }
                     
                     Button("Add Set") {
-                        let newSet = SetInput(reps: 0, weight: 0, time: 0, distance: 0)
-                        workoutDetails[index].sets.append(newSet)
+                        // Check if there are any sets already
+                        if let lastSet = workoutDetails[index].sets.last {
+                            // Use the values from the last set
+                            let newSet = SetInput(reps: lastSet.reps, weight: lastSet.weight, time: lastSet.time, distance: lastSet.distance)
+                            workoutDetails[index].sets.append(newSet)
+                        } else {
+                            // If there are no sets, use default values
+                            let newSet = SetInput(reps: 0, weight: 0, time: 0, distance: 0)
+                            workoutDetails[index].sets.append(newSet)
+                        }
                     }
                 }
             }

@@ -260,7 +260,8 @@ struct ActiveWorkoutView: View {
             totalWeightLifted: Int32(totalWeightLifted),
             repsCompleted: Int32(totalReps),
             workoutTimeToComplete: workoutTimeToComplete,
-            totalCardioTime: "\(totalCardioTime)"
+            totalCardioTime: "\(totalCardioTime)",
+            workoutDetailsInput: workoutDetails
         )
         
         workoutManager.deleteAllTemporaryWorkoutDetails()

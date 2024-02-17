@@ -29,7 +29,7 @@
         <attribute name="totalWeightLifted" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="workoutDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="workoutTimeToComplete" optional="YES" attributeType="String"/>
-        <relationship name="details" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutDetail" inverseName="history" inverseEntity="WorkoutDetail"/>
+        <relationship name="details" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WorkoutDetail" inverseName="history" inverseEntity="WorkoutDetail"/>
         <relationship name="detailsTemp" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="TemporaryWorkoutDetail" inverseName="history" inverseEntity="TemporaryWorkoutDetail"/>
         <relationship name="workoutR" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Workouts" inverseName="history" inverseEntity="Workouts"/>
     </entity>

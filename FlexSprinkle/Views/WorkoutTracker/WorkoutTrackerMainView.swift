@@ -62,6 +62,11 @@ struct WorkoutTrackerMainView: View {
             }) {
                 Image(systemName: "plus")
             })
+            .navigationBarItems(trailing: Button(action: {
+                appViewModel.navigateTo(.workoutHistoryView)
+            }) {
+                Image(systemName: "clock")
+            })
             
             .alert(isPresented: $showAlert) {
                 Alert(

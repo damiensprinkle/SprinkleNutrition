@@ -34,6 +34,11 @@ struct WorkoutContentMainView: View {
                     .environmentObject(workoutManager)
                     .environmentObject(appViewModel))
                 .transition(.slide)
+            case .workoutHistoryView:
+                AnyView(WorkoutHistoryView()
+                    .environmentObject(workoutManager)
+                    .environmentObject(appViewModel))
+                .transition(.slide)
             }
         }
         .animation(.default, value: appViewModel.currentView)

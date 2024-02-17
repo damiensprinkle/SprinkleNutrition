@@ -241,6 +241,26 @@ class WorkoutManager: ObservableObject {
         }
     }
     
+    func deleteWorkoutHistory(for historyId: UUID) {
+        guard let context = self.context else { return }
+        
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "WorkoutHistory")
+        fetchRequest.predicate = NSPredicate(format: "id == %@", historyId as CVarArg)
+        
+        do {
+            let workoutsToDelete = try context.fetch(fetchRequest) as? [WorkoutHistory] ?? []
+            
+            for workout in workoutsToDelete {
+                context.delete(workout)
+            }
+            
+            try context.save()
+            print("Workout and its details deleted successfully")
+        } catch let error as NSError {
+            print("Error deleting workout: \(error), \(error.userInfo)")
+        }
+    }
+    
     func updateWorkoutTitle(workoutId: UUID, to newTitle: String) {
         guard let context = self.context else { return }
         
@@ -434,9 +454,8 @@ extension WorkoutManager {
         return []
     }
     
-    func saveWorkoutHistory(workoutId: UUID, dateCompleted: Date, totalWeightLifted: Int32, repsCompleted: Int32, workoutTimeToComplete: String, totalCardioTime: String) {
-        guard let context = self.context else { return }
-        guard let workout = fetchWorkoutById(for: workoutId) else { return }
+    func saveWorkoutHistory(workoutId: UUID, dateCompleted: Date, totalWeightLifted: Int32, repsCompleted: Int32, workoutTimeToComplete: String, totalCardioTime: String, workoutDetailsInput: [WorkoutDetailInput]) {
+        guard let context = self.context, let workout = fetchWorkoutById(for: workoutId) else { return }
         
         let history = WorkoutHistory(context: context)
         history.id = UUID()
@@ -446,13 +465,35 @@ extension WorkoutManager {
         history.workoutTimeToComplete = workoutTimeToComplete
         history.timeDoingCardio = totalCardioTime
         history.workoutR = workout
-        
+
+        for detailInput in workoutDetailsInput {
+            let detail = WorkoutDetail(context: context)
+            detail.id = detailInput.id ?? UUID()
+            detail.exerciseId = detailInput.exerciseId
+            detail.exerciseName = detailInput.exerciseName
+            detail.isCardio = detailInput.isCardio
+            detail.orderIndex = detailInput.orderIndex
+            detail.history = history // Set the reverse relationship
+
+            for setInput in detailInput.sets {
+                let set = WorkoutSet(context: context)
+                set.id = setInput.id ?? UUID()
+                set.reps = setInput.reps
+                set.weight = setInput.weight
+                set.time = setInput.time
+                set.distance = setInput.distance
+                set.details = detail // Associate with WorkoutDetail
+            }
+        }
+
         do {
             try context.save()
         } catch {
             print("Failed to save workout history: \(error)")
         }
     }
+
+
     
     func fetchLatestWorkoutHistory(for workoutId: UUID) -> WorkoutHistory? {
         guard let context = self.context else { return nil }
@@ -467,6 +508,28 @@ extension WorkoutManager {
             return histories.first
         } catch {
             print("Failed to fetch latest workout history: \(error)")
+            return nil
+        }
+    }
+    
+    func fetchAllWorkoutHistory(for date: Date) -> [WorkoutHistory]? {
+        guard let context = self.context else { return nil }
+        // Calculate the start and end of the month for the provided date
+        let calendar = Calendar.current
+        let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: calendar.startOfDay(for: date)))!
+        let endOfMonth = calendar.date(byAdding: DateComponents(month: 1, second: -1), to: startOfMonth)!
+        print(startOfMonth)
+        print(endOfMonth)
+        let fetchRequest: NSFetchRequest<WorkoutHistory> = WorkoutHistory.fetchRequest()
+        // Create a predicate to filter workouts within the start and end of the month
+        fetchRequest.predicate = NSPredicate(format: "(workoutDate >= %@) AND (workoutDate <= %@)", argumentArray: [startOfMonth, endOfMonth])
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "workoutDate", ascending: true)]
+        
+        do {
+            let histories = try context.fetch(fetchRequest)
+            return histories
+        } catch {
+            print("Failed to fetch workout history: \(error)")
             return nil
         }
     }

@@ -43,7 +43,7 @@ struct LiftingSetRowActive: View {
                     }
                 }
                 .onChange(of: repsInput){
-                    setInput.reps = Int32(repsInput)!
+                    setInput.reps = Int32(repsInput) ?? 0
                     saveWorkoutDetail()
                 }
                 .onAppear {
@@ -67,7 +67,7 @@ struct LiftingSetRowActive: View {
                     }
                 }
                 .onChange(of: weightInput){
-                    setInput.weight = Int32(weightInput)!
+                    setInput.weight = Int32(weightInput) ?? 0
                     saveWorkoutDetail()
                 }
                 .onAppear {

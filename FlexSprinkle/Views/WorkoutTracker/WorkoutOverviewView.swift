@@ -21,7 +21,6 @@ struct WorkoutOverviewView: View {
         ZStack {
             VStack {
                 Divider()
-                
                 VStack {
                     HStack {
                         if showFirstCard {

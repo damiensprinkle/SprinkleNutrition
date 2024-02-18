@@ -378,58 +378,10 @@
             filePath = "FlexSprinkle/Views/WorkoutTracker/ModifyWorkout/AddWorkoutView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "200"
-            endingLineNumber = "200"
+            startingLineNumber = "225"
+            endingLineNumber = "225"
             landmarkName = "addWorkoutForm"
             landmarkType = "24">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "E552BE74-6FFB-4D01-A804-1ECA5E3560C4"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FlexSprinkle/Views/WorkoutTracker/ModifyWorkout/AddWorkoutView.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "282"
-            endingLineNumber = "282"
-            landmarkName = "saveWorkout()"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "E552BE74-6FFB-4D01-A804-1ECA5E3560C4 - 464b23a3749c0f7a"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "FlexSprinkle.AddWorkoutView.saveWorkout() -&gt; ()"
-                  moduleName = "FlexSprinkle"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/damiensprinkle/Desktop/FlexSprinkle/FlexSprinkle/Views/WorkoutTracker/ModifyWorkout/AddWorkoutView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "276"
-                  endingLineNumber = "276"
-                  offsetFromSymbolStart = "3604">
-               </Location>
-               <Location
-                  uuid = "E552BE74-6FFB-4D01-A804-1ECA5E3560C4 - b81f85dd804070b6"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (FlexSprinkle.WorkoutDetailInput) -&gt; Swift.Bool in FlexSprinkle.AddWorkoutView.saveWorkout() -&gt; ()"
-                  moduleName = "FlexSprinkle"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/damiensprinkle/Desktop/FlexSprinkle/FlexSprinkle/Views/WorkoutTracker/ModifyWorkout/AddWorkoutView.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "276"
-                  endingLineNumber = "276"
-                  offsetFromSymbolStart = "264">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

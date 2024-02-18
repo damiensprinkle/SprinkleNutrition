@@ -20,12 +20,18 @@ struct AddWorkoutView: View {
     @State private var showingRenameDialog = false
     @State private var renameIndex: Int? = nil // Track which exercise is being renamed
     @State private var renameText: String = ""
-    
-    
+        
     @State private var workoutDetails: [WorkoutDetailInput] = []
     @State private var showingAddExerciseSheet = false
     @State private var errorMessage: String = ""
     @State private var showAlert: Bool = false
+    @State private var alertMessage: String = ""
+    @State private var showingDeleteConfirmation: Bool = false
+    @State private var indexToDelete: Int? = nil
+
+    @State private var activeAlert: ActiveAlert = .error
+
+
     private let colorManager = ColorManager()
     @State private var showingAddExerciseDialog = false
     @EnvironmentObject var appViewModel: AppViewModel
@@ -81,15 +87,31 @@ struct AddWorkoutView: View {
                     }
                     else{
                         self.presentationMode.wrappedValue.dismiss()
-                        //appViewModel.resetToWorkoutMainView()
-                        
                     }
                 },
                 trailing: Button("Save") { saveWorkout() }
             )
             .alert(isPresented: $showAlert) {
-                Alert(title: Text("Error"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
+                switch activeAlert {
+                case .error:
+                    return Alert(title: Text("Error"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
+                case .deleteConfirmation:
+                    return Alert(
+                        title: Text("Confirm Deletion"),
+                        message: Text(alertMessage),
+                        primaryButton: .destructive(Text("Delete")) {
+                            if let index = indexToDelete {
+                                workoutDetails.remove(at: index)
+                                indexToDelete = nil // Reset deletion index
+                            }
+                        },
+                        secondaryButton: .cancel {
+                            indexToDelete = nil // Reset deletion index on cancel
+                        }
+                    )
+                }
             }
+
             .onAppear {
                 resetView()
                 if(workoutManager.fetchWorkoutById(for: workoutId) != nil){
@@ -167,7 +189,10 @@ struct AddWorkoutView: View {
                     Image(systemName: "trash")
                         .foregroundColor(.red)
                         .onTapGesture {
-                            workoutDetails.remove(at: index)
+                            indexToDelete = index // Mark the item for potential deletion
+                                  alertMessage = "Are you sure you want to delete this exercise?"
+                                  activeAlert = .deleteConfirmation // Specify which alert to show
+                                  showAlert = true // Show the alert
                         }
                     Image(systemName: "pencil")
                         .foregroundColor(.myBlack)
@@ -271,25 +296,23 @@ struct AddWorkoutView: View {
         if workoutTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             errorMessage = "Please Enter a Workout Title"
             showAlert = true
+            activeAlert = .error
         } else if workoutDetails.isEmpty {
             errorMessage = "Please add at least one exercise detail"
             showAlert = true
+            activeAlert = .error
         } else if workoutTitleOriginal != workoutTitle && workoutManager.titleExists(workoutTitle) {
             errorMessage = "Workout Title Already Exists"
             showAlert = true
+            activeAlert = .error
         } else {
             if(update){
                 let filledDetails = workoutDetails.filter { detail in
-                    // Ensure there's at least one set for the exercise, and it has meaningful data
-                    guard let firstSet = detail.sets.first else { return false }
+                    // Keep details where the exercise name is not empty, regardless of set counts or weights being 0
+                    guard !detail.exerciseName.isEmpty else { return false }
                     
-                    if detail.isCardio {
-                        // For cardio exercises, ensure the 'time' property is not empty (assuming 'time' is Int32 and thus cannot be 'empty'; adjust condition as needed)
-                        return !detail.exerciseName.isEmpty && firstSet.time > 0
-                    } else {
-                        // For non-cardio exercises, check 'reps' or 'weight'
-                        return !detail.exerciseName.isEmpty && (firstSet.reps > 0 || firstSet.weight > 0)
-                    }
+                    // If there's at least one set, it's considered meaningful data
+                    return !detail.sets.isEmpty
                 }
                 workoutManager.updateWorkoutDetails(workoutId: workoutId, workoutDetailsInput: filledDetails)
                 workoutManager.updateWorkoutTitle(workoutId: workoutId, to: workoutTitle)
@@ -323,4 +346,9 @@ struct AddWorkoutView: View {
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
     
+}
+
+
+enum ActiveAlert {
+    case error, deleteConfirmation
 }

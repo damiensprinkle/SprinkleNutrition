@@ -95,8 +95,6 @@ struct CardioSetRowActive: View {
                 }
                 .onAppear {
                     let formattedTime = formatTimeFromSeconds(totalSeconds: Int(setInput.time))
-                    print(" on appearing set input is \(setInput.time)")
-                    print("this is formatted to :  \(formattedTime)")
                     timeInput = "\(formattedTime)"
                 }
 

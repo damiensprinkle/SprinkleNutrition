@@ -30,9 +30,10 @@ struct WorkoutContentMainView: View {
                 .transition(.slide)
                 
             case .workoutActiveView(let workoutId):
-                AnyView(ActiveWorkoutView(workoutId: workoutId)
+                ActiveWorkoutView(workoutId: workoutId)
+                    .id(workoutId) // Assuming workoutId is unique for each workout
                     .environmentObject(workoutManager)
-                    .environmentObject(appViewModel))
+                    .environmentObject(appViewModel)
                 .transition(.slide)
             case .workoutHistoryView:
                 AnyView(WorkoutHistoryView()

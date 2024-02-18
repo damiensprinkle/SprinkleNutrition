@@ -82,13 +82,14 @@ struct ActiveWorkoutView: View {
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("Error"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
             }
+            .id(workoutId) // Use workoutId as a unique identifier for the view
             .onAppear {
+                print(workoutId)
+
                 if(workoutManager.fetchWorkoutById(for: workoutId) != nil){
                     loadWorkoutDetails()
                     
                     initSession()
-                    
-                    
                 }
             }
         }
@@ -99,7 +100,6 @@ struct ActiveWorkoutView: View {
         
         // Update existing workoutDetails with temporaryDetails
         for tempDetail in temporaryDetails {
-            print(tempDetail)
             if let index = workoutDetails.firstIndex(where: { $0.exerciseId == tempDetail.exerciseId }) {
                 // Exercise exists, update its sets
                 let updatedSets = tempDetail.sets.map { SetInput(id: $0.id, reps: $0.reps, weight: $0.weight, time: $0.time, distance: $0.distance) }

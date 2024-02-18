@@ -42,8 +42,13 @@ struct LiftingSetRowActive: View {
                     }
                 }
                 .onChange(of: repsInput){
-                    setInput.reps = Int32(repsInput) ?? 0
-                    saveWorkoutDetail()
+                    if(!repsInput.isEmpty){
+                        if(Int32(repsInput)! != 0){
+                            setInput.reps = Int32(repsInput) ?? 0
+                            saveWorkoutDetail()
+                        }
+        
+                    }
                 }
                 .onAppear {
                     repsInput = "\(setInput.reps)"
@@ -66,8 +71,10 @@ struct LiftingSetRowActive: View {
                     }
                 }
                 .onChange(of: weightInput){
-                    setInput.weight = Int32(weightInput) ?? 0
-                    saveWorkoutDetail()
+                    if(!weightInput.isEmpty){
+                        setInput.weight = Int32(weightInput) ?? 0
+                        saveWorkoutDetail()
+                    }
                 }
                 .onAppear {
                     weightInput = "\(setInput.weight)"
@@ -81,10 +88,6 @@ struct LiftingSetRowActive: View {
     }
     
     func saveWorkoutDetail() {
-        // Ensure setInput is updated with the latest input values
-        setInput.distance = Float(weightInput) ?? 0.0
-        setInput.reps = Int32(repsInput) ?? 0
-        
         // Proceed with saving
         let setsInput = [setInput] // Directly use updated setInput
         workoutManager.saveOrUpdateSetsDuringActiveWorkout(workoutId: workoutId, exerciseId: workoutDetails.exerciseId!, exerciseName: workoutDetails.exerciseName, setsInput: setsInput, isCardio: workoutDetails.isCardio, orderIndex: workoutDetails.orderIndex)

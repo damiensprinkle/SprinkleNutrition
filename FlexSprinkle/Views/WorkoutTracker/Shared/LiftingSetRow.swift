@@ -10,10 +10,10 @@ import SwiftUI
 struct LiftingSetRow: View {
     let setIndex: Int
     @Binding var setInput: SetInput
-    @FocusState private var repsFieldFocused: Bool
-    @FocusState private var weightFieldFocused: Bool
     @State private var repsInput: String = ""
     @State private var weightInput: String = ""
+    @FocusState private var focusedField: FocusableField?
+
     
     var body: some View {
         HStack {
@@ -22,9 +22,9 @@ struct LiftingSetRow: View {
             Spacer()
             Divider()
             TextField("Reps", text: $repsInput)
-                .focused($repsFieldFocused)
-                .onChange(of: repsFieldFocused) {
-                    if repsFieldFocused {
+                .focused($focusedField, equals: .reps)
+                .onChange(of: focusedField) {
+                    if focusedField == .reps {
                         repsInput = "" // Clear the input when the field becomes focused
                     }
                 }
@@ -36,12 +36,19 @@ struct LiftingSetRow: View {
                 }
                 .keyboardType(.numberPad)
                 .frame(width: 100) // Fixed width for reps input
+                .toolbar {
+                    ToolbarItem(placement: .keyboard) {
+                        Button("Done") {
+                            focusedField = nil
+                        }
+                    }
+                }
             Spacer()
             Divider()
             TextField("Weight", text: $weightInput)
-                .focused($weightFieldFocused)
-                .onChange(of: weightFieldFocused) {
-                    if weightFieldFocused {
+                .focused($focusedField, equals: .weight)
+                .onChange(of: focusedField) {
+                    if focusedField == .weight {
                         weightInput = "" // Clear the input when the field becomes focused
                     }
                 }
@@ -54,6 +61,13 @@ struct LiftingSetRow: View {
                 }
                 .keyboardType(.numberPad)
                 .frame(width: 100) // Fixed width for weight input
+                .toolbar {
+                    ToolbarItem(placement: .keyboard) {
+                        Button("Done") {
+                            focusedField = nil
+                        }
+                    }
+                }
         }
     }
 }

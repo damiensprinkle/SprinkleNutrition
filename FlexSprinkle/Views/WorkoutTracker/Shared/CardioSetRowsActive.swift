@@ -15,7 +15,8 @@ struct CardioSetRowActive: View {
     let workoutStarted: Bool
     @FocusState private var distanceFieldFocused: Bool
     @FocusState private var focusedField: FocusableField?
-    
+    @State private var originalTimeInput: String = ""
+
     @State private var distanceInput: String = ""
     @State private var timeInput: String = ""
     @EnvironmentObject var workoutManager: WorkoutManager
@@ -43,8 +44,10 @@ struct CardioSetRowActive: View {
                     }
                 }
                 .onChange(of: distanceInput){
-                    setInput.distance = Float(distanceInput) ?? 0.0
-                    saveWorkoutDetail()
+                    if(!distanceInput.isEmpty){
+                        setInput.distance = Float(distanceInput) ?? 0.0
+                        saveWorkoutDetail()
+                    }
                 }
                 .onAppear {
                     distanceInput = "\(setInput.distance)"
@@ -56,25 +59,38 @@ struct CardioSetRowActive: View {
             TextField("Time", text: $timeInput)
                 .focused($focusedField, equals: .time)
                 .onChange(of: focusedField) {
-                    if (focusedField != nil) {
+                    if focusedField == .time {
+                        // Remember the current input as the original before changing it
+                        originalTimeInput = timeInput
+                            timeInput = "00:00:00"
                         focusManager.isAnyTextFieldFocused = true
-                        focusManager.currentlyFocusedField = focusedField
-                        timeInput = "00:00:00"
-                    } else {
-                        // When focus is lost and no input was entered, reset to the original value
-                        if timeInput.isEmpty {
-                            timeInput = "\(setInput.time)"
-                            
+                        focusManager.currentlyFocusedField = .time
+                    } else if focusedField == nil {
+                        if timeInput == "00:00:00" {
+                            timeInput = originalTimeInput
+                        }
+                        else {
+                            formatInput(timeInput)
+                            if !timeInput.isEmpty && timeInput != originalTimeInput {
+                                saveWorkoutDetail()
+                            }
                         }
                     }
                 }
                 .onChange(of: timeInput){
-                    let time = timeInput
-                    formatInput(time)
-                    saveWorkoutDetail()
+                    formatInput(timeInput)
+                    if(!timeInput.isEmpty){
+                        let formattedTime = formatTimeFromSeconds(totalSeconds: Int(setInput.time))
+                        if(formattedTime != "00:00:00") {
+                            saveWorkoutDetail()
+                        }
+
+                    }
                 }
                 .onAppear {
                     let formattedTime = formatTimeFromSeconds(totalSeconds: Int(setInput.time))
+                    print(" on appearing set input is \(setInput.time)")
+                    print("this is formatted to :  \(formattedTime)")
                     timeInput = "\(formattedTime)"
                 }
 

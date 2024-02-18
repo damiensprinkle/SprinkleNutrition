@@ -117,7 +117,6 @@ struct AddWorkoutView: View {
             }
 
             .onAppear {
-                resetView()
                 if(workoutManager.fetchWorkoutById(for: workoutId) != nil){
                     loadWorkoutDetails()
                     update = true
@@ -243,13 +242,6 @@ struct AddWorkoutView: View {
             .onDelete(perform: deleteExercise)
             
         }
-    }
-    
-    private func resetView() {
-        // Reset all relevant state properties to their initial values
-        self.workoutTitle = ""
-        self.workoutTitleOriginal = ""
-        self.workoutDetails = []
     }
     
     private func loadWorkoutDetails() {

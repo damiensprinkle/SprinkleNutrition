@@ -14,9 +14,9 @@ struct CardioSetRow: View {
     let setIndex: Int
     @Binding var setInput: SetInput
     @State private var distanceInput: String = ""
-    @FocusState private var distanceFieldFocused: Bool
     @State private var timeInput: String = ""
-    @FocusState private var timeFieldFocused: Bool
+    @FocusState private var focusedField: FocusableField?
+
     
     // Simplified time selection
     @State private var selectedTimeIndex: Int = 0
@@ -56,9 +56,9 @@ struct CardioSetRow: View {
             Spacer()
             Divider()
             TextField("Distance", text: $distanceInput)
-                .focused($distanceFieldFocused)
-                .onChange(of: distanceFieldFocused) {
-                    if distanceFieldFocused {
+                .focused($focusedField, equals: .distance)
+                .onChange(of: focusedField) {
+                    if focusedField == .distance {
                         distanceInput = "" // Clear the input when the field becomes focused
                     }
                     else{
@@ -79,14 +79,19 @@ struct CardioSetRow: View {
                 }
                 .keyboardType(.decimalPad)
                 .frame(width: 100) // Fixed width for distance input
-                .addDoneButton() // Add the done button to this TextField
-            
+                .toolbar {
+                    ToolbarItem(placement: .keyboard) {
+                        Button("Done") {
+                            focusedField = nil
+                        }
+                    }
+                }
             Spacer()
             Divider()
             TextField("Time", text: $timeInput)
-                .focused($timeFieldFocused)
-                .onChange(of: timeFieldFocused) {
-                    if timeFieldFocused {
+                .focused($focusedField, equals: .time)
+                .onChange(of: focusedField) {
+                    if focusedField == .time {
                         timeInput = "" // Clear the input when the field becomes focused
                     }
                 }
@@ -100,7 +105,13 @@ struct CardioSetRow: View {
                 }
                 .keyboardType(.numberPad)
                 .frame(width: 100) // Fixed width for distance input
-                .addDoneButton() // Add the done button to this TextField
+                .toolbar {
+                    ToolbarItem(placement: .keyboard) {
+                        Button("Done") {
+                            focusedField = nil
+                        }
+                    }
+                }
         }
     }
     private func onChange() {
@@ -168,21 +179,4 @@ struct CardioSetRow: View {
         return validHours * 3600 + validMinutes * 60 + validSeconds
     }
     
-}
-
-// Include the extension for adding a Done button to the keyboard
-
-
-extension View {
-    func addDoneButton() -> some View {
-        self.toolbar {
-            ToolbarItemGroup(placement: .keyboard) {
-                Spacer() // Use Spacer to push the button to the right
-                Button("Done") {
-                    // Hide the keyboard
-                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                }
-            }
-        }
-    }
 }

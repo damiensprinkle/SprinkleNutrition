@@ -49,7 +49,7 @@ struct ActiveWorkoutView: View {
                     .onTapGesture {
                         if focusManager.isAnyTextFieldFocused {
                             focusManager.isAnyTextFieldFocused = false
-                            hideKeyboard()
+                           // hideKeyboard()
                         }
                     }
                     

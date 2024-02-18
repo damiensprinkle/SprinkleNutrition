@@ -193,6 +193,53 @@ class WorkoutManager: ObservableObject {
         }
     }
     
+    func duplicateWorkout(originalWorkoutId: UUID) {
+           guard let context = self.context,
+                 let originalWorkout = fetchWorkoutById(for: originalWorkoutId) else {
+               print("Failed to fetch or context is nil for workout ID \(originalWorkoutId)")
+               return
+           }
+           
+           let newWorkout = Workouts(context: context)
+           newWorkout.id = UUID() // Assign a new UUID
+           newWorkout.name = "\(originalWorkout.name ?? "")-copy" // Append "-copy" to the original workout name
+           
+           // Copy all details from the original workout to the new workout
+           if let originalDetails = originalWorkout.details as? Set<WorkoutDetail> {
+               for originalDetail in originalDetails {
+                   let newDetail = WorkoutDetail(context: context)
+                   newDetail.exerciseId = UUID() // Assign a new UUID or use originalDetail.exerciseId based on requirements
+                   newDetail.exerciseName = originalDetail.exerciseName
+                   newDetail.isCardio = originalDetail.isCardio
+                   newDetail.orderIndex = originalDetail.orderIndex
+                   
+                   // Copy all sets from the original detail to the new detail
+                   if let originalSets = originalDetail.sets as? Set<WorkoutSet> {
+                       for originalSet in originalSets {
+                           let newSet = WorkoutSet(context: context)
+                           newSet.reps = originalSet.reps
+                           newSet.weight = originalSet.weight
+                           newSet.time = originalSet.time
+                           newSet.distance = originalSet.distance
+                           // Add the new set to the new detail
+                           newDetail.addToSets(newSet)
+                       }
+                   }
+                   
+                   // Add the new detail to the new workout
+                   newWorkout.addToDetails(newDetail)
+               }
+           }
+           
+           // Save the new workout to the context
+           do {
+               try context.save()
+               print("Successfully duplicated workout with ID: \(originalWorkoutId)")
+           } catch {
+               print("Error saving context after duplicating workout: \(error)")
+           }
+       }
+
     
     
     //good?

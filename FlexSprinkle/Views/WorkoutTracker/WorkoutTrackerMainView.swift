@@ -18,6 +18,8 @@ struct WorkoutTrackerMainView: View {
     @EnvironmentObject var appViewModel: AppViewModel
     @State private var showAlert = false
     @State private var deletingWorkouts: Set<UUID> = [] // for dissolve animation
+    @State private var duplicatingWorkouts: Set<UUID> = [] // for dissolve animation
+
     @State private var presentingModal: ModalType? = nil
     
     var body: some View {
@@ -44,7 +46,11 @@ struct WorkoutTrackerMainView: View {
                             if !deletingWorkouts.contains(workout.id) {
                                 CardView(workoutId: workout.id, onDelete: {
                                     deleteWorkouts(workout.id)
-                                }, hasActiveSession: activeWorkoutId == workout.id)
+                                }, 
+                                onDuplicate: {
+                                    duplicateWorkout(workout.id)
+                                },
+                                hasActiveSession: activeWorkoutId == workout.id)
                                 .transition(.asymmetric(insertion: .opacity.combined(with: .scale), removal: .opacity.combined(with: .scale)))
                                 .environmentObject(appViewModel)
                                 .environmentObject(workoutManager)
@@ -99,6 +105,19 @@ struct WorkoutTrackerMainView: View {
                     self.workoutManager.deleteWorkout(for: workoutId)
                     self.workoutManager.loadWorkoutsWithId()
                     self.deletingWorkouts.remove(workoutId)
+                }
+            }
+        }
+    }
+    
+    private func duplicateWorkout(_ workoutId: UUID){
+        withAnimation {
+            duplicatingWorkouts.insert(workoutId)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                withAnimation {
+                    self.workoutManager.duplicateWorkout(originalWorkoutId: workoutId)
+                    self.workoutManager.loadWorkoutsWithId()
+                    self.duplicatingWorkouts.remove(workoutId)
                 }
             }
         }

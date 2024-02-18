@@ -3,6 +3,8 @@ import SwiftUI
 struct CardView: View {
     var workoutId: UUID
     var onDelete: (() -> Void)?
+    var onDuplicate: (() -> Void)?
+
     var hasActiveSession: Bool
     
     @State private var presentingModal: ModalType? = nil
@@ -105,6 +107,12 @@ struct CardView: View {
         }
         
         Button(action: {
+            onDuplicate?()
+        }) {
+            Label("Duplicate", systemImage: "doc.on.doc")
+        }
+        
+        Button(role: .destructive, action: {
             let sessionId = workoutManager.getSessions().first?.workoutsR?.id
             if  sessionId == workoutId {
                 alertTitle = "You Cannot Delete a Workout That Is In Progress"

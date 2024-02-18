@@ -61,6 +61,15 @@ struct CardioSetRow: View {
                     if distanceFieldFocused {
                         distanceInput = "" // Clear the input when the field becomes focused
                     }
+                    else{
+                        if let floatValue = Float(distanceInput) {
+                                // Use a NumberFormatter to convert the float value back to a string with at least one decimal place
+                                let numberFormatter = NumberFormatter()
+                                numberFormatter.minimumFractionDigits = 1 // Ensure at least one decimal place
+                                numberFormatter.maximumFractionDigits = 2 // Adjust maximum digits as needed
+                                distanceInput = numberFormatter.string(from: NSNumber(value: floatValue)) ?? distanceInput
+                            }
+                    }
                 }
                 .onChange(of: distanceInput) {
                     setInput.distance = Float(distanceInput) ?? 0.0

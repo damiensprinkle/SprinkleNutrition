@@ -51,6 +51,9 @@ struct AddExerciseDialog: View {
                 
             }
         }
+        .onAppear{
+            hideKeyboard()
+        }
         .padding()
         .background(Color.white)
         .cornerRadius(15)
@@ -81,5 +84,10 @@ struct AddExerciseDialog: View {
             self.showingDialog = false
         }
         
+    }
+    
+    private func hideKeyboard()
+    {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }

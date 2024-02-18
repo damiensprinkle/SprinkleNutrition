@@ -38,7 +38,6 @@ struct LiftingSetRowActive: View {
                         if repsInput.isEmpty {
                             repsInput = "\(setInput.reps)"
                             saveWorkoutDetail()
-                            
                         }
                     }
                 }

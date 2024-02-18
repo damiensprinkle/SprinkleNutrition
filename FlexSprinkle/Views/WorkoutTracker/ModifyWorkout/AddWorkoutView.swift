@@ -44,19 +44,21 @@ struct AddWorkoutView: View {
                     addWorkoutForm
                     Spacer()
                     
-                    Button("Add Exercise") {
-                        withAnimation(.easeOut(duration: 0.2)){
+                    Button(action: {
+                        withAnimation(.easeOut(duration: 0.2)) {
                             showingAddExerciseDialog = true
                         }
+                    }) {
+                        Text("Add Exercise")
+                            .font(.title2)
+                            .foregroundColor(.white)
+                            .padding() // Apply padding to the Text itself
+                            .frame(maxWidth: .infinity) // Make the Text view take up maximum width
+                            .background(Color.myBlue) // Apply the background color to the Text view
+                            .cornerRadius(10) // Apply corner radius to the background
                     }
-                    .font(.title2)
-                    .foregroundColor(Color.white)
-                    .padding() // Apply padding to the content inside the button
-                    .frame(maxWidth: .infinity) // Ensure the button expands to the maximum width available
-                    .background(Color.myBlue) // Apply the background color to the button
-                    .cornerRadius(10) // Apply corner radius to the button's background
-                    .padding(.horizontal) // Apply horizontal padding outside the button to maintain some space from the screen edges
-                    
+                    .padding(.horizontal) // Apply padding outside the button to maintain some space from the screen edges
+
                 }
                 
                 if showingAddExerciseDialog {
@@ -74,6 +76,8 @@ struct AddWorkoutView: View {
                         .padding(.horizontal)
                 }
                 if showingRenameDialog {
+                    Color.black.opacity(0.4)
+                        .edgesIgnoringSafeArea(.all)
                     renameDialog()
                         .padding(.horizontal)
                         .transition(.scale)

@@ -77,9 +77,10 @@ struct CardioSetRowActive: View {
                     let formattedTime = formatTimeFromSeconds(totalSeconds: Int(setInput.time))
                     timeInput = "\(formattedTime)"
                 }
+
+                .frame(width: 100)
             
                 .keyboardType(.numberPad)
-                .frame(width: 100)
         }
         .disabled(!workoutStarted)
         .opacity(!workoutStarted ? 0.5 : 1) // Manually adjust opacity to grey out view

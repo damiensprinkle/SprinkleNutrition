@@ -248,6 +248,12 @@ struct ActiveWorkoutView: View {
             }
         }
         
+        let totalDistance = workoutDetails.filter { $0.isCardio }.reduce(0) { detailSum, detail in
+            detailSum + detail.sets.reduce(0) { setSum, setInput in
+                setSum + Float(setInput.distance) // Summing up the distance
+            }
+        }
+        
         workoutManager.setSessionStatus(workoutId: workoutId, isActive: false)
         
         // Save the workout history
@@ -258,6 +264,7 @@ struct ActiveWorkoutView: View {
             repsCompleted: Int32(totalReps),
             workoutTimeToComplete: workoutTimeToComplete,
             totalCardioTime: "\(totalCardioTime)",
+            totalDistance: Float(totalDistance),
             workoutDetailsInput: workoutDetails
         )
         

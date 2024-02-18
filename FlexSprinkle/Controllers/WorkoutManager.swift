@@ -365,8 +365,6 @@ class WorkoutManager: ObservableObject {
     }
 }
 
-
-
 extension WorkoutManager {
     
     func titleExists(_ title: String) -> Bool {
@@ -454,7 +452,7 @@ extension WorkoutManager {
         return []
     }
     
-    func saveWorkoutHistory(workoutId: UUID, dateCompleted: Date, totalWeightLifted: Int32, repsCompleted: Int32, workoutTimeToComplete: String, totalCardioTime: String, workoutDetailsInput: [WorkoutDetailInput]) {
+    func saveWorkoutHistory(workoutId: UUID, dateCompleted: Date, totalWeightLifted: Int32, repsCompleted: Int32, workoutTimeToComplete: String, totalCardioTime: String, totalDistance: Float, workoutDetailsInput: [WorkoutDetailInput]) {
         guard let context = self.context, let workout = fetchWorkoutById(for: workoutId) else { return }
         
         let history = WorkoutHistory(context: context)
@@ -463,6 +461,7 @@ extension WorkoutManager {
         history.totalWeightLifted = totalWeightLifted
         history.repsCompleted = repsCompleted
         history.workoutTimeToComplete = workoutTimeToComplete
+        history.totalDistance = totalDistance
         history.timeDoingCardio = totalCardioTime
         history.workoutR = workout
 

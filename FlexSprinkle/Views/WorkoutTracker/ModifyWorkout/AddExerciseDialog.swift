@@ -55,7 +55,7 @@ struct AddExerciseDialog: View {
             hideKeyboard()
         }
         .padding()
-        .background(Color.white)
+        .background(Color.myWhite)
         .cornerRadius(15)
         .shadow(radius: 10)
     }

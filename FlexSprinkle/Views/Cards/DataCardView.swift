@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DataCardView: View {
-    let icon: Image 
+    let icon: Image
     let number: String
     let description: String
     
@@ -36,10 +36,10 @@ struct DataCardView: View {
                 .padding(.bottom, 8)
             
         }
-        .frame(width: 160, height: 160) // Adjust card size as needed
-        .background(Color.white) // Use any background color
+        .frame(width: 160, height: 160)
+        .background(Color.myWhite)
         .cornerRadius(15)
-        .shadow(radius: 5) // Optional shadow for depth
+        .shadow(radius: 5)
         .padding()
     }
 }

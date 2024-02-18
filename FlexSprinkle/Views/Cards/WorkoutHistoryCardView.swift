@@ -108,7 +108,7 @@ struct WorkoutHistoryCardView: View {
             )
         }
         .frame(maxWidth: .infinity, maxHeight: isExpanded ? .infinity : 250)
-        .background(Color.white)
+        .background(Color.myWhite)
         .cornerRadius(15)
         .shadow(radius: 5)
         .padding(.horizontal)

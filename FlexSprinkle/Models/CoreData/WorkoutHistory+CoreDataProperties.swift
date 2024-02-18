@@ -20,6 +20,7 @@ extension WorkoutHistory {
     @NSManaged public var repsCompleted: Int32
     @NSManaged public var timeDoingCardio: String?
     @NSManaged public var totalWeightLifted: Int32
+    @NSManaged public var totalDistance: Float
     @NSManaged public var workoutDate: Date?
     @NSManaged public var workoutTimeToComplete: String?
     @NSManaged public var details: NSSet?

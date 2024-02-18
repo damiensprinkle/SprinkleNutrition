@@ -15,7 +15,7 @@ struct CardioSetRowActive: View {
     let workoutStarted: Bool
     @FocusState private var focusedField: FocusableField?
     @State private var originalTimeInput: String = ""
-
+    
     @State private var distanceInput: String = ""
     @State private var timeInput: String = ""
     @EnvironmentObject var workoutManager: WorkoutManager
@@ -34,7 +34,6 @@ struct CardioSetRowActive: View {
                         distanceInput = ""
                         focusManager.isAnyTextFieldFocused = true
                     } else {
-                        // When focus is lost and no input was entered, reset to the original value
                         if distanceInput.isEmpty {
                             distanceInput = "\(setInput.distance)"
                             saveWorkoutDetail()
@@ -60,7 +59,7 @@ struct CardioSetRowActive: View {
                     if focusedField == .time {
                         // Remember the current input as the original before changing it
                         originalTimeInput = timeInput
-                            timeInput = "00:00:00"
+                        timeInput = "00:00:00"
                         focusManager.isAnyTextFieldFocused = true
                         focusManager.currentlyFocusedField = .time
                     } else if focusedField == nil {
@@ -82,14 +81,14 @@ struct CardioSetRowActive: View {
                         if(formattedTime != "00:00:00") {
                             saveWorkoutDetail()
                         }
-
+                        
                     }
                 }
                 .onAppear {
                     let formattedTime = formatTimeFromSeconds(totalSeconds: Int(setInput.time))
                     timeInput = "\(formattedTime)"
                 }
-
+            
                 .frame(width: 100)
             
                 .keyboardType(.numberPad)

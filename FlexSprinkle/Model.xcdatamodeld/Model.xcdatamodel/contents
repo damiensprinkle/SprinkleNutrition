@@ -26,6 +26,7 @@
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="repsCompleted" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="timeDoingCardio" optional="YES" attributeType="String"/>
+        <attribute name="totalDistance" optional="YES" attributeType="Float" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="totalWeightLifted" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="workoutDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="workoutTimeToComplete" optional="YES" attributeType="String"/>

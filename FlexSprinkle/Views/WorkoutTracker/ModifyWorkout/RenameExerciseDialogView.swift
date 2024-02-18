@@ -29,7 +29,7 @@ struct RenameExerciseDialogView: View {
             }
         }
         .padding()
-        .background(Color.white)
+        .background(Color.myWhite)
         .cornerRadius(15)
         .shadow(radius: 10)
         .frame(width: 300) // Adjust the width as necessary

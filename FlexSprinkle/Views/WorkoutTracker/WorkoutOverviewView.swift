@@ -1,6 +1,7 @@
 import SwiftUI
 import ConfettiSwiftUI
 
+
 struct WorkoutOverviewView: View {
     var workoutId: UUID
     @EnvironmentObject var workoutManager: WorkoutManager
@@ -9,76 +10,36 @@ struct WorkoutOverviewView: View {
     @State private var history: WorkoutHistory?
     
     @State private var totalCardioTime = ""
+    @State private var showProceedButton = false
     
-    @State private var showFirstCard = false
-    
-    @State private var showSecondCard = false
-    @State private var showThirdCard = false
-    @State private var showFourthCard = false
-    @State private var showProceedButton = false // State to control the visibility of the Proceed button
+    let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
     
     var body: some View {
         ZStack {
-            VStack {
+            ScrollView {
                 Divider()
-                VStack {
-                    HStack {
-                        if showFirstCard {
-                            DataCardView(icon: Image(systemName: "figure.walk"), number: "\(history?.repsCompleted ?? 0)", description: "Reps Completed")
-                                .transition(.scale.combined(with: .opacity))
-                        }
-                        if showSecondCard {
-                            DataCardView(icon: Image(systemName: "scalemass"), number: "\(history?.totalWeightLifted ?? 0)", description: "Total Weight Lifted")
-                                .transition(.scale.combined(with: .opacity))
-                        }
+                LazyVGrid(columns: columns, spacing: 20) {
+                    if let repsCompleted = history?.repsCompleted, repsCompleted > 0 {
+                        DataCardView(icon: Image(systemName: "figure.walk"), number: "\(repsCompleted)", description: "Reps Completed")
+                            .transition(.scale.combined(with: .opacity))
                     }
-                    HStack {
-                        if showThirdCard {
-                            DataCardView(icon: Image(systemName: "timer"), number: "\(totalCardioTime)", description: "Time Doing Cardio")
-                                .transition(.scale.combined(with: .opacity))
-                        }
-                        if showFourthCard {
-                            DataCardView(icon: Image(systemName: "clock"), number: "\(history?.workoutTimeToComplete ?? "0")", description: " Total Workout Time")
-                                .transition(.scale.combined(with: .opacity))
-                        }
+                    if let totalWeightLifted = history?.totalWeightLifted, totalWeightLifted > 0 {
+                        DataCardView(icon: Image(systemName: "scalemass"), number: "\(totalWeightLifted)", description: "Total Weight Lifted")
+                            .transition(.scale.combined(with: .opacity))
+                    }
+                    if !totalCardioTime.isEmpty && totalCardioTime != "00:00:00" {
+                        DataCardView(icon: Image(systemName: "timer"), number: totalCardioTime, description: "Time Doing Cardio")
+                            .transition(.scale.combined(with: .opacity))
+                    }
+                    if let totalDistance = history?.totalDistance, totalDistance > 0.0 {
+                        DataCardView(icon: Image(systemName: "gauge.with.needle"), number: "\(totalDistance)", description: "Total Distance")
+                            .transition(.scale.combined(with: .opacity))
                     }
                 }
-                
-                .onAppear {
-                    history = workoutManager.fetchLatestWorkoutHistory(for: workoutId)
-                    let totalCardioTimeInSeconds = Int((history?.timeDoingCardio!)!)
-                    
-                    let hours = totalCardioTimeInSeconds! / 3600
-                    let minutes = (totalCardioTimeInSeconds! % 3600) / 60
-                    let seconds = totalCardioTimeInSeconds! % 60
-                    
-                    totalCardioTime = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-                    
-                    
-                    withAnimation(.easeOut(duration: 0.5)) {
-                        showFirstCard = true
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                        withAnimation(.easeOut(duration: 0.5)) {
-                            showSecondCard = true
-                        }
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-                        withAnimation(.easeOut(duration: 0.5)) {
-                            showThirdCard = true
-                        }
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.9) {
-                        withAnimation(.easeOut(duration: 0.5)) {
-                            showFourthCard = true
-                        }
-                        withAnimation(.easeIn(duration: 1.0)) {
-                            showProceedButton = true // Show the Proceed button after all cards are shown
-                        }
-                    }
-                }
-                
-                Spacer()
+                .padding()
             }
             
             if showProceedButton {
@@ -103,5 +64,23 @@ struct WorkoutOverviewView: View {
                 }
             }
         }
+        .navigationTitle("Time: \(history?.workoutTimeToComplete ?? "0")")
+        .onAppear {
+            history = workoutManager.fetchLatestWorkoutHistory(for: workoutId)
+            
+            if let totalCardioTimeInSeconds = Int(history?.timeDoingCardio ?? "0") {
+                let hours = totalCardioTimeInSeconds / 3600
+                let minutes = (totalCardioTimeInSeconds % 3600) / 60
+                let seconds = totalCardioTimeInSeconds % 60
+                totalCardioTime = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                withAnimation(.easeIn(duration: 1.2)) {
+                    showProceedButton = true
+                }
+            }
+        }
     }
 }
+

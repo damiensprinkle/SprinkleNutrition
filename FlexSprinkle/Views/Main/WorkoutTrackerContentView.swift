@@ -24,7 +24,6 @@ struct WorkoutContentMainView: View {
                 
             case .workoutOverview(let workoutId):
                 AnyView(WorkoutOverviewView(workoutId: workoutId)
-                    .navigationTitle("Overview")
                     .environmentObject(workoutManager)
                     .environmentObject(appViewModel))
                 .transition(.slide)

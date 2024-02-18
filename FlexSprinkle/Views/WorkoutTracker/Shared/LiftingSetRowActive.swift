@@ -55,13 +55,6 @@ struct LiftingSetRowActive: View {
                 }
                 .keyboardType(.numberPad)
                 .frame(width: 100)
-                .toolbar {
-                    ToolbarItem(placement: .keyboard) {
-                        Button("Done") {
-                            focusedField = nil
-                        }
-                    }
-                }
             Spacer()
             Divider()
             TextField("Weight", text: $weightInput)
@@ -88,13 +81,20 @@ struct LiftingSetRowActive: View {
                 }
                 .keyboardType(.numberPad)
                 .frame(width: 100)
-                .toolbar {
-                    ToolbarItem(placement: .keyboard) {
-                        Button("Done") {
-                            focusedField = nil
-                        }
+        }
+        .toolbar {
+            ToolbarItem(placement: .keyboard) {
+                if(focusedField == .weight){
+                    Button("Done") {
+                        focusedField = nil
                     }
                 }
+                if(focusedField == .reps) {
+                    Button("Done") {
+                        focusedField = nil
+                    }
+                }
+            }
         }
         .disabled(!workoutStarted)
         .opacity(!workoutStarted ? 0.5 : 1) // Manually adjust opacity to grey out view

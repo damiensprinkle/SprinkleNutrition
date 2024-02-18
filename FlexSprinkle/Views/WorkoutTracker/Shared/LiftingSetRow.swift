@@ -36,13 +36,6 @@ struct LiftingSetRow: View {
                 }
                 .keyboardType(.numberPad)
                 .frame(width: 100) // Fixed width for reps input
-                .toolbar {
-                    ToolbarItem(placement: .keyboard) {
-                        Button("Done") {
-                            focusedField = nil
-                        }
-                    }
-                }
             Spacer()
             Divider()
             TextField("Weight", text: $weightInput)
@@ -61,13 +54,21 @@ struct LiftingSetRow: View {
                 }
                 .keyboardType(.numberPad)
                 .frame(width: 100) // Fixed width for weight input
-                .toolbar {
-                    ToolbarItem(placement: .keyboard) {
-                        Button("Done") {
-                            focusedField = nil
-                        }
+
+        }
+        .toolbar {
+            ToolbarItem(placement: .keyboard) {
+                if(focusedField == .weight){
+                    Button("Done") {
+                        focusedField = nil
                     }
                 }
+                if(focusedField == .reps) {
+                    Button("Done") {
+                        focusedField = nil
+                    }
+                }
+            }
         }
     }
 }

@@ -76,13 +76,6 @@ struct CardioSetRow: View {
                 }
                 .keyboardType(.decimalPad)
                 .frame(width: 100) // Fixed width for distance input
-                .toolbar {
-                    ToolbarItem(placement: .keyboard) {
-                        Button("Done") {
-                            focusedField = nil
-                        }
-                    }
-                }
             Spacer()
             Divider()
             TextField("Time", text: $timeInput)
@@ -102,13 +95,20 @@ struct CardioSetRow: View {
                 }
                 .keyboardType(.numberPad)
                 .frame(width: 100) // Fixed width for distance input
-                .toolbar {
-                    ToolbarItem(placement: .keyboard) {
-                        Button("Done") {
-                            focusedField = nil
-                        }
+        }
+        .toolbar {
+            ToolbarItem(placement: .keyboard) {
+                if(focusedField == .time){
+                    Button("Done") {
+                        focusedField = nil
                     }
                 }
+                if(focusedField == .distance) {
+                    Button("Done") {
+                        focusedField = nil
+                    }
+                }
+            }
         }
     }
     

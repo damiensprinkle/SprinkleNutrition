@@ -13,7 +13,6 @@ struct CardioSetRowActive: View {
     let workoutDetails: WorkoutDetailInput
     let workoutId: UUID
     let workoutStarted: Bool
-    @FocusState private var distanceFieldFocused: Bool
     @FocusState private var focusedField: FocusableField?
     @State private var originalTimeInput: String = ""
 
@@ -30,9 +29,9 @@ struct CardioSetRowActive: View {
             Spacer()
             Divider()
             TextField("Distance", text: $distanceInput)
-                .focused($distanceFieldFocused)
-                .onChange(of: distanceFieldFocused) {
-                    if distanceFieldFocused {
+                .focused($focusedField, equals: .distance)
+                .onChange(of: focusedField) {
+                    if focusedField == .distance {
                         distanceInput = ""
                         focusManager.isAnyTextFieldFocused = true
                     } else {
@@ -54,6 +53,13 @@ struct CardioSetRowActive: View {
                 }
                 .keyboardType(.numberPad)
                 .frame(width: 100)
+                .toolbar {
+                    ToolbarItem(placement: .keyboard) {
+                        Button("Done") {
+                            focusedField = nil
+                        }
+                    }
+                }
             Spacer()
             Divider()
             TextField("Time", text: $timeInput)
@@ -97,6 +103,13 @@ struct CardioSetRowActive: View {
                 .frame(width: 100)
             
                 .keyboardType(.numberPad)
+                .toolbar {
+                    ToolbarItem(placement: .keyboard) {
+                        Button("Done") {
+                            focusedField = nil
+                        }
+                    }
+                }
         }
         .disabled(!workoutStarted)
         .opacity(!workoutStarted ? 0.5 : 1) // Manually adjust opacity to grey out view

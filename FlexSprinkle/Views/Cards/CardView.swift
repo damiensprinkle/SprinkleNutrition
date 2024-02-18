@@ -43,9 +43,9 @@ struct CardView: View {
         .sheet(item: $presentingModal) { modal in
             switch modal {
             case .add:
-                AddWorkoutView(workoutId: UUID(), navigationTitle: "") // not used
+                AddWorkoutView(workoutId: UUID(), navigationTitle: "", update: false) // not used
             case .edit(let workoutId):
-                AddWorkoutView(workoutId: workoutId, navigationTitle: "Edit Workout Plan")
+                AddWorkoutView(workoutId: workoutId, navigationTitle: "Edit Workout Plan", update: true)
                     .environmentObject(workoutManager)
                     .environmentObject(appViewModel)
                 

@@ -13,8 +13,8 @@ struct LiftingSetRowActive: View {
     let workoutDetails: WorkoutDetailInput
     let workoutId: UUID
     let workoutStarted: Bool
-    @FocusState private var weightFieldFocused: Bool
-    @FocusState private var repsFieldFocused: Bool
+    @FocusState private var focusedField: FocusableField?
+
     @State private var weightInput: String = ""
     @State private var repsInput: String = ""
     
@@ -28,9 +28,9 @@ struct LiftingSetRowActive: View {
             Spacer()
             Divider()
             TextField("Reps", text: $repsInput)
-                .focused($repsFieldFocused)
-                .onChange(of: repsFieldFocused) {
-                    if repsFieldFocused {
+                .focused($focusedField, equals: .reps)
+                .onChange(of: focusedField) {
+                    if focusedField == .reps {
                         focusManager.isAnyTextFieldFocused = true
                         repsInput = ""
                     } else {
@@ -55,12 +55,19 @@ struct LiftingSetRowActive: View {
                 }
                 .keyboardType(.numberPad)
                 .frame(width: 100)
+                .toolbar {
+                    ToolbarItem(placement: .keyboard) {
+                        Button("Done") {
+                            focusedField = nil
+                        }
+                    }
+                }
             Spacer()
             Divider()
             TextField("Weight", text: $weightInput)
-                .focused($weightFieldFocused)
-                .onChange(of: weightFieldFocused) {
-                    if weightFieldFocused {
+                .focused($focusedField, equals: .weight)
+                .onChange(of: focusedField) {
+                    if focusedField == .weight {
                         focusManager.isAnyTextFieldFocused = true
                         weightInput = ""
                     } else {
@@ -81,6 +88,13 @@ struct LiftingSetRowActive: View {
                 }
                 .keyboardType(.numberPad)
                 .frame(width: 100)
+                .toolbar {
+                    ToolbarItem(placement: .keyboard) {
+                        Button("Done") {
+                            focusedField = nil
+                        }
+                    }
+                }
         }
         .disabled(!workoutStarted)
         .opacity(!workoutStarted ? 0.5 : 1) // Manually adjust opacity to grey out view

@@ -15,6 +15,7 @@ import Combine
 
 struct ActiveWorkoutView: View {
     var workoutId: UUID
+    
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var workoutManager: WorkoutManager
     

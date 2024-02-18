@@ -10,12 +10,12 @@ import SwiftUI
 struct AddWorkoutView: View {
     var workoutId: UUID
     let navigationTitle: String
+    var update: Bool
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var workoutManager: WorkoutManager
     
     @State private var workoutTitle: String = ""
     @State private var workoutTitleOriginal: String = ""
-    @State private var update = false
     
     @State private var showingRenameDialog = false
     @State private var renameIndex: Int? = nil // Track which exercise is being renamed
@@ -117,9 +117,8 @@ struct AddWorkoutView: View {
             }
 
             .onAppear {
-                if(workoutManager.fetchWorkoutById(for: workoutId) != nil){
+                if(update){
                     loadWorkoutDetails()
-                    update = true
                 }
             }
         }

@@ -80,11 +80,11 @@ struct WorkoutTrackerMainView: View {
         .sheet(item: $presentingModal) { modal in
             switch modal {
             case .add:
-                AddWorkoutView(workoutId: UUID(), navigationTitle: "Create Workout Plan")
+                AddWorkoutView(workoutId: UUID(), navigationTitle: "Create Workout Plan", update: false)
                     .environmentObject(workoutManager)
                     .environmentObject(appViewModel)
             case .edit(let workoutId):
-                AddWorkoutView(workoutId: workoutId, navigationTitle: "Edit Workout Plan")
+                AddWorkoutView(workoutId: workoutId, navigationTitle: "Edit Workout Plan", update: true)
                     .environmentObject(workoutManager)
                     .environmentObject(appViewModel)
                 

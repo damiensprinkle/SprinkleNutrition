@@ -22,11 +22,9 @@ struct AddWorkoutView: View {
     @State private var renameText: String = ""
         
     @State private var workoutDetails: [WorkoutDetailInput] = []
-    @State private var showingAddExerciseSheet = false
     @State private var errorMessage: String = ""
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
-    @State private var showingDeleteConfirmation: Bool = false
     @State private var indexToDelete: Int? = nil
 
     @State private var activeAlert: ActiveAlert = .error
@@ -330,17 +328,6 @@ struct AddWorkoutView: View {
             
         }
     }
-    
-    private func addExercise(isCardio: Bool) {
-        let newDetail = WorkoutDetailInput(isCardio: isCardio, sets: [SetInput(reps: 0, weight: 0, time: 0, distance: 0)])
-        workoutDetails.append(newDetail)
-        
-    }
-    
-    private func hideKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-    }
-    
 }
 
 

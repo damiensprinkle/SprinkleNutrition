@@ -20,11 +20,8 @@ struct ActiveWorkoutView: View {
     @EnvironmentObject var workoutManager: WorkoutManager
     
     @State private var workoutTitle: String = ""
-    @State private var workoutTitleOriginal: String = ""
-    
-    
+        
     @State private var workoutDetails: [WorkoutDetailInput] = []
-    @State private var showingAddExerciseSheet = false
     @State private var errorMessage: String = ""
     @State private var showAlert: Bool = false
     @StateObject private var focusManager = FocusManager()
@@ -166,7 +163,6 @@ struct ActiveWorkoutView: View {
         }
         
         self.workoutTitle = workout.name ?? ""
-        self.workoutTitleOriginal = self.workoutTitle
         
         // Assuming 'workout.details' can be cast to Set<WorkoutDetail>
         if let detailsSet = workout.details as? Set<WorkoutDetail> {

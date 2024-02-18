@@ -17,12 +17,6 @@ struct WorkoutHistoryView: View {
     @State private var selectedMonth: Int = Calendar.current.component(.month, from: Date()) - 1
     @State private var selectedYear: Int = Calendar.current.component(.year, from: Date())
     
-    private let monthYearFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMMM yyyy" // Format: January 2024
-        return formatter
-    }()
-    
     var body: some View {
         VStack {
             MonthYearPickerView(selectedMonth: $selectedMonth, selectedYear: $selectedYear)

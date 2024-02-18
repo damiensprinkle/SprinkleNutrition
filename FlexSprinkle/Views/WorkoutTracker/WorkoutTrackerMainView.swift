@@ -11,7 +11,6 @@ import SwiftData
 struct WorkoutTrackerMainView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var workoutManager: WorkoutManager
-    @State private var navigationPath = NavigationPath()
     
     @State private var hasActiveSession = false // Track active session state
     @State private var activeWorkoutName: String? // Store the active workout name

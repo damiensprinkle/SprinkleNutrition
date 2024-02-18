@@ -20,7 +20,6 @@ struct CardioSetRowActive: View {
     @State private var timeInput: String = ""
     @EnvironmentObject var workoutManager: WorkoutManager
     @EnvironmentObject var focusManager: FocusManager
-    @State private var rawInput: String = ""
     
     var body: some View {
         HStack {
@@ -155,33 +154,5 @@ struct CardioSetRowActive: View {
         let seconds = totalSeconds % 60
         
         return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-    }
-    
-    
-    private func interpretAsTotalSeconds(_ formattedTime: String) -> Int {
-        let components = formattedTime.split(separator: ":").compactMap { Int($0) }
-        guard components.count == 3 else { return 0 }
-        
-        let hours = components[0]
-        let minutes = components[1]
-        let seconds = components[2]
-        
-        // Ensure components are within valid ranges
-        let validHours = max(0, min(99, hours))
-        let validMinutes = max(0, min(59, minutes))
-        let validSeconds = max(0, min(59, seconds))
-        
-        return validHours * 3600 + validMinutes * 60 + validSeconds
-    }
-}
-
-
-
-extension String {
-    func padStart(totalWidth: Int, with char: Character) -> String {
-        let toPad = totalWidth - self.count
-        guard toPad > 0 else { return self }
-        
-        return String(repeating: char, count: toPad) + self
     }
 }

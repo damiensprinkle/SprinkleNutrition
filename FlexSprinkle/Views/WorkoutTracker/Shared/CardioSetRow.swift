@@ -10,7 +10,6 @@ import SwiftUI
 import SwiftUI
 
 struct CardioSetRow: View {
-    @AppStorage("distancePreference") private var distancePreference: String = "Mile"
     let setIndex: Int
     @Binding var setInput: SetInput
     @State private var distanceInput: String = ""
@@ -20,7 +19,6 @@ struct CardioSetRow: View {
     
     // Simplified time selection
     @State private var selectedTimeIndex: Int = 0
-    let timeOptions: [String]
     
     // Initialization
     init(setIndex: Int, setInput: Binding<SetInput>) {
@@ -37,7 +35,6 @@ struct CardioSetRow: View {
                 }
             }
         }
-        self.timeOptions = options
         
         // Calculate the default selected index based on setInput.time
         let totalSeconds = Int(setInput.wrappedValue.time)
@@ -114,17 +111,6 @@ struct CardioSetRow: View {
                 }
         }
     }
-    private func onChange() {
-        let selectedTime = self.timeOptions[selectedTimeIndex]
-        let components = selectedTime.split(separator: ":").compactMap { Int($0) }
-        if components.count == 3 {
-            let hours = components[0]
-            let minutes = components[1]
-            let seconds = components[2]
-            let totalSeconds = hours * 3600 + minutes * 60 + seconds
-            setInput.time = Int32(totalSeconds)
-        }
-    }
     
     
     private func convertToSeconds(_ input: String) -> Int {
@@ -160,23 +146,6 @@ struct CardioSetRow: View {
         let seconds = totalSeconds % 60
         
         return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-    }
-    
-    
-    private func interpretAsTotalSeconds(_ formattedTime: String) -> Int {
-        let components = formattedTime.split(separator: ":").compactMap { Int($0) }
-        guard components.count == 3 else { return 0 }
-        
-        let hours = components[0]
-        let minutes = components[1]
-        let seconds = components[2]
-        
-        // Ensure components are within valid ranges
-        let validHours = max(0, min(99, hours))
-        let validMinutes = max(0, min(59, minutes))
-        let validSeconds = max(0, min(59, seconds))
-        
-        return validHours * 3600 + validMinutes * 60 + validSeconds
     }
     
 }

@@ -24,7 +24,7 @@ struct CardView: View {
         .padding()
         .background(backgroundColor)
         .cornerRadius(15)
-        .overlay(RoundedRectangle(cornerRadius: 15).stroke(Color.gray, lineWidth: 1))
+        .overlay(RoundedRectangle(cornerRadius: 15).stroke(Color.myBlack, lineWidth: 1))
         .aspectRatio(1, contentMode: .fit)
         .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 15))
         .contextMenu { contextMenuContent() }
@@ -59,7 +59,7 @@ struct CardView: View {
             Text(workout?.name ?? "Workout")
                 .font(.title)
                 .fontWeight(.bold)
-                .foregroundColor(.white)
+                .foregroundColor(.staticWhite)
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity)
             Spacer()
@@ -90,7 +90,7 @@ struct CardView: View {
             else{
                 Image(systemName: "play.circle")
                     .font(.system(size: 40))
-                    .foregroundColor(.white)
+                    .foregroundColor(.staticWhite)
             }
             
         }

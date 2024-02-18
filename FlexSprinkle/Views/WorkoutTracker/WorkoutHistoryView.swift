@@ -41,14 +41,12 @@ struct WorkoutHistoryView: View {
     }
     
     private func loadHistories() {
-        // Convert selectedMonth and selectedYear to a Date or Date range
         let calendar = Calendar.current
         var components = DateComponents()
         components.year = selectedYear
         components.month = selectedMonth + 1
         let startDate = calendar.date(from: components)!
         
-        // Fetch histories based on the startDate and endDate
         histories = workoutManager.fetchAllWorkoutHistory(for: startDate) ?? []
     }
     

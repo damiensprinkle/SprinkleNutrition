@@ -30,7 +30,7 @@ struct WorkoutTrackerMainView: View {
                             appViewModel.navigateTo(.workoutActiveView(workoutId))
                         }) {
                             Text("\(activeWorkoutName ?? "Workout") in Progress: Tap Here To Resume")
-                                .foregroundColor(.white)
+                                .foregroundColor(.staticWhite)
                                 .frame(maxWidth: .infinity)
                                 .padding()
                                 .background(Color.blue)

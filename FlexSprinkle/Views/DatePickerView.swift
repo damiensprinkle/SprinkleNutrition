@@ -17,7 +17,7 @@ struct DatePickerView: View {
                 DatePicker("", selection: $selectedDate, in: ...Date(), displayedComponents: .date)
                     .labelsHidden()
                     .datePickerStyle(DefaultDatePickerStyle())
-                    .foregroundColor(.white)
+                    .foregroundColor(.staticWhite)
                     .font(.system(size: 20))
                 Spacer()
             }

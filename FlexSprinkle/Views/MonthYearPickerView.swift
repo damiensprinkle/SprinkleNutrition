@@ -21,7 +21,6 @@ struct MonthYearPickerView: View {
     
     var body: some View {
         VStack{
-            
             HStack {
                 Picker("Month", selection: $selectedMonth) {
                     ForEach(0..<months.count, id: \.self) { index in
@@ -30,7 +29,7 @@ struct MonthYearPickerView: View {
                 }
                 .pickerStyle(MenuPickerStyle())
                 .frame(maxWidth: .infinity) // Take up maximum available width
-
+                
                 .accentColor(.myWhite)
                 
                 
@@ -41,11 +40,12 @@ struct MonthYearPickerView: View {
                 }
                 .pickerStyle(MenuPickerStyle())
                 .frame(maxWidth: .infinity) // Take up maximum available width
-
+                
                 .accentColor(.myWhite)
             }
             .padding([.top, .bottom], 5) // Reduce vertical padding to minimize vertical space
-                  .padding([.leading, .trailing])             .background(.myBlue)
+            .padding([.leading, .trailing])
+            .background(.myBlue)
             .cornerRadius(15.0) // Apply corner radius to the background
         }
         .padding(.horizontal)

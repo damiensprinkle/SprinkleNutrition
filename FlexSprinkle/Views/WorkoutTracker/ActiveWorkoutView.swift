@@ -64,7 +64,7 @@ struct ActiveWorkoutView: View {
                         }
                     
                     AddExerciseDialog(workoutDetails: $workoutDetails, showingDialog: $showingAddExerciseDialog)
-                        .background(Color.white)
+                        .background(Color.staticWhite)
                         .cornerRadius(20)
                         .shadow(radius: 10)
                         .transition(.scale)
@@ -303,7 +303,7 @@ struct ActiveWorkoutView: View {
         Button(action: buttonAction) {
             Text(workoutButtonText)
                 .font(.title2)
-                .foregroundColor(Color.white)
+                .foregroundColor(Color.staticWhite)
                 .padding() // Apply padding to the content inside the button
                 .frame(maxWidth: .infinity) // Ensure the button expands to the maximum width available
                 .background(Color.myBlue) // Apply the background color to the button

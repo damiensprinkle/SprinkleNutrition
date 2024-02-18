@@ -49,7 +49,7 @@ struct AddWorkoutView: View {
                     }) {
                         Text("Add Exercise")
                             .font(.title2)
-                            .foregroundColor(.white)
+                            .foregroundColor(.staticWhite)
                             .padding() // Apply padding to the Text itself
                             .frame(maxWidth: .infinity) // Make the Text view take up maximum width
                             .background(Color.myBlue) // Apply the background color to the Text view
@@ -67,7 +67,7 @@ struct AddWorkoutView: View {
                         }
                     
                     AddExerciseDialog(workoutDetails: $workoutDetails, showingDialog: $showingAddExerciseDialog)
-                        .background(Color.white)
+                        .background(Color.staticWhite)
                         .cornerRadius(20)
                         .shadow(radius: 10)
                         .transition(.scale)

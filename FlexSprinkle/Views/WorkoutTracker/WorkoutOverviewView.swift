@@ -51,7 +51,7 @@ struct WorkoutOverviewView: View {
                         Text("Proceed")
                             .frame(minWidth: 0, maxWidth: .infinity)
                             .padding()
-                            .foregroundColor(.white)
+                            .foregroundColor(.staticWhite)
                             .background(Color.myBlue)
                             .cornerRadius(10)
                     }

@@ -68,7 +68,7 @@ struct CardioSetRow: View {
                 .onAppear {
                     distanceInput = String(setInput.distance) // Initialize the input when the view appears
                 }
-                .keyboardType(.numberPad)
+                .keyboardType(.decimalPad)
                 .frame(width: 100) // Fixed width for distance input
                 .addDoneButton() // Add the done button to this TextField
             

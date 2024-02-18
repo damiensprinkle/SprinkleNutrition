@@ -60,19 +60,6 @@ struct AddExerciseDialog: View {
         .shadow(radius: 10)
     }
     
-    struct FilledButtonStyle: ButtonStyle {
-        var backgroundColor: Color
-        
-        func makeBody(configuration: Self.Configuration) -> some View {
-            configuration.label
-                .padding()
-                .background(backgroundColor)
-                .foregroundColor(.white)
-                .cornerRadius(8)
-                .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
-        }
-    }
-    
     private func addNewExercise() {
         if(exerciseName.isEmpty) {
             return

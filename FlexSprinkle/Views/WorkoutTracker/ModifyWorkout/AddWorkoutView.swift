@@ -18,18 +18,18 @@ struct AddWorkoutView: View {
     @State private var workoutTitleOriginal: String = ""
     
     @State private var showingRenameDialog = false
-    @State private var renameIndex: Int? = nil // Track which exercise is being renamed
-    @State private var renameText: String = ""
-        
+    
     @State private var workoutDetails: [WorkoutDetailInput] = []
     @State private var errorMessage: String = ""
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
     @State private var indexToDelete: Int? = nil
-
+    
+    @State private var selectedExerciseIndexForRenaming: Int?
+    
     @State private var activeAlert: ActiveAlert = .error
-
-
+    
+    
     private let colorManager = ColorManager()
     @State private var showingAddExerciseDialog = false
     @EnvironmentObject var appViewModel: AppViewModel
@@ -56,7 +56,7 @@ struct AddWorkoutView: View {
                             .cornerRadius(10) // Apply corner radius to the background
                     }
                     .padding(.horizontal) // Apply padding outside the button to maintain some space from the screen edges
-
+                    
                 }
                 
                 if showingAddExerciseDialog {
@@ -73,12 +73,18 @@ struct AddWorkoutView: View {
                         .transition(.scale)
                         .padding(.horizontal)
                 }
-                if showingRenameDialog {
-                    Color.black.opacity(0.4)
-                        .edgesIgnoringSafeArea(.all)
-                    renameDialog()
-                        .padding(.horizontal)
-                        .transition(.scale)
+                if let selectedIndex = selectedExerciseIndexForRenaming, selectedIndex < workoutDetails.count {
+                    RenameExerciseDialogView(
+                        isPresented: .init(
+                            get: { self.selectedExerciseIndexForRenaming != nil },
+                            set: { _ in self.selectedExerciseIndexForRenaming = nil }
+                        ),
+                        exerciseName: $workoutDetails[selectedIndex].exerciseName,
+                        onRename: { newName in
+                            workoutDetails[selectedIndex].exerciseName = newName
+                        }
+                    )
+                    .transition(.scale) // Optional: Add transition effect
                 }
             }
             .navigationBarTitle(navigationTitle)
@@ -113,7 +119,7 @@ struct AddWorkoutView: View {
                     )
                 }
             }
-
+            
             .onAppear {
                 if(update){
                     loadWorkoutDetails()
@@ -121,41 +127,6 @@ struct AddWorkoutView: View {
             }
         }
     }
-    
-    private func renameDialog() -> some View {
-        VStack {
-            Text("Rename Exercise")
-                .font(.headline)
-            TextField("Exercise Name", text: $renameText)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            HStack {
-                Button("Cancel") {
-                    // Reset and hide the dialog
-                    showingRenameDialog = false
-                    renameText = ""
-                }
-                .foregroundColor(.myRed)
-                .padding()
-                
-                Button("OK") {
-                    if let index = renameIndex, !renameText.isEmpty {
-                        workoutDetails[index].exerciseName = renameText
-                    }
-                    // Reset and hide the dialog
-                    showingRenameDialog = false
-                    renameText = ""
-                }
-                .padding()
-                .foregroundColor(.myBlue)
-            }
-        }
-        .padding()
-        .background(Color.white)
-        .cornerRadius(15)
-        .shadow(radius: 10)
-    }
-    
     
     private var addWorkoutForm: some View {
         Form {
@@ -190,17 +161,15 @@ struct AddWorkoutView: View {
                         .foregroundColor(.red)
                         .onTapGesture {
                             indexToDelete = index // Mark the item for potential deletion
-                                  alertMessage = "Are you sure you want to delete this exercise?"
-                                  activeAlert = .deleteConfirmation // Specify which alert to show
-                                  showAlert = true // Show the alert
+                            alertMessage = "Are you sure you want to delete this exercise?"
+                            activeAlert = .deleteConfirmation // Specify which alert to show
+                            showAlert = true // Show the alert
                         }
                     Image(systemName: "pencil")
                         .foregroundColor(.myBlack)
                         .onTapGesture {
-                            self.renameIndex = index
-                            self.renameText = workoutDetails[index].exerciseName
                             withAnimation(.easeOut(duration: 0.2)) {
-                                self.showingRenameDialog = true
+                                self.selectedExerciseIndexForRenaming = index
                             }
                         }
                 })

@@ -20,6 +20,8 @@ extension UserInfo {
     @NSManaged public var height: Int32
     @NSManaged public var gender: String?
     @NSManaged public var age: Int32
+    @NSManaged public var activityLevel: String?
+    @NSManaged public var bmr: Int32
 
 }
 

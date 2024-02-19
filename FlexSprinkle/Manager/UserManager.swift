@@ -41,7 +41,7 @@ class UserManager: ObservableObject {
         }
     }
     
-    func addUser(weight: Int32, height: Int32, age: Int32, gender: String) {
+    func addUser(weight: Int32, height: Int32, age: Int32, gender: String, activityLevel: String, bmr: Int32) {
         guard let context = self.context else { return }
 
         // If a user already exists, update their details
@@ -50,6 +50,8 @@ class UserManager: ObservableObject {
             user.height = height
             user.age = age
             user.gender = gender
+            user.activityLevel = activityLevel
+            user.bmr = bmr
         } else {
             // No user exists, create a new one
             let newUser = UserInfo(context: context)
@@ -57,6 +59,8 @@ class UserManager: ObservableObject {
             newUser.height = height
             newUser.age = age
             newUser.gender = gender
+            newUser.activityLevel = activityLevel
+            newUser.bmr = bmr
             userDetails = newUser
         }
         

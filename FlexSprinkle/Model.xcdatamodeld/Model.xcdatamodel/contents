@@ -12,7 +12,9 @@
         <relationship name="workoutR" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Workouts" inverseName="detailsTemp" inverseEntity="Workouts"/>
     </entity>
     <entity name="UserInfo" representedClassName="UserInfo" syncable="YES">
+        <attribute name="activityLevel" attributeType="String"/>
         <attribute name="age" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="bmr" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="gender" attributeType="String"/>
         <attribute name="height" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="weight" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>

@@ -10,7 +10,9 @@ import SwiftUI
 struct CustomTabView: View {
     @State private var selectedTab: Tab = .home
     @EnvironmentObject var appViewModel: AppViewModel
-    
+    @StateObject private var workoutManager = WorkoutManager()
+    @EnvironmentObject var userManager: UserManager
+
     
     enum Tab: String {
         case home, workout, nutrition, settings
@@ -24,10 +26,13 @@ struct CustomTabView: View {
                 HomeContentView().navigationTitle("Home")
             case .workout:
                 WorkoutContentMainView()
+                    .environmentObject(workoutManager)
+
             case .nutrition:
                 NutritionHelperMainView().navigationTitle("Nutrition Helper")
             case .settings:
-                SettingsView().navigationTitle("Settings")
+                SettingsView()
+                    .environmentObject(userManager)
                 
             }
             

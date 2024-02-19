@@ -35,7 +35,7 @@ struct ActiveWorkoutView: View {
     @State private var showingStartConfirmation = false
     @State private var showEndWorkoutOption = false
     @State private var endWorkoutConfirmationShown = false
-    
+
     
     var body: some View {
         NavigationView {
@@ -238,7 +238,7 @@ struct ActiveWorkoutView: View {
             }
         }
         
-        let workoutTimeToComplete = elapsedTimeFormatted // Assuming this is already defined elsewhere
+        let workoutTimeToComplete = elapsedTimeFormatted
         
         // Calculate total cardio time
         // Assuming 'time' in SetInput is the duration in minutes for cardio exercises
@@ -253,6 +253,7 @@ struct ActiveWorkoutView: View {
                 setSum + Float(setInput.distance) // Summing up the distance
             }
         }
+
         
         workoutManager.setSessionStatus(workoutId: workoutId, isActive: false)
         

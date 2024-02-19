@@ -10,10 +10,14 @@ import SwiftUI
 struct SettingsView: View {
     @AppStorage("weightPreference") private var weightPreference: String = "lbs"
     @AppStorage("distancePreference") private var distancePreference: String = "mile"
+    @AppStorage("userHeightPreference") private var userHeightPreference: String = "inches"
+    
+    // State to manage the presentation of UserDetailsFormView
+    @State private var showingUserDetailsForm = false
+    @EnvironmentObject var userManager: UserManager
+
     
     var body: some View {
-        Divider()
-        
         NavigationView {
             Form {
                 Picker("Weight Preference", selection: $weightPreference) {
@@ -24,6 +28,27 @@ struct SettingsView: View {
                     Text("mile").tag("mile")
                     Text("km").tag("km")
                 }
+                Picker("Height Preference", selection: $userHeightPreference) {
+                    Text("inches").tag("inches")
+                    Text("cm").tag("cm")
+                }
+            }
+            .navigationBarTitle("Settings")
+            .toolbar {
+                // Person icon button to show UserDetailsFormView
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: {
+                        showingUserDetailsForm = true
+                    }) {
+                        Image(systemName: "person.fill")
+                    }
+                }
+            }
+            .sheet(isPresented: $showingUserDetailsForm) {
+                // Assuming UserDetailsFormView is adjusted to work standalone or with a navigation link
+                UserDetailsFormView(isPresented: $showingUserDetailsForm)
+                    .environmentObject(userManager)
+                    // Make sure to inject any required EnvironmentObjects here
             }
         }
     }

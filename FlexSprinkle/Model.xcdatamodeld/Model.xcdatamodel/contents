@@ -11,6 +11,12 @@
         <relationship name="sets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WorkoutSet" inverseName="detailsTemp" inverseEntity="WorkoutSet"/>
         <relationship name="workoutR" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Workouts" inverseName="detailsTemp" inverseEntity="Workouts"/>
     </entity>
+    <entity name="UserInfo" representedClassName="UserInfo" syncable="YES">
+        <attribute name="age" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="gender" attributeType="String"/>
+        <attribute name="height" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="weight" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
     <entity name="WorkoutDetail" representedClassName="WorkoutDetail" syncable="YES">
         <attribute name="exerciseId" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="exerciseName" attributeType="String" defaultValueString="Bench Press"/>

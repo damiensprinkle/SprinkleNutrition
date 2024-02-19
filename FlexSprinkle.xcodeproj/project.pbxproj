@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		081F87E62B83A7CD00BBBDF2 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87E52B83A7CD00BBBDF2 /* UserManager.swift */; };
+		081F87E92B83A84100BBBDF2 /* UserInfo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87E72B83A84100BBBDF2 /* UserInfo+CoreDataClass.swift */; };
+		081F87EA2B83A84100BBBDF2 /* UserInfo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87E82B83A84100BBBDF2 /* UserInfo+CoreDataProperties.swift */; };
+		081F87EC2B83AC0200BBBDF2 /* UserDetailsFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87EB2B83AC0100BBBDF2 /* UserDetailsFormView.swift */; };
 		087111372B728F8F0054E315 /* ModalType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087111362B728F8F0054E315 /* ModalType.swift */; };
 		0871113A2B72AD830054E315 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 087111382B72AD830054E315 /* Model.xcdatamodeld */; };
 		0871113D2B7306C20054E315 /* ColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0871113C2B7306C20054E315 /* ColorManager.swift */; };
@@ -90,6 +94,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		081F87E52B83A7CD00BBBDF2 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
+		081F87E72B83A84100BBBDF2 /* UserInfo+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfo+CoreDataClass.swift"; sourceTree = "<group>"; };
+		081F87E82B83A84100BBBDF2 /* UserInfo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfo+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		081F87EB2B83AC0100BBBDF2 /* UserDetailsFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsFormView.swift; sourceTree = "<group>"; };
 		087111362B728F8F0054E315 /* ModalType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalType.swift; sourceTree = "<group>"; };
 		087111392B72AD830054E315 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		0871113C2B7306C20054E315 /* ColorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorManager.swift; sourceTree = "<group>"; };
@@ -182,8 +190,10 @@
 		0871113B2B7306060054E315 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				08B790302B7138F70002DA68 /* WorkoutManager.swift */,
 				0871113C2B7306C20054E315 /* ColorManager.swift */,
 				08B3CFE62B7E6E40002F5C92 /* FocusManager.swift */,
+				081F87E52B83A7CD00BBBDF2 /* UserManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -214,6 +224,7 @@
 				08B78FF12B6DBA370002DA68 /* HomeView.swift */,
 				087111AC2B77E9EC0054E315 /* CustomTabView.swift */,
 				087111AE2B77EAF20054E315 /* HomeContentView.swift */,
+				081F87EB2B83AC0100BBBDF2 /* UserDetailsFormView.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -251,6 +262,8 @@
 		08B78FE32B6DBA370002DA68 = {
 			isa = PBXGroup;
 			children = (
+				081F87E72B83A84100BBBDF2 /* UserInfo+CoreDataClass.swift */,
+				081F87E82B83A84100BBBDF2 /* UserInfo+CoreDataProperties.swift */,
 				08B3D00D2B82AC7C002F5C92 /* Launch Screen.storyboard */,
 				08B78FEE2B6DBA370002DA68 /* FlexSprinkle */,
 				08B78FED2B6DBA370002DA68 /* Products */,
@@ -321,7 +334,6 @@
 		08B790252B6E948C0002DA68 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				08B790302B7138F70002DA68 /* WorkoutManager.swift */,
 				08C31FFE2B82EA3A002EE8A7 /* PersistenceController.swift */,
 			);
 			path = Controllers;
@@ -510,6 +522,7 @@
 				08B3CFEA2B7E9FA6002F5C92 /* TimeHelper.swift in Sources */,
 				087111AA2B77CA170054E315 /* WorkoutTrackerContentView.swift in Sources */,
 				08B3CFE42B7D9567002F5C92 /* Workouts+CoreDataClass.swift in Sources */,
+				081F87EC2B83AC0200BBBDF2 /* UserDetailsFormView.swift in Sources */,
 				08B3CFE02B7D9567002F5C92 /* WorkoutDetail+CoreDataClass.swift in Sources */,
 				0871113A2B72AD830054E315 /* Model.xcdatamodeld in Sources */,
 				08B3CFE72B7E6E40002F5C92 /* FocusManager.swift in Sources */,
@@ -534,14 +547,17 @@
 				08B3CFF02B810DFF002F5C92 /* WorkoutHistory+CoreDataProperties.swift in Sources */,
 				08B3CFE12B7D9567002F5C92 /* WorkoutDetail+CoreDataProperties.swift in Sources */,
 				087111A62B77C32D0054E315 /* AppViewModel.swift in Sources */,
+				081F87E92B83A84100BBBDF2 /* UserInfo+CoreDataClass.swift in Sources */,
 				08B78FF02B6DBA370002DA68 /* FlexSprinkleApp.swift in Sources */,
 				087111A82B77C6DF0054E315 /* WorkoutInfo.swift in Sources */,
 				08B790202B6E91010002DA68 /* WorkoutTrackerMainView.swift in Sources */,
 				08B3CFDE2B7D9567002F5C92 /* TemporaryWorkoutDetail+CoreDataClass.swift in Sources */,
 				08B3CFDB2B7D9567002F5C92 /* WorkoutSession+CoreDataProperties.swift in Sources */,
+				081F87EA2B83A84100BBBDF2 /* UserInfo+CoreDataProperties.swift in Sources */,
 				08B3CFDA2B7D9567002F5C92 /* WorkoutSession+CoreDataClass.swift in Sources */,
 				08B3CF232B791FB8002F5C92 /* DataCardView.swift in Sources */,
 				08B7902B2B7090870002DA68 /* AddWorkoutView.swift in Sources */,
+				081F87E62B83A7CD00BBBDF2 /* UserManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -609,6 +625,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -671,6 +688,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -699,6 +717,7 @@
 				CODE_SIGN_ENTITLEMENTS = FlexSprinkle/FlexSprinkle.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"FlexSprinkle/Preview Content\"";
 				DEVELOPMENT_TEAM = P8P8MB2RC3;
 				ENABLE_PREVIEWS = YES;
@@ -738,6 +757,7 @@
 				CODE_SIGN_ENTITLEMENTS = FlexSprinkle/FlexSprinkle.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"FlexSprinkle/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -775,6 +795,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = P8P8MB2RC3;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
@@ -798,6 +819,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
@@ -819,6 +841,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = P8P8MB2RC3;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
@@ -841,6 +864,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;

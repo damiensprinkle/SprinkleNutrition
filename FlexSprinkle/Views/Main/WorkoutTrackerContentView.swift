@@ -10,8 +10,9 @@ import SwiftUI
 struct WorkoutContentMainView: View {
     @EnvironmentObject var appViewModel: AppViewModel
     @Environment(\.managedObjectContext) var managedObjectContext
-    @StateObject private var workoutManager = WorkoutManager()
-    
+    @EnvironmentObject var workoutManager: WorkoutManager
+
+
     var body: some View {
         ZStack {
             // Decide which view to present based on the currentView state
@@ -33,6 +34,7 @@ struct WorkoutContentMainView: View {
                     .id(workoutId) // Assuming workoutId is unique for each workout
                     .environmentObject(workoutManager)
                     .environmentObject(appViewModel)
+                
                 .transition(.slide)
             case .workoutHistoryView:
                 AnyView(WorkoutHistoryView()

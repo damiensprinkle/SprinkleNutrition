@@ -9,15 +9,21 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var appViewModel: AppViewModel
-
+    @EnvironmentObject var persistenceController: PersistenceController
     var body: some View {
         NavigationStack {
-            VStack {
-                HStack {
-                    CustomTabView()
-                        .environmentObject(appViewModel)
+            if persistenceController.isLoaded {
+                VStack {
+                    HStack {
+                        CustomTabView()
+                            .environmentObject(appViewModel)
+                    }
                 }
             }
+            else{
+                Text("loading content")
+            }
+            
         }
     }
 }

@@ -10,7 +10,7 @@ import CoreData
 
 @main
 struct FlexSprinkleApp: App {
-    let persistenceContainer = NSPersistentContainer(name: "Model")
+    @StateObject private var persistenceController = PersistenceController.shared  // Use @StateObject here
     @StateObject private var appViewModel = AppViewModel()
 
 
@@ -19,17 +19,13 @@ struct FlexSprinkleApp: App {
                 UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: myBlackColor]
                 UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: myBlackColor]
             }
-
-        persistenceContainer.loadPersistentStores { (storeDescription, error) in
-            if let error = error as NSError? {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        }
     }
 
     var body: some Scene {
         WindowGroup {
-            HomeView().environment(\.managedObjectContext, persistenceContainer.viewContext)
+            HomeView()
+                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .environmentObject(persistenceController)
                 .environmentObject(appViewModel)
 
         }

@@ -203,6 +203,7 @@ class WorkoutManager: ObservableObject {
            let newWorkout = Workouts(context: context)
            newWorkout.id = UUID() // Assign a new UUID
            newWorkout.name = "\(originalWorkout.name ?? "")-copy" // Append "-copy" to the original workout name
+           newWorkout.color = originalWorkout.color
            
            // Copy all details from the original workout to the new workout
            if let originalDetails = originalWorkout.details as? Set<WorkoutDetail> {

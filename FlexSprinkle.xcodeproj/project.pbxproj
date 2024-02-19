@@ -44,6 +44,7 @@
 		08B3CFF22B810FB7002F5C92 /* WorkoutHistoryCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B3CFF12B810FB7002F5C92 /* WorkoutHistoryCardView.swift */; };
 		08B3CFF42B815AC1002F5C92 /* MonthYearPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B3CFF32B815AC1002F5C92 /* MonthYearPickerView.swift */; };
 		08B3D00A2B826C59002F5C92 /* RenameExerciseDialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B3D0092B826C59002F5C92 /* RenameExerciseDialogView.swift */; };
+		08B3D00E2B82AC7C002F5C92 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08B3D00D2B82AC7C002F5C92 /* Launch Screen.storyboard */; };
 		08B78FF02B6DBA370002DA68 /* FlexSprinkleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B78FEF2B6DBA370002DA68 /* FlexSprinkleApp.swift */; };
 		08B78FF22B6DBA370002DA68 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B78FF12B6DBA370002DA68 /* HomeView.swift */; };
 		08B78FF42B6DBA390002DA68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08B78FF32B6DBA390002DA68 /* Assets.xcassets */; };
@@ -55,6 +56,7 @@
 		08B790272B7079C90002DA68 /* DatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B790262B7079C90002DA68 /* DatePickerView.swift */; };
 		08B7902B2B7090870002DA68 /* AddWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B7902A2B7090870002DA68 /* AddWorkoutView.swift */; };
 		08B790312B7138F70002DA68 /* WorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B790302B7138F70002DA68 /* WorkoutManager.swift */; };
+		08C31FFF2B82EA3A002EE8A7 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C31FFE2B82EA3A002EE8A7 /* PersistenceController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -124,6 +126,7 @@
 		08B3CFF12B810FB7002F5C92 /* WorkoutHistoryCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutHistoryCardView.swift; sourceTree = "<group>"; };
 		08B3CFF32B815AC1002F5C92 /* MonthYearPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthYearPickerView.swift; sourceTree = "<group>"; };
 		08B3D0092B826C59002F5C92 /* RenameExerciseDialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenameExerciseDialogView.swift; sourceTree = "<group>"; };
+		08B3D00D2B82AC7C002F5C92 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		08B78FEC2B6DBA370002DA68 /* FlexSprinkle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlexSprinkle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08B78FEF2B6DBA370002DA68 /* FlexSprinkleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexSprinkleApp.swift; sourceTree = "<group>"; };
 		08B78FF12B6DBA370002DA68 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -139,6 +142,7 @@
 		08B790262B7079C90002DA68 /* DatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatePickerView.swift; sourceTree = "<group>"; };
 		08B7902A2B7090870002DA68 /* AddWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWorkoutView.swift; sourceTree = "<group>"; };
 		08B790302B7138F70002DA68 /* WorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutManager.swift; sourceTree = "<group>"; };
+		08C31FFE2B82EA3A002EE8A7 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -247,6 +251,7 @@
 		08B78FE32B6DBA370002DA68 = {
 			isa = PBXGroup;
 			children = (
+				08B3D00D2B82AC7C002F5C92 /* Launch Screen.storyboard */,
 				08B78FEE2B6DBA370002DA68 /* FlexSprinkle */,
 				08B78FED2B6DBA370002DA68 /* Products */,
 			);
@@ -317,6 +322,7 @@
 			isa = PBXGroup;
 			children = (
 				08B790302B7138F70002DA68 /* WorkoutManager.swift */,
+				08C31FFE2B82EA3A002EE8A7 /* PersistenceController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -463,6 +469,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08B3D00E2B82AC7C002F5C92 /* Launch Screen.storyboard in Resources */,
 				08B78FF82B6DBA390002DA68 /* Preview Assets.xcassets in Resources */,
 				08B78FF42B6DBA390002DA68 /* Assets.xcassets in Resources */,
 			);
@@ -490,6 +497,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				08B3CFDD2B7D9567002F5C92 /* WorkoutSet+CoreDataProperties.swift in Sources */,
+				08C31FFF2B82EA3A002EE8A7 /* PersistenceController.swift in Sources */,
 				08B3CFF22B810FB7002F5C92 /* WorkoutHistoryCardView.swift in Sources */,
 				08B790222B6E911D0002DA68 /* NutritionHelperMainView.swift in Sources */,
 				08B3CFDF2B7D9567002F5C92 /* TemporaryWorkoutDetail+CoreDataProperties.swift in Sources */,
@@ -701,6 +709,7 @@
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -738,6 +747,7 @@
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UILaunchScreen_Generation[sdk=iphonesimulator*]" = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

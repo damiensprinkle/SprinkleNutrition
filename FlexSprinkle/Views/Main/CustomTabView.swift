@@ -11,6 +11,7 @@ struct CustomTabView: View {
     @State private var selectedTab: Tab = .home
     @EnvironmentObject var appViewModel: AppViewModel
     
+    
     enum Tab: String {
         case home, workout, nutrition, settings
     }

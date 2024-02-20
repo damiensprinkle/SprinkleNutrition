@@ -410,10 +410,262 @@
             filePath = "FlexSprinkle/Views/WorkoutTracker/ActiveWorkoutView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "94"
-            endingLineNumber = "94"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
             landmarkName = "body"
             landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AB654BB7-F635-4057-8991-3B6717F7B2AB"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FlexSprinkle/Views/WorkoutTracker/WorkoutHistoryView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "29"
+            endingLineNumber = "29"
+            landmarkName = "body"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "AB654BB7-F635-4057-8991-3B6717F7B2AB - b2e1a095a5fb1f4f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (FlexSprinkle.WorkoutHistory) -&gt; FlexSprinkle.WorkoutHistoryCardView in closure #1 () -&gt; SwiftUI.ForEach&lt;Swift.Array&lt;FlexSprinkle.WorkoutHistory&gt;, FlexSprinkle.WorkoutHistory, FlexSprinkle.WorkoutHistoryCardView&gt; in closure #3 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0 in closure #1 () -&gt; SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.onChange&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Swift.Equatable&gt;(of: &#x3c4;_1_0, initial: Swift.Bool, _: () -&gt; ()) -&gt; some&gt;&gt;.0, SwiftUI.Divider, SwiftUI.ScrollView&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;)&gt; in FlexSprinkle.WorkoutHistoryView.body.getter : some"
+                  moduleName = "FlexSprinkle"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/damiensprinkle/Desktop/FlexSprinkle/FlexSprinkle/Views/WorkoutTracker/WorkoutHistoryView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "29"
+                  endingLineNumber = "29"
+                  offsetFromSymbolStart = "352">
+               </Location>
+               <Location
+                  uuid = "AB654BB7-F635-4057-8991-3B6717F7B2AB - efb087bd66548c9b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in closure #1 (FlexSprinkle.WorkoutHistory) -&gt; FlexSprinkle.WorkoutHistoryCardView in closure #1 () -&gt; SwiftUI.ForEach&lt;Swift.Array&lt;FlexSprinkle.WorkoutHistory&gt;, FlexSprinkle.WorkoutHistory, FlexSprinkle.WorkoutHistoryCardView&gt; in closure #3 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0 in closure #1 () -&gt; SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.onChange&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Swift.Equatable&gt;(of: &#x3c4;_1_0, initial: Swift.Bool, _: () -&gt; ()) -&gt; some&gt;&gt;.0, SwiftUI.Divider, SwiftUI.ScrollView&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;)&gt; in FlexSprinkle.WorkoutHistoryView.body.getter : some"
+                  moduleName = "FlexSprinkle"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/damiensprinkle/Desktop/FlexSprinkle/FlexSprinkle/Views/WorkoutTracker/WorkoutHistoryView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "29"
+                  endingLineNumber = "29"
+                  offsetFromSymbolStart = "196">
+               </Location>
+               <Location
+                  uuid = "AB654BB7-F635-4057-8991-3B6717F7B2AB - b2e1a095a5fb1f4f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (FlexSprinkle.WorkoutHistory) -&gt; FlexSprinkle.WorkoutHistoryCardView in closure #1 () -&gt; SwiftUI.ForEach&lt;Swift.Array&lt;FlexSprinkle.WorkoutHistory&gt;, FlexSprinkle.WorkoutHistory, FlexSprinkle.WorkoutHistoryCardView&gt; in closure #3 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0 in closure #1 () -&gt; SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.onChange&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Swift.Equatable&gt;(of: &#x3c4;_1_0, initial: Swift.Bool, _: () -&gt; ()) -&gt; some&gt;&gt;.0, SwiftUI.Divider, SwiftUI.ScrollView&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;)&gt; in FlexSprinkle.WorkoutHistoryView.body.getter : some"
+                  moduleName = "FlexSprinkle"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/damiensprinkle/Desktop/FlexSprinkle/FlexSprinkle/Views/WorkoutTracker/WorkoutHistoryView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "29"
+                  endingLineNumber = "29"
+                  offsetFromSymbolStart = "452">
+               </Location>
+               <Location
+                  uuid = "AB654BB7-F635-4057-8991-3B6717F7B2AB - efb087bd66548c9b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in closure #1 (FlexSprinkle.WorkoutHistory) -&gt; FlexSprinkle.WorkoutHistoryCardView in closure #1 () -&gt; SwiftUI.ForEach&lt;Swift.Array&lt;FlexSprinkle.WorkoutHistory&gt;, FlexSprinkle.WorkoutHistory, FlexSprinkle.WorkoutHistoryCardView&gt; in closure #3 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0 in closure #1 () -&gt; SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.onChange&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Swift.Equatable&gt;(of: &#x3c4;_1_0, initial: Swift.Bool, _: () -&gt; ()) -&gt; some&gt;&gt;.0, SwiftUI.Divider, SwiftUI.ScrollView&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;)&gt; in FlexSprinkle.WorkoutHistoryView.body.getter : some"
+                  moduleName = "FlexSprinkle"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/damiensprinkle/Desktop/FlexSprinkle/FlexSprinkle/Views/WorkoutTracker/WorkoutHistoryView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "29"
+                  endingLineNumber = "29"
+                  offsetFromSymbolStart = "236">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3B1461F2-8D43-4ECC-8BDB-5B0842345F82"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FlexSprinkle/Views/WorkoutTracker/WorkoutHistoryView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "28"
+            endingLineNumber = "28"
+            landmarkName = "body"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "3B1461F2-8D43-4ECC-8BDB-5B0842345F82 - 58862d8c727220f6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; SwiftUI.ForEach&lt;Swift.Array&lt;FlexSprinkle.WorkoutHistory&gt;, FlexSprinkle.WorkoutHistory, FlexSprinkle.WorkoutHistoryCardView&gt; in closure #3 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0 in closure #1 () -&gt; SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.onChange&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Swift.Equatable&gt;(of: &#x3c4;_1_0, initial: Swift.Bool, _: () -&gt; ()) -&gt; some&gt;&gt;.0, SwiftUI.Divider, SwiftUI.ScrollView&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;)&gt; in FlexSprinkle.WorkoutHistoryView.body.getter : some"
+                  moduleName = "FlexSprinkle"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/damiensprinkle/Desktop/FlexSprinkle/FlexSprinkle/Views/WorkoutTracker/WorkoutHistoryView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "28"
+                  endingLineNumber = "28"
+                  offsetFromSymbolStart = "152">
+               </Location>
+               <Location
+                  uuid = "3B1461F2-8D43-4ECC-8BDB-5B0842345F82 - b2e1a095a5fb1f6c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (FlexSprinkle.WorkoutHistory) -&gt; FlexSprinkle.WorkoutHistoryCardView in closure #1 () -&gt; SwiftUI.ForEach&lt;Swift.Array&lt;FlexSprinkle.WorkoutHistory&gt;, FlexSprinkle.WorkoutHistory, FlexSprinkle.WorkoutHistoryCardView&gt; in closure #3 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0 in closure #1 () -&gt; SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.onChange&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Swift.Equatable&gt;(of: &#x3c4;_1_0, initial: Swift.Bool, _: () -&gt; ()) -&gt; some&gt;&gt;.0, SwiftUI.Divider, SwiftUI.ScrollView&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;)&gt; in FlexSprinkle.WorkoutHistoryView.body.getter : some"
+                  moduleName = "FlexSprinkle"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/damiensprinkle/Desktop/FlexSprinkle/FlexSprinkle/Views/WorkoutTracker/WorkoutHistoryView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "28"
+                  endingLineNumber = "28"
+                  offsetFromSymbolStart = "336">
+               </Location>
+               <Location
+                  uuid = "3B1461F2-8D43-4ECC-8BDB-5B0842345F82 - 58862d8c727220f6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; SwiftUI.ForEach&lt;Swift.Array&lt;FlexSprinkle.WorkoutHistory&gt;, FlexSprinkle.WorkoutHistory, FlexSprinkle.WorkoutHistoryCardView&gt; in closure #3 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0 in closure #1 () -&gt; SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.onChange&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Swift.Equatable&gt;(of: &#x3c4;_1_0, initial: Swift.Bool, _: () -&gt; ()) -&gt; some&gt;&gt;.0, SwiftUI.Divider, SwiftUI.ScrollView&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;)&gt; in FlexSprinkle.WorkoutHistoryView.body.getter : some"
+                  moduleName = "FlexSprinkle"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/damiensprinkle/Desktop/FlexSprinkle/FlexSprinkle/Views/WorkoutTracker/WorkoutHistoryView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "28"
+                  endingLineNumber = "28"
+                  offsetFromSymbolStart = "208">
+               </Location>
+               <Location
+                  uuid = "3B1461F2-8D43-4ECC-8BDB-5B0842345F82 - b2e1a095a5fb1f6c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (FlexSprinkle.WorkoutHistory) -&gt; FlexSprinkle.WorkoutHistoryCardView in closure #1 () -&gt; SwiftUI.ForEach&lt;Swift.Array&lt;FlexSprinkle.WorkoutHistory&gt;, FlexSprinkle.WorkoutHistory, FlexSprinkle.WorkoutHistoryCardView&gt; in closure #3 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0 in closure #1 () -&gt; SwiftUI.TupleView&lt;(&lt;&lt;opaque return type of SwiftUI.View.onChange&lt;&#x3c4;_0_0 where &#x3c4;_1_0: Swift.Equatable&gt;(of: &#x3c4;_1_0, initial: Swift.Bool, _: () -&gt; ()) -&gt; some&gt;&gt;.0, SwiftUI.Divider, SwiftUI.ScrollView&lt;&lt;&lt;opaque return type of SwiftUI.View.padding(SwiftUI.Edge.Set, Swift.Optional&lt;CoreGraphics.CGFloat&gt;) -&gt; some&gt;&gt;.0&gt;)&gt; in FlexSprinkle.WorkoutHistoryView.body.getter : some"
+                  moduleName = "FlexSprinkle"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/damiensprinkle/Desktop/FlexSprinkle/FlexSprinkle/Views/WorkoutTracker/WorkoutHistoryView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "28"
+                  endingLineNumber = "28"
+                  offsetFromSymbolStart = "436">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4026D438-8812-4D59-97CB-05344B3B1FE6"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FlexSprinkle/Views/WorkoutTracker/WorkoutHistoryView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "50"
+            endingLineNumber = "50"
+            landmarkName = "loadHistories()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "4026D438-8812-4D59-97CB-05344B3B1FE6 - a4dcb894efdac6b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FlexSprinkle.WorkoutHistoryView.loadHistories() -&gt; ()"
+                  moduleName = "FlexSprinkle"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/damiensprinkle/Desktop/FlexSprinkle/FlexSprinkle/Views/WorkoutTracker/WorkoutHistoryView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "50"
+                  endingLineNumber = "50"
+                  offsetFromSymbolStart = "1532">
+               </Location>
+               <Location
+                  uuid = "4026D438-8812-4D59-97CB-05344B3B1FE6 - a4dcb894efdac6b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FlexSprinkle.WorkoutHistoryView.loadHistories() -&gt; ()"
+                  moduleName = "FlexSprinkle"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/damiensprinkle/Desktop/FlexSprinkle/FlexSprinkle/Views/WorkoutTracker/WorkoutHistoryView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "50"
+                  endingLineNumber = "50"
+                  offsetFromSymbolStart = "1728">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AEAFD38C-83AC-48C0-8C24-1180A8673C62"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FlexSprinkle/Manager/WorkoutManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "600"
+            endingLineNumber = "600"
+            landmarkName = "setSessionStatus(workoutId:isActive:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E2C4CAC8-F5B6-4A1B-8D70-B751CA8EE356"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FlexSprinkle/Views/WorkoutTracker/ActiveWorkoutView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "315"
+            endingLineNumber = "315"
+            landmarkName = "updateWorkoutValues()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "38865E03-1309-44ED-9F25-E3E86CF860BA"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FlexSprinkle/Views/WorkoutTracker/ActiveWorkoutView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "316"
+            endingLineNumber = "316"
+            landmarkName = "updateWorkoutValues()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -26,8 +26,9 @@ struct ActiveWorkoutView: View {
     @State private var showAlert: Bool = false
     @StateObject private var focusManager = FocusManager()
     
+    @State private var showUpdateDialog = false
+    @State private var originalWorkoutDetails: [WorkoutDetailInput] = []
     
-    @State private var showingAddExerciseDialog = false
     @EnvironmentObject var appViewModel: AppViewModel
     @State private var workoutStarted = false
     @State private var elapsedTime = 0
@@ -58,20 +59,6 @@ struct ActiveWorkoutView: View {
                     
                     startWorkoutButton
                 }
-                
-                if showingAddExerciseDialog {
-                    Color.black.opacity(0.4)
-                        .edgesIgnoringSafeArea(.all)
-                        .onTapGesture {
-                            showingAddExerciseDialog = false
-                        }
-                    
-                    AddExerciseDialog(workoutDetails: $workoutDetails, showingDialog: $showingAddExerciseDialog)
-                        .background(Color.staticWhite)
-                        .cornerRadius(20)
-                        .shadow(radius: 10)
-                        .transition(.scale)
-                }
             }
             .navigationBarTitle(workoutTitle)
             .navigationBarItems(
@@ -93,6 +80,7 @@ struct ActiveWorkoutView: View {
                 }
                 if(workoutManager.fetchWorkoutById(for: workoutId) != nil){
                     loadWorkoutDetails()
+                    originalWorkoutDetails = workoutDetails
                     
                     initSession()
                 }
@@ -100,6 +88,17 @@ struct ActiveWorkoutView: View {
             .onDisappear {
                 NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
                 NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)
+            }
+            .alert(isPresented: $showUpdateDialog) {
+                Alert(
+                    title: Text("Update Workout"),
+                    message: Text("You've made changes from your original workout, would you like to update it?"),
+                    primaryButton: .default(Text("Update Values"), action: {
+                        updateWorkoutValues()
+                    }),
+                    secondaryButton: .cancel(Text("Keep Original Values"), action: {
+                        completeEndWorkoutSequence()
+                    })                        )
             }
         }
     }
@@ -247,10 +246,77 @@ struct ActiveWorkoutView: View {
     
     
     private func endWorkout() {
+        if hasWorkoutChanged(original: originalWorkoutDetails, updated: workoutDetails) {
+            // If there are changes, show the dialog and do not proceed further until resolved
+            showUpdateDialog = true
+        } else {
+            // If there are no changes, proceed with the usual workflow
+            completeEndWorkoutSequence()
+        }
+    }
+    
+    
+    
+    private func completeEndWorkoutSequence() {
         // Logic to end the workout
         workoutStarted = false
         showEndWorkoutOption = false
         
+        // Proceed with any cleanup or state reset that needs to happen regardless of update
+        workoutManager.setSessionStatus(workoutId: workoutId, isActive: false)
+        saveWorkoutHistory()
+        
+        workoutManager.deleteAllTemporaryWorkoutDetails()
+        
+        // Navigation or other actions that should occur after workout ends
+        appViewModel.navigateTo(.workoutOverview(workoutId))
+        
+    }
+    
+    func hasWorkoutChanged(original: [WorkoutDetailInput], updated: [WorkoutDetailInput]) -> Bool {
+        guard original.count == updated.count else { return true }
+        
+        for (index, originalDetail) in original.enumerated() {
+            let updatedDetail = updated[index]
+            
+            // Compare all properties of WorkoutDetailInput that are relevant
+            if originalDetail.exerciseId != updatedDetail.exerciseId ||
+                originalDetail.exerciseName != updatedDetail.exerciseName ||
+                originalDetail.isCardio != updatedDetail.isCardio ||
+                originalDetail.orderIndex != updatedDetail.orderIndex ||
+                originalDetail.sets.count != updatedDetail.sets.count {
+                return true
+            }
+            
+            // If you have more properties to compare, continue the pattern here
+            
+            // If the sets array is not Equatable, you'll have to compare it manually as well
+            for (setIndex, originalSet) in originalDetail.sets.enumerated() {
+                let updatedSet = updatedDetail.sets[setIndex]
+                
+                // Assuming you have properties like 'reps' and 'weight' in your SetInput
+                if originalSet.reps != updatedSet.reps ||
+                    originalSet.weight != updatedSet.weight ||
+                    originalSet.time != updatedSet.time ||
+                    originalSet.distance != updatedSet.distance {
+                    return true
+                }
+                
+                // Continue with all other properties in SetInput that should be compared
+            }
+        }
+        
+        // If no differences are found, return false
+        return false
+    }
+    
+    
+    func updateWorkoutValues() {
+        workoutManager.updateWorkoutDetails(workoutId: workoutId, workoutDetailsInput: workoutDetails)
+        completeEndWorkoutSequence()
+    }
+    
+    private func saveWorkoutHistory(){
         // Calculate total weight lifted
         let totalWeightLifted = workoutDetails.reduce(0) { detailSum, detail in
             detailSum + detail.sets.reduce(0) { setSum, setInput in
@@ -280,10 +346,6 @@ struct ActiveWorkoutView: View {
                 setSum + Float(setInput.distance) // Summing up the distance
             }
         }
-        
-        
-        workoutManager.setSessionStatus(workoutId: workoutId, isActive: false)
-        
         // Save the workout history
         workoutManager.saveWorkoutHistory(
             workoutId: workoutId,
@@ -295,10 +357,6 @@ struct ActiveWorkoutView: View {
             totalDistance: Float(totalDistance),
             workoutDetailsInput: workoutDetails
         )
-        
-        workoutManager.deleteAllTemporaryWorkoutDetails()
-        
-        appViewModel.navigateTo(.workoutOverview(workoutId))
     }
     
     

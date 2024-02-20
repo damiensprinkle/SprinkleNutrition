@@ -4,6 +4,8 @@ import ConfettiSwiftUI
 
 struct WorkoutOverviewView: View {
     var workoutId: UUID
+    var workoutDetails: [WorkoutDetailInput] = []
+
     @EnvironmentObject var workoutManager: WorkoutManager
     @EnvironmentObject var appViewModel: AppViewModel
     @State private var counter = 0

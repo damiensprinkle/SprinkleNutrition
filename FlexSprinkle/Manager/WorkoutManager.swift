@@ -271,23 +271,46 @@ class WorkoutManager: ObservableObject {
     
     func deleteWorkout(for workoutId: UUID) {
         guard let context = self.context else { return }
-        
+
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "Workouts")
         fetchRequest.predicate = NSPredicate(format: "id == %@", workoutId as CVarArg)
-        
+
         do {
             let workoutsToDelete = try context.fetch(fetchRequest) as? [Workouts] ?? []
-            
+
             for workout in workoutsToDelete {
+                // Delete related workout history
+                if let workoutHistory = workout.history as? Set<WorkoutHistory> {
+                    for history in workoutHistory {
+                        context.delete(history)
+                    }
+                }
+
+                // Delete related workout details
+                if let workoutDetails = workout.details as? Set<WorkoutDetail> {
+                    for detail in workoutDetails {
+                        context.delete(detail)
+                    }
+                }
+
+                // Delete related temporary workout details
+                if let tempDetails = workout.detailsTemp as? Set<TemporaryWorkoutDetail> {
+                    for tempDetail in tempDetails {
+                        context.delete(tempDetail)
+                    }
+                }
+
+                // Finally, delete the workout itself
                 context.delete(workout)
             }
-            
+
             try context.save()
-            print("Workout and its details deleted successfully")
+            print("Workout and its associated history, details, and temporary details deleted successfully")
         } catch let error as NSError {
-            print("Error deleting workout: \(error), \(error.userInfo)")
+            print("Error deleting workout and its associated entities: \(error), \(error.userInfo)")
         }
     }
+
     
     func deleteWorkoutHistory(for historyId: UUID) {
         guard let context = self.context else { return }

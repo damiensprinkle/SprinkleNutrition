@@ -20,7 +20,7 @@ struct ActiveWorkoutView: View {
     @EnvironmentObject var workoutManager: WorkoutManager
     
     @State private var workoutTitle: String = ""
-        
+    
     @State private var workoutDetails: [WorkoutDetailInput] = []
     @State private var errorMessage: String = ""
     @State private var showAlert: Bool = false
@@ -35,7 +35,10 @@ struct ActiveWorkoutView: View {
     @State private var showingStartConfirmation = false
     @State private var showEndWorkoutOption = false
     @State private var endWorkoutConfirmationShown = false
-
+    
+    @State private var foregroundObserver: Any?
+    @State private var backgroundObserver: Any?
+    
     
     var body: some View {
         NavigationView {
@@ -47,7 +50,7 @@ struct ActiveWorkoutView: View {
                     .onTapGesture {
                         if focusManager.isAnyTextFieldFocused {
                             focusManager.isAnyTextFieldFocused = false
-                           // hideKeyboard()
+                            // hideKeyboard()
                         }
                     }
                     
@@ -81,15 +84,39 @@ struct ActiveWorkoutView: View {
             }
             .id(workoutId) // Use workoutId as a unique identifier for the view
             .onAppear {
-                print(workoutId)
-
+                NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { _ in
+                    self.updateTimerForForeground()
+                }
+                
+                NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { _ in
+                    self.handleAppBackgrounding()
+                }
                 if(workoutManager.fetchWorkoutById(for: workoutId) != nil){
                     loadWorkoutDetails()
                     
                     initSession()
                 }
             }
+            .onDisappear {
+                NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
+                NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)
+            }
         }
+    }
+    
+    
+    
+    private func updateTimerForForeground() {
+        if workoutStarted {
+            let now = Date()
+            if let startTime = workoutManager.getSessions().first?.startTime {
+                self.elapsedTime = Int(now.timeIntervalSince(startTime))
+            }
+        }
+    }
+    
+    private func handleAppBackgrounding() {
+        //not needed?
     }
     
     private func loadTemporaryData() {
@@ -106,7 +133,7 @@ struct ActiveWorkoutView: View {
                 workoutDetails.append(tempDetail)
             }
         }
-        workoutDetails.sort { $0.orderIndex > $1.orderIndex } // make sure workouts are sorted in correct order
+        workoutDetails.sort { $0.orderIndex < $1.orderIndex } // make sure workouts are sorted in correct order
         
     }
     
@@ -253,7 +280,7 @@ struct ActiveWorkoutView: View {
                 setSum + Float(setInput.distance) // Summing up the distance
             }
         }
-
+        
         
         workoutManager.setSessionStatus(workoutId: workoutId, isActive: false)
         

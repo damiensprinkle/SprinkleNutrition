@@ -37,7 +37,7 @@ class WorkoutManager: ObservableObject {
         newExerciseDetail.exerciseName = exerciseName
         newExerciseDetail.isCardio = isCardio
         newExerciseDetail.orderIndex = orderIndex
-        
+        print("\(exerciseName):  \(orderIndex)")
         // Add sets to the exercise detail
         for setInput in sets {
             let newSet = WorkoutSet(context: context)

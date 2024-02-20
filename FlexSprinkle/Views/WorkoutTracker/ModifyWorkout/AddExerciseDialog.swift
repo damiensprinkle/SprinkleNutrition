@@ -65,8 +65,11 @@ struct AddExerciseDialog: View {
             return
         }
         else{
+            
+            //get existing indexes of workouts
+            let newIndex = workoutDetails.last?.orderIndex ?? 0
             let isCardio = selectedWorkoutType == "Cardio"
-            let newDetail = WorkoutDetailInput(exerciseName: exerciseName, isCardio: isCardio, sets: [SetInput(reps: 0, weight: 0, time: 0, distance: 0)]) // Initialize with the provided exercise name and a default set
+            let newDetail = WorkoutDetailInput(exerciseName: exerciseName, isCardio: isCardio, orderIndex: newIndex + 1, sets: [SetInput(reps: 0, weight: 0, time: 0, distance: 0)]) // Initialize with the provided exercise name and a default set
             workoutDetails.append(newDetail)
             self.showingDialog = false
         }

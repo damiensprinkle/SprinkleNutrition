@@ -9,6 +9,7 @@ struct NutritionHelperMainView: View {
             Divider()
             DatePickerView(selectedDate: $selectedDate, cardColor: Color("MyBlue"))
             Spacer()
+            
         }
     }
 }

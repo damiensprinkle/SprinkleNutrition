@@ -15,14 +15,18 @@ struct CardioSetRowActive: View {
     let workoutStarted: Bool
     @FocusState private var focusedField: FocusableField?
     @State private var originalTimeInput: String = ""
+    @State private var hasLoaded = false
+
     
     @State private var distanceInput: String = ""
     @State private var timeInput: String = ""
+    @State private var isCompleted: Bool = false
     @EnvironmentObject var workoutManager: WorkoutManager
     @EnvironmentObject var focusManager: FocusManager
     
     var body: some View {
         HStack {
+            Spacer()
             Text("\(setIndex)")
                 .frame(width: 50, alignment: .leading)
             Spacer()
@@ -92,6 +96,20 @@ struct CardioSetRowActive: View {
                 .frame(width: 100)
             
                 .keyboardType(.numberPad)
+            Divider()
+            Toggle("", isOn: $isCompleted)
+                .onChange(of: isCompleted) {
+                    if hasLoaded {
+                        setInput.isCompleted = isCompleted
+                        saveWorkoutDetail()
+                    }
+                }
+                .toggleStyle(CheckboxStyle())
+                .labelsHidden()
+                .onAppear {
+                    isCompleted = setInput.isCompleted
+                    hasLoaded = true
+                }
         }
         .toolbar {
             ToolbarItem(placement: .keyboard) {
@@ -110,6 +128,7 @@ struct CardioSetRowActive: View {
         .disabled(!workoutStarted)
         .opacity(!workoutStarted ? 0.5 : 1) // Manually adjust opacity to grey out view
         .foregroundColor(!workoutStarted ? .gray : .myBlack)
+        .background(isCompleted ? Color.green.opacity(0.2) : Color.clear) // Conditional background color
     }
     
     func saveWorkoutDetail() {

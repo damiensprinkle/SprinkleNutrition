@@ -22,6 +22,7 @@ extension WorkoutSet {
     @NSManaged public var setNumber: Int32
     @NSManaged public var time: Int32
     @NSManaged public var weight: Int32
+    @NSManaged public var isCompleted: Bool
     @NSManaged public var details: WorkoutDetail?
     @NSManaged public var detailsTemp: TemporaryWorkoutDetail?
 

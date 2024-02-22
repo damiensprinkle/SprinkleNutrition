@@ -118,6 +118,8 @@ class WorkoutManager: ObservableObject {
             set.weight = setInput.weight
             set.time = setInput.time
             set.distance = setInput.distance
+            set.isCompleted = setInput.isCompleted
+            print("Set .iscompleted is set to  \(set.isCompleted)")
             // Update other properties as necessary
         }
     }
@@ -512,7 +514,7 @@ extension WorkoutManager {
                         exerciseName: tempDetail.exerciseName ?? "",
                         isCardio: tempDetail.isCardio,
                         orderIndex: tempDetail.orderIndex,
-                        sets: sets.map { SetInput(id: $0.id, reps: $0.reps, weight: $0.weight, time: $0.time, distance: $0.distance) }
+                        sets: sets.map { SetInput(id: $0.id, reps: $0.reps, weight: $0.weight, time: $0.time, distance: $0.distance, isCompleted: $0.isCompleted) }
                     )
                 }
             }

@@ -125,15 +125,15 @@ struct ActiveWorkoutView: View {
         for tempDetail in temporaryDetails {
             if let index = workoutDetails.firstIndex(where: { $0.exerciseId == tempDetail.exerciseId }) {
                 // Exercise exists, update its sets
-                let updatedSets = tempDetail.sets.map { SetInput(id: $0.id, reps: $0.reps, weight: $0.weight, time: $0.time, distance: $0.distance) }
+                let updatedSets = tempDetail.sets.map { SetInput(id: $0.id, reps: $0.reps, weight: $0.weight, time: $0.time, distance: $0.distance, isCompleted: $0.isCompleted)
+                }
                 workoutDetails[index].sets = updatedSets
             } else {
                 // New exercise found in temporary data, add it to workoutDetails
                 workoutDetails.append(tempDetail)
             }
         }
-        workoutDetails.sort { $0.orderIndex < $1.orderIndex } // make sure workouts are sorted in correct order
-        
+        workoutDetails.sort { $0.orderIndex < $1.orderIndex } // make sure workouts are sorted in correct orde        
     }
     
     
@@ -142,29 +142,29 @@ struct ActiveWorkoutView: View {
             Section(header: HStack {
                 Text(workoutDetails[index].exerciseName).font(.title2)
                 Spacer()
-                
-            })
-            {
+            }) {
                 if !workoutDetails[index].sets.isEmpty {
                     SetHeaders(isCardio: workoutDetails[index].isCardio)
                 }
                 
                 ForEach($workoutDetails[index].sets.indices, id: \.self) { setIndex in
-                    if workoutDetails[index].isCardio {
-                        CardioSetRowActive(setIndex: setIndex + 1, setInput: $workoutDetails[index].sets[setIndex], workoutDetails: workoutDetails[index], workoutId: workoutId, workoutStarted: workoutStarted)
-                            .environmentObject(workoutManager)
-                            .environmentObject(focusManager)
-                        
-                    } else {
-                        LiftingSetRowActive(setIndex: setIndex + 1, setInput: $workoutDetails[index].sets[setIndex], workoutDetails: workoutDetails[index], workoutId: workoutId, workoutStarted: workoutStarted)
-                            .environmentObject(workoutManager)
-                            .environmentObject(focusManager)
+                    Group {
+                        if workoutDetails[index].isCardio {
+                            CardioSetRowActive(setIndex: setIndex + 1, setInput: $workoutDetails[index].sets[setIndex], workoutDetails: workoutDetails[index], workoutId: workoutId, workoutStarted: workoutStarted)
+                                .environmentObject(workoutManager)
+                                .environmentObject(focusManager)
+                        } else {
+                            LiftingSetRowActive(setIndex: setIndex + 1, setInput: $workoutDetails[index].sets[setIndex], workoutDetails: workoutDetails[index], workoutId: workoutId, workoutStarted: workoutStarted)
+                                .environmentObject(workoutManager)
+                                .environmentObject(focusManager)
+                        }
                     }
+                    .listRowInsets(EdgeInsets())
                 }
-                
             }
         }
     }
+
     
     private func initSession() {
         let sessionsWorkoutId = workoutManager.getWorkoutIdOfActiveSession()
@@ -196,7 +196,7 @@ struct ActiveWorkoutView: View {
             self.workoutDetails = details.map { detail in
                 // Correctly apply map to convert [WorkoutSet] to [SetInput]
                 let setInputs = (detail.sets?.allObjects as? [WorkoutSet])?.map { ws in
-                    SetInput(id: ws.id, reps: ws.reps, weight: ws.weight, time: ws.time, distance: ws.distance)
+                    SetInput(id: ws.id, reps: ws.reps, weight: ws.weight, time: ws.time, distance: ws.distance, isCompleted: ws.isCompleted)
                 } ?? []
                 
                 return WorkoutDetailInput(
@@ -302,7 +302,6 @@ struct ActiveWorkoutView: View {
                     return true
                 }
                 
-                // Continue with all other properties in SetInput that should be compared
             }
         }
         

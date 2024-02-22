@@ -227,22 +227,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "9BD46AD7-9375-4F29-A52D-F1150EE805BA"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FlexSprinkle/Views/WorkoutTracker/Shared/CardioSetRowsActive.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "118"
-            endingLineNumber = "118"
-            landmarkName = "saveWorkoutDetail()"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "FA5AEA9E-A522-4255-A7ED-C257F087F440"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -250,8 +234,8 @@
             filePath = "FlexSprinkle/Views/WorkoutTracker/Shared/LiftingSetRowActive.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "107"
-            endingLineNumber = "107"
+            startingLineNumber = "125"
+            endingLineNumber = "125"
             landmarkName = "saveWorkoutDetail()"
             landmarkType = "7">
          </BreakpointContent>
@@ -394,8 +378,8 @@
             filePath = "FlexSprinkle/Views/WorkoutTracker/Shared/CardioSetRowsActive.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "135"
-            endingLineNumber = "135"
+            startingLineNumber = "154"
+            endingLineNumber = "154"
             landmarkName = "formatInput(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -630,9 +614,9 @@
             filePath = "FlexSprinkle/Manager/WorkoutManager.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "600"
-            endingLineNumber = "600"
-            landmarkName = "setSessionStatus(workoutId:isActive:)"
+            startingLineNumber = "602"
+            endingLineNumber = "602"
+            landmarkName = "fetchAllWorkoutHistory(for:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -640,6 +624,22 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "E2C4CAC8-F5B6-4A1B-8D70-B751CA8EE356"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FlexSprinkle/Views/WorkoutTracker/ActiveWorkoutView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "314"
+            endingLineNumber = "314"
+            landmarkName = "updateWorkoutValues()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "38865E03-1309-44ED-9F25-E3E86CF860BA"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -655,17 +655,65 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "38865E03-1309-44ED-9F25-E3E86CF860BA"
+            uuid = "754A6501-3A81-4AA1-BDFC-174CA09DF2C9"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FlexSprinkle/Manager/WorkoutManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "121"
+            endingLineNumber = "121"
+            landmarkName = "updateOrAddSetsForTempDetail(forDetail:withSetsInput:inContext:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7270E322-CC78-4C5B-A495-71AC7EECCBAE"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "FlexSprinkle/Views/WorkoutTracker/ActiveWorkoutView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "316"
-            endingLineNumber = "316"
-            landmarkName = "updateWorkoutValues()"
+            startingLineNumber = "130"
+            endingLineNumber = "130"
+            landmarkName = "loadTemporaryData()"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E7006874-C2A1-449D-B4A4-277DE5BDE40A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FlexSprinkle/Manager/WorkoutManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
+            landmarkName = "saveOrUpdateSetsDuringActiveWorkout(workoutId:exerciseId:exerciseName:setsInput:isCardio:orderIndex:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "98E160AE-3653-4F79-9B6D-19F61CE7BD33"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FlexSprinkle/Views/WorkoutTracker/Shared/CardioSetRowsActive.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "104"
+            endingLineNumber = "104"
+            landmarkName = "body"
+            landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -192,14 +192,17 @@ struct AddWorkoutView: View {
                     }
                     
                     Button("Add Set") {
+                        let maxSetIndex = workoutDetails[index].sets.max(by: { $0.setIndex < $1.setIndex })?.setIndex ?? 0
+                        let newSetIndex = maxSetIndex + 1
+
                         // Check if there are any sets already
                         if let lastSet = workoutDetails[index].sets.last {
                             // Use the values from the last set
-                            let newSet = SetInput(reps: lastSet.reps, weight: lastSet.weight, time: lastSet.time, distance: lastSet.distance)
+                            let newSet = SetInput(reps: lastSet.reps, weight: lastSet.weight, time: lastSet.time, distance: lastSet.distance, setIndex: newSetIndex)
                             workoutDetails[index].sets.append(newSet)
                         } else {
                             // If there are no sets, use default values
-                            let newSet = SetInput(reps: 0, weight: 0, time: 0, distance: 0)
+                            let newSet = SetInput(reps: 0, weight: 0, time: 0, distance: 0, setIndex: 0)
                             workoutDetails[index].sets.append(newSet)
                         }
                     }
@@ -223,10 +226,11 @@ struct AddWorkoutView: View {
         if let detailsSet = workout.details as? Set<WorkoutDetail> {
             let details = detailsSet.sorted { $0.orderIndex < $1.orderIndex }
             self.workoutDetails = details.map { detail in
-                // Correctly apply map to convert [WorkoutSet] to [SetInput]
-                let setInputs = (detail.sets?.allObjects as? [WorkoutSet])?.map { ws in
-                    SetInput(id: ws.id, reps: ws.reps, weight: ws.weight, time: ws.time, distance: ws.distance)
-                } ?? []
+                // Make sure to sort the sets by setIndex before converting them to SetInput
+                let sortedSets = (detail.sets?.allObjects as? [WorkoutSet])?.sorted(by: { $0.setIndex < $1.setIndex }) ?? []
+                let setInputs = sortedSets.map { ws in
+                    SetInput(id: ws.id, reps: ws.reps, weight: ws.weight, time: ws.time, distance: ws.distance, isCompleted: ws.isCompleted, setIndex: ws.setIndex)
+                }
                 
                 return WorkoutDetailInput(
                     id: detail.id,
@@ -239,6 +243,7 @@ struct AddWorkoutView: View {
             }
         }
     }
+
     
     private func deleteExercise(at offsets: IndexSet) {
         workoutDetails.remove(atOffsets: offsets)
@@ -271,6 +276,7 @@ struct AddWorkoutView: View {
             if(update){
                 let filledDetails = workoutDetails.filter { detail in
                     // Keep details where the exercise name is not empty, regardless of set counts or weights being 0
+                    guard !detail.exerciseName.isEmpty else { return false }
                     guard !detail.exerciseName.isEmpty else { return false }
                     
                     // If there's at least one set, it's considered meaningful data

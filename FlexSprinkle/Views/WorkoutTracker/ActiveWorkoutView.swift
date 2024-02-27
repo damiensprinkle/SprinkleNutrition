@@ -6,10 +6,6 @@
 //
 
 import SwiftUI
-
-import SwiftUI
-
-import SwiftUI
 import Combine
 
 
@@ -125,16 +121,29 @@ struct ActiveWorkoutView: View {
         for tempDetail in temporaryDetails {
             if let index = workoutDetails.firstIndex(where: { $0.exerciseId == tempDetail.exerciseId }) {
                 // Exercise exists, update its sets
-                let updatedSets = tempDetail.sets.map { SetInput(id: $0.id, reps: $0.reps, weight: $0.weight, time: $0.time, distance: $0.distance, isCompleted: $0.isCompleted)
-                }
+                let sortedSets = tempDetail.sets.sorted(by: { $0.setIndex < $1.setIndex })
+                let updatedSets = sortedSets.map { SetInput(
+                    id: $0.id,
+                    reps: $0.reps,
+                    weight: $0.weight,
+                    time: $0.time,
+                    distance: $0.distance,
+                    isCompleted: $0.isCompleted,
+                    setIndex: $0.setIndex
+                )}
                 workoutDetails[index].sets = updatedSets
             } else {
                 // New exercise found in temporary data, add it to workoutDetails
-                workoutDetails.append(tempDetail)
+                // Make sure to sort the sets of the new exercise as well
+                let sortedSets = tempDetail.sets.sorted(by: { $0.setIndex < $1.setIndex })
+                var newTempDetail = tempDetail
+                newTempDetail.sets = sortedSets
+                workoutDetails.append(newTempDetail)
             }
         }
-        workoutDetails.sort { $0.orderIndex < $1.orderIndex } // make sure workouts are sorted in correct orde        
+        workoutDetails.sort { $0.orderIndex < $1.orderIndex } // make sure workouts are sorted in correct order
     }
+
     
     
     private var displayExerciseDetailsAndSets: some View {
@@ -144,7 +153,7 @@ struct ActiveWorkoutView: View {
                 Spacer()
             }) {
                 if !workoutDetails[index].sets.isEmpty {
-                    SetHeaders(isCardio: workoutDetails[index].isCardio)
+                    SetHeadersActive(isCardio: workoutDetails[index].isCardio)
                 }
                 
                 ForEach($workoutDetails[index].sets.indices, id: \.self) { setIndex in
@@ -194,10 +203,19 @@ struct ActiveWorkoutView: View {
         if let detailsSet = workout.details as? Set<WorkoutDetail> {
             let details = detailsSet.sorted { $0.orderIndex < $1.orderIndex }
             self.workoutDetails = details.map { detail in
-                // Correctly apply map to convert [WorkoutSet] to [SetInput]
-                let setInputs = (detail.sets?.allObjects as? [WorkoutSet])?.map { ws in
-                    SetInput(id: ws.id, reps: ws.reps, weight: ws.weight, time: ws.time, distance: ws.distance, isCompleted: ws.isCompleted)
-                } ?? []
+                // Sort the sets by setIndex before converting them to SetInput
+                let sortedSets = (detail.sets?.allObjects as? [WorkoutSet])?.sorted(by: { $0.setIndex < $1.setIndex }) ?? []
+                let setInputs = sortedSets.map { ws in
+                    SetInput(
+                        id: ws.id,
+                        reps: ws.reps,
+                        weight: ws.weight,
+                        time: ws.time,
+                        distance: ws.distance,
+                        isCompleted: ws.isCompleted,
+                        setIndex: ws.setIndex // Make sure to include the setIndex here
+                    )
+                }
                 
                 return WorkoutDetailInput(
                     id: detail.id,
@@ -205,11 +223,12 @@ struct ActiveWorkoutView: View {
                     exerciseName: detail.exerciseName!,
                     isCardio: detail.isCardio,
                     orderIndex: detail.orderIndex,
-                    sets: setInputs // Now correctly typed as [SetInput]
+                    sets: setInputs // This is now sorted by setIndex
                 )
             }
         }
     }
+
     
     
     // * Start Workout Button Logic * //

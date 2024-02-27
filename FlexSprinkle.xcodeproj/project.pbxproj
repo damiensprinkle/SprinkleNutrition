@@ -12,6 +12,7 @@
 		081F87EF2B83C5E700BBBDF2 /* UserInfo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87ED2B83C5E700BBBDF2 /* UserInfo+CoreDataClass.swift */; };
 		081F87F02B83C5E700BBBDF2 /* UserInfo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87EE2B83C5E700BBBDF2 /* UserInfo+CoreDataProperties.swift */; };
 		081F87F22B87F6ED00BBBDF2 /* CheckboxStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87F12B87F6ED00BBBDF2 /* CheckboxStyle.swift */; };
+		081F87F42B8BA1E500BBBDF2 /* SetHeaderActive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87F32B8BA1E500BBBDF2 /* SetHeaderActive.swift */; };
 		087111372B728F8F0054E315 /* ModalType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087111362B728F8F0054E315 /* ModalType.swift */; };
 		0871113A2B72AD830054E315 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 087111382B72AD830054E315 /* Model.xcdatamodeld */; };
 		0871113D2B7306C20054E315 /* ColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0871113C2B7306C20054E315 /* ColorManager.swift */; };
@@ -100,6 +101,7 @@
 		081F87ED2B83C5E700BBBDF2 /* UserInfo+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfo+CoreDataClass.swift"; sourceTree = "<group>"; };
 		081F87EE2B83C5E700BBBDF2 /* UserInfo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		081F87F12B87F6ED00BBBDF2 /* CheckboxStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxStyle.swift; sourceTree = "<group>"; };
+		081F87F32B8BA1E500BBBDF2 /* SetHeaderActive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetHeaderActive.swift; sourceTree = "<group>"; };
 		087111362B728F8F0054E315 /* ModalType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalType.swift; sourceTree = "<group>"; };
 		087111392B72AD830054E315 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		0871113C2B7306C20054E315 /* ColorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorManager.swift; sourceTree = "<group>"; };
@@ -245,6 +247,7 @@
 			isa = PBXGroup;
 			children = (
 				08B3CF7E2B7C088F002F5C92 /* SetHeaders.swift */,
+				081F87F32B8BA1E500BBBDF2 /* SetHeaderActive.swift */,
 				08B3CF802B7C08B4002F5C92 /* LiftingSetRow.swift */,
 				08B3CF822B7C08D0002F5C92 /* CardioSetRow.swift */,
 				08B3CF862B7C2252002F5C92 /* CardioSetRowsActive.swift */,
@@ -528,6 +531,7 @@
 				087111AA2B77CA170054E315 /* WorkoutTrackerContentView.swift in Sources */,
 				08B3CFE42B7D9567002F5C92 /* Workouts+CoreDataClass.swift in Sources */,
 				081F87EC2B83AC0200BBBDF2 /* UserDetailsFormView.swift in Sources */,
+				081F87F42B8BA1E500BBBDF2 /* SetHeaderActive.swift in Sources */,
 				08B3CFE02B7D9567002F5C92 /* WorkoutDetail+CoreDataClass.swift in Sources */,
 				0871113A2B72AD830054E315 /* Model.xcdatamodeld in Sources */,
 				08B3CFE72B7E6E40002F5C92 /* FocusManager.swift in Sources */,

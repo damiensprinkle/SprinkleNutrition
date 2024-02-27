@@ -46,13 +46,13 @@ struct LiftingSetRow: View {
                     }
                 }
                 .onChange(of: weightInput) {
-                    setInput.weight = Int32(weightInput) ?? 0
+                    setInput.weight = Float(weightInput) ?? 0
                 }
             
                 .onAppear {
                     weightInput = String(setInput.weight) // Initialize the input when the view appears
                 }
-                .keyboardType(.numberPad)
+                .keyboardType(.decimalPad)
                 .frame(width: 100) // Fixed width for weight input
 
         }

@@ -338,7 +338,7 @@ struct ActiveWorkoutView: View {
         // Calculate total weight lifted
         let totalWeightLifted = workoutDetails.reduce(0) { detailSum, detail in
             detailSum + detail.sets.reduce(0) { setSum, setInput in
-                setSum + Int(setInput.weight) * Int(setInput.reps)
+                setSum + Float(setInput.weight) * Float(setInput.reps)
             }
         }
         
@@ -368,7 +368,7 @@ struct ActiveWorkoutView: View {
         workoutManager.saveWorkoutHistory(
             workoutId: workoutId,
             dateCompleted: Date(),
-            totalWeightLifted: Int32(totalWeightLifted),
+            totalWeightLifted: Float(totalWeightLifted),
             repsCompleted: Int32(totalReps),
             workoutTimeToComplete: workoutTimeToComplete,
             totalCardioTime: "\(totalCardioTime)",

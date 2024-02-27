@@ -56,7 +56,7 @@ struct WorkoutHistoryCardView: View {
                 Spacer()
                 
                 Image(systemName: "dumbbell.fill")
-                Text("\(history.totalWeightLifted) \(weightPreference)")
+                Text("\(history.totalWeightLifted, specifier: "%.2f") \(weightPreference)")
                     .font(.subheadline)
             }
             
@@ -136,7 +136,7 @@ struct WorkoutHistoryCardView: View {
                 }
             } else {
                 // Safely calculate totals for non-cardio exercises
-                let totalWeight = (detail.sets?.allObjects as? [WorkoutSet])?.reduce(0) { $0 + (Int($1.weight) * Int($1.reps)) } ?? 0
+                let totalWeight = (detail.sets?.allObjects as? [WorkoutSet])?.reduce(0) { $0 + (Float($1.weight) * Float($1.reps)) } ?? 0
 
                 let totalReps = (detail.sets?.allObjects as? [WorkoutSet])?.reduce(0) { $0 + Int($1.reps) } ?? 0
                 HStack {
@@ -146,7 +146,7 @@ struct WorkoutHistoryCardView: View {
                     }
                     VStack {
                         Text("Weight:")
-                        Text("\(totalWeight) \(weightPreference)")
+                        Text("\(totalWeight, specifier: "%.2f") \(weightPreference)")
                     }
                 }
             }

@@ -75,14 +75,14 @@ struct LiftingSetRowActive: View {
                 }
                 .onChange(of: weightInput){
                     if(!weightInput.isEmpty){
-                        setInput.weight = Int32(weightInput) ?? 0
+                        setInput.weight = Float(weightInput) ?? 0
                         saveWorkoutDetail()
                     }
                 }
                 .onAppear {
                     weightInput = "\(setInput.weight)"
                 }
-                .keyboardType(.numberPad)
+                .keyboardType(.decimalPad)
                 .frame(width: 100)
             Divider()
             Toggle("", isOn: $isCompleted)

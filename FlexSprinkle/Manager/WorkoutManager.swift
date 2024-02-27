@@ -528,7 +528,7 @@ extension WorkoutManager {
         return []
     }
     
-    func saveWorkoutHistory(workoutId: UUID, dateCompleted: Date, totalWeightLifted: Int32, repsCompleted: Int32, workoutTimeToComplete: String, totalCardioTime: String, totalDistance: Float, workoutDetailsInput: [WorkoutDetailInput]) {
+    func saveWorkoutHistory(workoutId: UUID, dateCompleted: Date, totalWeightLifted: Float, repsCompleted: Int32, workoutTimeToComplete: String, totalCardioTime: String, totalDistance: Float, workoutDetailsInput: [WorkoutDetailInput]) {
         guard let context = self.context, let workout = fetchWorkoutById(for: workoutId) else { return }
         
         let history = WorkoutHistory(context: context)

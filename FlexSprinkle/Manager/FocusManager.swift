@@ -28,3 +28,8 @@ enum FocusableField: Hashable {
     case reps
 }
 
+enum FocusableFieldUserForm: Hashable {
+    case age
+    case weight
+}
+

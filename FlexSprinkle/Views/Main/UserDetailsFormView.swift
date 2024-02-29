@@ -18,13 +18,15 @@ struct UserDetailsFormView: View {
     
     @State private var weight: String = ""
     @State private var height: String = ""
-    @State private var age: String = ""
+    @State private var age: String = "0"
     @State private var gender: String = "Other"
     @State private var activityLevel: String = "Exercise 1-3 times/week"
     
     @State private var heightFeet: Int = 5
     @State private var heightInches: Int = 0
     @State private var isInEditMode: Bool = false
+    @FocusState private var focusedField: FocusableFieldUserForm?
+
 
 
 
@@ -39,6 +41,12 @@ struct UserDetailsFormView: View {
                             .font(.caption)
                         TextField("Enter age", text: $age)
                             .keyboardType(.numberPad)
+                            .onTapGesture {
+                                age = ""
+                            }
+                            .onChange(of: focusedField) {
+                                focusedField = .age
+                            }
                     }
                     Picker("Gender", selection: $gender) {
                         Text("Male").tag("Male")
@@ -62,6 +70,9 @@ struct UserDetailsFormView: View {
                     HStack{
                         TextField("Enter weight", text: $weight)
                             .keyboardType(.numberPad)
+                            .onChange(of: focusedField) {
+                                focusedField = .weight
+                            }
                         Divider()
                         Picker("", selection: $weightPreference) {
                             Text("lbs").tag("lbs")
@@ -111,6 +122,20 @@ struct UserDetailsFormView: View {
                         Spacer()
                         Button("Save") {
                             saveUserDetails()
+                        }
+                    }
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .keyboard) {
+                    if(focusedField == .weight){
+                        Button("Done") {
+                            focusedField = nil
+                        }
+                    }
+                    if(focusedField == .age) {
+                        Button("Done") {
+                            focusedField = nil
                         }
                     }
                 }

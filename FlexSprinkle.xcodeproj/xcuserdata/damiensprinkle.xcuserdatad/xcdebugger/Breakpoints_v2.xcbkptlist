@@ -1128,5 +1128,83 @@
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "E4699859-F663-4D1A-BCCF-3B2C8F80EDC8"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "FlexSprinkle/Views/Main/UserDetailsFormView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "147"
+            endingLineNumber = "147"
+            landmarkName = "body"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "E4699859-F663-4D1A-BCCF-3B2C8F80EDC8 - a8787f1a62ebf2c1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FlexSprinkle.UserDetailsFormView.saveUserDetails() -&gt; ()"
+                  moduleName = "FlexSprinkle"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/damiensprinkle/Desktop/FlexSprinkle/FlexSprinkle/Views/Main/UserDetailsFormView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "148"
+                  endingLineNumber = "148"
+                  offsetFromSymbolStart = "960">
+               </Location>
+               <Location
+                  uuid = "E4699859-F663-4D1A-BCCF-3B2C8F80EDC8 - a8787f1a62ebf2c1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FlexSprinkle.UserDetailsFormView.saveUserDetails() -&gt; ()"
+                  moduleName = "FlexSprinkle"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/damiensprinkle/Desktop/FlexSprinkle/FlexSprinkle/Views/Main/UserDetailsFormView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "148"
+                  endingLineNumber = "148"
+                  offsetFromSymbolStart = "1232">
+               </Location>
+               <Location
+                  uuid = "E4699859-F663-4D1A-BCCF-3B2C8F80EDC8 - a8787f1a62ebf2c1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FlexSprinkle.UserDetailsFormView.saveUserDetails() -&gt; ()"
+                  moduleName = "FlexSprinkle"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/damiensprinkle/Desktop/FlexSprinkle/FlexSprinkle/Views/Main/UserDetailsFormView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "148"
+                  endingLineNumber = "148"
+                  offsetFromSymbolStart = "1476">
+               </Location>
+               <Location
+                  uuid = "E4699859-F663-4D1A-BCCF-3B2C8F80EDC8 - a8787f1a62ebf2c1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FlexSprinkle.UserDetailsFormView.saveUserDetails() -&gt; ()"
+                  moduleName = "FlexSprinkle"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/damiensprinkle/Desktop/FlexSprinkle/FlexSprinkle/Views/Main/UserDetailsFormView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "148"
+                  endingLineNumber = "148"
+                  offsetFromSymbolStart = "1720">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

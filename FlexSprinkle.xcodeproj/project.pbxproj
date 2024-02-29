@@ -205,6 +205,8 @@
 		087111442B7519900054E315 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
+				081F87ED2B83C5E700BBBDF2 /* UserInfo+CoreDataClass.swift */,
+				081F87EE2B83C5E700BBBDF2 /* UserInfo+CoreDataProperties.swift */,
 				08B3CFED2B810DFF002F5C92 /* WorkoutHistory+CoreDataClass.swift */,
 				08B3CFEE2B810DFF002F5C92 /* WorkoutHistory+CoreDataProperties.swift */,
 				08B3CFCE2B7D9567002F5C92 /* WorkoutSession+CoreDataClass.swift */,
@@ -268,8 +270,6 @@
 		08B78FE32B6DBA370002DA68 = {
 			isa = PBXGroup;
 			children = (
-				081F87ED2B83C5E700BBBDF2 /* UserInfo+CoreDataClass.swift */,
-				081F87EE2B83C5E700BBBDF2 /* UserInfo+CoreDataProperties.swift */,
 				08B3D00D2B82AC7C002F5C92 /* Launch Screen.storyboard */,
 				08B78FEE2B6DBA370002DA68 /* FlexSprinkle */,
 				08B78FED2B6DBA370002DA68 /* Products */,

@@ -983,6 +983,21 @@
                   endingLineNumber = "138"
                   offsetFromSymbolStart = "44">
                </Location>
+               <Location
+                  uuid = "9678EC2D-4B51-49C7-BBEC-F0185B4F432E - 70cc62852b147427"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FlexSprinkle.ActiveWorkoutView.loadTemporaryData() -&gt; ()"
+                  moduleName = "FlexSprinkle"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/damiensprinkle/Desktop/FlexSprinkle/FlexSprinkle/Views/WorkoutTracker/ActiveWorkoutView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "138"
+                  endingLineNumber = "138"
+                  offsetFromSymbolStart = "1904">
+               </Location>
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>

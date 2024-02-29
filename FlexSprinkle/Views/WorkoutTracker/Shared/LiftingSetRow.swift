@@ -41,19 +41,23 @@ struct LiftingSetRow: View {
             TextField("Weight", text: $weightInput)
                 .focused($focusedField, equals: .weight)
                 .onChange(of: focusedField) {
-                    if focusedField == .weight {
-                        weightInput = "" // Clear the input when the field becomes focused
+                    if focusedField != .weight {
+                        if let weightValue = Float(weightInput) {
+                            weightInput = String(format: "%.1f", weightValue)
+                        }
+                    } else {
+                        weightInput = ""
                     }
                 }
                 .onChange(of: weightInput) {
-                    setInput.weight = Float(weightInput) ?? 0
+                    setInput.weight = Float(weightInput) ?? 0.0
                 }
             
                 .onAppear {
                     weightInput = String(setInput.weight) // Initialize the input when the view appears
                 }
                 .keyboardType(.decimalPad)
-                .frame(width: 100) // Fixed width for weight input
+                .frame(width: 100)
 
         }
         .toolbar {

@@ -41,11 +41,9 @@ struct UserDetailsFormView: View {
                             .font(.caption)
                         TextField("Enter age", text: $age)
                             .keyboardType(.numberPad)
+                            .focused($focusedField, equals: .age)
                             .onTapGesture {
                                 age = ""
-                            }
-                            .onChange(of: focusedField) {
-                                focusedField = .age
                             }
                     }
                     Picker("Gender", selection: $gender) {
@@ -70,9 +68,8 @@ struct UserDetailsFormView: View {
                     HStack{
                         TextField("Enter weight", text: $weight)
                             .keyboardType(.numberPad)
-                            .onChange(of: focusedField) {
-                                focusedField = .weight
-                            }
+                            .focused($focusedField, equals: .weight)
+
                         Divider()
                         Picker("", selection: $weightPreference) {
                             Text("lbs").tag("lbs")

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -157,6 +157,10 @@
 		08C31FFE2B82EA3A002EE8A7 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		085466322CB618AA00136FBC /* images */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = images; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		08B78FE92B6DBA370002DA68 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -270,6 +274,7 @@
 		08B78FE32B6DBA370002DA68 = {
 			isa = PBXGroup;
 			children = (
+				085466322CB618AA00136FBC /* images */,
 				08B3D00D2B82AC7C002F5C92 /* Launch Screen.storyboard */,
 				08B78FEE2B6DBA370002DA68 /* FlexSprinkle */,
 				08B78FED2B6DBA370002DA68 /* Products */,
@@ -391,6 +396,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				085466322CB618AA00136FBC /* images */,
 			);
 			name = FlexSprinkle;
 			packageProductDependencies = (

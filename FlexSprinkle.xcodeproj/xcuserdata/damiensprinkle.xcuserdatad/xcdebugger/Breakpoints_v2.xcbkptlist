@@ -482,6 +482,36 @@
             endingLineNumber = "138"
             landmarkName = "loadTemporaryData()"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "9678EC2D-4B51-49C7-BBEC-F0185B4F432E - 9022861d3b369fa2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "FlexSprinkle.ActiveWorkoutView.loadTemporaryData() -&gt; ()"
+                  moduleName = "FlexSprinkle.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/damiensprinkle/Desktop/FlexSprinkle/FlexSprinkle/Views/WorkoutTracker/ActiveWorkoutView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "138"
+                  endingLineNumber = "138">
+               </Location>
+               <Location
+                  uuid = "9678EC2D-4B51-49C7-BBEC-F0185B4F432E - 156c6a2cf629e458"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #4 (FlexSprinkle.SetInput, FlexSprinkle.SetInput) -&gt; Swift.Bool in FlexSprinkle.ActiveWorkoutView.loadTemporaryData() -&gt; ()"
+                  moduleName = "FlexSprinkle.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/damiensprinkle/Desktop/FlexSprinkle/FlexSprinkle/Views/WorkoutTracker/ActiveWorkoutView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "138"
+                  endingLineNumber = "138">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

@@ -10,7 +10,7 @@ import SwiftUI
 struct AddExerciseDialog: View {
     @Binding var workoutDetails: [WorkoutDetailInput]
     @Binding var showingDialog: Bool
-    @State private var selectedWorkoutType: String = "Lifting" // Default selection
+    @State private var selectedWorkoutType: String = "Repetitive" // Default selection
     @State private var exerciseName: String = "" // State to hold the exercise name input
     
     var body: some View {
@@ -33,8 +33,8 @@ struct AddExerciseDialog: View {
             .frame(height: 36) // Fixed height for TextField
             
             Picker("Workout Type", selection: $selectedWorkoutType) {
-                Text("Lifting").tag("Lifting")
-                Text("Cardio").tag("Cardio")
+                Text("Repetitive").tag("Repetitive")
+                Text("Timed").tag("Timed")
             }
             .pickerStyle(SegmentedPickerStyle())
             .padding()
@@ -68,7 +68,7 @@ struct AddExerciseDialog: View {
             
             //get existing indexes of workouts
             let newIndex = workoutDetails.last?.orderIndex ?? 0
-            let isCardio = selectedWorkoutType == "Cardio"
+            let isCardio = selectedWorkoutType == "Timed"
             let newDetail = WorkoutDetailInput(exerciseName: exerciseName, isCardio: isCardio, orderIndex: newIndex + 1, sets: [SetInput(reps: 0, weight: 0, time: 0, distance: 0)]) // Initialize with the provided exercise name and a default set
             workoutDetails.append(newDetail)
             self.showingDialog = false

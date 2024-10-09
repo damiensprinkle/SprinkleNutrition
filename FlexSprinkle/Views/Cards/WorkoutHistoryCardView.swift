@@ -123,7 +123,9 @@ struct WorkoutHistoryCardView: View {
             if detail.isCardio {
                 // Safely calculate totals for cardio exercises
                 let totalDistance = (detail.sets?.allObjects as? [WorkoutSet])?.reduce(0.0) { $0 + ($1.distance) } ?? 0.0
-                let totalTime = (detail.sets?.allObjects as? [WorkoutSet])?.reduce(0) { $0 + Int($1.time) } ?? 0
+                let totalTimeInMinutes = (detail.sets?.allObjects as? [WorkoutSet])?.reduce(0) { $0 + Int($1.time) } ?? 0
+                let totalTime = totalTimeInMinutes / 60
+
                 HStack {
                     VStack{
                         Text("Distance:")
@@ -143,10 +145,12 @@ struct WorkoutHistoryCardView: View {
                     VStack {
                         Text("Reps:")
                         Text("\(totalReps)")
+                            .frame(width: 60, alignment: .center)
                     }
                     VStack {
                         Text("Weight:")
                         Text("\(totalWeight, specifier: "%.2f") \(weightPreference)")
+                            .frame(width: 100, alignment: .trailing)
                     }
                 }
             }

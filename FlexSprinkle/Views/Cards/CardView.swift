@@ -101,6 +101,11 @@ struct CardView: View {
     @ViewBuilder
     private func contextMenuContent() -> some View {
         Button(action: {
+            let sessionId = workoutManager.getSessions().first?.workoutsR?.id
+            if  sessionId == workoutId {
+                alertTitle = "You Cannot Edit a Workout That Is In Progress"
+                showAlert = true
+            }
             presentingModal = .edit(workoutId: workoutId)
         }) {
             Label("Edit", systemImage: "square.and.pencil")

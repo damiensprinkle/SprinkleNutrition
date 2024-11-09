@@ -66,11 +66,13 @@ struct WorkoutTrackerMainView: View {
                 presentingModal = .add
             }) {
                 Image(systemName: "plus")
+                    .help("Create a new workout")
             })
             .navigationBarItems(trailing: Button(action: {
                 appViewModel.navigateTo(.workoutHistoryView)
             }) {
                 Image(systemName: "clock")
+                    .help("View workout history")
             })
             
             .alert(isPresented: $showAlert) {

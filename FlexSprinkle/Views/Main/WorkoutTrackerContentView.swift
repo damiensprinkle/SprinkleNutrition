@@ -31,7 +31,7 @@ struct WorkoutContentMainView: View {
                 
             case .workoutActiveView(let workoutId):
                 ActiveWorkoutView(workoutId: workoutId)
-                    .id(workoutId) // Assuming workoutId is unique for each workout
+                    .id(workoutId)
                     .environmentObject(workoutManager)
                     .environmentObject(appViewModel)
                 

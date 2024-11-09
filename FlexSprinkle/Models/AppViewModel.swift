@@ -20,7 +20,7 @@ class AppViewModel: ObservableObject {
     func resetToWorkoutMainView() {
         DispatchQueue.main.async {
             self.currentTab = .workout 
-            self.currentView = .main// Use this to reset tab if needed
+            self.currentView = .main
         }
     }
 
@@ -31,8 +31,6 @@ class AppViewModel: ObservableObject {
         case workoutOverview(UUID)
         case workoutActiveView(UUID)
         case workoutHistoryView
-       // case addWorkoutView
-        // Define other views as needed
     }
     
     enum Tab : Equatable {

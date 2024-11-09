@@ -26,9 +26,7 @@ struct HomeView: View {
                     }
                 }
                 .onAppear {
-                    // Set the context for userManager here
                     userManager.context = persistenceController.container.viewContext
-                    
                     if userManager.userDetails == nil && !optOut {
                         showUserDetailsForm = true
                     }

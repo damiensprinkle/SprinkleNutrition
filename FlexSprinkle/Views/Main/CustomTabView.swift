@@ -1,5 +1,5 @@
 //
-//  CustomTABVIEW.swift
+//  CustomTabViews.swift
 //  FlexSprinkle
 //
 //  Created by Damien Sprinkle on 2/10/24.
@@ -19,11 +19,11 @@ struct CustomTabView: View {
     }
     
     var body: some View {
-        VStack(spacing: 0) { // Ensure there's no spacing between content and the tab bar
-            // Content based on selected tab
+        VStack(spacing: 0) {
             switch selectedTab {
             case .home:
                 HomeContentView().navigationTitle("Home")
+                    .environmentObject(workoutManager);
             case .workout:
                 WorkoutContentMainView()
                     .environmentObject(workoutManager)
@@ -33,46 +33,37 @@ struct CustomTabView: View {
             case .settings:
                 SettingsView()
                     .environmentObject(userManager)
-                
             }
             
-            Spacer() // Pushes the tab bar to the bottom
+            Spacer()
             
-            // Custom Tab Bar
             HStack {
-                // Home Tab Button
                 tabButton(for: .home, systemImage: "house.fill")
                 
                 Spacer()
-                
-                // Workout Tab Button
                 tabButton(for: .workout, systemImage: "dumbbell.fill")
                 
                 Spacer()
-                
-                // Nutrition Tab Button
                 tabButton(for: .nutrition, systemImage: "leaf.fill")
                 
                 Spacer()
-                
                 tabButton(for: .settings, systemImage :"gearshape")
             }
             .padding()
-            .background(Color.gray.opacity(0.1)) // Customize as needed
-            .edgesIgnoringSafeArea(.bottom) // Ensure it extends into the safe area
+            .background(Color.gray.opacity(0.1))
+            .edgesIgnoringSafeArea(.bottom)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity) // Ensure VStack takes full screen size
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
     @ViewBuilder
     private func tabButton(for tab: Tab, systemImage: String) -> some View {
         Button(action: {
             if selectedTab == tab && tab == .workout {
-                // Reset workout view if workout tab is re-selected
                 appViewModel.resetToWorkoutMainView()
             } else {
                 selectedTab = tab
-                appViewModel.resetToWorkoutMainView()
+                appViewModel.resetToWorkoutMainView() //
             }
         }) {
             Image(systemName: systemImage)

@@ -10,7 +10,7 @@ import CoreData
 
 @main
 struct FlexSprinkleApp: App {
-    @StateObject private var persistenceController = PersistenceController.shared  // Use @StateObject here
+    @StateObject private var persistenceController = PersistenceController.shared
     @StateObject private var appViewModel = AppViewModel()
 
 

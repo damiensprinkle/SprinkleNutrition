@@ -26,7 +26,7 @@ class WorkoutManager: ObservableObject {
     // MARK: Core Data Operations
     
     //good
-    func addWorkoutDetail(workoutTitle: String, exerciseName: String, color: String , isCardio: Bool, orderIndex: Int32, sets: [SetInput]) {
+    func addWorkoutDetail(workoutTitle: String, exerciseName: String, color: String , orderIndex: Int32, sets: [SetInput], exerciseMeasurement: String, exerciseQuantifier: String) {
         guard let context = self.context else { return }
         
         let workout = findOrCreateWorkout(withTitle: workoutTitle, color: color)
@@ -35,8 +35,9 @@ class WorkoutManager: ObservableObject {
         let newExerciseDetail = WorkoutDetail(context: context)
         newExerciseDetail.exerciseId = UUID()
         newExerciseDetail.exerciseName = exerciseName
-        newExerciseDetail.isCardio = isCardio
         newExerciseDetail.orderIndex = orderIndex
+        newExerciseDetail.exerciseQuantifier = exerciseQuantifier
+        newExerciseDetail.exerciseMeasurement = exerciseMeasurement
         print("\(exerciseName):  \(orderIndex)")
         // Add sets to the exercise detail
         for setInput in sets {
@@ -56,7 +57,7 @@ class WorkoutManager: ObservableObject {
         print("Workout ID: \(String(describing: workout.id)), Exercise Created with ID: \(String(describing: newExerciseDetail.exerciseId))")
     }
     
-    func saveOrUpdateSetsDuringActiveWorkout(workoutId: UUID, exerciseId: UUID, exerciseName: String, setsInput: [SetInput], isCardio: Bool, orderIndex: Int32) {
+    func saveOrUpdateSetsDuringActiveWorkout(workoutId: UUID, exerciseId: UUID, exerciseName: String, setsInput: [SetInput], orderIndex: Int32) {
         guard let context = self.context else { return }
         
         // Fetch the Workout entity directly
@@ -69,7 +70,6 @@ class WorkoutManager: ObservableObject {
                 return
             }
             
-            // Assuming detailsTemp is actually a Set<TemporaryWorkoutDetail> or similar
             if let tempDetails = workout.detailsTemp as? Set<TemporaryWorkoutDetail> {
                 // Check if there's an existing detail for this exercise
                 
@@ -83,9 +83,8 @@ class WorkoutManager: ObservableObject {
                     detailToUpdate.id = UUID()
                     detailToUpdate.exerciseId = exerciseId
                     detailToUpdate.exerciseName = exerciseName
-                    detailToUpdate.isCardio = isCardio
                     detailToUpdate.orderIndex = orderIndex
-                    workout.addToDetailsTemp(detailToUpdate) // Correct method name as needed
+                    workout.addToDetailsTemp(detailToUpdate)
                 }
                 
                 // Update or add sets to the detail
@@ -100,8 +99,6 @@ class WorkoutManager: ObservableObject {
         }
     }
     
-    
-    
     private func updateOrAddSetsForTempDetail(forDetail tempDetail: TemporaryWorkoutDetail, withSetsInput setsInput: [SetInput], inContext context: NSManagedObjectContext) {
         let existingSets = tempDetail.sets as? Set<WorkoutSet> ?? Set()
         
@@ -111,7 +108,7 @@ class WorkoutManager: ObservableObject {
                 set = existingSet
             } else {
                 set = WorkoutSet(context: context)
-                tempDetail.addToSets(set) // Make sure your TemporaryWorkoutDetail has an addToSets method similar to WorkoutDetail
+                tempDetail.addToSets(set)
             }
             
             set.id = setInput.id ?? UUID()
@@ -121,8 +118,7 @@ class WorkoutManager: ObservableObject {
             set.distance = setInput.distance
             set.isCompleted = setInput.isCompleted
             set.setIndex = setInput.setIndex
-            print("Set .iscompleted is set to  \(set.isCompleted)")
-            // Update other properties as necessary
+            print("Set .iscompleted is set to  \(set.isCompleted) for \(tempDetail.exerciseName) with set index \(set.setIndex)")
         }
     }
     
@@ -133,7 +129,7 @@ class WorkoutManager: ObservableObject {
         
         // Create a batch delete request using the fetch request
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        deleteRequest.resultType = .resultTypeObjectIDs // Specify result type to get the IDs of the deleted objects
+        deleteRequest.resultType = .resultTypeObjectIDs
         
         do {
             let result = try context.execute(deleteRequest) as? NSBatchDeleteResult
@@ -141,19 +137,11 @@ class WorkoutManager: ObservableObject {
             let changes = [NSDeletedObjectsKey: objectIDArray]
             NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes as [AnyHashable : Any], into: [context])
             
-            // Optionally, you can refresh any UI or fetched results controllers that might be affected by these deletions
-            // For example, to refresh all objects in the context to reflect the deletion:
-            // context.refreshAllObjects()
-            
             context.refreshAllObjects()
         } catch let error as NSError {
-            // Handle or log the error
             print("Error deleting all TemporaryWorkoutDetail entities: \(error), \(error.userInfo)")
         }
     }
-    
-    
-    
     
     private func saveContext() {
         guard let context = self.context else { return }
@@ -205,18 +193,19 @@ class WorkoutManager: ObservableObject {
            }
            
            let newWorkout = Workouts(context: context)
-           newWorkout.id = UUID() // Assign a new UUID
-           newWorkout.name = "\(originalWorkout.name ?? "")-copy" // Append "-copy" to the original workout name
+           newWorkout.id = UUID()
+           newWorkout.name = "\(originalWorkout.name ?? "")-copy"
            newWorkout.color = originalWorkout.color
            
            // Copy all details from the original workout to the new workout
            if let originalDetails = originalWorkout.details as? Set<WorkoutDetail> {
                for originalDetail in originalDetails {
                    let newDetail = WorkoutDetail(context: context)
-                   newDetail.exerciseId = UUID() // Assign a new UUID or use originalDetail.exerciseId based on requirements
+                   newDetail.exerciseId = UUID()
                    newDetail.exerciseName = originalDetail.exerciseName
-                   newDetail.isCardio = originalDetail.isCardio
                    newDetail.orderIndex = originalDetail.orderIndex
+                   newDetail.exerciseQuantifier = originalDetail.exerciseQuantifier
+                   newDetail.exerciseMeasurement = originalDetail.exerciseMeasurement
                    
                    // Copy all sets from the original detail to the new detail
                    if let originalSets = originalDetail.sets as? Set<WorkoutSet> {
@@ -226,17 +215,14 @@ class WorkoutManager: ObservableObject {
                            newSet.weight = originalSet.weight
                            newSet.time = originalSet.time
                            newSet.distance = originalSet.distance
-                           // Add the new set to the new detail
                            newDetail.addToSets(newSet)
                        }
                    }
                    
-                   // Add the new detail to the new workout
                    newWorkout.addToDetails(newDetail)
                }
            }
            
-           // Save the new workout to the context
            do {
                try context.save()
                print("Successfully duplicated workout with ID: \(originalWorkoutId)")
@@ -247,7 +233,6 @@ class WorkoutManager: ObservableObject {
 
     
     
-    //good?
     func loadWorkoutsWithId() {
         guard let context = self.context else {
             print("Context is nil in loadWorkoutsWithId")
@@ -257,10 +242,8 @@ class WorkoutManager: ObservableObject {
         let request = NSFetchRequest<Workouts>(entityName: "Workouts")
         do {
             let results = try context.fetch(request)
-            // Assuming WorkoutDetail has a unique id and a name property. Adjust as necessary.
-            self.workouts = results.map { WorkoutInfo(id: $0.id!, name: $0.name!) } // Make sure to safely unwrap optionals as needed
+            self.workouts = results.map { WorkoutInfo(id: $0.id!, name: $0.name!) }
             
-            // Log each loaded workout for more insights
             for workout in self.workouts {
                 print("Workout ID: \(workout.id), Name: \(workout.name)")
                 
@@ -283,28 +266,24 @@ class WorkoutManager: ObservableObject {
             let workoutsToDelete = try context.fetch(fetchRequest) as? [Workouts] ?? []
 
             for workout in workoutsToDelete {
-                // Delete related workout history
                 if let workoutHistory = workout.history as? Set<WorkoutHistory> {
                     for history in workoutHistory {
                         context.delete(history)
                     }
                 }
 
-                // Delete related workout details
                 if let workoutDetails = workout.details as? Set<WorkoutDetail> {
                     for detail in workoutDetails {
                         context.delete(detail)
                     }
                 }
 
-                // Delete related temporary workout details
                 if let tempDetails = workout.detailsTemp as? Set<TemporaryWorkoutDetail> {
                     for tempDetail in tempDetails {
                         context.delete(tempDetail)
                     }
                 }
 
-                // Finally, delete the workout itself
                 context.delete(workout)
             }
 
@@ -388,8 +367,9 @@ class WorkoutManager: ObservableObject {
             }
             
             detail.exerciseName = inputDetail.exerciseName
-            detail.isCardio = inputDetail.isCardio
             detail.orderIndex = inputDetail.orderIndex
+            detail.exerciseQuantifier = inputDetail.exerciseQuantifier
+            detail.exerciseMeasurement = inputDetail.exerciseMeasurement
             updateOrAddSets(forDetail: detail, withSetsInput: inputDetail.sets, inContext: context)
         }
         
@@ -406,10 +386,6 @@ class WorkoutManager: ObservableObject {
             print("Error saving context after updating workout details: \(error)")
         }
     }
-    
-    
-    
-    
     
     private func updateOrAddSets(forDetail detail: WorkoutDetail, withSetsInput setsInput: [SetInput], inContext context: NSManagedObjectContext) {
         let existingSets = detail.sets as? Set<WorkoutSet> ?? Set()
@@ -515,7 +491,6 @@ extension WorkoutManager {
                         id: tempDetail.id,
                         exerciseId: tempDetail.exerciseId,
                         exerciseName: tempDetail.exerciseName ?? "",
-                        isCardio: tempDetail.isCardio,
                         orderIndex: tempDetail.orderIndex,
                         sets: sets.map { SetInput(id: $0.id, reps: $0.reps, weight: $0.weight, time: $0.time, distance: $0.distance, isCompleted: $0.isCompleted, setIndex: $0.setIndex) }
                     )
@@ -546,10 +521,11 @@ extension WorkoutManager {
             detail.id = detailInput.id ?? UUID()
             detail.exerciseId = detailInput.exerciseId
             detail.exerciseName = detailInput.exerciseName
-            detail.isCardio = detailInput.isCardio
             detail.orderIndex = detailInput.orderIndex
             detail.history = history // Set the reverse relationship
-
+            detail.exerciseQuantifier = detailInput.exerciseQuantifier
+            detail.exerciseMeasurement = detailInput.exerciseMeasurement
+            
             for setInput in detailInput.sets {
                 let set = WorkoutSet(context: context)
                 set.id = setInput.id ?? UUID()

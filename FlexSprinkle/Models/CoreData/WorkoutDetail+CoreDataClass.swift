@@ -2,7 +2,7 @@
 //  WorkoutDetail+CoreDataClass.swift
 //  FlexSprinkle
 //
-//  Created by Damien Sprinkle on 2/14/24.
+//  Created by Damien Sprinkle on 11/9/24.
 //
 //
 

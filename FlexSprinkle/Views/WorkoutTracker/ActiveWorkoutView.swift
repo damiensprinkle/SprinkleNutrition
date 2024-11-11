@@ -14,25 +14,21 @@ struct ActiveWorkoutView: View {
     
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var workoutManager: WorkoutManager
-    
+    @EnvironmentObject var appViewModel: AppViewModel
+
+    @StateObject private var focusManager = FocusManager()
     @State private var workoutTitle: String = ""
-    
     @State private var workoutDetails: [WorkoutDetailInput] = []
     @State private var errorMessage: String = ""
     @State private var showAlert: Bool = false
-    @StateObject private var focusManager = FocusManager()
-    
     @State private var showUpdateDialog = false
     @State private var originalWorkoutDetails: [WorkoutDetailInput] = []
-    
-    @EnvironmentObject var appViewModel: AppViewModel
     @State private var workoutStarted = false
     @State private var elapsedTime = 0
     @State private var cancellableTimer: AnyCancellable?
     @State private var showingStartConfirmation = false
     @State private var showEndWorkoutOption = false
     @State private var endWorkoutConfirmationShown = false
-    
     @State private var foregroundObserver: Any?
     @State private var backgroundObserver: Any?
     
@@ -47,7 +43,7 @@ struct ActiveWorkoutView: View {
                     .onTapGesture {
                         if focusManager.isAnyTextFieldFocused {
                             focusManager.isAnyTextFieldFocused = false
-                            // hideKeyboard()
+                            focusManager.currentlyFocusedField = nil
                         }
                     }
                     
@@ -65,7 +61,7 @@ struct ActiveWorkoutView: View {
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("Error"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
             }
-            .id(workoutId) // Use workoutId as a unique identifier for the view
+            .id(workoutId)
             .onAppear {
                 NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { _ in
                     self.updateTimerForForeground()
@@ -120,7 +116,6 @@ struct ActiveWorkoutView: View {
         // Update existing workoutDetails with temporaryDetails
         for tempDetail in temporaryDetails {
             if let index = workoutDetails.firstIndex(where: { $0.exerciseId == tempDetail.exerciseId }) {
-                // Exercise exists, update its sets
                 let sortedSets = tempDetail.sets.sorted(by: { $0.setIndex < $1.setIndex })
                 let updatedSets = sortedSets.map { SetInput(
                     id: $0.id,
@@ -133,47 +128,44 @@ struct ActiveWorkoutView: View {
                 )}
                 workoutDetails[index].sets = updatedSets
             } else {
-                // New exercise found in temporary data, add it to workoutDetails
-                // Make sure to sort the sets of the new exercise as well
                 let sortedSets = tempDetail.sets.sorted(by: { $0.setIndex < $1.setIndex })
                 var newTempDetail = tempDetail
                 newTempDetail.sets = sortedSets
                 workoutDetails.append(newTempDetail)
             }
         }
-        workoutDetails.sort { $0.orderIndex < $1.orderIndex } // make sure workouts are sorted in correct order
+        workoutDetails.sort { $0.orderIndex < $1.orderIndex }
     }
-
+    
     
     
     private var displayExerciseDetailsAndSets: some View {
-        ForEach($workoutDetails.indices, id: \.self) { index in
+        ForEach(workoutDetails.indices, id: \.self) { index in
             Section(header: HStack {
                 Text(workoutDetails[index].exerciseName).font(.title2)
                 Spacer()
             }) {
                 if !workoutDetails[index].sets.isEmpty {
-                    SetHeadersActive(isCardio: workoutDetails[index].isCardio)
+                    SetHeaders(exerciseQuantifier: workoutDetails[index].exerciseQuantifier, exerciseMeasurement: workoutDetails[index].exerciseMeasurement, active: true)
                 }
                 
-                ForEach($workoutDetails[index].sets.indices, id: \.self) { setIndex in
-                    Group {
-                        if workoutDetails[index].isCardio {
-                            CardioSetRowActive(setIndex: setIndex + 1, setInput: $workoutDetails[index].sets[setIndex], workoutDetails: workoutDetails[index], workoutId: workoutId, workoutStarted: workoutStarted)
-                                .environmentObject(workoutManager)
-                                .environmentObject(focusManager)
-                        } else {
-                            LiftingSetRowActive(setIndex: setIndex + 1, setInput: $workoutDetails[index].sets[setIndex], workoutDetails: workoutDetails[index], workoutId: workoutId, workoutStarted: workoutStarted)
-                                .environmentObject(workoutManager)
-                                .environmentObject(focusManager)
-                        }
-                    }
+                ForEach(workoutDetails[index].sets.indices, id: \.self) { setIndex in
+                    ExerciseRowActive(
+                        setInput: $workoutDetails[index].sets[setIndex],
+                        setIndex: setIndex + 1,
+                        workoutDetails: workoutDetails[index],
+                        workoutId: workoutId,
+                        workoutStarted: workoutStarted,
+                        exerciseQuantifier: workoutDetails[index].exerciseQuantifier,
+                        exerciseMeasurement: workoutDetails[index].exerciseMeasurement
+                    )
+                    .environmentObject(workoutManager)
+                    .environmentObject(focusManager)
                     .listRowInsets(EdgeInsets())
                 }
             }
         }
     }
-
     
     private func initSession() {
         let sessionsWorkoutId = workoutManager.getWorkoutIdOfActiveSession()
@@ -182,7 +174,6 @@ struct ActiveWorkoutView: View {
             let activeSession = workoutManager.getSessions().first!
             if let startTime = activeSession.startTime {
                 self.elapsedTime = Int(Date().timeIntervalSince(startTime))
-                // Start or resume the timer
                 self.cancellableTimer = Timer.publish(every: 1, on: .main, in: .common).autoconnect().sink { _ in
                     self.elapsedTime += 1
                 }
@@ -199,11 +190,9 @@ struct ActiveWorkoutView: View {
         
         self.workoutTitle = workout.name ?? ""
         
-        // Assuming 'workout.details' can be cast to Set<WorkoutDetail>
         if let detailsSet = workout.details as? Set<WorkoutDetail> {
             let details = detailsSet.sorted { $0.orderIndex < $1.orderIndex }
             self.workoutDetails = details.map { detail in
-                // Sort the sets by setIndex before converting them to SetInput
                 let sortedSets = (detail.sets?.allObjects as? [WorkoutSet])?.sorted(by: { $0.setIndex < $1.setIndex }) ?? []
                 let setInputs = sortedSets.map { ws in
                     SetInput(
@@ -213,7 +202,7 @@ struct ActiveWorkoutView: View {
                         time: ws.time,
                         distance: ws.distance,
                         isCompleted: ws.isCompleted,
-                        setIndex: ws.setIndex // Make sure to include the setIndex here
+                        setIndex: ws.setIndex
                     )
                 }
                 
@@ -221,18 +210,17 @@ struct ActiveWorkoutView: View {
                     id: detail.id,
                     exerciseId: detail.exerciseId,
                     exerciseName: detail.exerciseName!,
-                    isCardio: detail.isCardio,
                     orderIndex: detail.orderIndex,
-                    sets: setInputs // This is now sorted by setIndex
+                    sets: setInputs,
+                    exerciseQuantifier: detail.exerciseQuantifier!,
+                    exerciseMeasurement: detail.exerciseMeasurement!
                 )
             }
         }
     }
-
     
     
-    // * Start Workout Button Logic * //
-    
+        
     private func startWorkout() {
         workoutStarted = true
         elapsedTime = 0
@@ -240,21 +228,17 @@ struct ActiveWorkoutView: View {
             self.elapsedTime += 1
         }
         
-        
         workoutManager.setSessionStatus(workoutId: workoutId, isActive: true)
     }
     
     private func buttonAction() {
         if workoutStarted {
             if showEndWorkoutOption {
-                // Show confirmation to end workout
                 endWorkoutConfirmationShown = true
             } else {
-                // Show "End Workout" option for 5 seconds
                 focusManager.clearFocus()
                 showEndWorkoutOption = true
                 DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                    // If no action taken, revert to showing the timer
                     self.showEndWorkoutOption = false
                 }
             }
@@ -266,30 +250,21 @@ struct ActiveWorkoutView: View {
     
     private func endWorkout() {
         if hasWorkoutChanged(original: originalWorkoutDetails, updated: workoutDetails) {
-            // If there are changes, show the dialog and do not proceed further until resolved
             showUpdateDialog = true
         } else {
-            // If there are no changes, proceed with the usual workflow
             completeEndWorkoutSequence()
         }
     }
     
-    
-    
     private func completeEndWorkoutSequence() {
-        // Logic to end the workout
         workoutStarted = false
         showEndWorkoutOption = false
-        
-        // Proceed with any cleanup or state reset that needs to happen regardless of update
         workoutManager.setSessionStatus(workoutId: workoutId, isActive: false)
         saveWorkoutHistory()
         
         workoutManager.deleteAllTemporaryWorkoutDetails()
         
-        // Navigation or other actions that should occur after workout ends
         appViewModel.navigateTo(.workoutOverview(workoutId))
-        
     }
     
     func hasWorkoutChanged(original: [WorkoutDetailInput], updated: [WorkoutDetailInput]) -> Bool {
@@ -298,33 +273,26 @@ struct ActiveWorkoutView: View {
         for (index, originalDetail) in original.enumerated() {
             let updatedDetail = updated[index]
             
-            // Compare all properties of WorkoutDetailInput that are relevant
             if originalDetail.exerciseId != updatedDetail.exerciseId ||
                 originalDetail.exerciseName != updatedDetail.exerciseName ||
-                originalDetail.isCardio != updatedDetail.isCardio ||
                 originalDetail.orderIndex != updatedDetail.orderIndex ||
                 originalDetail.sets.count != updatedDetail.sets.count {
                 return true
             }
             
-            // If you have more properties to compare, continue the pattern here
             
-            // If the sets array is not Equatable, you'll have to compare it manually as well
             for (setIndex, originalSet) in originalDetail.sets.enumerated() {
                 let updatedSet = updatedDetail.sets[setIndex]
                 
-                // Assuming you have properties like 'reps' and 'weight' in your SetInput
                 if originalSet.reps != updatedSet.reps ||
                     originalSet.weight != updatedSet.weight ||
                     originalSet.time != updatedSet.time ||
                     originalSet.distance != updatedSet.distance {
                     return true
                 }
-                
             }
         }
         
-        // If no differences are found, return false
         return false
     }
     
@@ -335,14 +303,14 @@ struct ActiveWorkoutView: View {
     }
     
     private func saveWorkoutHistory(){
-        // Calculate total weight lifted
         let totalWeightLifted = workoutDetails.reduce(0) { detailSum, detail in
             detailSum + detail.sets.reduce(0) { setSum, setInput in
-                setSum + Float(setInput.weight) * Float(setInput.reps)
+                let reps = setInput.reps > 0 ? Float(setInput.reps) : 1
+                return setSum + (Float(setInput.weight) * reps)
             }
         }
+
         
-        // Calculate total reps
         let totalReps = workoutDetails.reduce(0) { detailSum, detail in
             detailSum + detail.sets.reduce(0) { setSum, setInput in
                 setSum + Int(setInput.reps)
@@ -351,20 +319,18 @@ struct ActiveWorkoutView: View {
         
         let workoutTimeToComplete = elapsedTimeFormatted
         
-        // Calculate total cardio time
-        // Assuming 'time' in SetInput is the duration in minutes for cardio exercises
-        let totalCardioTime = workoutDetails.filter { $0.isCardio }.reduce(0) { detailSum, detail in
+        let totalCardioTime = workoutDetails.reduce(0) { detailSum, detail in
             detailSum + detail.sets.reduce(0) { setSum, setInput in
-                setSum + Int(setInput.time) // Summing up the cardio time
+                setSum + Int(setInput.time)
             }
         }
         
-        let totalDistance = workoutDetails.filter { $0.isCardio }.reduce(0) { detailSum, detail in
+        let totalDistance = workoutDetails.reduce(0) { detailSum, detail in
             detailSum + detail.sets.reduce(0) { setSum, setInput in
-                setSum + Float(setInput.distance) // Summing up the distance
+                setSum + Float(setInput.distance)
             }
         }
-        // Save the workout history
+        
         workoutManager.saveWorkoutHistory(
             workoutId: workoutId,
             dateCompleted: Date(),
@@ -379,16 +345,15 @@ struct ActiveWorkoutView: View {
     
     
     private func isAnyOtherSessionActive() -> Bool {
-        
         let sessionsWorkoutId = workoutManager.getWorkoutIdOfActiveSession()
         if sessionsWorkoutId != workoutId {
             if sessionsWorkoutId == nil {
                 return false
             }
-            return true // a different session is active
+            return true
         }
         else{
-            return false // this session or no sessions are active
+            return false
         }
     }
     
@@ -408,12 +373,12 @@ struct ActiveWorkoutView: View {
             Text(workoutButtonText)
                 .font(.title2)
                 .foregroundColor(Color.staticWhite)
-                .padding() // Apply padding to the content inside the button
-                .frame(maxWidth: .infinity) // Ensure the button expands to the maximum width available
-                .background(Color.myBlue) // Apply the background color to the button
-                .cornerRadius(10) // Apply corner radius to the button's background
+                .padding()
+                .frame(maxWidth: .infinity)
+                .background(Color.myBlue)
+                .cornerRadius(10)
         }
-        .padding(.horizontal) // Apply horizontal padding outside the button to maintain some space from the screen edges
+        .padding(.horizontal)
         .disabled(!workoutStarted && showEndWorkoutOption || isAnyOtherSessionActive())
         .confirmationDialog("Are you sure you want to end this workout?", isPresented: $endWorkoutConfirmationShown, titleVisibility: .visible) {
             Button("End Workout", action: endWorkout)

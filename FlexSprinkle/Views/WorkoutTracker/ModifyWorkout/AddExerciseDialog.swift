@@ -10,8 +10,10 @@ import SwiftUI
 struct AddExerciseDialog: View {
     @Binding var workoutDetails: [WorkoutDetailInput]
     @Binding var showingDialog: Bool
-    @State private var selectedWorkoutType: String = "Repetitive" // Default selection
-    @State private var exerciseName: String = "" // State to hold the exercise name input
+    @State private var selectedWorkoutQuantifier: String = "Reps"
+    @State private var selectedWorkoutMeasurement: String = "Weight"
+
+    @State private var exerciseName: String = ""
     
     var body: some View {
         VStack(spacing: 15) {
@@ -19,22 +21,29 @@ struct AddExerciseDialog: View {
             
             ZStack {
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(exerciseName.isEmpty ? Color.red.opacity(0.3) : Color(UIColor.systemBackground)) // Adjust color here
+                    .fill(exerciseName.isEmpty ? Color.red.opacity(0.3) : Color(UIColor.systemBackground))
                     .frame(height: 36)
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.gray, lineWidth: 1) // Grey border
+                            .stroke(Color.gray, lineWidth: 1)
                     )
                 
                 TextField("Exercise Name", text: $exerciseName)
                     .foregroundColor(.primary)
                     .padding(.horizontal)
             }
-            .frame(height: 36) // Fixed height for TextField
+            .frame(height: 36)
             
-            Picker("Workout Type", selection: $selectedWorkoutType) {
-                Text("Repetitive").tag("Repetitive")
-                Text("Timed").tag("Timed")
+            Picker("Workout Quantifier", selection: $selectedWorkoutQuantifier) {
+                Text("Reps").tag("Reps")
+                Text("Distance").tag("Distance")
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .padding()
+            
+            Picker("Workout Measurement", selection: $selectedWorkoutMeasurement) {
+                Text("Weight").tag("Weight")
+                Text("Time").tag("Time")
             }
             .pickerStyle(SegmentedPickerStyle())
             .padding()
@@ -65,11 +74,10 @@ struct AddExerciseDialog: View {
             return
         }
         else{
-            
-            //get existing indexes of workouts
+            let measurement = selectedWorkoutMeasurement
+            let quantifier = selectedWorkoutQuantifier
             let newIndex = workoutDetails.last?.orderIndex ?? 0
-            let isCardio = selectedWorkoutType == "Timed"
-            let newDetail = WorkoutDetailInput(exerciseName: exerciseName, isCardio: isCardio, orderIndex: newIndex + 1, sets: [SetInput(reps: 0, weight: 0, time: 0, distance: 0)]) // Initialize with the provided exercise name and a default set
+            let newDetail = WorkoutDetailInput(exerciseName: exerciseName, orderIndex: newIndex + 1, sets: [SetInput(reps: 0, weight: 0, time: 0, distance: 0)], exerciseQuantifier: quantifier, exerciseMeasurement: measurement)
             workoutDetails.append(newDetail)
             self.showingDialog = false
         }

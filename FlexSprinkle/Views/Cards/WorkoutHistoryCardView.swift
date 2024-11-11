@@ -15,11 +15,10 @@ struct WorkoutHistoryCardView: View {
     @State private var workoutTitle: String = ""
     @AppStorage("weightPreference") private var weightPreference: String = "Lbs"
     @AppStorage("distancePreference") private var distancePreference: String = "mile"
-
-    @State private var isExpanded: Bool = false // Track whether the card is expanded
-    @State private var showAlert: Bool = false // State to track alert visibility
     
-    // Date formatter to display the date
+    @State private var isExpanded: Bool = false
+    @State private var showAlert: Bool = false
+    
     private var formattedDate: String {
         guard let date = history.workoutDate else { return "N/A" }
         let formatter = DateFormatter()
@@ -38,10 +37,10 @@ struct WorkoutHistoryCardView: View {
                 
                 Image(systemName: "trash")
                     .resizable()
-                    .frame(width: 18, height: 22) // Slightly smaller size
+                    .frame(width: 18, height: 22)
                     .padding(.trailing, 8)
                     .onTapGesture {
-                        showAlert = true // Show alert on tap
+                        showAlert = true
                     }
             }
             
@@ -60,7 +59,6 @@ struct WorkoutHistoryCardView: View {
                     .font(.subheadline)
             }
             
-            // Exercise Name and Set Count headers with an icon to indicate expandability
             HStack {
                 Text("Exercise")
                     .font(.headline)
@@ -80,7 +78,6 @@ struct WorkoutHistoryCardView: View {
                     }
             }
             
-            // Display the first exercise, and if expanded, display the rest
             Group {
                 Divider()
                 if let exercises = history.details?.allObjects as? [WorkoutDetail], !exercises.isEmpty {
@@ -119,42 +116,90 @@ struct WorkoutHistoryCardView: View {
     private func exerciseDetailView(detail: WorkoutDetail) -> some View {
         HStack {
             Text(detail.exerciseName ?? "Unknown Exercise")
+                .frame(width: 100, alignment: .leading)
+                .lineLimit(1)
+                .truncationMode(.tail)
             Spacer()
-            if detail.isCardio {
-                // Safely calculate totals for cardio exercises
-                let totalDistance = (detail.sets?.allObjects as? [WorkoutSet])?.reduce(0.0) { $0 + ($1.distance) } ?? 0.0
-                let totalTimeInMinutes = (detail.sets?.allObjects as? [WorkoutSet])?.reduce(0) { $0 + Int($1.time) } ?? 0
-                let totalTime = totalTimeInMinutes / 60
-
-                HStack {
+            HStack {
+                if detail.exerciseQuantifier == "Reps" {
+                    let totalReps = (detail.sets?.allObjects as? [WorkoutSet])?.reduce(0) { $0 + Int($1.reps) } ?? 0
+                    VStack{
+                        Text("Reps:")
+                        Text("\(totalReps)")
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                if detail.exerciseQuantifier == "Distance" {
+                    let totalDistance = (detail.sets?.allObjects as? [WorkoutSet])?.reduce(0.0) { $0 + ($1.distance) } ?? 0.0
                     VStack{
                         Text("Distance:")
                         Text("\(totalDistance, specifier: "%.2f") \(distancePreference)")
+
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                if detail.exerciseMeasurement == "Weight" {
+                    let totalWeight = calculateTotalWeight(for: detail)
+                    VStack{
+                        Text("Weight:")
+                        Text("\(totalWeight, specifier: "%.2f") \(weightPreference)")
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                
+                if detail.exerciseMeasurement == "Time"{
+                    let totalTimeInMinutes = calculateTotalTime(for: detail)
+                    let totalTime = totalTimeInMinutes / 60
                     VStack{
                         Text("Time:")
                         Text("\(totalTime) mins")
+                        
                     }
-                }
-            } else {
-                // Safely calculate totals for non-cardio exercises
-                let totalWeight = (detail.sets?.allObjects as? [WorkoutSet])?.reduce(0) { $0 + (Float($1.weight) * Float($1.reps)) } ?? 0
-
-                let totalReps = (detail.sets?.allObjects as? [WorkoutSet])?.reduce(0) { $0 + Int($1.reps) } ?? 0
-                HStack {
-                    VStack {
-                        Text("Reps:")
-                        Text("\(totalReps)")
-                            .frame(width: 60, alignment: .center)
-                    }
-                    VStack {
-                        Text("Weight:")
-                        Text("\(totalWeight, specifier: "%.2f") \(weightPreference)")
-                            .frame(width: 100, alignment: .trailing)
-                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
         }
     }
+ 
+    private func calculateTotalWeight(for detail: WorkoutDetail) -> Float {
+        guard let sets = detail.sets?.allObjects as? [WorkoutSet] else {
+            return 0
+        }
+        var totalWeight: Float = 0
+        for set in sets {
+            let reps = set.reps > 0 ? Float(set.reps) : 1
+            let weight = Float(set.weight)
+            totalWeight += weight * reps
+        }
+        
+        return totalWeight
+    }
+    
+    private func calculateTotalTime(for detail: WorkoutDetail) -> Int {
+        guard let sets = detail.sets?.allObjects as? [WorkoutSet] else {
+            print("No sets found for exercise \(detail.exerciseName ?? "Unknown Exercise")")
+            return 0
+        }
+        
+        var totalTimeInMinutes: Int = 0
+        for set in sets {
+
+            if set.time > 0 {
+                totalTimeInMinutes += Int(set.time)
+                if set.reps > 0 {
+                    totalTimeInMinutes += Int(set.time) * Int(set.reps)
+                }
+            } else {
+                print("Invalid or missing time for set: \(set)")
+            }
+        }
+        
+        print("Total time calculated: \(totalTimeInMinutes) minutes")
+        
+        return totalTimeInMinutes
+    }
+
+
+
 
 }

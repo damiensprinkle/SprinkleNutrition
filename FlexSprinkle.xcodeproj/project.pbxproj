@@ -12,11 +12,14 @@
 		081F87EF2B83C5E700BBBDF2 /* UserInfo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87ED2B83C5E700BBBDF2 /* UserInfo+CoreDataClass.swift */; };
 		081F87F02B83C5E700BBBDF2 /* UserInfo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87EE2B83C5E700BBBDF2 /* UserInfo+CoreDataProperties.swift */; };
 		081F87F22B87F6ED00BBBDF2 /* CheckboxStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87F12B87F6ED00BBBDF2 /* CheckboxStyle.swift */; };
+		0847535B2CE3D47D00C6A7F9 /* WorkoutTrackerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0847535A2CE3D47000C6A7F9 /* WorkoutTrackerController.swift */; };
+		0847535D2CE3D56400C6A7F9 /* WorkoutModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0847535C2CE3D56200C6A7F9 /* WorkoutModel.swift */; };
+		0847535F2CE3D59B00C6A7F9 /* WorkoutSessionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0847535E2CE3D59900C6A7F9 /* WorkoutSessionModel.swift */; };
+		084753612CE3D8DC00C6A7F9 /* AppNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084753602CE3D8D000C6A7F9 /* AppNavigationController.swift */; };
 		085466812CDFAD4700136FBC /* WorkoutDetail+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0854667F2CDFAD4700136FBC /* WorkoutDetail+CoreDataClass.swift */; };
 		085466822CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0854667D2CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataClass.swift */; };
 		085466832CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0854667E2CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataProperties.swift */; };
 		085466842CDFAD4700136FBC /* WorkoutDetail+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085466802CDFAD4700136FBC /* WorkoutDetail+CoreDataProperties.swift */; };
-		087111372B728F8F0054E315 /* ModalType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087111362B728F8F0054E315 /* ModalType.swift */; };
 		0871113A2B72AD830054E315 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 087111382B72AD830054E315 /* Model.xcdatamodeld */; };
 		0871113D2B7306C20054E315 /* ColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0871113C2B7306C20054E315 /* ColorManager.swift */; };
 		087111412B7405990054E315 /* WorkoutDetailsInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087111402B7405990054E315 /* WorkoutDetailsInput.swift */; };
@@ -96,11 +99,14 @@
 		081F87ED2B83C5E700BBBDF2 /* UserInfo+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfo+CoreDataClass.swift"; sourceTree = "<group>"; };
 		081F87EE2B83C5E700BBBDF2 /* UserInfo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		081F87F12B87F6ED00BBBDF2 /* CheckboxStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxStyle.swift; sourceTree = "<group>"; };
+		0847535A2CE3D47000C6A7F9 /* WorkoutTrackerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTrackerController.swift; sourceTree = "<group>"; };
+		0847535C2CE3D56200C6A7F9 /* WorkoutModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutModel.swift; sourceTree = "<group>"; };
+		0847535E2CE3D59900C6A7F9 /* WorkoutSessionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSessionModel.swift; sourceTree = "<group>"; };
+		084753602CE3D8D000C6A7F9 /* AppNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigationController.swift; sourceTree = "<group>"; };
 		0854667D2CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TemporaryWorkoutDetail+CoreDataClass.swift"; sourceTree = "<group>"; };
 		0854667E2CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TemporaryWorkoutDetail+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		0854667F2CDFAD4700136FBC /* WorkoutDetail+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkoutDetail+CoreDataClass.swift"; sourceTree = "<group>"; };
 		085466802CDFAD4700136FBC /* WorkoutDetail+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkoutDetail+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		087111362B728F8F0054E315 /* ModalType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalType.swift; sourceTree = "<group>"; };
 		087111392B72AD830054E315 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		0871113C2B7306C20054E315 /* ColorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorManager.swift; sourceTree = "<group>"; };
 		087111402B7405990054E315 /* WorkoutDetailsInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutDetailsInput.swift; sourceTree = "<group>"; };
@@ -181,7 +187,6 @@
 		087111352B728F810054E315 /* Enums */ = {
 			isa = PBXGroup;
 			children = (
-				087111362B728F8F0054E315 /* ModalType.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -321,6 +326,8 @@
 		08B790242B6E94840002DA68 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				0847535E2CE3D59900C6A7F9 /* WorkoutSessionModel.swift */,
+				0847535C2CE3D56200C6A7F9 /* WorkoutModel.swift */,
 				087111442B7519900054E315 /* CoreData */,
 				087111402B7405990054E315 /* WorkoutDetailsInput.swift */,
 				087111A52B77C32D0054E315 /* AppViewModel.swift */,
@@ -332,6 +339,8 @@
 		08B790252B6E948C0002DA68 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				084753602CE3D8D000C6A7F9 /* AppNavigationController.swift */,
+				0847535A2CE3D47000C6A7F9 /* WorkoutTrackerController.swift */,
 				08C31FFE2B82EA3A002EE8A7 /* PersistenceController.swift */,
 			);
 			path = Controllers;
@@ -512,11 +521,11 @@
 			files = (
 				081F87F02B83C5E700BBBDF2 /* UserInfo+CoreDataProperties.swift in Sources */,
 				08B3CFDD2B7D9567002F5C92 /* WorkoutSet+CoreDataProperties.swift in Sources */,
+				0847535F2CE3D59B00C6A7F9 /* WorkoutSessionModel.swift in Sources */,
 				08C31FFF2B82EA3A002EE8A7 /* PersistenceController.swift in Sources */,
 				08B3CFF22B810FB7002F5C92 /* WorkoutHistoryCardView.swift in Sources */,
 				081F87EF2B83C5E700BBBDF2 /* UserInfo+CoreDataClass.swift in Sources */,
 				08B790222B6E911D0002DA68 /* NutritionHelperMainView.swift in Sources */,
-				087111372B728F8F0054E315 /* ModalType.swift in Sources */,
 				08B3CF7B2B7BDD0C002F5C92 /* AddExerciseDialog.swift in Sources */,
 				08B3CFE52B7D9567002F5C92 /* Workouts+CoreDataProperties.swift in Sources */,
 				08B3CFEC2B80227E002F5C92 /* WorkoutHistoryView.swift in Sources */,
@@ -541,9 +550,11 @@
 				08B3CFEF2B810DFF002F5C92 /* WorkoutHistory+CoreDataClass.swift in Sources */,
 				087111AF2B77EAF20054E315 /* HomeContentView.swift in Sources */,
 				0871113D2B7306C20054E315 /* ColorManager.swift in Sources */,
+				0847535D2CE3D56400C6A7F9 /* WorkoutModel.swift in Sources */,
 				08B790312B7138F70002DA68 /* WorkoutManager.swift in Sources */,
 				08B7901B2B6DC28F0002DA68 /* CardView.swift in Sources */,
 				08B3CF852B7C1D84002F5C92 /* ActiveWorkoutView.swift in Sources */,
+				084753612CE3D8DC00C6A7F9 /* AppNavigationController.swift in Sources */,
 				08B3CFF02B810DFF002F5C92 /* WorkoutHistory+CoreDataProperties.swift in Sources */,
 				087111A62B77C32D0054E315 /* AppViewModel.swift in Sources */,
 				08B78FF02B6DBA370002DA68 /* FlexSprinkleApp.swift in Sources */,
@@ -557,6 +568,7 @@
 				081F87F22B87F6ED00BBBDF2 /* CheckboxStyle.swift in Sources */,
 				08FC75802CDFCA86001E2E5B /* ExerciseRowActive.swift in Sources */,
 				081F87E62B83A7CD00BBBDF2 /* UserManager.swift in Sources */,
+				0847535B2CE3D47D00C6A7F9 /* WorkoutTrackerController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,6 +10,7 @@ import SwiftUI
 class AppViewModel: ObservableObject {
     @Published var currentView: ContentViewType = .main
     @Published var currentTab: Tab = .home // Add this line
+    @Published var presentModal: ModalState? = nil // Controls modal presentation
 
     func navigateTo(_ view: ContentViewType) {
          DispatchQueue.main.async {
@@ -37,5 +38,19 @@ class AppViewModel: ObservableObject {
          case home
          case workout
          case nutrition
+    }
+    
+    enum ModalState: Identifiable {
+        case add
+        case edit(workoutId: UUID)
+        
+        var id: Int {
+            switch self {
+            case .add:
+                return 0
+            case .edit(_):
+                return 1
+            }
+        }
     }
 }

@@ -12,7 +12,9 @@ import CoreData
 struct FlexSprinkleApp: App {
     @StateObject private var persistenceController = PersistenceController.shared
     @StateObject private var appViewModel = AppViewModel()
-
+    @StateObject private var workoutManager = WorkoutManager()
+    @StateObject private var userManager = UserManager()
+    @StateObject private var controller = WorkoutTrackerController(workoutManager: WorkoutManager(), appViewModel: AppViewModel())
 
     init() {
             if let myBlackColor = UIColor(named: "MyBlack") {
@@ -27,7 +29,12 @@ struct FlexSprinkleApp: App {
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
                 .environmentObject(persistenceController)
                 .environmentObject(appViewModel)
-
+                .environmentObject(workoutManager)
+                .environmentObject(controller)
+                .environmentObject(userManager)
+                .onAppear(){
+                    controller.workoutManager.context = persistenceController.container.viewContext
+                }
         }
     }
 }

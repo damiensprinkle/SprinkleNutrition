@@ -169,6 +169,7 @@ struct AddWorkoutView: View {
             }
             .onDelete(perform: deleteExercise)
         }
+        
     }
     
     struct WorkoutSetListView: View {

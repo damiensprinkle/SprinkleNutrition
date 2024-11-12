@@ -31,26 +31,36 @@ struct ActiveWorkoutView: View {
     @State private var endWorkoutConfirmationShown = false
     @State private var foregroundObserver: Any?
     @State private var backgroundObserver: Any?
+    @State private var isLoading: Bool = true
+
     
     
     var body: some View {
         NavigationView {
             ZStack {
-                VStack(spacing: 0) {
-                    Form {
-                        displayExerciseDetailsAndSets
-                    }
-                    .onTapGesture {
-                        if focusManager.isAnyTextFieldFocused {
-                            focusManager.isAnyTextFieldFocused = false
-                            focusManager.currentlyFocusedField = nil
+                if isLoading {
+                    ProgressView("Loading workout...")
+                        .font(.title)
+                        .progressViewStyle(CircularProgressViewStyle(tint: .blue))
+                }
+                    else{
+                        VStack(spacing: 0) {
+                            Form {
+                                displayExerciseDetailsAndSets
+                            }
+                            .onTapGesture {
+                                if focusManager.isAnyTextFieldFocused {
+                                    focusManager.isAnyTextFieldFocused = false
+                                    focusManager.currentlyFocusedField = nil
+                                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                                }
+                            }
+                            
+                            Spacer()
+                            
+                            startWorkoutButton
                         }
                     }
-                    
-                    Spacer()
-                    
-                    startWorkoutButton
-                }
             }
             .navigationBarTitle(workoutTitle)
             .navigationBarItems(
@@ -75,6 +85,8 @@ struct ActiveWorkoutView: View {
                     originalWorkoutDetails = workoutDetails
                     
                     initSession()
+                    isLoading = false
+                    print("finished loading active workout")
                 }
             }
             .onDisappear {

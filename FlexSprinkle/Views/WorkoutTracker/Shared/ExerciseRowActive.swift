@@ -22,9 +22,9 @@ struct ExerciseRowActive: View {
     @State private var hasLoaded = false
     @State private var distanceInput: String = ""
     @State private var timeInput: String = ""
-    @State private var isCompleted: Bool = false
     @State private var weightInput: String = ""
     @State private var repsInput: String = ""
+    @State private var checked: Bool = false
     @EnvironmentObject var workoutManager: WorkoutManager
     @EnvironmentObject var focusManager: FocusManager
     
@@ -58,19 +58,18 @@ struct ExerciseRowActive: View {
                 Divider()
             }
             
-            Toggle("", isOn: $isCompleted)
-                .id("checkbox_\(workoutDetails.exerciseName)_\(setIndex)")
-                .onChange(of: isCompleted) {
-                    setInput.isCompleted = isCompleted
-                    saveWorkoutDetail()
-                }
-                .toggleStyle(CheckboxStyle())
-                .labelsHidden()
+            Image(systemName: checked ? "checkmark.square.fill" : "square")
+                .foregroundColor(checked ? Color(UIColor.systemBlue) : Color.secondary)
                 .onAppear {
                     if !hasLoaded {
-                        isCompleted = setInput.isCompleted
+                        checked = setInput.isCompleted
                         hasLoaded = true
                     }
+                }
+                .onTapGesture{
+                    self.checked.toggle()
+                    setInput.isCompleted = checked
+                    saveWorkoutDetail()
                 }
                 .frame(width: 50)
         }
@@ -109,7 +108,7 @@ struct ExerciseRowActive: View {
         .disabled(!workoutStarted)
         .opacity(!workoutStarted ? 0.5 : 1)
         .foregroundColor(!workoutStarted ? .gray : .myBlack)
-        .background(isCompleted ? Color.green.opacity(0.2) : Color.clear)
+        .background(checked ? Color.green.opacity(0.2) : Color.clear)
     }
     
     private var repsTextField: some View {

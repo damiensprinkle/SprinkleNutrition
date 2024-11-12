@@ -7,14 +7,13 @@ struct CardView: View {
 
     var hasActiveSession: Bool
     
-  //  @State private var presentingModal: ModalType? = nil
+    @State private var presentingModal: ModalType? = nil
     @EnvironmentObject var workoutManager: WorkoutManager
     @State private var animate = false
     @State private var showAlert = false
     @State private var showingDeletionConfirmation = false
     @EnvironmentObject var appViewModel: AppViewModel
     @State private var alertTitle = ""
-    //@ObservedObject var controller: WorkoutTrackerController
     
     
     var body: some View {
@@ -43,7 +42,7 @@ struct CardView: View {
             }
             
         }
-       /* .sheet(item: $presentingModal) { modal in
+       .sheet(item: $presentingModal) { modal in
             switch modal {
             case .add:
                 AddWorkoutView(workoutId: UUID(), navigationTitle: "", update: false) // not used
@@ -53,7 +52,7 @@ struct CardView: View {
                     .environmentObject(appViewModel)
                 
             }
-        }*/
+        }
     }
     
     @ViewBuilder
@@ -107,7 +106,7 @@ struct CardView: View {
                 alertTitle = "You Cannot Edit a Workout That Is In Progress"
                 showAlert = true
             }
-            //presentingModal = .edit(workoutId: workoutId)
+            presentingModal = .edit(workoutId: workoutId)
         }) {
             Label("Edit", systemImage: "square.and.pencil")
         }

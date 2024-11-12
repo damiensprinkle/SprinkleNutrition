@@ -50,20 +50,4 @@ class WorkoutTrackerController: ObservableObject {
         workoutManager.duplicateWorkout(originalWorkoutId: workoutId)
         loadWorkouts()
     }
-
-    func navigateToWorkoutView(_ workoutId: UUID) {
-        appViewModel.navigateTo(.workoutActiveView(workoutId))
-    }
-
-    func presentAddWorkoutView() {
-        appViewModel.presentModal = .add
-    }
-
-    func presentEditWorkoutView(workoutId: UUID) {
-        appViewModel.presentModal = .edit(workoutId: workoutId)
-    }
-
-    func navigateToWorkoutHistory() {
-        appViewModel.navigateTo(.workoutHistoryView)
-    }
 }

@@ -15,6 +15,8 @@ struct WorkoutTrackerMainView: View {
     @EnvironmentObject var workoutController: WorkoutTrackerController
     @State private var deletingWorkouts: Set<UUID> = [] // for dissolve animation
     @State private var duplicatingWorkouts: Set<UUID> = [] // for dissolve animation
+    @State private var presentingModal: ModalType? = nil
+
     
     var body: some View {
         NavigationView {
@@ -24,13 +26,13 @@ struct WorkoutTrackerMainView: View {
             }
             .navigationTitle("Workout Tracker")
             .navigationBarItems(trailing: Button(action: {
-                workoutController.presentAddWorkoutView()
+                presentingModal = .add
             }) {
                 Image(systemName: "plus")
                     .help("Create a new workout")
             })
             .navigationBarItems(trailing: Button(action: {
-                workoutController.navigateToWorkoutHistory()
+                appViewModel.navigateTo(.workoutHistoryView)
             }) {
                 Image(systemName: "clock")
                     .help("View workout history")
@@ -64,7 +66,7 @@ struct WorkoutTrackerMainView: View {
             
             if workoutController.hasActiveSession, let workoutId = workoutController.activeWorkoutId {
                 Button(action: {
-                    workoutController.navigateToWorkoutView(workoutId)
+                    appViewModel.navigateTo(.workoutActiveView(workoutId))
                 }) {
                     Text("\(workoutController.activeWorkoutName ?? "Workout") in Progress: Tap Here To Resume")
                         .foregroundColor(.staticWhite)

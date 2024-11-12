@@ -17,7 +17,7 @@ struct WorkoutDetailInput {
     var exerciseMeasurement: String = ""
 }
 
-struct SetInput: Identifiable {
+struct SetInput: Identifiable, Equatable {
     var id: UUID?
     var reps: Int32
     var weight: Float
@@ -41,4 +41,8 @@ struct SetInput: Identifiable {
         self.exerciseQuantifier = exerciseQuantifier
         self.exerciseMeasurement = exerciseMeasurement
     }
+    
+    static func ==(lhs: SetInput, rhs: SetInput) -> Bool {
+         return lhs.id == rhs.id
+     }
 }

@@ -16,6 +16,7 @@ struct ExerciseRowActive: View {
     let workoutStarted: Bool
     var exerciseQuantifier: String
     var exerciseMeasurement: String
+
     
     @FocusState private var focusedField: FocusableField?
     @State private var originalTimeInput: String = ""
@@ -58,20 +59,28 @@ struct ExerciseRowActive: View {
                 Divider()
             }
             
-            Image(systemName: checked ? "checkmark.square.fill" : "square")
-                .foregroundColor(checked ? Color(UIColor.systemBlue) : Color.secondary)
-                .onAppear {
-                    if !hasLoaded {
-                        checked = setInput.isCompleted
-                        hasLoaded = true
-                    }
+            Toggle(isOn: $checked) {
+                Text("")
+            }
+            .onAppear {
+                if hasLoaded {
+                    checked = setInput.isCompleted
                 }
-                .onTapGesture{
-                    self.checked.toggle()
-                    setInput.isCompleted = checked
-                    saveWorkoutDetail()
-                }
-                .frame(width: 50)
+            }
+            .onChange(of: checked) {
+                setInput.isCompleted = checked
+                saveWorkoutDetail()
+            }
+            .frame(width: 50)
+            .toggleStyle(SwitchToggleStyle(tint: Color(UIColor.green)))
+            .scaleEffect(0.8)
+            .padding(.trailing, 10)
+
+        }
+        .onAppear{
+            if (!hasLoaded){
+                hasLoaded = true
+            }
         }
         .toolbar {
             ToolbarItem(placement: .keyboard) {

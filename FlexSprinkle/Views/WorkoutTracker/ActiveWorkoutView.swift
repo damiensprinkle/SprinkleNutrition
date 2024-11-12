@@ -15,7 +15,7 @@ struct ActiveWorkoutView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var workoutManager: WorkoutManager
     @EnvironmentObject var appViewModel: AppViewModel
-
+    
     @StateObject private var focusManager = FocusManager()
     @State private var workoutTitle: String = ""
     @State private var workoutDetails: [WorkoutDetailInput] = []
@@ -32,7 +32,6 @@ struct ActiveWorkoutView: View {
     @State private var foregroundObserver: Any?
     @State private var backgroundObserver: Any?
     @State private var isLoading: Bool = true
-
     
     
     var body: some View {
@@ -43,24 +42,24 @@ struct ActiveWorkoutView: View {
                         .font(.title)
                         .progressViewStyle(CircularProgressViewStyle(tint: .blue))
                 }
-                    else{
-                        VStack(spacing: 0) {
-                            Form {
-                                displayExerciseDetailsAndSets
-                            }
-                            .onTapGesture {
-                                if focusManager.isAnyTextFieldFocused {
-                                    focusManager.isAnyTextFieldFocused = false
-                                    focusManager.currentlyFocusedField = nil
-                                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                                }
-                            }
-                            
-                            Spacer()
-                            
-                            startWorkoutButton
+                else{
+                    VStack(spacing: 0) {
+                        Form {
+                            displayExerciseDetailsAndSets
                         }
+                        .onTapGesture {
+                            if focusManager.isAnyTextFieldFocused {
+                                focusManager.isAnyTextFieldFocused = false
+                                focusManager.currentlyFocusedField = nil
+                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                            }
+                        }
+                        
+                        Spacer()
+                        
+                        startWorkoutButton
                     }
+                }
             }
             .navigationBarTitle(workoutTitle)
             .navigationBarItems(
@@ -81,9 +80,9 @@ struct ActiveWorkoutView: View {
                     self.handleAppBackgrounding()
                 }
                 if(workoutManager.fetchWorkoutById(for: workoutId) != nil){
-                    loadWorkoutDetails()
+                    loadWorkoutDetails() // sets self.workoutDetails
+                    print("loaded workout details")
                     originalWorkoutDetails = workoutDetails
-                    
                     initSession()
                     isLoading = false
                     print("finished loading active workout")
@@ -125,20 +124,19 @@ struct ActiveWorkoutView: View {
     private func loadTemporaryData() {
         let temporaryDetails = workoutManager.loadTemporaryWorkoutData(for: workoutId)
         
-        // Update existing workoutDetails with temporaryDetails
         for tempDetail in temporaryDetails {
             if let index = workoutDetails.firstIndex(where: { $0.exerciseId == tempDetail.exerciseId }) {
-                let sortedSets = tempDetail.sets.sorted(by: { $0.setIndex < $1.setIndex })
-                let updatedSets = sortedSets.map { SetInput(
-                    id: $0.id,
-                    reps: $0.reps,
-                    weight: $0.weight,
-                    time: $0.time,
-                    distance: $0.distance,
-                    isCompleted: $0.isCompleted,
-                    setIndex: $0.setIndex
-                )}
-                workoutDetails[index].sets = updatedSets
+                var existingSets = workoutDetails[index].sets
+                
+                for tempSet in tempDetail.sets {
+                    if let setIndex = existingSets.firstIndex(where: { $0.id == tempSet.id }) {
+                        existingSets[setIndex] = tempSet
+                    }
+                }
+                
+                let sortedSets = existingSets.sorted { $0.setIndex < $1.setIndex }
+                
+                workoutDetails[index].sets = sortedSets
             } else {
                 let sortedSets = tempDetail.sets.sorted(by: { $0.setIndex < $1.setIndex })
                 var newTempDetail = tempDetail
@@ -148,8 +146,6 @@ struct ActiveWorkoutView: View {
         }
         workoutDetails.sort { $0.orderIndex < $1.orderIndex }
     }
-    
-    
     
     private var displayExerciseDetailsAndSets: some View {
         ForEach(workoutDetails.indices, id: \.self) { index in
@@ -178,6 +174,8 @@ struct ActiveWorkoutView: View {
             }
         }
     }
+    
+    
     
     private func initSession() {
         let sessionsWorkoutId = workoutManager.getWorkoutIdOfActiveSession()
@@ -232,7 +230,7 @@ struct ActiveWorkoutView: View {
     }
     
     
-        
+    
     private func startWorkout() {
         workoutStarted = true
         elapsedTime = 0
@@ -321,7 +319,7 @@ struct ActiveWorkoutView: View {
                 return setSum + (Float(setInput.weight) * reps)
             }
         }
-
+        
         
         let totalReps = workoutDetails.reduce(0) { detailSum, detail in
             detailSum + detail.sets.reduce(0) { setSum, setInput in

@@ -14,7 +14,7 @@ struct FlexSprinkleApp: App {
     @StateObject private var appViewModel = AppViewModel()
     @StateObject private var workoutManager = WorkoutManager()
     @StateObject private var userManager = UserManager()
-    @StateObject private var controller = WorkoutTrackerController(workoutManager: WorkoutManager(), appViewModel: AppViewModel())
+    @StateObject private var controller = WorkoutTrackerController(workoutManager: WorkoutManager())
 
     init() {
             if let myBlackColor = UIColor(named: "MyBlack") {

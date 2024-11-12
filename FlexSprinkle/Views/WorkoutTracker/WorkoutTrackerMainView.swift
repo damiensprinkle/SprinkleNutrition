@@ -88,7 +88,7 @@ struct WorkoutTrackerMainView: View {
                         },
                                  hasActiveSession: workoutController.activeWorkoutId == workout.id)
                         .transition(.asymmetric(insertion: .opacity.combined(with: .scale), removal: .opacity.combined(with: .scale)))
-                        .environmentObject(workoutController.appViewModel)
+                        .environmentObject(appViewModel)
                         .environmentObject(workoutController.workoutManager)
                     }
                 }

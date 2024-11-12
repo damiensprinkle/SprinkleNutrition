@@ -16,11 +16,9 @@ class WorkoutTrackerController: ObservableObject {
     @Published var showAlert = false
     
     var workoutManager: WorkoutManager
-    var appViewModel: AppViewModel
 
-    init(workoutManager: WorkoutManager, appViewModel: AppViewModel) {
+    init(workoutManager: WorkoutManager) {
         self.workoutManager = workoutManager
-        self.appViewModel = appViewModel
     }
     
     func loadWorkouts() {

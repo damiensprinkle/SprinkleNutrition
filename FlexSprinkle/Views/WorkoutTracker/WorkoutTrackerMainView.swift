@@ -16,7 +16,7 @@ struct WorkoutTrackerMainView: View {
     @State private var deletingWorkouts: Set<UUID> = [] // for dissolve animation
     @State private var duplicatingWorkouts: Set<UUID> = [] // for dissolve animation
     @State private var presentingModal: ModalType? = nil
-
+    
     
     var body: some View {
         NavigationView {
@@ -47,7 +47,7 @@ struct WorkoutTrackerMainView: View {
             }
             .onAppear(perform: workoutController.loadWorkouts)
         }
-        .sheet(item: $workoutController.appViewModel.presentModal) { modal in
+        .sheet(item: $presentingModal) { modal in
             switch modal {
             case .add:
                 AddWorkoutView(workoutId: UUID(), navigationTitle: "Create Workout Plan", update: false)
@@ -83,10 +83,10 @@ struct WorkoutTrackerMainView: View {
                         CardView(workoutId: workout.id, onDelete: {
                             deleteWorkouts(workout.id)
                         },
-                        onDuplicate: {
+                                 onDuplicate: {
                             duplicateWorkout(workout.id)
                         },
-                        hasActiveSession: workoutController.activeWorkoutId == workout.id)
+                                 hasActiveSession: workoutController.activeWorkoutId == workout.id)
                         .transition(.asymmetric(insertion: .opacity.combined(with: .scale), removal: .opacity.combined(with: .scale)))
                         .environmentObject(workoutController.appViewModel)
                         .environmentObject(workoutController.workoutManager)

@@ -68,7 +68,7 @@ struct CardView: View {
         
         Spacer()
         Button(action: {
-            if workoutController.activeWorkoutId != workoutId && workoutController.activeWorkoutId != nil {
+            if let activeWorkoutId = workoutController.activeWorkoutId, activeWorkoutId != workoutId {
                 alertTitle = "You must complete your current session before starting a new one"
                 showAlert = true
             } else {

@@ -26,13 +26,14 @@ class WorkoutManager: ObservableObject {
     // MARK: Core Data Operations
     
     //good
-    func addWorkoutDetail(workoutTitle: String, exerciseName: String, color: String , orderIndex: Int32, sets: [SetInput], exerciseMeasurement: String, exerciseQuantifier: String) {
+    func addWorkoutDetail(id: UUID, workoutTitle: String, exerciseName: String, color: String , orderIndex: Int32, sets: [SetInput], exerciseMeasurement: String, exerciseQuantifier: String) {
         guard let context = self.context else { return }
         
         let workout = findOrCreateWorkout(withTitle: workoutTitle, color: color)
         
         // Create and configure a new WorkoutDetail instance
         let newExerciseDetail = WorkoutDetail(context: context)
+        newExerciseDetail.id = id
         newExerciseDetail.exerciseId = UUID()
         newExerciseDetail.exerciseName = exerciseName
         newExerciseDetail.orderIndex = orderIndex
@@ -215,6 +216,7 @@ class WorkoutManager: ObservableObject {
                            newSet.weight = originalSet.weight
                            newSet.time = originalSet.time
                            newSet.distance = originalSet.distance
+                           newSet.setIndex = originalSet.setIndex
                            newDetail.addToSets(newSet)
                        }
                    }

@@ -15,6 +15,7 @@
 		0847535B2CE3D47D00C6A7F9 /* WorkoutTrackerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0847535A2CE3D47000C6A7F9 /* WorkoutTrackerController.swift */; };
 		0847535F2CE3D59B00C6A7F9 /* WorkoutSessionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0847535E2CE3D59900C6A7F9 /* WorkoutSessionModel.swift */; };
 		084753632CE3F2D500C6A7F9 /* ModalType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084753622CE3F2D100C6A7F9 /* ModalType.swift */; };
+		0847536F2CE5205D00C6A7F9 /* WorkoutSaveError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0847536E2CE5205500C6A7F9 /* WorkoutSaveError.swift */; };
 		085466812CDFAD4700136FBC /* WorkoutDetail+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0854667F2CDFAD4700136FBC /* WorkoutDetail+CoreDataClass.swift */; };
 		085466822CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0854667D2CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataClass.swift */; };
 		085466832CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0854667E2CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataProperties.swift */; };
@@ -101,6 +102,7 @@
 		0847535A2CE3D47000C6A7F9 /* WorkoutTrackerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTrackerController.swift; sourceTree = "<group>"; };
 		0847535E2CE3D59900C6A7F9 /* WorkoutSessionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSessionModel.swift; sourceTree = "<group>"; };
 		084753622CE3F2D100C6A7F9 /* ModalType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalType.swift; sourceTree = "<group>"; };
+		0847536E2CE5205500C6A7F9 /* WorkoutSaveError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSaveError.swift; sourceTree = "<group>"; };
 		0854667D2CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TemporaryWorkoutDetail+CoreDataClass.swift"; sourceTree = "<group>"; };
 		0854667E2CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TemporaryWorkoutDetail+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		0854667F2CDFAD4700136FBC /* WorkoutDetail+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkoutDetail+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -185,6 +187,7 @@
 		087111352B728F810054E315 /* Enums */ = {
 			isa = PBXGroup;
 			children = (
+				0847536E2CE5205500C6A7F9 /* WorkoutSaveError.swift */,
 				084753622CE3F2D100C6A7F9 /* ModalType.swift */,
 			);
 			path = Enums;
@@ -564,6 +567,7 @@
 				081F87F22B87F6ED00BBBDF2 /* CheckboxStyle.swift in Sources */,
 				08FC75802CDFCA86001E2E5B /* ExerciseRowActive.swift in Sources */,
 				081F87E62B83A7CD00BBBDF2 /* UserManager.swift in Sources */,
+				0847536F2CE5205D00C6A7F9 /* WorkoutSaveError.swift in Sources */,
 				0847535B2CE3D47D00C6A7F9 /* WorkoutTrackerController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

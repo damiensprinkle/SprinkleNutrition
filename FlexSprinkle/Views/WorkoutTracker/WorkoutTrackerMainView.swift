@@ -9,7 +9,6 @@ import SwiftUI
 import SwiftData
 
 struct WorkoutTrackerMainView: View {
-    @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var appViewModel: AppViewModel
     @EnvironmentObject var workoutManager: WorkoutManager
     @EnvironmentObject var workoutController: WorkoutTrackerController
@@ -37,14 +36,7 @@ struct WorkoutTrackerMainView: View {
                 Image(systemName: "clock")
                     .help("View workout history")
             })
-            
-            .alert(isPresented: $workoutController.showAlert) {
-                Alert(
-                    title: Text("Active Session Detected"),
-                    message: Text("You cannot delete an active workout, please end your workout first"),
-                    dismissButton: .default(Text("OK"))
-                )
-            }
+        
             .onAppear(perform: workoutController.loadWorkouts)
         }
         .sheet(item: $presentingModal) { modal in
@@ -52,18 +44,17 @@ struct WorkoutTrackerMainView: View {
             case .add:
                 AddWorkoutView(workoutId: UUID(), navigationTitle: "Create Workout Plan", update: false)
                     .environmentObject(workoutController.workoutManager)
-                    .environmentObject(workoutController.appViewModel)
+                    .environmentObject(appViewModel)
             case .edit(let workoutId):
                 AddWorkoutView(workoutId: workoutId, navigationTitle: "Edit Workout Plan", update: true)
                     .environmentObject(workoutController.workoutManager)
-                    .environmentObject(workoutController.appViewModel)
+                    .environmentObject(appViewModel)
             }
         }
     }
     
     private var workoutGrid: some View {
         VStack(spacing: 0) {
-            
             if workoutController.hasActiveSession, let workoutId = workoutController.activeWorkoutId {
                 Button(action: {
                     appViewModel.navigateTo(.workoutActiveView(workoutId))
@@ -83,13 +74,13 @@ struct WorkoutTrackerMainView: View {
                         CardView(workoutId: workout.id, onDelete: {
                             deleteWorkouts(workout.id)
                         },
-                                 onDuplicate: {
+                        onDuplicate: {
                             duplicateWorkout(workout.id)
-                        },
-                                 hasActiveSession: workoutController.activeWorkoutId == workout.id)
+                        })
                         .transition(.asymmetric(insertion: .opacity.combined(with: .scale), removal: .opacity.combined(with: .scale)))
                         .environmentObject(appViewModel)
-                        .environmentObject(workoutController.workoutManager)
+                        .environmentObject(workoutController)
+                        .environmentObject(workoutManager)
                     }
                 }
             }

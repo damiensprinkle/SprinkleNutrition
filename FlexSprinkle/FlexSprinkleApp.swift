@@ -16,13 +16,14 @@ struct FlexSprinkleApp: App {
     @StateObject private var userManager = UserManager()
     @StateObject private var controller = WorkoutTrackerController(workoutManager: WorkoutManager())
 
+    
     init() {
-            if let myBlackColor = UIColor(named: "MyBlack") {
-                UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: myBlackColor]
-                UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: myBlackColor]
-            }
+        if let myBlackColor = UIColor(named: "MyBlack") {
+            UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: myBlackColor]
+            UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: myBlackColor]
+        }
     }
-
+    
     var body: some Scene {
         WindowGroup {
             HomeView()
@@ -33,7 +34,10 @@ struct FlexSprinkleApp: App {
                 .environmentObject(controller)
                 .environmentObject(userManager)
                 .onAppear(){
-                    controller.workoutManager.context = persistenceController.container.viewContext
+                    if(controller.workoutManager.context == nil){
+                        controller.workoutManager.context = persistenceController.container.viewContext
+                        workoutManager.context = persistenceController.container.viewContext
+                    }
                 }
         }
     }

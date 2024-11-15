@@ -28,6 +28,7 @@ struct ExerciseRowActive: View {
     @State private var checked: Bool = false
     @EnvironmentObject var workoutManager: WorkoutManager
     @EnvironmentObject var focusManager: FocusManager
+    @EnvironmentObject var workoutController: WorkoutTrackerController
     
     
     var body: some View {

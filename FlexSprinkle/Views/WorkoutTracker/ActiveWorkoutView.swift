@@ -15,6 +15,8 @@ struct ActiveWorkoutView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var workoutManager: WorkoutManager
     @EnvironmentObject var appViewModel: AppViewModel
+    @EnvironmentObject var workoutController: WorkoutTrackerController
+    
     
     @StateObject private var focusManager = FocusManager()
     @State private var workoutTitle: String = ""
@@ -87,6 +89,10 @@ struct ActiveWorkoutView: View {
                     isLoading = false
                     print("finished loading active workout")
                 }
+                else{
+                    isLoading = false
+                    print ("error, workout details not found")
+                }
             }
             .onDisappear {
                 NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
@@ -101,7 +107,7 @@ struct ActiveWorkoutView: View {
                     }),
                     secondaryButton: .cancel(Text("Keep Original Values"), action: {
                         completeEndWorkoutSequence()
-                    })                        )
+                    }))
             }
         }
     }
@@ -118,7 +124,6 @@ struct ActiveWorkoutView: View {
     }
     
     private func handleAppBackgrounding() {
-        //not needed?
     }
     
     private func loadTemporaryData() {
@@ -169,6 +174,7 @@ struct ActiveWorkoutView: View {
                     )
                     .environmentObject(workoutManager)
                     .environmentObject(focusManager)
+                    .environmentObject(workoutController)
                     .listRowInsets(EdgeInsets())
                 }
             }

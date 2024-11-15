@@ -4,20 +4,19 @@ struct CardView: View {
     var workoutId: UUID
     var onDelete: (() -> Void)?
     var onDuplicate: (() -> Void)?
-
-    var hasActiveSession: Bool
+    
+    @EnvironmentObject var workoutManager: WorkoutManager
+    @EnvironmentObject var workoutController: WorkoutTrackerController
+    @EnvironmentObject var appViewModel: AppViewModel
     
     @State private var presentingModal: ModalType? = nil
-    @EnvironmentObject var workoutManager: WorkoutManager
     @State private var animate = false
     @State private var showAlert = false
-    @State private var showingDeletionConfirmation = false
-    @EnvironmentObject var appViewModel: AppViewModel
     @State private var alertTitle = ""
     
     
     var body: some View {
-        let workout = workoutManager.fetchWorkoutById(for: workoutId)
+        let workout = workoutController.workoutManager.fetchWorkoutById(for: workoutId)
         let backgroundColor = Color(workout?.color ?? "MyBlue")
         
         VStack {
@@ -42,7 +41,7 @@ struct CardView: View {
             }
             
         }
-       .sheet(item: $presentingModal) { modal in
+        .sheet(item: $presentingModal) { modal in
             switch modal {
             case .add:
                 AddWorkoutView(workoutId: UUID(), navigationTitle: "", update: false) // not used
@@ -50,7 +49,7 @@ struct CardView: View {
                 AddWorkoutView(workoutId: workoutId, navigationTitle: "Edit Workout Plan", update: true)
                     .environmentObject(workoutManager)
                     .environmentObject(appViewModel)
-                
+                    .environmentObject(workoutController)
             }
         }
     }
@@ -69,15 +68,14 @@ struct CardView: View {
         
         Spacer()
         Button(action: {
-            let sessionId = workoutManager.getSessions().first?.workoutsR?.id
-            if  sessionId != workoutId && sessionId != nil {
+            if workoutController.activeWorkoutId != workoutId && workoutController.activeWorkoutId != nil {
                 alertTitle = "You must complete your current session before starting a new one"
                 showAlert = true
             } else {
                 appViewModel.navigateTo(.workoutActiveView(workoutId))
-            }
-        }) {
-            if(hasActiveSession) {
+            }})
+        {
+            if(workoutController.hasActiveSession && workoutController.activeWorkoutId == workoutId) {
                 Image(systemName: "figure.run.circle.fill")
                     .font(.system(size: 40))
                     .foregroundColor(.green)
@@ -86,7 +84,6 @@ struct CardView: View {
                         withAnimation(Animation.easeInOut(duration: 1.0).repeatForever(autoreverses: true)) {
                             animate = true
                         }
-                        
                     }
             }
             else{
@@ -94,15 +91,13 @@ struct CardView: View {
                     .font(.system(size: 40))
                     .foregroundColor(.staticWhite)
             }
-            
         }
     }
     
     @ViewBuilder
     private func contextMenuContent() -> some View {
         Button(action: {
-            let sessionId = workoutManager.getSessions().first?.workoutsR?.id
-            if  sessionId == workoutId {
+            if  workoutController.activeWorkoutId == workoutId {
                 alertTitle = "You Cannot Edit a Workout That Is In Progress"
                 showAlert = true
             }
@@ -118,8 +113,7 @@ struct CardView: View {
         }
         
         Button(role: .destructive, action: {
-            let sessionId = workoutManager.getSessions().first?.workoutsR?.id
-            if  sessionId == workoutId {
+            if  workoutController.activeWorkoutId == workoutId {
                 alertTitle = "You Cannot Delete a Workout That Is In Progress"
                 showAlert = true
             }
@@ -127,12 +121,8 @@ struct CardView: View {
                 alertTitle =  "Are you sure you want to delete this workout?"
                 showAlert = true
             }
-            
-            
         }) {
             Label("Delete", systemImage: "trash")
         }
     }
-    
 }
-

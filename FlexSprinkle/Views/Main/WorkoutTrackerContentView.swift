@@ -36,7 +36,7 @@ struct WorkoutContentMainView: View {
                     .id(workoutId)
                     .environmentObject(workoutManager)
                     .environmentObject(appViewModel)
-                
+                    .environmentObject(workoutController)
                 .transition(.slide)
             case .workoutHistoryView:
                 AnyView(WorkoutHistoryView()

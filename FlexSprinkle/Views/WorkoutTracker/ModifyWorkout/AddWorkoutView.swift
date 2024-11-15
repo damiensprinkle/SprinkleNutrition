@@ -12,28 +12,22 @@ struct AddWorkoutView: View {
     let navigationTitle: String
     var update: Bool
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var workoutManager: WorkoutManager
-    
+    @EnvironmentObject var workoutController: WorkoutTrackerController
+    @StateObject private var focusManager = FocusManager()
+
     @State private var workoutTitle: String = ""
-    @State private var workoutTitleOriginal: String = ""
-    
     @State private var showingRenameDialog = false
-    
-    @State private var workoutDetails: [WorkoutDetailInput] = []
     @State private var errorMessage: String = ""
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
     @State private var indexToDelete: Int? = nil
-    
     @State private var selectedExerciseIndexForRenaming: Int?
-    
     @State private var activeAlert: ActiveAlert = .error
-    
+    @State private var workoutSaveError: WorkoutSaveError = .emptyTitle
     
     private let colorManager = ColorManager()
     @State private var showingAddExerciseDialog = false
     @EnvironmentObject var appViewModel: AppViewModel
-    
     
     var body: some View {
         NavigationView {
@@ -41,47 +35,51 @@ struct AddWorkoutView: View {
                 VStack(spacing: 0) {
                     addWorkoutForm
                     Spacer()
-                    
-                    Button(action: {
-                        withAnimation(.easeOut(duration: 0.2)) {
-                            showingAddExerciseDialog = true
+                    if(!focusManager.isAnyTextFieldFocused){
+                        Button(action: {
+                            withAnimation(.easeOut(duration: 0.2)) {
+                                showingAddExerciseDialog = true
+                            }
+                        }) {
+                            Text("Add Exercise")
+                                .font(.title2)
+                                .foregroundColor(.staticWhite)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(Color.myBlue)
+                                .cornerRadius(10)
                         }
-                    }) {
-                        Text("Add Exercise")
-                            .font(.title2)
-                            .foregroundColor(.staticWhite)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(Color.myBlue)
-                            .cornerRadius(10)
+                        .padding(.horizontal)
                     }
-                    .padding(.horizontal)
-                    
+     
                 }
                 
-                if showingAddExerciseDialog {
+                if showingAddExerciseDialog || selectedExerciseIndexForRenaming != nil {
                     Color.black.opacity(0.4)
                         .edgesIgnoringSafeArea(.all)
-                        .onTapGesture {
-                            showingAddExerciseDialog = false
-                        }
-                    
-                    AddExerciseDialog(workoutDetails: $workoutDetails, showingDialog: $showingAddExerciseDialog)
-                        .background(Color.staticWhite)
-                        .cornerRadius(20)
-                        .shadow(radius: 10)
-                        .transition(.scale)
-                        .padding(.horizontal)
                 }
-                if let selectedIndex = selectedExerciseIndexForRenaming, selectedIndex < workoutDetails.count {
+
+                if showingAddExerciseDialog {
+                    AddExerciseDialog(
+                        workoutDetails: $workoutController.workoutDetails,
+                        showingDialog: $showingAddExerciseDialog
+                    )
+                    .background(Color.staticWhite)
+                    .cornerRadius(20)
+                    .shadow(radius: 10)
+                    .transition(.scale)
+                    .padding(.horizontal)
+                }
+                
+                if let selectedIndex = selectedExerciseIndexForRenaming, selectedIndex < $workoutController.workoutDetails.count {
                     RenameExerciseDialogView(
                         isPresented: .init(
                             get: { self.selectedExerciseIndexForRenaming != nil },
                             set: { _ in self.selectedExerciseIndexForRenaming = nil }
                         ),
-                        exerciseName: $workoutDetails[selectedIndex].exerciseName,
+                        exerciseName: $workoutController.workoutDetails[selectedIndex].exerciseName,
                         onRename: { newName in
-                            workoutDetails[selectedIndex].exerciseName = newName
+                            workoutController.renameExercise(at: selectedIndex, to: newName)
                         }
                     )
                     .transition(.scale)
@@ -90,14 +88,17 @@ struct AddWorkoutView: View {
             .navigationBarTitle(navigationTitle)
             .navigationBarItems(
                 leading: Button("Cancel") {
-                    if(update){
-                        presentationMode.wrappedValue.dismiss()
-                    }
-                    else{
-                        self.presentationMode.wrappedValue.dismiss()
-                    }
+                    presentationMode.wrappedValue.dismiss()
                 },
-                trailing: Button("Save") { saveWorkout() }
+                trailing: Button("Save") {
+                    let result = workoutController.saveWorkout(title: workoutTitle, update: update, workoutId: workoutId)
+                    switch result {
+                    case .success:
+                        presentationMode.wrappedValue.dismiss()
+                    case .failure(let error):
+                        handleSaveError(error)
+                    }
+                }
             )
             .alert(isPresented: $showAlert) {
                 switch activeAlert {
@@ -109,7 +110,7 @@ struct AddWorkoutView: View {
                         message: Text(alertMessage),
                         primaryButton: .destructive(Text("Delete")) {
                             if let index = indexToDelete {
-                                workoutDetails.remove(at: index)
+                                workoutController.workoutDetails.remove(at: index)
                                 indexToDelete = nil
                             }
                         },
@@ -119,10 +120,13 @@ struct AddWorkoutView: View {
                     )
                 }
             }
-            
             .onAppear {
-                if(update){
-                    loadWorkoutDetails()
+                if update {
+                    workoutController.loadWorkoutDetails(for: workoutId)
+                    workoutTitle = workoutController.selectedWorkoutName ?? ""
+                }
+                else{
+                    workoutController.workoutDetails.removeAll()
                 }
             }
         }
@@ -131,17 +135,17 @@ struct AddWorkoutView: View {
     private var addWorkoutForm: some View {
         Form {
             workoutTitleSection
-            ForEach($workoutDetails.indices, id: \.self) { index in
+            ForEach($workoutController.workoutDetails.indices, id: \.self) { index in
                 Section(
                     header: ExerciseHeaderView(
-                        exerciseName: workoutDetails[index].exerciseName,
+                        exerciseName: workoutController.workoutDetails[index].exerciseName,
                         index: index,
-                        workoutCount: workoutDetails.count,
+                        workoutCount: workoutController.workoutDetails.count,
                         moveUpAction: {
-                            moveExercise(from: index, to: index - 1)
+                            workoutController.moveExercise(from: index, to: index - 1)
                         },
                         moveDownAction: {
-                            moveExercise(from: index, to: index + 1)
+                            workoutController.moveExercise(from: index, to: index + 1)
                         },
                         deleteAction: {
                             indexToDelete = index
@@ -155,28 +159,30 @@ struct AddWorkoutView: View {
                             }
                         }
                     )
-                )
-                {
+                ) {
                     WorkoutSetListView(
-                         sets: $workoutDetails[index].sets,
-                         exerciseQuantifier: workoutDetails[index].exerciseQuantifier,
-                         exerciseMeasurement: workoutDetails[index].exerciseMeasurement,
-                         addSetAction: {
-                             addSet(to: index)
-                         }
-                     )
+                        sets: $workoutController.workoutDetails[index].sets,
+                        exerciseQuantifier: workoutController.workoutDetails[index].exerciseQuantifier,
+                        exerciseMeasurement: workoutController.workoutDetails[index].exerciseMeasurement,
+                        addSetAction: {
+                            workoutController.addSet(for: index)
+                        },
+                        focusManager: focusManager
+                    )
                 }
             }
             .onDelete(perform: deleteExercise)
         }
-        
     }
+
     
     struct WorkoutSetListView: View {
         @Binding var sets: [SetInput]
         let exerciseQuantifier: String
         let exerciseMeasurement: String
         let addSetAction: () -> Void
+        let focusManager: FocusManager
+        
 
         var body: some View {
             if !sets.isEmpty {
@@ -184,7 +190,13 @@ struct AddWorkoutView: View {
             }
             
             ForEach(sets.indices, id: \.self) { setIndex in
-                ExerciseRow(setIndex: setIndex + 1, setInput: $sets[setIndex], exerciseQuantifier: exerciseQuantifier, exerciseMeasurement: exerciseMeasurement)
+                ExerciseRow(
+                    setIndex: setIndex + 1,
+                    setInput: $sets[setIndex],
+                    exerciseQuantifier: exerciseQuantifier,
+                    exerciseMeasurement: exerciseMeasurement
+                )
+                .environmentObject(focusManager)
             }
             .onDelete { offsets in
                 sets.remove(atOffsets: offsets)
@@ -196,58 +208,6 @@ struct AddWorkoutView: View {
         }
     }
 
-    
-    
-    private func addSet(to workoutIndex: Int) {
-        let maxSetIndex = workoutDetails[workoutIndex].sets.max(by: { $0.setIndex < $1.setIndex })?.setIndex ?? 0
-        let newSetIndex = maxSetIndex + 1
-        
-        let newSet = workoutDetails[workoutIndex].sets.last.map {
-            SetInput(reps: $0.reps, weight: $0.weight, time: $0.time, distance: $0.distance, setIndex: newSetIndex)
-        } ?? SetInput(reps: 0, weight: 0, time: 0, distance: 0, setIndex: 0)
-        
-        workoutDetails[workoutIndex].sets.append(newSet)
-    }
-    
-    private var workoutTitleSection: some View {
-        Section(header: Text("Workout Title")) {
-            TextField("Enter Workout Title", text: $workoutTitle)
-        }
-    }
-    
-    
-    private func loadWorkoutDetails() {
-        guard let workout = workoutManager.fetchWorkoutById(for: workoutId) else {
-            print("Could not find workout with ID \(workoutId)")
-            return
-        }
-        
-        self.workoutTitle = workout.name ?? ""
-        self.workoutTitleOriginal = self.workoutTitle
-        
-        if let detailsSet = workout.details as? Set<WorkoutDetail> {
-            let details = detailsSet.sorted { $0.orderIndex < $1.orderIndex }
-            self.workoutDetails = details.map { detail in
-                let sortedSets = (detail.sets?.allObjects as? [WorkoutSet])?.sorted(by: { $0.setIndex < $1.setIndex }) ?? []
-                let setInputs = sortedSets.map { ws in
-                    SetInput(id: ws.id, reps: ws.reps, weight: ws.weight, time: ws.time, distance: ws.distance, isCompleted: ws.isCompleted, setIndex: ws.setIndex)
-                }
-                
-                return WorkoutDetailInput(
-                    id: detail.id,
-                    exerciseId: detail.exerciseId,
-                    exerciseName: detail.exerciseName!,
-                    orderIndex: detail.orderIndex,
-                    sets: setInputs,
-                    exerciseQuantifier: detail.exerciseQuantifier!,
-                    exerciseMeasurement: detail.exerciseMeasurement!
-                    
-                )
-            }
-        }
-    }
-    
-    
     struct ExerciseHeaderView: View {
         let exerciseName: String
         let index: Int
@@ -289,7 +249,7 @@ struct AddWorkoutView: View {
                 
                 // Rename
                 Image(systemName: "pencil")
-                    .foregroundColor(.black)
+                    .foregroundColor(.myBlack)
                     .onTapGesture {
                         renameAction?()
                     }
@@ -298,66 +258,29 @@ struct AddWorkoutView: View {
     }
     
     
+    private var workoutTitleSection: some View {
+        Section(header: Text("Workout Title")) {
+            TextField("Enter Workout Title", text: $workoutTitle)
+        }
+    }
     
     private func deleteExercise(at offsets: IndexSet) {
-        workoutDetails.remove(atOffsets: offsets)
+        workoutController.workoutDetails.remove(atOffsets: offsets)
     }
     
-    private func moveExercise(from source: Int, to destination: Int) {
-        let item = workoutDetails.remove(at: source)
-        workoutDetails.insert(item, at: destination)
-        
-        for (index, var detail) in workoutDetails.enumerated() {
-            detail.orderIndex = Int32(index)
-            workoutDetails[index] = detail // Update the detail with the new orderIndex
+    private func handleSaveError(_ error: WorkoutSaveError) {
+        switch error {
+        case .emptyTitle:
+            errorMessage = "Please enter a workout title."
+        case .noExerciseDetails:
+            errorMessage = "Please add at least one exercise detail."
+        case .titleExists:
+            errorMessage = "Workout title already exists."
         }
-    }
-    
-    private func saveWorkout() {
-        if workoutTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            errorMessage = "Please Enter a Workout Title"
-            showAlert = true
-            activeAlert = .error
-        } else if workoutDetails.isEmpty {
-            errorMessage = "Please add at least one exercise detail"
-            showAlert = true
-            activeAlert = .error
-        } else if workoutTitleOriginal != workoutTitle && workoutManager.titleExists(workoutTitle) {
-            errorMessage = "Workout Title Already Exists"
-            showAlert = true
-            activeAlert = .error
-        } else {
-            if(update){
-                let filledDetails = workoutDetails.filter { detail in
-                    guard !detail.exerciseName.isEmpty else { return false }
-                    guard !detail.exerciseName.isEmpty else { return false }
-                    
-                    return !detail.sets.isEmpty
-                }
-                workoutManager.updateWorkoutDetails(workoutId: workoutId, workoutDetailsInput: filledDetails)
-                workoutManager.updateWorkoutTitle(workoutId: workoutId, to: workoutTitle)
-            }
-            else{
-                for detail in workoutDetails {
-                    workoutManager.addWorkoutDetail(
-                        workoutTitle: workoutTitle,
-                        exerciseName: detail.exerciseName,
-                        color: colorManager.getRandomColor(),
-                        orderIndex: Int32(detail.orderIndex),
-                        sets: detail.sets,
-                        exerciseMeasurement: detail.exerciseMeasurement,
-                        exerciseQuantifier: detail.exerciseQuantifier
-                    )
-                }
-            }
-            
-            // appViewModel.resetToWorkoutMainView()
-            presentationMode.wrappedValue.dismiss()
-            
-        }
+        activeAlert = .error
+        showAlert = true
     }
 }
-
 
 enum ActiveAlert {
     case error, deleteConfirmation

@@ -11,6 +11,7 @@ struct WorkoutContentMainView: View {
     @EnvironmentObject var appViewModel: AppViewModel
     @Environment(\.managedObjectContext) var managedObjectContext
     @EnvironmentObject var workoutManager: WorkoutManager
+    @EnvironmentObject var workoutController: WorkoutTrackerController
 
 
     var body: some View {
@@ -21,6 +22,7 @@ struct WorkoutContentMainView: View {
                 AnyView(WorkoutTrackerMainView()
                     .environment(\.managedObjectContext, managedObjectContext)
                     .environmentObject(workoutManager))
+                    .environmentObject(workoutController)
                 .transition(.slide)
                 
             case .workoutOverview(let workoutId):
@@ -34,7 +36,7 @@ struct WorkoutContentMainView: View {
                     .id(workoutId)
                     .environmentObject(workoutManager)
                     .environmentObject(appViewModel)
-                
+                    .environmentObject(workoutController)
                 .transition(.slide)
             case .workoutHistoryView:
                 AnyView(WorkoutHistoryView()

@@ -17,7 +17,6 @@ struct ExerciseRowActive: View {
     var exerciseQuantifier: String
     var exerciseMeasurement: String
 
-    
     @FocusState private var focusedField: FocusableField?
     @State private var originalTimeInput: String = ""
     @State private var hasLoaded = false
@@ -28,6 +27,7 @@ struct ExerciseRowActive: View {
     @State private var checked: Bool = false
     @EnvironmentObject var workoutManager: WorkoutManager
     @EnvironmentObject var focusManager: FocusManager
+    @EnvironmentObject var workoutController: WorkoutTrackerController
     
     
     var body: some View {
@@ -86,30 +86,25 @@ struct ExerciseRowActive: View {
             ToolbarItem(placement: .keyboard) {
                 if(focusedField == .distance){
                     Button("Done") {
-                        focusedField = nil
-                        focusManager.isAnyTextFieldFocused = false
-                        focusManager.currentlyFocusedField = nil
+                        resetFocusedField()
+
                     }
                 }
                 if(focusedField == .time) {
                     Button("Done") {
-                        focusedField = nil
-                        focusManager.isAnyTextFieldFocused = false
-                        focusManager.currentlyFocusedField = nil
+                        resetFocusedField()
+
                     }
                 }
                 if(focusedField == .weight){
                     Button("Done") {
-                        focusedField = nil
-                        focusManager.isAnyTextFieldFocused = false
-                        focusManager.currentlyFocusedField = nil
+                        resetFocusedField()
+
                     }
                 }
                 if(focusedField == .reps) {
                     Button("Done") {
-                        focusedField = nil
-                        focusManager.isAnyTextFieldFocused = false
-                        focusManager.currentlyFocusedField = nil
+                        resetFocusedField()
                     }
                 }
             }
@@ -149,6 +144,12 @@ struct ExerciseRowActive: View {
             }
             .keyboardType(.numberPad)
             .frame(width: 100, height: 20)
+    }
+    
+    private func resetFocusedField(){
+        focusedField = nil
+        focusManager.isAnyTextFieldFocused = false
+        focusManager.currentlyFocusedField = nil
     }
     
     private var distanceTextField: some View {
@@ -253,7 +254,7 @@ struct ExerciseRowActive: View {
     
     func saveWorkoutDetail() {
         let setsInput = [setInput]
-        workoutManager.saveOrUpdateSetsDuringActiveWorkout(workoutId: workoutId, exerciseId: workoutDetails.exerciseId!, exerciseName: workoutDetails.exerciseName, setsInput: setsInput, orderIndex: workoutDetails.orderIndex)
+        workoutController.workoutManager.saveOrUpdateSetsDuringActiveWorkout(workoutId: workoutId, exerciseId: workoutDetails.exerciseId!, exerciseName: workoutDetails.exerciseName, setsInput: setsInput, orderIndex: workoutDetails.orderIndex)
     }
     
     private func formatInput(_ newValue: String) {

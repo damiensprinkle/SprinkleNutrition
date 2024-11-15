@@ -17,11 +17,12 @@ struct AddExerciseDialog: View {
     
     var body: some View {
         VStack(spacing: 15) {
-            Text("Exercise Details").font(.headline)
+            Text("Exercise Details")
+                .font(.headline)
             
             ZStack {
                 RoundedRectangle(cornerRadius: 8)
-                    .fill(exerciseName.isEmpty ? Color.red.opacity(0.3) : Color(UIColor.systemBackground))
+                    .fill(Color(UIColor.systemBackground))
                     .frame(height: 36)
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
@@ -57,6 +58,8 @@ struct AddExerciseDialog: View {
                 Button("  Add  ") {
                     addNewExercise()
                 }
+                .disabled(exerciseName.isEmpty)
+                .opacity(exerciseName.isEmpty ? 0.5 : 1.0)
                 
             }
         }
@@ -77,7 +80,7 @@ struct AddExerciseDialog: View {
             let measurement = selectedWorkoutMeasurement
             let quantifier = selectedWorkoutQuantifier
             let newIndex = workoutDetails.last?.orderIndex ?? 0
-            let newDetail = WorkoutDetailInput(exerciseName: exerciseName, orderIndex: newIndex + 1, sets: [SetInput(reps: 0, weight: 0, time: 0, distance: 0)], exerciseQuantifier: quantifier, exerciseMeasurement: measurement)
+            let newDetail = WorkoutDetailInput(id: UUID(), exerciseName: exerciseName, orderIndex: newIndex + 1, sets: [SetInput(reps: 0, weight: 0, time: 0, distance: 0)], exerciseQuantifier: quantifier, exerciseMeasurement: measurement)
             workoutDetails.append(newDetail)
             self.showingDialog = false
         }

@@ -14,7 +14,7 @@ struct AddWorkoutView: View {
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var workoutController: WorkoutTrackerController
     @StateObject private var focusManager = FocusManager()
-
+    
     @State private var workoutTitle: String = ""
     @State private var showingRenameDialog = false
     @State private var errorMessage: String = ""
@@ -51,14 +51,14 @@ struct AddWorkoutView: View {
                         }
                         .padding(.horizontal)
                     }
-     
+                    
                 }
                 
                 if showingAddExerciseDialog || selectedExerciseIndexForRenaming != nil {
                     Color.black.opacity(0.4)
                         .edgesIgnoringSafeArea(.all)
                 }
-
+                
                 if showingAddExerciseDialog {
                     AddExerciseDialog(
                         workoutDetails: $workoutController.workoutDetails,
@@ -174,7 +174,7 @@ struct AddWorkoutView: View {
             .onDelete(perform: deleteExercise)
         }
     }
-
+    
     
     struct WorkoutSetListView: View {
         @Binding var sets: [SetInput]
@@ -183,7 +183,7 @@ struct AddWorkoutView: View {
         let addSetAction: () -> Void
         let focusManager: FocusManager
         
-
+        
         var body: some View {
             if !sets.isEmpty {
                 SetHeaders(exerciseQuantifier: exerciseQuantifier, exerciseMeasurement: exerciseMeasurement, active: false)
@@ -207,7 +207,7 @@ struct AddWorkoutView: View {
             }
         }
     }
-
+    
     struct ExerciseHeaderView: View {
         let exerciseName: String
         let index: Int

@@ -29,7 +29,7 @@ struct SetHeaders: View {
             }
             if(exerciseMeasurement == "Weight"){
                 Text(weightPreference).frame(width: 100)
-
+                
             }
             if(exerciseMeasurement == "Time"){
                 Text("Time").frame(width: 100)

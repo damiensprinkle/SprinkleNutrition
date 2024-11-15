@@ -7,7 +7,7 @@
 import SwiftUI
 
 
-func validateAndSetInput(_ input: inout String, for setInputField: inout Float, maxLength: Int = 10, maxDecimals: Int = 2) {
+func validateAndSetInputFloat(_ input: inout String, for setInputField: inout Float, maxLength: Int = 10, maxDecimals: Int = 2) {
     if input.count > maxLength {
         input = String(input.prefix(maxLength))
     }

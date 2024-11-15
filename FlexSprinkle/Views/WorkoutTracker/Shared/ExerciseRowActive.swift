@@ -16,7 +16,7 @@ struct ExerciseRowActive: View {
     let workoutStarted: Bool
     var exerciseQuantifier: String
     var exerciseMeasurement: String
-
+    
     @FocusState private var focusedField: FocusableField?
     @State private var originalTimeInput: String = ""
     @State private var hasLoaded = false
@@ -74,7 +74,7 @@ struct ExerciseRowActive: View {
             .toggleStyle(SwitchToggleStyle(tint: Color(UIColor.green)))
             .scaleEffect(0.8)
             .padding(.trailing, 10)
-
+            
         }
         .onAppear{
             if (!hasLoaded){
@@ -86,19 +86,19 @@ struct ExerciseRowActive: View {
                 if(focusedField == .distance){
                     Button("Done") {
                         resetFocusedField()
-
+                        
                     }
                 }
                 if(focusedField == .time) {
                     Button("Done") {
                         resetFocusedField()
-
+                        
                     }
                 }
                 if(focusedField == .weight){
                     Button("Done") {
                         resetFocusedField()
-
+                        
                     }
                 }
                 if(focusedField == .reps) {

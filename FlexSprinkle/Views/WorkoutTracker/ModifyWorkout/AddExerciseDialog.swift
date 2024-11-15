@@ -12,7 +12,7 @@ struct AddExerciseDialog: View {
     @Binding var showingDialog: Bool
     @State private var selectedWorkoutQuantifier: String = "Reps"
     @State private var selectedWorkoutMeasurement: String = "Weight"
-
+    
     @State private var exerciseName: String = ""
     
     var body: some View {

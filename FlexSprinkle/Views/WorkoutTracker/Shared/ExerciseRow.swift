@@ -12,32 +12,32 @@ struct ExerciseRow: View {
     @Binding var setInput: SetInput
     @State private var repsInput: String = ""
     @State private var originalReps: String = ""
-
+    
     @State private var weightInput: String = ""
     @State private var originalWeight: String = ""
-
+    
     @State private var distanceInput: String = ""
     @State private var originalDistance: String = ""
-
+    
     @State private var timeInput: String = ""
     @State private var originalTime: String = ""
-
+    
     @FocusState private var focusedField: FocusableField?
     @EnvironmentObject var focusManager: FocusManager
-
+    
     @AppStorage("weightPreference") private var weightPreference: String = "Lbs"
     @AppStorage("distancePreference") private var distancePreference: String = "Mile"
-
+    
     var exerciseQuantifier: String
     var exerciseMeasurement: String
-
+    
     var body: some View {
         HStack {
             Text("\(setIndex)")
                 .frame(width: 50, alignment: .leading)
             Spacer()
             Divider()
-
+            
             if exerciseQuantifier == "Reps" {
                 TextField("Reps", text: $repsInput)
                     .focused($focusedField, equals: .reps)
@@ -67,8 +67,8 @@ struct ExerciseRow: View {
                     .keyboardType(.numberPad)
                     .frame(width: 100, height: 20)
             }
-
-
+            
+            
             if exerciseQuantifier == "Distance" {
                 TextField("Distance", text: $distanceInput)
                     .focused($focusedField, equals: .distance)
@@ -104,9 +104,9 @@ struct ExerciseRow: View {
                     .frame(width: 100, height: 20)
                 Spacer()
             }
-
+            
             Divider()
-
+            
             if exerciseMeasurement == "Weight" {
                 TextField("Weight", text: $weightInput)
                     .focused($focusedField, equals: .weight)
@@ -132,7 +132,7 @@ struct ExerciseRow: View {
                     .keyboardType(.decimalPad)
                     .frame(width: 100, height: 20)
             }
-
+            
             if exerciseMeasurement == "Time" {
                 TextField("Time", text: $timeInput)
                     .focused($focusedField, equals: .time)

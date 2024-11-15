@@ -19,7 +19,7 @@ class WorkoutTrackerController: ObservableObject {
     private let colorManager = ColorManager()
     
     var workoutManager: WorkoutManager
-
+    
     init(workoutManager: WorkoutManager) {
         self.workoutManager = workoutManager
     }
@@ -61,7 +61,7 @@ class WorkoutTrackerController: ObservableObject {
         if workoutManager.titleExists(title) && !update {
             return .failure(.titleExists)
         }
-
+        
         if update {
             updateWorkoutDetails(for: workoutId, for: title)
         } else {
@@ -79,7 +79,7 @@ class WorkoutTrackerController: ObservableObject {
             }
         }
         loadWorkouts()
-
+        
         return .success(())
     }
     
@@ -171,10 +171,10 @@ class WorkoutTrackerController: ObservableObject {
             print("Could not find workout with ID \(workoutId)")
             return
         }
-
+        
         selectedWorkoutName = workout.name ?? ""
         var workoutDetailsList: [WorkoutDetailInput] = []
-
+        
         if let detailsSet = workout.details as? Set<WorkoutDetail> {
             let details = detailsSet.sorted { $0.orderIndex < $1.orderIndex }
             workoutDetailsList = details.map { detail in
@@ -182,7 +182,7 @@ class WorkoutTrackerController: ObservableObject {
                 let setInputs = sortedSets.map { ws in
                     SetInput(id: ws.id, reps: ws.reps, weight: ws.weight, time: ws.time, distance: ws.distance, isCompleted: ws.isCompleted, setIndex: ws.setIndex)
                 }
-
+                
                 return WorkoutDetailInput(
                     id: detail.id,
                     exerciseId: detail.exerciseId,
@@ -194,7 +194,7 @@ class WorkoutTrackerController: ObservableObject {
                 )
             }
         }
-
+        
         self.workoutDetails = workoutDetailsList
     }
     
@@ -226,14 +226,14 @@ class WorkoutTrackerController: ObservableObject {
     
     func addSet(for workoutIndex: Int) {
         guard workoutIndex < workoutDetails.count else { return }
-
+        
         let maxSetIndex = workoutDetails[workoutIndex].sets.max(by: { $0.setIndex < $1.setIndex })?.setIndex ?? 0
         let newSetIndex = maxSetIndex + 1
-
+        
         let newSet = workoutDetails[workoutIndex].sets.last.map {
             SetInput(reps: $0.reps, weight: $0.weight, time: $0.time, distance: $0.distance, setIndex: newSetIndex)
         } ?? SetInput(reps: 0, weight: 0, time: 0, distance: 0, setIndex: newSetIndex)
-
+        
         self.workoutDetails[workoutIndex].sets.append(newSet)
     }
     
@@ -244,7 +244,7 @@ class WorkoutTrackerController: ObservableObject {
             workoutDetails[workoutIndex].sets.remove(at: setIndexToDelete)
         }
     }
-
+    
     private func updateActiveSession() {
         guard let activeSession = workoutManager.getSessions().first(where: { $0.isActive }) else {
             hasActiveSession = false
@@ -272,7 +272,7 @@ class WorkoutTrackerController: ObservableObject {
         loadWorkouts()
     }
     
-
+    
     func duplicateWorkout(_ workoutId: UUID) {
         workoutManager.duplicateWorkout(originalWorkoutId: workoutId)
         loadWorkouts()

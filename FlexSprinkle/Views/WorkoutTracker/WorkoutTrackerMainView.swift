@@ -35,7 +35,7 @@ struct WorkoutTrackerMainView: View {
                 Image(systemName: "clock")
                     .help("View workout history")
             })
-        
+            
             .onAppear(perform: workoutController.loadWorkouts)
         }
         .sheet(item: $presentingModal) { modal in
@@ -73,7 +73,7 @@ struct WorkoutTrackerMainView: View {
                         CardView(workoutId: workout.id, onDelete: {
                             deleteWorkouts(workout.id)
                         },
-                        onDuplicate: {
+                                 onDuplicate: {
                             duplicateWorkout(workout.id)
                         })
                         .transition(.asymmetric(insertion: .opacity.combined(with: .scale), removal: .opacity.combined(with: .scale)))

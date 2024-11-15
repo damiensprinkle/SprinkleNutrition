@@ -10,7 +10,7 @@ import SwiftUI
 // Placeholder views for tab content
 struct HomeContentView: View {
     @EnvironmentObject var appViewModel: AppViewModel
-    @EnvironmentObject var workoutManager: WorkoutManager
+    @EnvironmentObject var workoutController: WorkoutTrackerController
 
     var body: some View {
         Text("Should display widgets here")

@@ -10,19 +10,19 @@ import SwiftUI
 struct CheckboxStyle: ToggleStyle {
     func makeBody(configuration: Configuration) -> some View {
         Button(action: {
-            configuration.isOn.toggle() // Toggle the state
+            configuration.isOn.toggle()
         }) {
             HStack {
                 if configuration.isOn {
-                    Image(systemName: "checkmark.square.fill") // Checked state
-                        .foregroundColor(.blue) // Customize color
+                    Image(systemName: "checkmark.square.fill")
+                        .foregroundColor(.blue)
                 } else {
-                    Image(systemName: "square") // Unchecked state
-                        .foregroundColor(.gray) // Customize color
+                    Image(systemName: "square")
+                        .foregroundColor(.gray)
                 }
                 configuration.label
             }
         }
-        .buttonStyle(PlainButtonStyle()) // Use plain button to avoid any unwanted styling
+        .buttonStyle(PlainButtonStyle())
     }
 }

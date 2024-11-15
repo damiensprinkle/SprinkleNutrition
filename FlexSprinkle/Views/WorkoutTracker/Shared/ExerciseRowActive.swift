@@ -25,7 +25,6 @@ struct ExerciseRowActive: View {
     @State private var weightInput: String = ""
     @State private var repsInput: String = ""
     @State private var checked: Bool = false
-    @EnvironmentObject var workoutManager: WorkoutManager
     @EnvironmentObject var focusManager: FocusManager
     @EnvironmentObject var workoutController: WorkoutTrackerController
     
@@ -266,20 +265,4 @@ struct ExerciseRowActive: View {
         setInput.time = Int32(totalSeconds)
     }
     
-    private func convertToSeconds(_ input: String) -> Int {
-        let paddedInput = input.padding(toLength: 6, withPad: "0", startingAt: 0)
-        let hours = Int(paddedInput.prefix(2)) ?? 0
-        let minutes = Int(paddedInput.dropFirst(2).prefix(2)) ?? 0
-        let seconds = Int(paddedInput.suffix(2)) ?? 0
-        
-        return hours * 3600 + minutes * 60 + seconds
-    }
-    
-    private func formatToHHMMSS(_ totalSeconds: Int) -> String {
-        let hours = totalSeconds / 3600
-        let minutes = (totalSeconds % 3600) / 60
-        let seconds = totalSeconds % 60
-        
-        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-    }
 }

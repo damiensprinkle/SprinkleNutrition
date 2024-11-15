@@ -191,21 +191,6 @@ struct ExerciseRow: View {
             }
         }
     }
-
-    private func convertToSeconds(_ input: String) -> Int {
-        let paddedInput = input.padding(toLength: 6, withPad: "0", startingAt: 0)
-        let hours = Int(paddedInput.prefix(2)) ?? 0
-        let minutes = Int(paddedInput.dropFirst(2).prefix(2)) ?? 0
-        let seconds = Int(paddedInput.suffix(2)) ?? 0
-        return hours * 3600 + minutes * 60 + seconds
-    }
-
-    private func formatToHHMMSS(_ totalSeconds: Int) -> String {
-        let hours = totalSeconds / 3600
-        let minutes = (totalSeconds % 3600) / 60
-        let seconds = totalSeconds % 60
-        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-    }
     
     private func formatInput(_ newValue: String) {
         let filtered = newValue.filter { "0123456789".contains($0) }
@@ -215,35 +200,4 @@ struct ExerciseRow: View {
         setInput.time = Int32(totalSeconds)
     }
     
-    private func validateAndSetInput(_ input: inout String, for setInputField: inout Float, maxLength: Int = 10, maxDecimals: Int = 2) {
-        if input.count > maxLength {
-            input = String(input.prefix(maxLength))
-        }
-        
-        let decimalPattern = "^[0-9]{0,\(maxLength)}(?:\\.[0-9]{0,\(maxDecimals)})?$"
-        let regex = try! NSRegularExpression(pattern: decimalPattern)
-        let range = NSRange(location: 0, length: input.utf16.count)
-        
-        if regex.firstMatch(in: input, options: [], range: range) == nil {
-            input = String(input.dropLast())
-        }
-        
-        setInputField = Float(input) ?? 0.0
-    }
-    
-    private func validateAndSetInputInt(_ input: inout String, for setInputField: inout Int32, maxLength: Int = 10) {
-        if input.count > maxLength {
-            input = String(input.prefix(maxLength))
-        }
-        
-        let integerPattern = "^[0-9]{0,\(maxLength)}$"
-        let regex = try! NSRegularExpression(pattern: integerPattern)
-        let range = NSRange(location: 0, length: input.utf16.count)
-        
-        if regex.firstMatch(in: input, options: [], range: range) == nil {
-            input = String(input.dropLast())
-        }
-        
-        setInputField = Int32(input) ?? 0
-    }
 }

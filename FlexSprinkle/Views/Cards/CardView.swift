@@ -5,7 +5,6 @@ struct CardView: View {
     var onDelete: (() -> Void)?
     var onDuplicate: (() -> Void)?
     
-    @EnvironmentObject var workoutManager: WorkoutManager
     @EnvironmentObject var workoutController: WorkoutTrackerController
     @EnvironmentObject var appViewModel: AppViewModel
     
@@ -47,7 +46,6 @@ struct CardView: View {
                 AddWorkoutView(workoutId: UUID(), navigationTitle: "", update: false) // not used
             case .edit(let workoutId):
                 AddWorkoutView(workoutId: workoutId, navigationTitle: "Edit Workout Plan", update: true)
-                    .environmentObject(workoutManager)
                     .environmentObject(appViewModel)
                     .environmentObject(workoutController)
             }

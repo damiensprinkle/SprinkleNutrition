@@ -11,7 +11,6 @@ struct HomeView: View {
     @EnvironmentObject var appViewModel: AppViewModel
     @EnvironmentObject var persistenceController: PersistenceController
     @EnvironmentObject var userManager: UserManager
-    @EnvironmentObject var workoutManager: WorkoutManager
     @EnvironmentObject var workoutController: WorkoutTrackerController
 
     @State private var showUserDetailsForm = false
@@ -25,7 +24,6 @@ struct HomeView: View {
                         CustomTabView()
                             .environmentObject(appViewModel)
                             .environmentObject(userManager)
-                            .environmentObject(workoutManager)
                             .environmentObject(workoutController)
                     }
                 }

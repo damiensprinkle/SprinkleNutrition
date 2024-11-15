@@ -17,7 +17,7 @@ struct DataCardView: View {
             icon
                 .resizable()
                 .scaledToFit()
-                .frame(width: 24, height: 24) // Adjust size as needed
+                .frame(width: 24, height: 24)
                 .padding(.top, 8)
                 .padding(.leading, 8)
             

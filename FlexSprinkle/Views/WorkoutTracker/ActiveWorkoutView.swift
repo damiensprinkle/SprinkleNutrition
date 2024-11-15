@@ -13,7 +13,6 @@ struct ActiveWorkoutView: View {
     var workoutId: UUID
     
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var workoutManager: WorkoutManager
     @EnvironmentObject var appViewModel: AppViewModel
     @EnvironmentObject var workoutController: WorkoutTrackerController
     
@@ -111,7 +110,7 @@ struct ActiveWorkoutView: View {
     private func updateTimerForForeground() {
         if workoutStarted {
             let now = Date()
-            if let startTime = workoutManager.getSessions().first?.startTime {
+            if let startTime = workoutController.workoutManager.getSessions().first?.startTime {
                 self.elapsedTime = Int(now.timeIntervalSince(startTime))
             }
         }
@@ -140,7 +139,6 @@ struct ActiveWorkoutView: View {
                         exerciseQuantifier: workoutController.workoutDetails[index].exerciseQuantifier,
                         exerciseMeasurement: workoutController.workoutDetails[index].exerciseMeasurement
                     )
-                    .environmentObject(workoutManager)
                     .environmentObject(focusManager)
                     .environmentObject(workoutController)
                     .listRowInsets(EdgeInsets())

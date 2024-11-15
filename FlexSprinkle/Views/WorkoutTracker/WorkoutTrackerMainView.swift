@@ -10,7 +10,6 @@ import SwiftData
 
 struct WorkoutTrackerMainView: View {
     @EnvironmentObject var appViewModel: AppViewModel
-    @EnvironmentObject var workoutManager: WorkoutManager
     @EnvironmentObject var workoutController: WorkoutTrackerController
     @State private var deletingWorkouts: Set<UUID> = [] // for dissolve animation
     @State private var duplicatingWorkouts: Set<UUID> = [] // for dissolve animation
@@ -43,12 +42,12 @@ struct WorkoutTrackerMainView: View {
             switch modal {
             case .add:
                 AddWorkoutView(workoutId: UUID(), navigationTitle: "Create Workout Plan", update: false)
-                    .environmentObject(workoutController.workoutManager)
                     .environmentObject(appViewModel)
+                    .environmentObject(workoutController)
             case .edit(let workoutId):
                 AddWorkoutView(workoutId: workoutId, navigationTitle: "Edit Workout Plan", update: true)
-                    .environmentObject(workoutController.workoutManager)
                     .environmentObject(appViewModel)
+                    .environmentObject(workoutController)
             }
         }
     }
@@ -80,7 +79,6 @@ struct WorkoutTrackerMainView: View {
                         .transition(.asymmetric(insertion: .opacity.combined(with: .scale), removal: .opacity.combined(with: .scale)))
                         .environmentObject(appViewModel)
                         .environmentObject(workoutController)
-                        .environmentObject(workoutManager)
                     }
                 }
             }

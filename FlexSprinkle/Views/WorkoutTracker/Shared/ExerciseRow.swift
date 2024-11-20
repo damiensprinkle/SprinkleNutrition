@@ -88,7 +88,7 @@ struct ExerciseRow: View {
                         }
                     }
                     .onChange(of: distanceInput) {
-                        validateAndSetInput(&distanceInput, for: &setInput.distance, maxLength: 5, maxDecimals: 2)
+                        validateAndSetInputFloat(&distanceInput, for: &setInput.distance, maxLength: 5, maxDecimals: 2)
                         if !distanceInput.isEmpty {
                             let newDistance = Float(distanceInput) ?? 0.0
                             if setInput.distance != newDistance {
@@ -123,7 +123,7 @@ struct ExerciseRow: View {
                         }
                     }
                     .onChange(of: weightInput) {
-                        validateAndSetInput(&weightInput, for: &setInput.weight, maxLength: 5, maxDecimals: 2)
+                        validateAndSetInputFloat(&weightInput, for: &setInput.weight, maxLength: 5, maxDecimals: 2)
                     }
                     .onAppear {
                         weightInput = String(setInput.weight)

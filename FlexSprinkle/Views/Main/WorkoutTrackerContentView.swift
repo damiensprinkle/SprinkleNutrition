@@ -10,7 +10,7 @@ import SwiftUI
 struct WorkoutContentMainView: View {
     @EnvironmentObject var appViewModel: AppViewModel
     @Environment(\.managedObjectContext) var managedObjectContext
-    @EnvironmentObject var workoutManager: WorkoutManager
+    @EnvironmentObject var workoutController: WorkoutTrackerController
 
 
     var body: some View {
@@ -20,25 +20,23 @@ struct WorkoutContentMainView: View {
             case .main:
                 AnyView(WorkoutTrackerMainView()
                     .environment(\.managedObjectContext, managedObjectContext)
-                    .environmentObject(workoutManager))
+                    .environmentObject(workoutController))
                 .transition(.slide)
                 
             case .workoutOverview(let workoutId):
                 AnyView(WorkoutOverviewView(workoutId: workoutId)
-                    .environmentObject(workoutManager)
+                    .environmentObject(workoutController)
                     .environmentObject(appViewModel))
                 .transition(.slide)
                 
             case .workoutActiveView(let workoutId):
                 ActiveWorkoutView(workoutId: workoutId)
                     .id(workoutId)
-                    .environmentObject(workoutManager)
                     .environmentObject(appViewModel)
-                
+                    .environmentObject(workoutController)
                 .transition(.slide)
             case .workoutHistoryView:
                 AnyView(WorkoutHistoryView()
-                    .environmentObject(workoutManager)
                     .environmentObject(appViewModel))
                 .transition(.slide)
             }

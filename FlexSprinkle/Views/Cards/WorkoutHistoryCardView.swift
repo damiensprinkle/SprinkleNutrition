@@ -11,7 +11,7 @@ struct WorkoutHistoryCardView: View {
     var workoutId: UUID
     let history: WorkoutHistory
     var onDelete: (() -> Void)?
-    @EnvironmentObject var workoutManager: WorkoutManager
+    @EnvironmentObject var workoutController: WorkoutTrackerController
     @State private var workoutTitle: String = ""
     @AppStorage("weightPreference") private var weightPreference: String = "Lbs"
     @AppStorage("distancePreference") private var distancePreference: String = "mile"
@@ -92,7 +92,7 @@ struct WorkoutHistoryCardView: View {
         }
         .padding()
         .onAppear {
-            workoutTitle = workoutManager.fetchWorkoutById(for: workoutId)?.name ?? "Workout"
+            workoutTitle = workoutController.selectedWorkoutName ?? ""
         }
         .alert(isPresented: $showAlert) {
             Alert(

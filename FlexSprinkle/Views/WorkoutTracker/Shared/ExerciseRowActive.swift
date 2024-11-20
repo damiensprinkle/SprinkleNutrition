@@ -16,7 +16,6 @@ struct ExerciseRowActive: View {
     let workoutStarted: Bool
     var exerciseQuantifier: String
     var exerciseMeasurement: String
-
     
     @FocusState private var focusedField: FocusableField?
     @State private var originalTimeInput: String = ""
@@ -26,8 +25,8 @@ struct ExerciseRowActive: View {
     @State private var weightInput: String = ""
     @State private var repsInput: String = ""
     @State private var checked: Bool = false
-    @EnvironmentObject var workoutManager: WorkoutManager
     @EnvironmentObject var focusManager: FocusManager
+    @EnvironmentObject var workoutController: WorkoutTrackerController
     
     
     var body: some View {
@@ -75,7 +74,7 @@ struct ExerciseRowActive: View {
             .toggleStyle(SwitchToggleStyle(tint: Color(UIColor.green)))
             .scaleEffect(0.8)
             .padding(.trailing, 10)
-
+            
         }
         .onAppear{
             if (!hasLoaded){
@@ -86,30 +85,25 @@ struct ExerciseRowActive: View {
             ToolbarItem(placement: .keyboard) {
                 if(focusedField == .distance){
                     Button("Done") {
-                        focusedField = nil
-                        focusManager.isAnyTextFieldFocused = false
-                        focusManager.currentlyFocusedField = nil
+                        resetFocusedField()
+                        
                     }
                 }
                 if(focusedField == .time) {
                     Button("Done") {
-                        focusedField = nil
-                        focusManager.isAnyTextFieldFocused = false
-                        focusManager.currentlyFocusedField = nil
+                        resetFocusedField()
+                        
                     }
                 }
                 if(focusedField == .weight){
                     Button("Done") {
-                        focusedField = nil
-                        focusManager.isAnyTextFieldFocused = false
-                        focusManager.currentlyFocusedField = nil
+                        resetFocusedField()
+                        
                     }
                 }
                 if(focusedField == .reps) {
                     Button("Done") {
-                        focusedField = nil
-                        focusManager.isAnyTextFieldFocused = false
-                        focusManager.currentlyFocusedField = nil
+                        resetFocusedField()
                     }
                 }
             }
@@ -149,6 +143,12 @@ struct ExerciseRowActive: View {
             }
             .keyboardType(.numberPad)
             .frame(width: 100, height: 20)
+    }
+    
+    private func resetFocusedField(){
+        focusedField = nil
+        focusManager.isAnyTextFieldFocused = false
+        focusManager.currentlyFocusedField = nil
     }
     
     private var distanceTextField: some View {
@@ -253,7 +253,7 @@ struct ExerciseRowActive: View {
     
     func saveWorkoutDetail() {
         let setsInput = [setInput]
-        workoutManager.saveOrUpdateSetsDuringActiveWorkout(workoutId: workoutId, exerciseId: workoutDetails.exerciseId!, exerciseName: workoutDetails.exerciseName, setsInput: setsInput, orderIndex: workoutDetails.orderIndex)
+        workoutController.workoutManager.saveOrUpdateSetsDuringActiveWorkout(workoutId: workoutId, exerciseId: workoutDetails.exerciseId!, exerciseName: workoutDetails.exerciseName, setsInput: setsInput, orderIndex: workoutDetails.orderIndex)
     }
     
     private func formatInput(_ newValue: String) {
@@ -265,20 +265,4 @@ struct ExerciseRowActive: View {
         setInput.time = Int32(totalSeconds)
     }
     
-    private func convertToSeconds(_ input: String) -> Int {
-        let paddedInput = input.padding(toLength: 6, withPad: "0", startingAt: 0)
-        let hours = Int(paddedInput.prefix(2)) ?? 0
-        let minutes = Int(paddedInput.dropFirst(2).prefix(2)) ?? 0
-        let seconds = Int(paddedInput.suffix(2)) ?? 0
-        
-        return hours * 3600 + minutes * 60 + seconds
-    }
-    
-    private func formatToHHMMSS(_ totalSeconds: Int) -> String {
-        let hours = totalSeconds / 3600
-        let minutes = (totalSeconds % 3600) / 60
-        let seconds = totalSeconds % 60
-        
-        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-    }
 }

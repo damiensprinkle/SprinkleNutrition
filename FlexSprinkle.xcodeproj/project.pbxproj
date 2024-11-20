@@ -12,11 +12,15 @@
 		081F87EF2B83C5E700BBBDF2 /* UserInfo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87ED2B83C5E700BBBDF2 /* UserInfo+CoreDataClass.swift */; };
 		081F87F02B83C5E700BBBDF2 /* UserInfo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87EE2B83C5E700BBBDF2 /* UserInfo+CoreDataProperties.swift */; };
 		081F87F22B87F6ED00BBBDF2 /* CheckboxStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87F12B87F6ED00BBBDF2 /* CheckboxStyle.swift */; };
+		0828683F2CE7E13900835C08 /* ExerciseInputHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0828683E2CE7E13500835C08 /* ExerciseInputHelper.swift */; };
+		0847535B2CE3D47D00C6A7F9 /* WorkoutTrackerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0847535A2CE3D47000C6A7F9 /* WorkoutTrackerController.swift */; };
+		0847535F2CE3D59B00C6A7F9 /* WorkoutSessionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0847535E2CE3D59900C6A7F9 /* WorkoutSessionModel.swift */; };
+		084753632CE3F2D500C6A7F9 /* ModalType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084753622CE3F2D100C6A7F9 /* ModalType.swift */; };
+		0847536F2CE5205D00C6A7F9 /* WorkoutSaveError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0847536E2CE5205500C6A7F9 /* WorkoutSaveError.swift */; };
 		085466812CDFAD4700136FBC /* WorkoutDetail+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0854667F2CDFAD4700136FBC /* WorkoutDetail+CoreDataClass.swift */; };
 		085466822CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0854667D2CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataClass.swift */; };
 		085466832CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0854667E2CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataProperties.swift */; };
 		085466842CDFAD4700136FBC /* WorkoutDetail+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 085466802CDFAD4700136FBC /* WorkoutDetail+CoreDataProperties.swift */; };
-		087111372B728F8F0054E315 /* ModalType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087111362B728F8F0054E315 /* ModalType.swift */; };
 		0871113A2B72AD830054E315 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 087111382B72AD830054E315 /* Model.xcdatamodeld */; };
 		0871113D2B7306C20054E315 /* ColorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0871113C2B7306C20054E315 /* ColorManager.swift */; };
 		087111412B7405990054E315 /* WorkoutDetailsInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087111402B7405990054E315 /* WorkoutDetailsInput.swift */; };
@@ -96,11 +100,15 @@
 		081F87ED2B83C5E700BBBDF2 /* UserInfo+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfo+CoreDataClass.swift"; sourceTree = "<group>"; };
 		081F87EE2B83C5E700BBBDF2 /* UserInfo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		081F87F12B87F6ED00BBBDF2 /* CheckboxStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxStyle.swift; sourceTree = "<group>"; };
+		0828683E2CE7E13500835C08 /* ExerciseInputHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseInputHelper.swift; sourceTree = "<group>"; };
+		0847535A2CE3D47000C6A7F9 /* WorkoutTrackerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTrackerController.swift; sourceTree = "<group>"; };
+		0847535E2CE3D59900C6A7F9 /* WorkoutSessionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSessionModel.swift; sourceTree = "<group>"; };
+		084753622CE3F2D100C6A7F9 /* ModalType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalType.swift; sourceTree = "<group>"; };
+		0847536E2CE5205500C6A7F9 /* WorkoutSaveError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSaveError.swift; sourceTree = "<group>"; };
 		0854667D2CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TemporaryWorkoutDetail+CoreDataClass.swift"; sourceTree = "<group>"; };
 		0854667E2CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TemporaryWorkoutDetail+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		0854667F2CDFAD4700136FBC /* WorkoutDetail+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkoutDetail+CoreDataClass.swift"; sourceTree = "<group>"; };
 		085466802CDFAD4700136FBC /* WorkoutDetail+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WorkoutDetail+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		087111362B728F8F0054E315 /* ModalType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalType.swift; sourceTree = "<group>"; };
 		087111392B72AD830054E315 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		0871113C2B7306C20054E315 /* ColorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorManager.swift; sourceTree = "<group>"; };
 		087111402B7405990054E315 /* WorkoutDetailsInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutDetailsInput.swift; sourceTree = "<group>"; };
@@ -181,7 +189,8 @@
 		087111352B728F810054E315 /* Enums */ = {
 			isa = PBXGroup;
 			children = (
-				087111362B728F8F0054E315 /* ModalType.swift */,
+				0847536E2CE5205500C6A7F9 /* WorkoutSaveError.swift */,
+				084753622CE3F2D100C6A7F9 /* ModalType.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -254,6 +263,7 @@
 		08B3CFE82B7E9F9A002F5C92 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				0828683E2CE7E13500835C08 /* ExerciseInputHelper.swift */,
 				08B3CFE92B7E9FA6002F5C92 /* TimeHelper.swift */,
 			);
 			path = Helpers;
@@ -321,6 +331,7 @@
 		08B790242B6E94840002DA68 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				0847535E2CE3D59900C6A7F9 /* WorkoutSessionModel.swift */,
 				087111442B7519900054E315 /* CoreData */,
 				087111402B7405990054E315 /* WorkoutDetailsInput.swift */,
 				087111A52B77C32D0054E315 /* AppViewModel.swift */,
@@ -332,6 +343,7 @@
 		08B790252B6E948C0002DA68 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				0847535A2CE3D47000C6A7F9 /* WorkoutTrackerController.swift */,
 				08C31FFE2B82EA3A002EE8A7 /* PersistenceController.swift */,
 			);
 			path = Controllers;
@@ -512,11 +524,12 @@
 			files = (
 				081F87F02B83C5E700BBBDF2 /* UserInfo+CoreDataProperties.swift in Sources */,
 				08B3CFDD2B7D9567002F5C92 /* WorkoutSet+CoreDataProperties.swift in Sources */,
+				0847535F2CE3D59B00C6A7F9 /* WorkoutSessionModel.swift in Sources */,
 				08C31FFF2B82EA3A002EE8A7 /* PersistenceController.swift in Sources */,
 				08B3CFF22B810FB7002F5C92 /* WorkoutHistoryCardView.swift in Sources */,
 				081F87EF2B83C5E700BBBDF2 /* UserInfo+CoreDataClass.swift in Sources */,
+				0828683F2CE7E13900835C08 /* ExerciseInputHelper.swift in Sources */,
 				08B790222B6E911D0002DA68 /* NutritionHelperMainView.swift in Sources */,
-				087111372B728F8F0054E315 /* ModalType.swift in Sources */,
 				08B3CF7B2B7BDD0C002F5C92 /* AddExerciseDialog.swift in Sources */,
 				08B3CFE52B7D9567002F5C92 /* Workouts+CoreDataProperties.swift in Sources */,
 				08B3CFEC2B80227E002F5C92 /* WorkoutHistoryView.swift in Sources */,
@@ -536,6 +549,7 @@
 				087111722B77B3120054E315 /* WorkoutOverviewView.swift in Sources */,
 				08B78FF22B6DBA370002DA68 /* HomeView.swift in Sources */,
 				087111AD2B77E9EC0054E315 /* CustomTabView.swift in Sources */,
+				084753632CE3F2D500C6A7F9 /* ModalType.swift in Sources */,
 				08B7901E2B6E8F8D0002DA68 /* SettingsView.swift in Sources */,
 				08B3CFDC2B7D9567002F5C92 /* WorkoutSet+CoreDataClass.swift in Sources */,
 				08B3CFEF2B810DFF002F5C92 /* WorkoutHistory+CoreDataClass.swift in Sources */,
@@ -557,6 +571,8 @@
 				081F87F22B87F6ED00BBBDF2 /* CheckboxStyle.swift in Sources */,
 				08FC75802CDFCA86001E2E5B /* ExerciseRowActive.swift in Sources */,
 				081F87E62B83A7CD00BBBDF2 /* UserManager.swift in Sources */,
+				0847536F2CE5205D00C6A7F9 /* WorkoutSaveError.swift in Sources */,
+				0847535B2CE3D47D00C6A7F9 /* WorkoutTrackerController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

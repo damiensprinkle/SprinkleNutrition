@@ -10,8 +10,9 @@ import SwiftUI
 struct HomeView: View {
     @EnvironmentObject var appViewModel: AppViewModel
     @EnvironmentObject var persistenceController: PersistenceController
-    @StateObject var userManager = UserManager()
-    
+    @EnvironmentObject var userManager: UserManager
+    @EnvironmentObject var workoutController: WorkoutTrackerController
+
     @State private var showUserDetailsForm = false
     @AppStorage("optOut") private var optOut: Bool = false
 
@@ -23,6 +24,7 @@ struct HomeView: View {
                         CustomTabView()
                             .environmentObject(appViewModel)
                             .environmentObject(userManager)
+                            .environmentObject(workoutController)
                     }
                 }
                 .onAppear {

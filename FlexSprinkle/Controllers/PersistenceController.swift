@@ -11,9 +11,9 @@ import CoreData
 class PersistenceController: ObservableObject {
     static let shared = PersistenceController()
     let container: NSPersistentContainer
-
+    
     @Published var isLoaded = false
-
+    
     private init() {
         container = NSPersistentContainer(name: "Model")
         DispatchQueue.global(qos: .userInitiated).async {
@@ -28,7 +28,7 @@ class PersistenceController: ObservableObject {
             }
         }
     }
-
+    
     
     func loadPersistentStores(completion: @escaping (Bool) -> Void) {
         container.loadPersistentStores { (storeDescription, error) in

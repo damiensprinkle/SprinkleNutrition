@@ -9,10 +9,10 @@ import SwiftUI
 
 struct WorkoutHistoryView: View {
     @EnvironmentObject var appViewModel: AppViewModel
-    @EnvironmentObject var workoutManager: WorkoutManager
+    @EnvironmentObject var workoutController: WorkoutTrackerController
     @State private var histories: [WorkoutHistory] = []
     
-    @State private var deletingWorkoutsHistory: Set<UUID> = [] // for dissolve animation
+    @State private var deletingWorkoutsHistory: Set<UUID> = []
     
     @State private var selectedMonth: Int = Calendar.current.component(.month, from: Date()) - 1
     @State private var selectedYear: Int = Calendar.current.component(.year, from: Date())
@@ -47,7 +47,7 @@ struct WorkoutHistoryView: View {
         components.month = selectedMonth + 1
         let startDate = calendar.date(from: components)!
         
-        histories = workoutManager.fetchAllWorkoutHistory(for: startDate) ?? []
+        histories = workoutController.workoutManager.fetchAllWorkoutHistory(for: startDate) ?? []
     }
     
     private func deleteWorkoutHistory(_ historyId: UUID) {
@@ -55,7 +55,7 @@ struct WorkoutHistoryView: View {
             deletingWorkoutsHistory.insert(historyId)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
                 withAnimation {
-                    self.workoutManager.deleteWorkoutHistory(for: historyId)
+                    self.workoutController.workoutManager.deleteWorkoutHistory(for: historyId)
                     loadHistories()
                     self.deletingWorkoutsHistory.remove(historyId)
                 }

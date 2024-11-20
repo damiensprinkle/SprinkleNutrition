@@ -5,8 +5,8 @@ import ConfettiSwiftUI
 struct WorkoutOverviewView: View {
     var workoutId: UUID
     var workoutDetails: [WorkoutDetailInput] = []
-
-    @EnvironmentObject var workoutManager: WorkoutManager
+    
+    @EnvironmentObject var workoutController: WorkoutTrackerController
     @EnvironmentObject var appViewModel: AppViewModel
     @State private var counter = 0
     @State private var history: WorkoutHistory?
@@ -68,17 +68,14 @@ struct WorkoutOverviewView: View {
         }
         .navigationTitle("Time: \(history?.workoutTimeToComplete ?? "0")")
         .onAppear {
-            history = workoutManager.fetchLatestWorkoutHistory(for: workoutId)
+            history = workoutController.workoutManager.fetchLatestWorkoutHistory(for: workoutId)
             
             if let totalCardioTimeInSeconds = Int(history?.timeDoingCardio ?? "0") {
-                let hours = totalCardioTimeInSeconds / 3600
-                let minutes = (totalCardioTimeInSeconds % 3600) / 60
-                let seconds = totalCardioTimeInSeconds % 60
-                totalCardioTime = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+                totalCardioTime = formatTimeFromSeconds(totalSeconds: totalCardioTimeInSeconds)
             }
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                withAnimation(.easeIn(duration: 1.2)) {
+                withAnimation(.easeIn(duration: 1.0)) {
                     showProceedButton = true
                 }
             }

@@ -38,4 +38,5 @@ class AppViewModel: ObservableObject {
          case workout
          case nutrition
     }
+    
 }

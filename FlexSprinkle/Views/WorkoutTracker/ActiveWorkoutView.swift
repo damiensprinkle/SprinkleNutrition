@@ -13,16 +13,14 @@ struct ActiveWorkoutView: View {
     var workoutId: UUID
     
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var workoutManager: WorkoutManager
     @EnvironmentObject var appViewModel: AppViewModel
+    @EnvironmentObject var workoutController: WorkoutTrackerController
     
     @StateObject private var focusManager = FocusManager()
     @State private var workoutTitle: String = ""
-    @State private var workoutDetails: [WorkoutDetailInput] = []
     @State private var errorMessage: String = ""
     @State private var showAlert: Bool = false
     @State private var showUpdateDialog = false
-    @State private var originalWorkoutDetails: [WorkoutDetailInput] = []
     @State private var workoutStarted = false
     @State private var elapsedTime = 0
     @State private var cancellableTimer: AnyCancellable?
@@ -79,13 +77,16 @@ struct ActiveWorkoutView: View {
                 NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { _ in
                     self.handleAppBackgrounding()
                 }
-                if(workoutManager.fetchWorkoutById(for: workoutId) != nil){
-                    loadWorkoutDetails() // sets self.workoutDetails
-                    print("loaded workout details")
-                    originalWorkoutDetails = workoutDetails
+                if(workoutController.workoutManager.fetchWorkoutById(for: workoutId) != nil){
+                    workoutController.loadWorkoutDetails(for: workoutId)
+                    workoutController.originalWorkoutDetails = workoutController.workoutDetails
                     initSession()
                     isLoading = false
                     print("finished loading active workout")
+                }
+                else{
+                    isLoading = false
+                    print ("error, workout details not found")
                 }
             }
             .onDisappear {
@@ -101,135 +102,64 @@ struct ActiveWorkoutView: View {
                     }),
                     secondaryButton: .cancel(Text("Keep Original Values"), action: {
                         completeEndWorkoutSequence()
-                    })                        )
+                    }))
             }
         }
     }
     
-    
-    
     private func updateTimerForForeground() {
         if workoutStarted {
             let now = Date()
-            if let startTime = workoutManager.getSessions().first?.startTime {
+            if let startTime = workoutController.workoutManager.getSessions().first?.startTime {
                 self.elapsedTime = Int(now.timeIntervalSince(startTime))
             }
         }
     }
     
     private func handleAppBackgrounding() {
-        //not needed?
-    }
-    
-    private func loadTemporaryData() {
-        let temporaryDetails = workoutManager.loadTemporaryWorkoutData(for: workoutId)
-        
-        for tempDetail in temporaryDetails {
-            if let index = workoutDetails.firstIndex(where: { $0.exerciseId == tempDetail.exerciseId }) {
-                var existingSets = workoutDetails[index].sets
-                
-                for tempSet in tempDetail.sets {
-                    if let setIndex = existingSets.firstIndex(where: { $0.id == tempSet.id }) {
-                        existingSets[setIndex] = tempSet
-                    }
-                }
-                
-                let sortedSets = existingSets.sorted { $0.setIndex < $1.setIndex }
-                
-                workoutDetails[index].sets = sortedSets
-            } else {
-                let sortedSets = tempDetail.sets.sorted(by: { $0.setIndex < $1.setIndex })
-                var newTempDetail = tempDetail
-                newTempDetail.sets = sortedSets
-                workoutDetails.append(newTempDetail)
-            }
-        }
-        workoutDetails.sort { $0.orderIndex < $1.orderIndex }
     }
     
     private var displayExerciseDetailsAndSets: some View {
-        ForEach(workoutDetails.indices, id: \.self) { index in
+        ForEach(workoutController.workoutDetails.indices, id: \.self) { index in
             Section(header: HStack {
-                Text(workoutDetails[index].exerciseName).font(.title2)
+                Text(workoutController.workoutDetails[index].exerciseName).font(.title2)
                 Spacer()
             }) {
-                if !workoutDetails[index].sets.isEmpty {
-                    SetHeaders(exerciseQuantifier: workoutDetails[index].exerciseQuantifier, exerciseMeasurement: workoutDetails[index].exerciseMeasurement, active: true)
+                if !workoutController.workoutDetails[index].sets.isEmpty {
+                    SetHeaders(exerciseQuantifier: workoutController.workoutDetails[index].exerciseQuantifier, exerciseMeasurement: workoutController.workoutDetails[index].exerciseMeasurement, active: true)
                 }
                 
-                ForEach(workoutDetails[index].sets.indices, id: \.self) { setIndex in
+                ForEach(workoutController.workoutDetails[index].sets.indices, id: \.self) { setIndex in
                     ExerciseRowActive(
-                        setInput: $workoutDetails[index].sets[setIndex],
+                        setInput: $workoutController.workoutDetails[index].sets[setIndex],
                         setIndex: setIndex + 1,
-                        workoutDetails: workoutDetails[index],
+                        workoutDetails: workoutController.workoutDetails[index],
                         workoutId: workoutId,
                         workoutStarted: workoutStarted,
-                        exerciseQuantifier: workoutDetails[index].exerciseQuantifier,
-                        exerciseMeasurement: workoutDetails[index].exerciseMeasurement
+                        exerciseQuantifier: workoutController.workoutDetails[index].exerciseQuantifier,
+                        exerciseMeasurement: workoutController.workoutDetails[index].exerciseMeasurement
                     )
-                    .environmentObject(workoutManager)
                     .environmentObject(focusManager)
+                    .environmentObject(workoutController)
                     .listRowInsets(EdgeInsets())
                 }
             }
         }
     }
     
-    
-    
     private func initSession() {
-        let sessionsWorkoutId = workoutManager.getWorkoutIdOfActiveSession()
-        if sessionsWorkoutId == workoutId {
+        if(workoutController.hasActiveSession){
             self.workoutStarted = true
-            let activeSession = workoutManager.getSessions().first!
+            let activeSession = workoutController.workoutManager.getSessions().first!
             if let startTime = activeSession.startTime {
                 self.elapsedTime = Int(Date().timeIntervalSince(startTime))
                 self.cancellableTimer = Timer.publish(every: 1, on: .main, in: .common).autoconnect().sink { _ in
                     self.elapsedTime += 1
                 }
             }
-            loadTemporaryData()
+            workoutController.loadTemporaryWorkoutDetails(for: workoutId)
         }
     }
-    
-    private func loadWorkoutDetails() {
-        guard let workout = workoutManager.fetchWorkoutById(for: workoutId) else {
-            print("Could not find workout with ID \(workoutId)")
-            return
-        }
-        
-        self.workoutTitle = workout.name ?? ""
-        
-        if let detailsSet = workout.details as? Set<WorkoutDetail> {
-            let details = detailsSet.sorted { $0.orderIndex < $1.orderIndex }
-            self.workoutDetails = details.map { detail in
-                let sortedSets = (detail.sets?.allObjects as? [WorkoutSet])?.sorted(by: { $0.setIndex < $1.setIndex }) ?? []
-                let setInputs = sortedSets.map { ws in
-                    SetInput(
-                        id: ws.id,
-                        reps: ws.reps,
-                        weight: ws.weight,
-                        time: ws.time,
-                        distance: ws.distance,
-                        isCompleted: ws.isCompleted,
-                        setIndex: ws.setIndex
-                    )
-                }
-                
-                return WorkoutDetailInput(
-                    id: detail.id,
-                    exerciseId: detail.exerciseId,
-                    exerciseName: detail.exerciseName!,
-                    orderIndex: detail.orderIndex,
-                    sets: setInputs,
-                    exerciseQuantifier: detail.exerciseQuantifier!,
-                    exerciseMeasurement: detail.exerciseMeasurement!
-                )
-            }
-        }
-    }
-    
-    
     
     private func startWorkout() {
         workoutStarted = true
@@ -238,7 +168,7 @@ struct ActiveWorkoutView: View {
             self.elapsedTime += 1
         }
         
-        workoutManager.setSessionStatus(workoutId: workoutId, isActive: true)
+        workoutController.workoutManager.setSessionStatus(workoutId: workoutId, isActive: true)
     }
     
     private func buttonAction() {
@@ -259,7 +189,7 @@ struct ActiveWorkoutView: View {
     
     
     private func endWorkout() {
-        if hasWorkoutChanged(original: originalWorkoutDetails, updated: workoutDetails) {
+        if workoutController.hasWorkoutChanged() {
             showUpdateDialog = true
         } else {
             completeEndWorkoutSequence()
@@ -269,93 +199,19 @@ struct ActiveWorkoutView: View {
     private func completeEndWorkoutSequence() {
         workoutStarted = false
         showEndWorkoutOption = false
-        workoutManager.setSessionStatus(workoutId: workoutId, isActive: false)
-        saveWorkoutHistory()
-        
-        workoutManager.deleteAllTemporaryWorkoutDetails()
-        
+        workoutController.setSessionStatus(workoutId: workoutId, isActive: false)
+        workoutController.saveWorkoutHistory(elapsedTimeFormatted: elapsedTimeFormatted, workoutId: workoutId)
+        workoutController.workoutManager.deleteAllTemporaryWorkoutDetails()
         appViewModel.navigateTo(.workoutOverview(workoutId))
     }
     
-    func hasWorkoutChanged(original: [WorkoutDetailInput], updated: [WorkoutDetailInput]) -> Bool {
-        guard original.count == updated.count else { return true }
-        
-        for (index, originalDetail) in original.enumerated() {
-            let updatedDetail = updated[index]
-            
-            if originalDetail.exerciseId != updatedDetail.exerciseId ||
-                originalDetail.exerciseName != updatedDetail.exerciseName ||
-                originalDetail.orderIndex != updatedDetail.orderIndex ||
-                originalDetail.sets.count != updatedDetail.sets.count {
-                return true
-            }
-            
-            
-            for (setIndex, originalSet) in originalDetail.sets.enumerated() {
-                let updatedSet = updatedDetail.sets[setIndex]
-                
-                if originalSet.reps != updatedSet.reps ||
-                    originalSet.weight != updatedSet.weight ||
-                    originalSet.time != updatedSet.time ||
-                    originalSet.distance != updatedSet.distance {
-                    return true
-                }
-            }
-        }
-        
-        return false
-    }
-    
-    
     func updateWorkoutValues() {
-        workoutManager.updateWorkoutDetails(workoutId: workoutId, workoutDetailsInput: workoutDetails)
+        workoutController.workoutManager.updateWorkoutDetails(workoutId: workoutId, workoutDetailsInput: workoutController.workoutDetails)
         completeEndWorkoutSequence()
     }
     
-    private func saveWorkoutHistory(){
-        let totalWeightLifted = workoutDetails.reduce(0) { detailSum, detail in
-            detailSum + detail.sets.reduce(0) { setSum, setInput in
-                let reps = setInput.reps > 0 ? Float(setInput.reps) : 1
-                return setSum + (Float(setInput.weight) * reps)
-            }
-        }
-        
-        
-        let totalReps = workoutDetails.reduce(0) { detailSum, detail in
-            detailSum + detail.sets.reduce(0) { setSum, setInput in
-                setSum + Int(setInput.reps)
-            }
-        }
-        
-        let workoutTimeToComplete = elapsedTimeFormatted
-        
-        let totalCardioTime = workoutDetails.reduce(0) { detailSum, detail in
-            detailSum + detail.sets.reduce(0) { setSum, setInput in
-                setSum + Int(setInput.time)
-            }
-        }
-        
-        let totalDistance = workoutDetails.reduce(0) { detailSum, detail in
-            detailSum + detail.sets.reduce(0) { setSum, setInput in
-                setSum + Float(setInput.distance)
-            }
-        }
-        
-        workoutManager.saveWorkoutHistory(
-            workoutId: workoutId,
-            dateCompleted: Date(),
-            totalWeightLifted: Float(totalWeightLifted),
-            repsCompleted: Int32(totalReps),
-            workoutTimeToComplete: workoutTimeToComplete,
-            totalCardioTime: "\(totalCardioTime)",
-            totalDistance: Float(totalDistance),
-            workoutDetailsInput: workoutDetails
-        )
-    }
-    
-    
     private func isAnyOtherSessionActive() -> Bool {
-        let sessionsWorkoutId = workoutManager.getWorkoutIdOfActiveSession()
+        let sessionsWorkoutId = workoutController.workoutManager.getWorkoutIdOfActiveSession()
         if sessionsWorkoutId != workoutId {
             if sessionsWorkoutId == nil {
                 return false

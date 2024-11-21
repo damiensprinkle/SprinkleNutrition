@@ -31,6 +31,7 @@ class AppViewModel: ObservableObject {
         case workoutOverview(UUID)
         case workoutActiveView(UUID)
         case workoutHistoryView
+        case customizeCardView(UUID)
     }
     
     enum Tab : Equatable {

@@ -15,8 +15,10 @@ class WorkoutTrackerController: ObservableObject {
     @Published var activeWorkoutId: UUID?
     @Published var workoutDetails: [WorkoutDetailInput] = []
     @Published var originalWorkoutDetails: [WorkoutDetailInput] = []
+    @Published var cardColor: String? // new
     @Published var selectedWorkoutName: String?
     private let colorManager = ColorManager()
+    
     
     var workoutManager: WorkoutManager
     
@@ -49,6 +51,10 @@ class WorkoutTrackerController: ObservableObject {
     func renameExercise(at index: Int, to newName: String) {
         guard index >= 0, index < workoutDetails.count else { return }
         workoutDetails[index].exerciseName = newName
+    }
+    
+    func saveWorkoutColor(workoutId: UUID) {
+        workoutManager.updateWorkoutColor(workoutId: workoutId, color: cardColor!)
     }
     
     func saveWorkout(title: String, update: Bool, workoutId: UUID) -> Result<Void, WorkoutSaveError> {
@@ -196,6 +202,16 @@ class WorkoutTrackerController: ObservableObject {
         }
         
         self.workoutDetails = workoutDetailsList
+    }
+    
+    func loadWorkoutColors(for workoutId: UUID) {
+        guard let workout = workoutManager.fetchWorkoutById(for: workoutId) else {
+            print("Could not find workout with ID \(workoutId)")
+            return
+        }
+        
+        cardColor = workout.color ?? "MyBlue"
+        selectedWorkoutName = workout.name ?? ""
     }
     
     func loadTemporaryWorkoutDetails(for workoutId: UUID){

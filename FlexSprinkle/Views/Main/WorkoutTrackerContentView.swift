@@ -39,6 +39,12 @@ struct WorkoutContentMainView: View {
                 AnyView(WorkoutHistoryView()
                     .environmentObject(appViewModel))
                 .transition(.slide)
+            case .customizeCardView(let workoutId):
+                AnyView(CustomizeCardView(workoutId: workoutId))
+                    .environmentObject(appViewModel)
+                    .environmentObject(workoutController)
+                    .transition(.slide)
+
             }
         }
         .animation(.default, value: appViewModel.currentView)

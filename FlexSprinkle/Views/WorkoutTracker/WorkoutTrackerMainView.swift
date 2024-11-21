@@ -62,7 +62,7 @@ struct WorkoutTrackerMainView: View {
                         .foregroundColor(.staticWhite)
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color.blue)
+                        .background(Color.myBlue)
                         .edgesIgnoringSafeArea(.horizontal)
                 }
                 Spacer()

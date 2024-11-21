@@ -8,13 +8,13 @@
 import SwiftUI
 
 class ColorManager {
-    private let colorNames: [String] = ["MyPurple", "MyOffPurple", "MyLightBlue", "MyBlue"]
+    
+    public let colorNames: [String] = ["MyBabyBlue", "MyLightBlue",  "MyBlue", "MyOrchid", "MyPurple", "MyTan", "MyGreyBlue", "MyLightBrown", "MyBrown"]
     
     func getRandomColor() -> String {
         if let randomColorName = colorNames.randomElement() {
             return randomColorName
         } else {
-            // Return a default color name if the array is unexpectedly empty
             return "MyBlue"
         }
     }

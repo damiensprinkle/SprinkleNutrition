@@ -343,6 +343,22 @@ class WorkoutManager: ObservableObject {
     }
     
     
+    func updateWorkoutColor(workoutId: UUID, color: String) {
+        guard let context = self.context, let workout = fetchWorkoutById(for: workoutId) else {
+            print("Failed to fetch or context is nil for workout ID \(workoutId)")
+            return
+        }
+        
+        workout.color = color
+        do {
+            try context.save()
+        } catch {
+            print("Error saving context after updating workout details: \(error)")
+        }
+    }
+    
+    
+    
     
     func updateWorkoutDetails(workoutId: UUID, workoutDetailsInput: [WorkoutDetailInput]) {
         guard let context = self.context, let workout = fetchWorkoutById(for: workoutId) else {

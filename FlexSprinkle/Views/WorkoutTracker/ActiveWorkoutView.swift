@@ -26,6 +26,8 @@ struct ActiveWorkoutView: View {
     @State private var cancellableTimer: AnyCancellable?
     @State private var showingStartConfirmation = false
     @State private var showEndWorkoutOption = false
+    @State private var showCancelWorkoutOption = false
+    @State private var activeAlert: ActiveWorkoutAlert = .updateValues
     @State private var endWorkoutConfirmationShown = false
     @State private var foregroundObserver: Any?
     @State private var backgroundObserver: Any?
@@ -66,10 +68,8 @@ struct ActiveWorkoutView: View {
                 },
                 trailing: workoutStarted ? Menu {
                     Button(action: {
-                        workoutStarted = false
-                        showEndWorkoutOption = false
-                        workoutController.setSessionStatus(workoutId: workoutId, isActive: false)
-                        workoutController.workoutManager.deleteAllTemporaryWorkoutDetails()
+                        activeAlert = .cancelWorkout
+                        showAlert = true
                     }) {
                         Label("Cancel Workout", systemImage: "xmark.circle")
                     }
@@ -79,9 +79,35 @@ struct ActiveWorkoutView: View {
                         .foregroundColor(.primary)
                 } : nil
             )
-
             .alert(isPresented: $showAlert) {
-                Alert(title: Text("Error"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
+                switch(activeAlert) {
+                case .cancelWorkout:
+                    return  Alert(
+                        title: Text("Cancel Workout"),
+                        message: Text("Are you sure you want to cancel the workout? This will discard all progress."),
+                        primaryButton: .destructive(Text("Cancel Workout"), action: {
+                            workoutStarted = false
+                            showEndWorkoutOption = false
+                            workoutController.setSessionStatus(workoutId: workoutId, isActive: false)
+                            workoutController.workoutManager.deleteAllTemporaryWorkoutDetails()
+                        }),
+                        secondaryButton: .cancel(Text("Keep Going"), action: {
+                            showEndWorkoutOption = false
+                        })
+                    )
+                    
+                case .updateValues:
+                    return Alert(
+                        title: Text("Update Workout"),
+                        message: Text("You've made changes from your original workout, would you like to update it?"),
+                        primaryButton: .default(Text("Update Values"), action: {
+                            updateWorkoutValues()
+                        }),
+                        secondaryButton: .cancel(Text("Keep Original Values"), action: {
+                            completeEndWorkoutSequence()
+                        }))
+                }
+ 
             }
             .id(workoutId)
             .onAppear {
@@ -108,17 +134,7 @@ struct ActiveWorkoutView: View {
                 NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
                 NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)
             }
-            .alert(isPresented: $showUpdateDialog) {
-                Alert(
-                    title: Text("Update Workout"),
-                    message: Text("You've made changes from your original workout, would you like to update it?"),
-                    primaryButton: .default(Text("Update Values"), action: {
-                        updateWorkoutValues()
-                    }),
-                    secondaryButton: .cancel(Text("Keep Original Values"), action: {
-                        completeEndWorkoutSequence()
-                    }))
-            }
+
         }
     }
     
@@ -206,6 +222,8 @@ struct ActiveWorkoutView: View {
     private func endWorkout() {
         if workoutController.hasWorkoutChanged() {
             showUpdateDialog = true
+            activeAlert = .updateValues
+            showAlert = true
         } else {
             completeEndWorkoutSequence()
         }
@@ -280,4 +298,8 @@ struct ActiveWorkoutView: View {
             return "Start Workout"
         }
     }
+}
+
+enum ActiveWorkoutAlert {
+    case updateValues, cancelWorkout
 }

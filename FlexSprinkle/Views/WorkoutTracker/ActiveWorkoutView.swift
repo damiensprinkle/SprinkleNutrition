@@ -63,8 +63,23 @@ struct ActiveWorkoutView: View {
             .navigationBarItems(
                 leading: Button("Back") {
                     appViewModel.resetToWorkoutMainView()
-                }
+                },
+                trailing: workoutStarted ? Menu {
+                    Button(action: {
+                        workoutStarted = false
+                        showEndWorkoutOption = false
+                        workoutController.setSessionStatus(workoutId: workoutId, isActive: false)
+                        workoutController.workoutManager.deleteAllTemporaryWorkoutDetails()
+                    }) {
+                        Label("Cancel Workout", systemImage: "xmark.circle")
+                    }
+                } label: {
+                    Image(systemName: "ellipsis")
+                        .font(.title2)
+                        .foregroundColor(.primary)
+                } : nil
             )
+
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("Error"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
             }

@@ -43,7 +43,6 @@ struct HomeView: View {
                 Text("Loading content...")
             }
         }
-        // Use .onChange of userManager.userDetails to hide the form when userDetails are set
         .onChange(of: userManager.userDetails) {
             if userManager.userDetails != nil || optOut {
                 showUserDetailsForm = false

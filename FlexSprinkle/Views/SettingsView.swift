@@ -45,10 +45,8 @@ struct SettingsView: View {
                 }
             }
             .sheet(isPresented: $showingUserDetailsForm) {
-                // Assuming UserDetailsFormView is adjusted to work standalone or with a navigation link
                 UserDetailsFormView(isPresented: $showingUserDetailsForm)
                     .environmentObject(userManager)
-                    // Make sure to inject any required EnvironmentObjects here
             }
         }
     }

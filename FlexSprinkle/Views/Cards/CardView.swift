@@ -61,6 +61,7 @@ struct CardView: View {
                 .foregroundColor(.staticWhite)
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity)
+                .shadow(color: Color.myWhite, radius: 0.4)
             Spacer()
         }
         
@@ -108,6 +109,12 @@ struct CardView: View {
             onDuplicate?()
         }) {
             Label("Duplicate", systemImage: "doc.on.doc")
+        }
+        
+        Button(action: {
+            appViewModel.navigateTo(.customizeCardView(workoutId))
+        }) {
+            Label("Customize Card", systemImage: "paintpalette")
         }
         
         Button(role: .destructive, action: {

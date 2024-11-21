@@ -24,6 +24,7 @@ struct AddWorkoutView: View {
     @State private var selectedExerciseIndexForRenaming: Int?
     @State private var activeAlert: ActiveAlert = .error
     @State private var workoutSaveError: WorkoutSaveError = .emptyTitle
+    @State private var initialWorkoutDetails: [WorkoutDetailInput] = []
     
     private let colorManager = ColorManager()
     @State private var showingAddExerciseDialog = false
@@ -51,7 +52,6 @@ struct AddWorkoutView: View {
                         }
                         .padding(.horizontal)
                     }
-                    
                 }
                 
                 if showingAddExerciseDialog || selectedExerciseIndexForRenaming != nil {
@@ -88,7 +88,14 @@ struct AddWorkoutView: View {
             .navigationBarTitle(navigationTitle)
             .navigationBarItems(
                 leading: Button("Cancel") {
-                    presentationMode.wrappedValue.dismiss()
+                    if(initialWorkoutDetails != workoutController.workoutDetails){
+                        alertMessage = "You have unsaved changes are you sure you want to cancel?"
+                        activeAlert = .cancelConfirmation
+                        showAlert = true
+                    }
+                    else{
+                        presentationMode.wrappedValue.dismiss()
+                    }
                 },
                 trailing: Button("Save") {
                     let result = workoutController.saveWorkout(title: workoutTitle, update: update, workoutId: workoutId)
@@ -118,12 +125,24 @@ struct AddWorkoutView: View {
                             indexToDelete = nil
                         }
                     )
+                case .cancelConfirmation:
+                    return Alert(
+                        title: Text("Warning"),
+                        message: Text(alertMessage),
+                        primaryButton: .default(Text("Yes")) {
+                            presentationMode.wrappedValue.dismiss()
+                        },
+                        secondaryButton: .cancel(Text("No")) {
+                            showAlert = false
+                        }
+                    )
                 }
             }
             .onAppear {
                 if update {
                     workoutController.loadWorkoutDetails(for: workoutId)
                     workoutTitle = workoutController.selectedWorkoutName ?? ""
+                    initialWorkoutDetails = workoutController.workoutDetails
                 }
                 else{
                     workoutController.workoutDetails.removeAll()
@@ -283,5 +302,5 @@ struct AddWorkoutView: View {
 }
 
 enum ActiveAlert {
-    case error, deleteConfirmation
+    case error, deleteConfirmation, cancelConfirmation
 }

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct WorkoutDetailInput {
+struct WorkoutDetailInput: Equatable {
     var id: UUID?
     var exerciseId: UUID?
     var exerciseName: String = ""

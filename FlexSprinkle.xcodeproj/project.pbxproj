@@ -160,6 +160,7 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		084753592CE3D3D500C6A7F9 /* SharedComponents */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = SharedComponents; sourceTree = "<group>"; };
 		085466322CB618AA00136FBC /* images */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = images; sourceTree = "<group>"; };
+		08EF98262CEF89A700AE8196 /* WorkoutUtilities */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = WorkoutUtilities; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -354,6 +355,7 @@
 		08B790282B708A1F0002DA68 /* WorkoutTracker */ = {
 			isa = PBXGroup;
 			children = (
+				08EF98262CEF89A700AE8196 /* WorkoutUtilities */,
 				08EF97E22CEEBC0A00AE8196 /* CustomizeCardView.swift */,
 				08B3CF7D2B7C087C002F5C92 /* Shared */,
 				08B3CF7C2B7C07C0002F5C92 /* ModifyWorkout */,
@@ -402,6 +404,7 @@
 			fileSystemSynchronizedGroups = (
 				084753592CE3D3D500C6A7F9 /* SharedComponents */,
 				085466322CB618AA00136FBC /* images */,
+				08EF98262CEF89A700AE8196 /* WorkoutUtilities */,
 			);
 			name = FlexSprinkle;
 			packageProductDependencies = (

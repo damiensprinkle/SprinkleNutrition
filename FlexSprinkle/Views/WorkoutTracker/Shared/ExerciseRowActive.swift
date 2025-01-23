@@ -14,6 +14,7 @@ struct ExerciseRowActive: View {
     let workoutDetails: WorkoutDetailInput
     let workoutId: UUID
     let workoutStarted: Bool
+    let workoutCancelled: Bool
     var exerciseQuantifier: String
     var exerciseMeasurement: String
     
@@ -81,6 +82,11 @@ struct ExerciseRowActive: View {
                 hasLoaded = true
             }
         }
+        .onChange(of: workoutCancelled) {
+             if workoutCancelled {
+                 resetWorkoutDetails()
+             }
+         }
         .toolbar {
             ToolbarItem(placement: .keyboard) {
                 if(focusedField == .distance){
@@ -263,6 +269,18 @@ struct ExerciseRowActive: View {
         
         timeInput = formatToHHMMSS(totalSeconds)
         setInput.time = Int32(totalSeconds)
+    }
+    
+    private func resetWorkoutDetails() {
+        guard let updatedWorkoutDetails = workoutController.workoutDetails.first(where: { $0.id == workoutDetails.id }) else {
+            return
+        }
+        setInput = updatedWorkoutDetails.sets[setIndex - 1]
+        repsInput = "\(setInput.reps)"
+        distanceInput = "\(setInput.distance)"
+        weightInput = "\(setInput.weight)"
+        timeInput = formatTimeFromSeconds(totalSeconds: Int(setInput.time))
+        checked = setInput.isCompleted
     }
     
 }

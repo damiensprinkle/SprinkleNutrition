@@ -32,7 +32,9 @@ struct ActiveWorkoutView: View {
     @State private var foregroundObserver: Any?
     @State private var backgroundObserver: Any?
     @State private var isLoading: Bool = true
-    
+    @State private var showTimer: Bool = false
+    @State private var workoutCancelled: Bool = false
+
     
     var body: some View {
         NavigationView {
@@ -44,6 +46,13 @@ struct ActiveWorkoutView: View {
                 }
                 else{
                     VStack(spacing: 0) {
+                        if showTimer {
+                            TimerHeaderView(showTimer: $showTimer)
+                                .frame(height: 80) // Fixed height for the timer view
+                                .background(Color.black.opacity(0.8))
+                                .foregroundColor(Color.myBlack)
+                                .zIndex(1) // Ensure it stays above the scrollable content
+                        }
                         Form {
                             displayExerciseDetailsAndSets
                         }
@@ -73,6 +82,16 @@ struct ActiveWorkoutView: View {
                     }) {
                         Label("Cancel Workout", systemImage: "xmark.circle")
                     }
+                    Button(action: {
+                        if(showTimer){
+                            showTimer = false
+                        }
+                        else{
+                            showTimer = true
+                        }
+                    }) {
+                        Label("Timer", systemImage: "timer")
+                    }
                 } label: {
                     Image(systemName: "ellipsis")
                         .font(.title2)
@@ -90,6 +109,8 @@ struct ActiveWorkoutView: View {
                             showEndWorkoutOption = false
                             workoutController.setSessionStatus(workoutId: workoutId, isActive: false)
                             workoutController.workoutManager.deleteAllTemporaryWorkoutDetails()
+                            workoutController.loadWorkoutDetails(for: workoutId)
+                            workoutCancelled = true
                         }),
                         secondaryButton: .cancel(Text("Keep Going"), action: {
                             showEndWorkoutOption = false
@@ -134,7 +155,6 @@ struct ActiveWorkoutView: View {
                 NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
                 NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)
             }
-
         }
     }
     
@@ -167,6 +187,7 @@ struct ActiveWorkoutView: View {
                         workoutDetails: workoutController.workoutDetails[index],
                         workoutId: workoutId,
                         workoutStarted: workoutStarted,
+                        workoutCancelled: workoutCancelled,
                         exerciseQuantifier: workoutController.workoutDetails[index].exerciseQuantifier,
                         exerciseMeasurement: workoutController.workoutDetails[index].exerciseMeasurement
                     )
@@ -194,6 +215,7 @@ struct ActiveWorkoutView: View {
     
     private func startWorkout() {
         workoutStarted = true
+        workoutCancelled = false
         elapsedTime = 0
         cancellableTimer = Timer.publish(every: 1, on: .main, in: .common).autoconnect().sink { _ in
             self.elapsedTime += 1

@@ -80,7 +80,7 @@ struct UserDetailsFormView: View {
     }
     
     private func saveUserDetails() {
-        userManager.updateUserNameAndUnit(name: name, unit: "") // unit not used anymore
+        userManager.updateUserName(name: name) // unit not used anymore
         isPresented = false
     }
 }

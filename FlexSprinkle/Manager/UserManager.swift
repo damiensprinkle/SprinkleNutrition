@@ -33,7 +33,7 @@ class UserManager: ObservableObject {
         }
     }
     
-    func updateUserNameAndUnit(name: String, unit: String) {
+    func updateUserName(name: String) {
         guard let context = self.context else { return }
         
         if let user = userDetails {

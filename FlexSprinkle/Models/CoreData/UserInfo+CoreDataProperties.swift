@@ -2,7 +2,7 @@
 //  UserInfo+CoreDataProperties.swift
 //  FlexSprinkle
 //
-//  Created by Damien Sprinkle on 2/19/24.
+//  Created by Damien Sprinkle on 8/12/25.
 //
 //
 
@@ -16,12 +16,7 @@ extension UserInfo {
         return NSFetchRequest<UserInfo>(entityName: "UserInfo")
     }
 
-    @NSManaged public var weight: Int32
-    @NSManaged public var height: Int32
-    @NSManaged public var gender: String?
-    @NSManaged public var age: Int32
-    @NSManaged public var activityLevel: String?
-    @NSManaged public var bmr: Int32
+    @NSManaged public var name: String?
 
 }
 

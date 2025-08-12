@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23507" systemVersion="24A348" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23507" systemVersion="24G84" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
     <entity name="TemporaryWorkoutDetail" representedClassName="TemporaryWorkoutDetail" syncable="YES">
         <attribute name="exerciseId" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="exerciseMeasurement" optional="YES" attributeType="String"/>
@@ -13,12 +13,7 @@
         <relationship name="workoutR" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Workouts" inverseName="detailsTemp" inverseEntity="Workouts"/>
     </entity>
     <entity name="UserInfo" representedClassName="UserInfo" syncable="YES">
-        <attribute name="activityLevel" attributeType="String"/>
-        <attribute name="age" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="bmr" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="gender" attributeType="String"/>
-        <attribute name="height" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="weight" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="name" attributeType="String"/>
     </entity>
     <entity name="WorkoutDetail" representedClassName="WorkoutDetail" syncable="YES">
         <attribute name="exerciseId" attributeType="UUID" usesScalarValueType="NO"/>

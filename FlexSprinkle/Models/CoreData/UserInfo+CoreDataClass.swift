@@ -2,7 +2,7 @@
 //  UserInfo+CoreDataClass.swift
 //  FlexSprinkle
 //
-//  Created by Damien Sprinkle on 2/19/24.
+//  Created by Damien Sprinkle on 8/12/25.
 //
 //
 

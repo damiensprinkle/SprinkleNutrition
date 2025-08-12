@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		081F87E62B83A7CD00BBBDF2 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87E52B83A7CD00BBBDF2 /* UserManager.swift */; };
 		081F87EC2B83AC0200BBBDF2 /* UserDetailsFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87EB2B83AC0100BBBDF2 /* UserDetailsFormView.swift */; };
-		081F87EF2B83C5E700BBBDF2 /* UserInfo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87ED2B83C5E700BBBDF2 /* UserInfo+CoreDataClass.swift */; };
-		081F87F02B83C5E700BBBDF2 /* UserInfo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87EE2B83C5E700BBBDF2 /* UserInfo+CoreDataProperties.swift */; };
 		081F87F22B87F6ED00BBBDF2 /* CheckboxStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87F12B87F6ED00BBBDF2 /* CheckboxStyle.swift */; };
 		0828683F2CE7E13900835C08 /* ExerciseInputHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0828683E2CE7E13500835C08 /* ExerciseInputHelper.swift */; };
 		0847535B2CE3D47D00C6A7F9 /* WorkoutTrackerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0847535A2CE3D47000C6A7F9 /* WorkoutTrackerController.swift */; };
@@ -54,10 +52,11 @@
 		08B7901B2B6DC28F0002DA68 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B7901A2B6DC28F0002DA68 /* CardView.swift */; };
 		08B7901E2B6E8F8D0002DA68 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B7901D2B6E8F8D0002DA68 /* SettingsView.swift */; };
 		08B790202B6E91010002DA68 /* WorkoutTrackerMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B7901F2B6E91010002DA68 /* WorkoutTrackerMainView.swift */; };
-		08B790222B6E911D0002DA68 /* NutritionHelperMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B790212B6E911D0002DA68 /* NutritionHelperMainView.swift */; };
 		08B7902B2B7090870002DA68 /* AddWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B7902A2B7090870002DA68 /* AddWorkoutView.swift */; };
 		08B790312B7138F70002DA68 /* WorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B790302B7138F70002DA68 /* WorkoutManager.swift */; };
 		08C31FFF2B82EA3A002EE8A7 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C31FFE2B82EA3A002EE8A7 /* PersistenceController.swift */; };
+		08C4181C2E4BB9F8004EA360 /* UserInfo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C4181A2E4BB9F8004EA360 /* UserInfo+CoreDataClass.swift */; };
+		08C4181D2E4BB9F8004EA360 /* UserInfo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C4181B2E4BB9F8004EA360 /* UserInfo+CoreDataProperties.swift */; };
 		08EF97E32CEEBC0D00AE8196 /* CustomizeCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF97E22CEEBC0A00AE8196 /* CustomizeCardView.swift */; };
 		08EF97E82CEEC13500AE8196 /* Workouts+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF97E72CEEC13500AE8196 /* Workouts+CoreDataProperties.swift */; };
 		08EF97E92CEEC13500AE8196 /* Workouts+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF97E62CEEC13500AE8196 /* Workouts+CoreDataClass.swift */; };
@@ -98,8 +97,6 @@
 /* Begin PBXFileReference section */
 		081F87E52B83A7CD00BBBDF2 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		081F87EB2B83AC0100BBBDF2 /* UserDetailsFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsFormView.swift; sourceTree = "<group>"; };
-		081F87ED2B83C5E700BBBDF2 /* UserInfo+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfo+CoreDataClass.swift"; sourceTree = "<group>"; };
-		081F87EE2B83C5E700BBBDF2 /* UserInfo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		081F87F12B87F6ED00BBBDF2 /* CheckboxStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxStyle.swift; sourceTree = "<group>"; };
 		0828683E2CE7E13500835C08 /* ExerciseInputHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseInputHelper.swift; sourceTree = "<group>"; };
 		0847535A2CE3D47000C6A7F9 /* WorkoutTrackerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTrackerController.swift; sourceTree = "<group>"; };
@@ -146,10 +143,11 @@
 		08B7901A2B6DC28F0002DA68 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		08B7901D2B6E8F8D0002DA68 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		08B7901F2B6E91010002DA68 /* WorkoutTrackerMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTrackerMainView.swift; sourceTree = "<group>"; };
-		08B790212B6E911D0002DA68 /* NutritionHelperMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionHelperMainView.swift; sourceTree = "<group>"; };
 		08B7902A2B7090870002DA68 /* AddWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWorkoutView.swift; sourceTree = "<group>"; };
 		08B790302B7138F70002DA68 /* WorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutManager.swift; sourceTree = "<group>"; };
 		08C31FFE2B82EA3A002EE8A7 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
+		08C4181A2E4BB9F8004EA360 /* UserInfo+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfo+CoreDataClass.swift"; sourceTree = "<group>"; };
+		08C4181B2E4BB9F8004EA360 /* UserInfo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		08EF97E22CEEBC0A00AE8196 /* CustomizeCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeCardView.swift; sourceTree = "<group>"; };
 		08EF97E62CEEC13500AE8196 /* Workouts+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workouts+CoreDataClass.swift"; sourceTree = "<group>"; };
 		08EF97E72CEEC13500AE8196 /* Workouts+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workouts+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -212,8 +210,6 @@
 		087111442B7519900054E315 /* CoreData */ = {
 			isa = PBXGroup;
 			children = (
-				081F87ED2B83C5E700BBBDF2 /* UserInfo+CoreDataClass.swift */,
-				081F87EE2B83C5E700BBBDF2 /* UserInfo+CoreDataProperties.swift */,
 				08B3CFED2B810DFF002F5C92 /* WorkoutHistory+CoreDataClass.swift */,
 				08B3CFEE2B810DFF002F5C92 /* WorkoutHistory+CoreDataProperties.swift */,
 				08B3CFCE2B7D9567002F5C92 /* WorkoutSession+CoreDataClass.swift */,
@@ -226,6 +222,8 @@
 				085466802CDFAD4700136FBC /* WorkoutDetail+CoreDataProperties.swift */,
 				08EF97E62CEEC13500AE8196 /* Workouts+CoreDataClass.swift */,
 				08EF97E72CEEC13500AE8196 /* Workouts+CoreDataProperties.swift */,
+				08C4181A2E4BB9F8004EA360 /* UserInfo+CoreDataClass.swift */,
+				08C4181B2E4BB9F8004EA360 /* UserInfo+CoreDataProperties.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -325,7 +323,6 @@
 				08B7901D2B6E8F8D0002DA68 /* SettingsView.swift */,
 				087111AB2B77E9DB0054E315 /* Main */,
 				08B790342B7162740002DA68 /* Cards */,
-				08B790292B708A370002DA68 /* NutritionHelper */,
 				08B790282B708A1F0002DA68 /* WorkoutTracker */,
 			);
 			path = Views;
@@ -365,14 +362,6 @@
 				08B3CFEB2B80227E002F5C92 /* WorkoutHistoryView.swift */,
 			);
 			path = WorkoutTracker;
-			sourceTree = "<group>";
-		};
-		08B790292B708A370002DA68 /* NutritionHelper */ = {
-			isa = PBXGroup;
-			children = (
-				08B790212B6E911D0002DA68 /* NutritionHelperMainView.swift */,
-			);
-			path = NutritionHelper;
 			sourceTree = "<group>";
 		};
 		08B790342B7162740002DA68 /* Cards */ = {
@@ -530,14 +519,11 @@
 			files = (
 				08EF97E82CEEC13500AE8196 /* Workouts+CoreDataProperties.swift in Sources */,
 				08EF97E92CEEC13500AE8196 /* Workouts+CoreDataClass.swift in Sources */,
-				081F87F02B83C5E700BBBDF2 /* UserInfo+CoreDataProperties.swift in Sources */,
 				08B3CFDD2B7D9567002F5C92 /* WorkoutSet+CoreDataProperties.swift in Sources */,
 				0847535F2CE3D59B00C6A7F9 /* WorkoutSessionModel.swift in Sources */,
 				08C31FFF2B82EA3A002EE8A7 /* PersistenceController.swift in Sources */,
 				08B3CFF22B810FB7002F5C92 /* WorkoutHistoryCardView.swift in Sources */,
-				081F87EF2B83C5E700BBBDF2 /* UserInfo+CoreDataClass.swift in Sources */,
 				0828683F2CE7E13900835C08 /* ExerciseInputHelper.swift in Sources */,
-				08B790222B6E911D0002DA68 /* NutritionHelperMainView.swift in Sources */,
 				08B3CF7B2B7BDD0C002F5C92 /* AddExerciseDialog.swift in Sources */,
 				08B3CFEC2B80227E002F5C92 /* WorkoutHistoryView.swift in Sources */,
 				08B3CFEA2B7E9FA6002F5C92 /* TimeHelper.swift in Sources */,
@@ -561,6 +547,8 @@
 				08B3CFDC2B7D9567002F5C92 /* WorkoutSet+CoreDataClass.swift in Sources */,
 				08B3CFEF2B810DFF002F5C92 /* WorkoutHistory+CoreDataClass.swift in Sources */,
 				087111AF2B77EAF20054E315 /* HomeContentView.swift in Sources */,
+				08C4181C2E4BB9F8004EA360 /* UserInfo+CoreDataClass.swift in Sources */,
+				08C4181D2E4BB9F8004EA360 /* UserInfo+CoreDataProperties.swift in Sources */,
 				0871113D2B7306C20054E315 /* ColorManager.swift in Sources */,
 				08B790312B7138F70002DA68 /* WorkoutManager.swift in Sources */,
 				08B7901B2B6DC28F0002DA68 /* CardView.swift in Sources */,
@@ -755,7 +743,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
@@ -794,7 +782,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;

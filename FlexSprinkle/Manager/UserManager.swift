@@ -1,10 +1,3 @@
-//
-//  UserManager.swift
-//  FlexSprinkle
-//
-//  Created by Damien Sprinkle on 2/19/24.
-//
-
 import Foundation
 import CoreData
 
@@ -15,7 +8,6 @@ class UserManager: ObservableObject {
             if context != nil {
                 loadUserDetails()
                 context!.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-                
             }
         }
     }
@@ -41,47 +33,15 @@ class UserManager: ObservableObject {
         }
     }
     
-    func addUser(weight: Int32, height: Int32, age: Int32, gender: String, activityLevel: String, bmr: Int32) {
+    func updateUserNameAndUnit(name: String, unit: String) {
         guard let context = self.context else { return }
-
-        // If a user already exists, update their details
+        
         if let user = userDetails {
-            user.weight = weight
-            user.height = height
-            user.age = age
-            user.gender = gender
-            user.activityLevel = activityLevel
-            user.bmr = bmr
+            user.name = name
         } else {
-            // No user exists, create a new one
             let newUser = UserInfo(context: context)
-            newUser.weight = weight
-            newUser.height = height
-            newUser.age = age
-            newUser.gender = gender
-            newUser.activityLevel = activityLevel
-            newUser.bmr = bmr
+            newUser.name = name
             userDetails = newUser
-        }
-        
-        saveContext()
-    }
-    
-    func editUser(weight: Int32?, height: Int32?, age: Int32?, gender: String?) {
-
-        guard let user = userDetails else { return }
-        
-        if let weight = weight {
-            user.weight = weight
-        }
-        if let height = height {
-            user.height = height
-        }
-        if let age = age {
-            user.age = age
-        }
-        if let gender = gender {
-            user.gender = gender
         }
         
         saveContext()
@@ -98,4 +58,3 @@ class UserManager: ObservableObject {
         }
     }
 }
-

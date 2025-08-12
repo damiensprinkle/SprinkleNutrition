@@ -29,7 +29,6 @@ enum FocusableField: Hashable {
 }
 
 enum FocusableFieldUserForm: Hashable {
-    case age
-    case weight
+    case name
 }
 

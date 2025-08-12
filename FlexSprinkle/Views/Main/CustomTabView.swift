@@ -15,7 +15,7 @@ struct CustomTabView: View {
 
     
     enum Tab: String {
-        case home, workout, nutrition, settings
+        case home, workout, settings
     }
     
     var body: some View {
@@ -27,8 +27,6 @@ struct CustomTabView: View {
             case .workout:
                 WorkoutContentMainView()
                     .environmentObject(workoutController)
-            case .nutrition:
-                NutritionHelperMainView().navigationTitle("Nutrition Helper")
             case .settings:
                 SettingsView()
                     .environmentObject(userManager)
@@ -41,10 +39,7 @@ struct CustomTabView: View {
                 
                 Spacer()
                 tabButton(for: .workout, systemImage: "dumbbell.fill")
-                
-                Spacer()
-                tabButton(for: .nutrition, systemImage: "leaf.fill")
-                
+                                
                 Spacer()
                 tabButton(for: .settings, systemImage :"gearshape")
             }

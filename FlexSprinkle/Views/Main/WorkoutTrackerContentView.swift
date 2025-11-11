@@ -14,39 +14,43 @@ struct WorkoutContentMainView: View {
 
 
     var body: some View {
-        ZStack {
-            // Decide which view to present based on the currentView state
-            switch appViewModel.currentView {
-            case .main:
-                AnyView(WorkoutTrackerMainView()
-                    .environment(\.managedObjectContext, managedObjectContext)
-                    .environmentObject(workoutController))
-                .transition(.slide)
-                
-            case .workoutOverview(let workoutId):
-                AnyView(WorkoutOverviewView(workoutId: workoutId)
-                    .environmentObject(workoutController)
-                    .environmentObject(appViewModel))
-                .transition(.slide)
-                
-            case .workoutActiveView(let workoutId):
-                ActiveWorkoutView(workoutId: workoutId)
-                    .id(workoutId)
-                    .environmentObject(appViewModel)
-                    .environmentObject(workoutController)
-                .transition(.slide)
-            case .workoutHistoryView:
-                AnyView(WorkoutHistoryView()
-                    .environmentObject(appViewModel))
-                .transition(.slide)
-            case .customizeCardView(let workoutId):
-                AnyView(CustomizeCardView(workoutId: workoutId))
-                    .environmentObject(appViewModel)
-                    .environmentObject(workoutController)
+        NavigationView {
+            ZStack {
+                // Decide which view to present based on the currentView state
+                switch appViewModel.currentView {
+                case .main:
+                    AnyView(WorkoutTrackerMainView()
+                        .environment(\.managedObjectContext, managedObjectContext)
+                        .environmentObject(workoutController))
                     .transition(.slide)
 
+                case .workoutOverview(let workoutId):
+                    AnyView(WorkoutOverviewView(workoutId: workoutId)
+                        .environmentObject(workoutController)
+                        .environmentObject(appViewModel))
+                    .transition(.slide)
+
+                case .workoutActiveView(let workoutId):
+                    ActiveWorkoutView(workoutId: workoutId)
+                        .id(workoutId)
+                        .environmentObject(appViewModel)
+                        .environmentObject(workoutController)
+                    .transition(.slide)
+                case .workoutHistoryView:
+                    AnyView(WorkoutHistoryView()
+                        .environmentObject(appViewModel))
+                        .environmentObject(workoutController)
+                        .transition(.slide)
+                case .customizeCardView(let workoutId):
+                    AnyView(CustomizeCardView(workoutId: workoutId))
+                        .environmentObject(appViewModel)
+                        .environmentObject(workoutController)
+                        .transition(.slide)
+
+                }
             }
+            .animation(.default, value: appViewModel.currentView)
         }
-        .animation(.default, value: appViewModel.currentView)
+        .navigationViewStyle(.stack)
     }
 }

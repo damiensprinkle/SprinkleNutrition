@@ -9,7 +9,6 @@ struct UserDetailsFormView: View {
     
     var body: some View {
         ZStack {
-            // Background gradient
             LinearGradient(colors: [.blue.opacity(0.4), .purple.opacity(0.4)],
                            startPoint: .topLeading,
                            endPoint: .bottomTrailing)
@@ -24,7 +23,6 @@ struct UserDetailsFormView: View {
                 )
             
             VStack(spacing: 30) {
-                // Welcome message
                 VStack(spacing: 8) {
                     Text("Welcome...")
                         .font(.largeTitle)

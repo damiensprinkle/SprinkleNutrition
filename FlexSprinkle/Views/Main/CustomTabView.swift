@@ -31,21 +31,25 @@ struct CustomTabView: View {
                 SettingsView()
                     .environmentObject(userManager)
             }
-            
-            Spacer()
-            
+
+            Spacer(minLength: 0)
+
+            Divider()
+
             HStack {
                 tabButton(for: .home, systemImage: "house.fill")
-                
+
                 Spacer()
                 tabButton(for: .workout, systemImage: "dumbbell.fill")
-                                
+
                 Spacer()
                 tabButton(for: .settings, systemImage :"gearshape")
             }
             .padding()
-            .background(Color.gray.opacity(0.1))
-            .edgesIgnoringSafeArea(.bottom)
+            .background(
+                Color.gray.opacity(0.1)
+                    .ignoresSafeArea(.all, edges: .bottom)
+            )
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }

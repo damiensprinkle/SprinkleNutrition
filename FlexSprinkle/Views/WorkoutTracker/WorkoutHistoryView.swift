@@ -23,15 +23,34 @@ struct WorkoutHistoryView: View {
                 .onChange(of: selectedMonth) { loadHistories() }
                 .onChange(of: selectedYear) { loadHistories() }
             Divider()
-            ScrollView(.vertical, showsIndicators: false) {
-                LazyVStack {
-                    ForEach(histories, id: \.self) { history in
-                        WorkoutHistoryCardView(workoutId: history.workoutR!.id!, history: history, onDelete: {
-                            deleteWorkoutHistory(history.id!)
-                        })
-                    }
+            if histories.isEmpty {
+                VStack(spacing: 12) {
+                    Image(systemName: "clock.arrow.circlepath")
+                        .font(.system(size: 48))
+                        .foregroundColor(.gray.opacity(0.6))
+                    Text("No workout history yet")
+                        .font(.headline)
+                        .foregroundColor(.gray)
+                    Text("Your past workouts will appear here once you complete them.")
+                        .font(.subheadline)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(.gray.opacity(0.8))
+                        .padding(.horizontal)
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .padding()
+            }
+            else{
+                ScrollView(.vertical, showsIndicators: false) {
+                    LazyVStack {
+                        ForEach(histories, id: \.self) { history in
+                            WorkoutHistoryCardView(workoutId: history.workoutR!.id!, history: history, onDelete: {
+                                deleteWorkoutHistory(history.id!)
+                            })
+                        }
+                    }
+                    .padding()
+                }
             }
         }
         .onAppear {

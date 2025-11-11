@@ -17,22 +17,26 @@ struct TimerHeaderView: View {
         HStack {
             Text(formatTime(elapsedTime))
                 .font(.headline)
-            
+                .foregroundColor(.myWhite)
+
             Spacer()
-            
+
             Button(action: toggleTimer) {
                 Image(systemName: timerRunning ? "pause.circle" : "play.circle")
                     .font(.title)
+                    .foregroundColor(.myWhite)
             }
-            
+
             Button(action: resetTimer) {
                 Image(systemName: "stop.circle")
                     .font(.title)
+                    .foregroundColor(.myWhite)
             }
-            
+
             Button(action: { showTimer = false }) {
                 Image(systemName: "xmark.circle")
                     .font(.title)
+                    .foregroundColor(.myWhite)
             }
         }
         .padding()

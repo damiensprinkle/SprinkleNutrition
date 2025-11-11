@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 90;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -84,13 +84,11 @@
 /* Begin PBXCopyFilesBuildPhase section */
 		08B3D0082B8250DA002F5C92 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
 			dstPath = "";
-			dstSubfolderSpec = 13;
+			dstSubfolder = PlugIns;
 			files = (
 			);
 			name = "Embed Foundation Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -156,33 +154,39 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		084753592CE3D3D500C6A7F9 /* SharedComponents */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = SharedComponents; sourceTree = "<group>"; };
-		085466322CB618AA00136FBC /* images */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = images; sourceTree = "<group>"; };
-		08EF98262CEF89A700AE8196 /* WorkoutUtilities */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = WorkoutUtilities; sourceTree = "<group>"; };
+		084753592CE3D3D500C6A7F9 /* SharedComponents */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SharedComponents;
+			sourceTree = "<group>";
+		};
+		085466322CB618AA00136FBC /* images */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = images;
+			sourceTree = "<group>";
+		};
+		08EF98262CEF89A700AE8196 /* WorkoutUtilities */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = WorkoutUtilities;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		08B78FE92B6DBA370002DA68 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 				08B3CF512B7BC611002F5C92 /* ConfettiSwiftUI in Frameworks */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		08B78FFA2B6DBA390002DA68 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		08B790042B6DBA390002DA68 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
@@ -388,8 +392,6 @@
 			);
 			buildRules = (
 			);
-			dependencies = (
-			);
 			fileSystemSynchronizedGroups = (
 				084753592CE3D3D500C6A7F9 /* SharedComponents */,
 				085466322CB618AA00136FBC /* images */,
@@ -447,7 +449,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1520;
-				LastUpgradeCheck = 1600;
+				LastUpgradeCheck = 2610;
 				TargetAttributes = {
 					08B78FEB2B6DBA370002DA68 = {
 						CreatedOnToolsVersion = 15.2;
@@ -463,7 +465,6 @@
 				};
 			};
 			buildConfigurationList = 08B78FE72B6DBA370002DA68 /* Build configuration list for PBXProject "FlexSprinkle" */;
-			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -474,6 +475,7 @@
 			packageReferences = (
 				087111B02B77F79F0054E315 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
 			);
+			preferredProjectObjectVersion = 90;
 			productRefGroup = 08B78FED2B6DBA370002DA68 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -488,34 +490,27 @@
 /* Begin PBXResourcesBuildPhase section */
 		08B78FEA2B6DBA370002DA68 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 				08B3D00E2B82AC7C002F5C92 /* Launch Screen.storyboard in Resources */,
 				08B78FF82B6DBA390002DA68 /* Preview Assets.xcassets in Resources */,
 				08B78FF42B6DBA390002DA68 /* Assets.xcassets in Resources */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		08B78FFB2B6DBA390002DA68 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		08B790052B6DBA390002DA68 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		08B78FE82B6DBA370002DA68 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 				08EF97E82CEEC13500AE8196 /* Workouts+CoreDataProperties.swift in Sources */,
 				08EF97E92CEEC13500AE8196 /* Workouts+CoreDataClass.swift in Sources */,
@@ -569,21 +564,16 @@
 				0847536F2CE5205D00C6A7F9 /* WorkoutSaveError.swift in Sources */,
 				0847535B2CE3D47D00C6A7F9 /* WorkoutTrackerController.swift in Sources */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		08B78FF92B6DBA390002DA68 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		08B790032B6DBA390002DA68 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
@@ -601,7 +591,7 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		08B7900F2B6DBA390002DA68 /* Debug */ = {
+		08B7900F2B6DBA390002DA68 /* Debug configuration for PBXProject "FlexSprinkle" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -659,12 +649,13 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
-		08B790102B6DBA390002DA68 /* Release */ = {
+		08B790102B6DBA390002DA68 /* Release configuration for PBXProject "FlexSprinkle" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -715,11 +706,12 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 			};
 			name = Release;
 		};
-		08B790122B6DBA390002DA68 /* Debug */ = {
+		08B790122B6DBA390002DA68 /* Debug configuration for PBXNativeTarget "FlexSprinkle" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -730,7 +722,9 @@
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"FlexSprinkle/Preview Content\"";
 				DEVELOPMENT_TEAM = P8P8MB2RC3;
+				ENABLE_APP_SANDBOX = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -743,7 +737,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
@@ -759,7 +753,7 @@
 			};
 			name = Debug;
 		};
-		08B790132B6DBA390002DA68 /* Release */ = {
+		08B790132B6DBA390002DA68 /* Release configuration for PBXNativeTarget "FlexSprinkle" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -769,7 +763,9 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"FlexSprinkle/Preview Content\"";
+				ENABLE_APP_SANDBOX = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -782,7 +778,7 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
@@ -798,7 +794,7 @@
 			};
 			name = Release;
 		};
-		08B790152B6DBA390002DA68 /* Debug */ = {
+		08B790152B6DBA390002DA68 /* Debug configuration for PBXNativeTarget "FlexSprinkleTests" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -821,7 +817,7 @@
 			};
 			name = Debug;
 		};
-		08B790162B6DBA390002DA68 /* Release */ = {
+		08B790162B6DBA390002DA68 /* Release configuration for PBXNativeTarget "FlexSprinkleTests" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -843,7 +839,7 @@
 			};
 			name = Release;
 		};
-		08B790182B6DBA390002DA68 /* Debug */ = {
+		08B790182B6DBA390002DA68 /* Debug configuration for PBXNativeTarget "FlexSprinkleUITests" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -865,7 +861,7 @@
 			};
 			name = Debug;
 		};
-		08B790192B6DBA390002DA68 /* Release */ = {
+		08B790192B6DBA390002DA68 /* Release configuration for PBXNativeTarget "FlexSprinkleUITests" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -892,37 +888,33 @@
 		08B78FE72B6DBA370002DA68 /* Build configuration list for PBXProject "FlexSprinkle" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				08B7900F2B6DBA390002DA68 /* Debug */,
-				08B790102B6DBA390002DA68 /* Release */,
+				08B7900F2B6DBA390002DA68 /* Debug configuration for PBXProject "FlexSprinkle" */,
+				08B790102B6DBA390002DA68 /* Release configuration for PBXProject "FlexSprinkle" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 		08B790112B6DBA390002DA68 /* Build configuration list for PBXNativeTarget "FlexSprinkle" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				08B790122B6DBA390002DA68 /* Debug */,
-				08B790132B6DBA390002DA68 /* Release */,
+				08B790122B6DBA390002DA68 /* Debug configuration for PBXNativeTarget "FlexSprinkle" */,
+				08B790132B6DBA390002DA68 /* Release configuration for PBXNativeTarget "FlexSprinkle" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 		08B790142B6DBA390002DA68 /* Build configuration list for PBXNativeTarget "FlexSprinkleTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				08B790152B6DBA390002DA68 /* Debug */,
-				08B790162B6DBA390002DA68 /* Release */,
+				08B790152B6DBA390002DA68 /* Debug configuration for PBXNativeTarget "FlexSprinkleTests" */,
+				08B790162B6DBA390002DA68 /* Release configuration for PBXNativeTarget "FlexSprinkleTests" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 		08B790172B6DBA390002DA68 /* Build configuration list for PBXNativeTarget "FlexSprinkleUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				08B790182B6DBA390002DA68 /* Debug */,
-				08B790192B6DBA390002DA68 /* Release */,
+				08B790182B6DBA390002DA68 /* Debug configuration for PBXNativeTarget "FlexSprinkleUITests" */,
+				08B790192B6DBA390002DA68 /* Release configuration for PBXNativeTarget "FlexSprinkleUITests" */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */

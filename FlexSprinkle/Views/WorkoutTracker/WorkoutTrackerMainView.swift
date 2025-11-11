@@ -11,33 +11,33 @@ import SwiftData
 struct WorkoutTrackerMainView: View {
     @EnvironmentObject var appViewModel: AppViewModel
     @EnvironmentObject var workoutController: WorkoutTrackerController
-    @State private var deletingWorkouts: Set<UUID> = [] // for dissolve animation
-    @State private var duplicatingWorkouts: Set<UUID> = [] // for dissolve animation
+    @State private var deletingWorkouts: Set<UUID> = []
+    @State private var duplicatingWorkouts: Set<UUID> = []
     @State private var presentingModal: ModalType? = nil
     
     
     var body: some View {
-        NavigationView {
-            ScrollView {
-                Divider()
-                workoutGrid
-            }
-            .navigationTitle("Workout Tracker")
-            .navigationBarItems(trailing: Button(action: {
-                presentingModal = .add
-            }) {
-                Image(systemName: "plus")
-                    .help("Create a new workout")
-            })
-            .navigationBarItems(trailing: Button(action: {
+        ScrollView {
+            Divider()
+            workoutGrid
+        }
+        .navigationTitle("Workout Tracker")
+        .navigationBarItems(trailing: HStack(spacing: 20) {
+            Button(action: {
                 appViewModel.navigateTo(.workoutHistoryView)
             }) {
                 Image(systemName: "clock")
                     .help("View workout history")
-            })
-            
-            .onAppear(perform: workoutController.loadWorkouts)
-        }
+            }
+            Button(action: {
+                presentingModal = .add
+            }) {
+                Image(systemName: "plus")
+                    .help("Create a new workout")
+            }
+        })
+        .onAppear(perform: workoutController.loadWorkouts)
+        .background(Color(uiColor: .systemBackground).ignoresSafeArea())
         .sheet(item: $presentingModal) { modal in
             switch modal {
             case .add:

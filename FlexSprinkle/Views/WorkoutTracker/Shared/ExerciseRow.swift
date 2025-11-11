@@ -35,6 +35,7 @@ struct ExerciseRow: View {
         HStack {
             Text("\(setIndex)")
                 .frame(width: 50, alignment: .leading)
+                .padding(.leading, 8)
             Spacer()
             Divider()
             

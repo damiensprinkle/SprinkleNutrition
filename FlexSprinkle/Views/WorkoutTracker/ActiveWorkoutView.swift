@@ -50,7 +50,6 @@ struct ActiveWorkoutView: View {
                             TimerHeaderView(showTimer: $showTimer)
                                 .frame(height: 80) // Fixed height for the timer view
                                 .background(Color.black.opacity(0.8))
-                                .foregroundColor(Color.myBlack)
                                 .zIndex(1) // Ensure it stays above the scrollable content
                         }
                         Form {
@@ -63,11 +62,17 @@ struct ActiveWorkoutView: View {
                                 UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                             }
                         }
-                        
+
                         Spacer()
-                        
+
                         startWorkoutButton
+                            .padding(.top)
                     }
+                    .frame(maxHeight: .infinity, alignment: .top)
+                    .background(
+                        Color(uiColor: .systemGroupedBackground)
+                            .ignoresSafeArea(.all, edges: .bottom)
+                    )
                 }
             }
             .navigationBarTitle(workoutTitle)
@@ -293,7 +298,7 @@ struct ActiveWorkoutView: View {
         Button(action: buttonAction) {
             Text(workoutButtonText)
                 .font(.title2)
-                .foregroundColor(Color.staticWhite)
+                .foregroundColor(Color.myWhite)
                 .padding()
                 .frame(maxWidth: .infinity)
                 .background(Color.myBlue)

@@ -35,6 +35,7 @@ struct ExerciseRowActive: View {
             Spacer()
             Text("\(setIndex)")
                 .frame(width: 50, alignment: .leading)
+                .padding(.leading, 8)
             Divider()
             if exerciseQuantifier == "Reps" {
                 repsTextField

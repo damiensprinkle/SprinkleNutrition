@@ -11,35 +11,34 @@ import Combine
 
 struct ActiveWorkoutView: View {
     var workoutId: UUID
-    
+
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var appViewModel: AppViewModel
     @EnvironmentObject var workoutController: WorkoutTrackerController
-    
+
     @StateObject private var focusManager = FocusManager()
-    @State private var workoutTitle: String = ""
+    @StateObject private var viewModel: ActiveWorkoutViewModel
+
+    // UI State only
     @State private var errorMessage: String = ""
     @State private var showAlert: Bool = false
     @State private var showUpdateDialog = false
-    @State private var workoutStarted = false
-    @State private var elapsedTime = 0
-    @State private var cancellableTimer: AnyCancellable?
     @State private var showingStartConfirmation = false
     @State private var showEndWorkoutOption = false
     @State private var showCancelWorkoutOption = false
     @State private var activeAlert: ActiveWorkoutAlert = .updateValues
     @State private var endWorkoutConfirmationShown = false
-    @State private var foregroundObserver: Any?
-    @State private var backgroundObserver: Any?
-    @State private var isLoading: Bool = true
     @State private var showTimer: Bool = false
-    @State private var workoutCancelled: Bool = false
 
-    
+    init(workoutId: UUID) {
+        self.workoutId = workoutId
+        _viewModel = StateObject(wrappedValue: ActiveWorkoutViewModel(workoutId: workoutId))
+    }
+
     var body: some View {
         NavigationView {
             ZStack {
-                if isLoading {
+                if viewModel.isLoading {
                     ProgressView("Loading workout...")
                         .font(.title)
                         .progressViewStyle(CircularProgressViewStyle(tint: .blue))
@@ -48,9 +47,9 @@ struct ActiveWorkoutView: View {
                     VStack(spacing: 0) {
                         if showTimer {
                             TimerHeaderView(showTimer: $showTimer)
-                                .frame(height: 80) // Fixed height for the timer view
+                                .frame(height: 80)
                                 .background(Color.black.opacity(0.8))
-                                .zIndex(1) // Ensure it stays above the scrollable content
+                                .zIndex(1)
                         }
                         Form {
                             displayExerciseDetailsAndSets
@@ -75,12 +74,12 @@ struct ActiveWorkoutView: View {
                     )
                 }
             }
-            .navigationBarTitle(workoutTitle)
+            .navigationBarTitle(viewModel.workoutTitle)
             .navigationBarItems(
                 leading: Button("Back") {
                     appViewModel.resetToWorkoutMainView()
                 },
-                trailing: workoutStarted ? Menu {
+                trailing: viewModel.workoutStarted ? Menu {
                     Button(action: {
                         activeAlert = .cancelWorkout
                         showAlert = true
@@ -88,12 +87,7 @@ struct ActiveWorkoutView: View {
                         Label("Cancel Workout", systemImage: "xmark.circle")
                     }
                     Button(action: {
-                        if(showTimer){
-                            showTimer = false
-                        }
-                        else{
-                            showTimer = true
-                        }
+                        showTimer.toggle()
                     }) {
                         Label("Timer", systemImage: "timer")
                     }
@@ -106,75 +100,43 @@ struct ActiveWorkoutView: View {
             .alert(isPresented: $showAlert) {
                 switch(activeAlert) {
                 case .cancelWorkout:
-                    return  Alert(
+                    return Alert(
                         title: Text("Cancel Workout"),
                         message: Text("Are you sure you want to cancel the workout? This will discard all progress."),
                         primaryButton: .destructive(Text("Cancel Workout"), action: {
-                            workoutStarted = false
+                            viewModel.cancelWorkout()
                             showEndWorkoutOption = false
-                            workoutController.setSessionStatus(workoutId: workoutId, isActive: false)
-                            workoutController.workoutManager.deleteAllTemporaryWorkoutDetails()
-                            workoutController.loadWorkoutDetails(for: workoutId)
-                            workoutCancelled = true
                         }),
                         secondaryButton: .cancel(Text("Keep Going"), action: {
                             showEndWorkoutOption = false
                         })
                     )
-                    
+
                 case .updateValues:
                     return Alert(
                         title: Text("Update Workout"),
                         message: Text("You've made changes from your original workout, would you like to update it?"),
                         primaryButton: .default(Text("Update Values"), action: {
-                            updateWorkoutValues()
+                            viewModel.completeWorkout(shouldUpdateTemplate: true)
                         }),
                         secondaryButton: .cancel(Text("Keep Original Values"), action: {
-                            completeEndWorkoutSequence()
+                            viewModel.completeWorkout(shouldUpdateTemplate: false)
                         }))
                 }
- 
+
             }
             .id(workoutId)
             .onAppear {
-                NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { _ in
-                    self.updateTimerForForeground()
-                }
-                
-                NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { _ in
-                    self.handleAppBackgrounding()
-                }
-                if(workoutController.workoutManager.fetchWorkoutById(for: workoutId) != nil){
-                    workoutController.loadWorkoutDetails(for: workoutId)
-                    workoutController.originalWorkoutDetails = workoutController.workoutDetails
-                    initSession()
-                    isLoading = false
-                    print("finished loading active workout")
-                }
-                else{
-                    isLoading = false
-                    print ("error, workout details not found")
-                }
+                // Setup ViewModel with dependencies
+                viewModel.setup(workoutController: workoutController, appViewModel: appViewModel)
+                viewModel.loadWorkout()
             }
             .onDisappear {
-                NotificationCenter.default.removeObserver(self, name: UIApplication.willEnterForegroundNotification, object: nil)
-                NotificationCenter.default.removeObserver(self, name: UIApplication.didEnterBackgroundNotification, object: nil)
+                viewModel.cleanup()
             }
         }
     }
-    
-    private func updateTimerForForeground() {
-        if workoutStarted {
-            let now = Date()
-            if let startTime = workoutController.workoutManager.getSessions().first?.startTime {
-                self.elapsedTime = Int(now.timeIntervalSince(startTime))
-            }
-        }
-    }
-    
-    private func handleAppBackgrounding() {
-    }
-    
+
     private var displayExerciseDetailsAndSets: some View {
         ForEach(workoutController.workoutDetails.indices, id: \.self) { index in
             Section(header: HStack {
@@ -184,15 +146,15 @@ struct ActiveWorkoutView: View {
                 if !workoutController.workoutDetails[index].sets.isEmpty {
                     SetHeaders(exerciseQuantifier: workoutController.workoutDetails[index].exerciseQuantifier, exerciseMeasurement: workoutController.workoutDetails[index].exerciseMeasurement, active: true)
                 }
-                
+
                 ForEach(workoutController.workoutDetails[index].sets.indices, id: \.self) { setIndex in
                     ExerciseRowActive(
                         setInput: $workoutController.workoutDetails[index].sets[setIndex],
                         setIndex: setIndex + 1,
                         workoutDetails: workoutController.workoutDetails[index],
                         workoutId: workoutId,
-                        workoutStarted: workoutStarted,
-                        workoutCancelled: workoutCancelled,
+                        workoutStarted: viewModel.workoutStarted,
+                        workoutCancelled: viewModel.workoutCancelled,
                         exerciseQuantifier: workoutController.workoutDetails[index].exerciseQuantifier,
                         exerciseMeasurement: workoutController.workoutDetails[index].exerciseMeasurement
                     )
@@ -203,34 +165,9 @@ struct ActiveWorkoutView: View {
             }
         }
     }
-    
-    private func initSession() {
-        if(workoutController.hasActiveSession){
-            self.workoutStarted = true
-            let activeSession = workoutController.workoutManager.getSessions().first!
-            if let startTime = activeSession.startTime {
-                self.elapsedTime = Int(Date().timeIntervalSince(startTime))
-                self.cancellableTimer = Timer.publish(every: 1, on: .main, in: .common).autoconnect().sink { _ in
-                    self.elapsedTime += 1
-                }
-            }
-            workoutController.loadTemporaryWorkoutDetails(for: workoutId)
-        }
-    }
-    
-    private func startWorkout() {
-        workoutStarted = true
-        workoutCancelled = false
-        elapsedTime = 0
-        cancellableTimer = Timer.publish(every: 1, on: .main, in: .common).autoconnect().sink { _ in
-            self.elapsedTime += 1
-        }
-        
-        workoutController.workoutManager.setSessionStatus(workoutId: workoutId, isActive: true)
-    }
-    
+
     private func buttonAction() {
-        if workoutStarted {
+        if viewModel.workoutStarted {
             if showEndWorkoutOption {
                 endWorkoutConfirmationShown = true
             } else {
@@ -244,56 +181,17 @@ struct ActiveWorkoutView: View {
             showingStartConfirmation = true
         }
     }
-    
-    
+
     private func endWorkout() {
-        if workoutController.hasWorkoutChanged() {
+        if viewModel.hasWorkoutChanged() {
             showUpdateDialog = true
             activeAlert = .updateValues
             showAlert = true
         } else {
-            completeEndWorkoutSequence()
+            viewModel.completeWorkout(shouldUpdateTemplate: false)
         }
     }
-    
-    private func completeEndWorkoutSequence() {
-        workoutStarted = false
-        showEndWorkoutOption = false
-        workoutController.setSessionStatus(workoutId: workoutId, isActive: false)
-        workoutController.saveWorkoutHistory(elapsedTimeFormatted: elapsedTimeFormatted, workoutId: workoutId)
-        workoutController.workoutManager.deleteAllTemporaryWorkoutDetails()
-        appViewModel.navigateTo(.workoutOverview(workoutId))
-    }
-    
-    func updateWorkoutValues() {
-        workoutController.workoutManager.updateWorkoutDetails(workoutId: workoutId, workoutDetailsInput: workoutController.workoutDetails)
-        completeEndWorkoutSequence()
-    }
-    
-    private func isAnyOtherSessionActive() -> Bool {
-        let sessionsWorkoutId = workoutController.workoutManager.getWorkoutIdOfActiveSession()
-        if sessionsWorkoutId != workoutId {
-            if sessionsWorkoutId == nil {
-                return false
-            }
-            return true
-        }
-        else{
-            return false
-        }
-    }
-    
-    private var elapsedTimeFormatted: String {
-        let hours = elapsedTime / 3600
-        let minutes = (elapsedTime % 3600) / 60
-        let seconds = elapsedTime % 60
-        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-    }
-    
-    private func hideKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-    }
-    
+
     private var startWorkoutButton: some View {
         Button(action: buttonAction) {
             Text(workoutButtonText)
@@ -305,7 +203,7 @@ struct ActiveWorkoutView: View {
                 .cornerRadius(10)
         }
         .padding(.horizontal)
-        .disabled(!workoutStarted && showEndWorkoutOption || isAnyOtherSessionActive())
+        .disabled(!viewModel.workoutStarted && showEndWorkoutOption || viewModel.isAnyOtherSessionActive())
         .confirmationDialog("Are you sure you want to end this workout?", isPresented: $endWorkoutConfirmationShown, titleVisibility: .visible) {
             Button("End Workout", action: endWorkout)
             Button("Cancel", role: .cancel) {
@@ -313,14 +211,14 @@ struct ActiveWorkoutView: View {
             }
         }
         .confirmationDialog("Are you sure you want to start this workout?", isPresented: $showingStartConfirmation, titleVisibility: .visible) {
-            Button("Start", action: startWorkout)
+            Button("Start", action: { viewModel.startWorkout() })
             Button("Cancel", role: .cancel) {}
         }
     }
-    
+
     private var workoutButtonText: String {
-        if workoutStarted {
-            return showEndWorkoutOption ? "End Workout" : elapsedTimeFormatted
+        if viewModel.workoutStarted {
+            return showEndWorkoutOption ? "End Workout" : viewModel.elapsedTimeFormatted
         } else {
             return "Start Workout"
         }

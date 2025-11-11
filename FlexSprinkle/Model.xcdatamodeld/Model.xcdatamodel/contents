@@ -9,7 +9,7 @@
         <attribute name="orderIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="history" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutHistory" inverseName="detailsTemp" inverseEntity="WorkoutHistory"/>
         <relationship name="sessions" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutSession" inverseName="detailsTemp" inverseEntity="WorkoutSession"/>
-        <relationship name="sets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WorkoutSet" inverseName="detailsTemp" inverseEntity="WorkoutSet"/>
+        <relationship name="sets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WorkoutSet" inverseName="detailsTemp" inverseEntity="WorkoutSet"/>
         <relationship name="workoutR" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Workouts" inverseName="detailsTemp" inverseEntity="Workouts"/>
     </entity>
     <entity name="UserInfo" representedClassName="UserInfo" syncable="YES">
@@ -24,7 +24,7 @@
         <attribute name="orderIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="history" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutHistory" inverseName="details" inverseEntity="WorkoutHistory"/>
         <relationship name="sessions" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutSession" inverseName="workoutDetails" inverseEntity="WorkoutSession"/>
-        <relationship name="sets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WorkoutSet" inverseName="details" inverseEntity="WorkoutSet"/>
+        <relationship name="sets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WorkoutSet" inverseName="details" inverseEntity="WorkoutSet"/>
         <relationship name="workoutR" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Workouts" inverseName="details" inverseEntity="Workouts"/>
     </entity>
     <entity name="WorkoutHistory" representedClassName="WorkoutHistory" syncable="YES">
@@ -44,9 +44,9 @@
         <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" attributeType="String"/>
         <relationship name="details" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WorkoutDetail" inverseName="workoutR" inverseEntity="WorkoutDetail"/>
-        <relationship name="detailsTemp" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="TemporaryWorkoutDetail" inverseName="workoutR" inverseEntity="TemporaryWorkoutDetail"/>
-        <relationship name="history" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WorkoutHistory" inverseName="workoutR" inverseEntity="WorkoutHistory"/>
-        <relationship name="sessions" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutSession" inverseName="workoutsR" inverseEntity="WorkoutSession"/>
+        <relationship name="detailsTemp" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="TemporaryWorkoutDetail" inverseName="workoutR" inverseEntity="TemporaryWorkoutDetail"/>
+        <relationship name="history" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WorkoutHistory" inverseName="workoutR" inverseEntity="WorkoutHistory"/>
+        <relationship name="sessions" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="WorkoutSession" inverseName="workoutsR" inverseEntity="WorkoutSession"/>
     </entity>
     <entity name="WorkoutSession" representedClassName="WorkoutSession" syncable="YES">
         <attribute name="endTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>

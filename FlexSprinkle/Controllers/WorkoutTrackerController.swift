@@ -69,6 +69,7 @@ class WorkoutTrackerController: ObservableObject {
         }
         
         if update {
+            print("update workoutDetails")
             updateWorkoutDetails(for: workoutId, for: title)
         } else {
             workoutDetails.forEach { detail in
@@ -279,6 +280,7 @@ class WorkoutTrackerController: ObservableObject {
             
             return !detail.sets.isEmpty
         }
+    
         workoutManager.updateWorkoutDetails(workoutId: workoutId, workoutDetailsInput: filledDetails)
         workoutManager.updateWorkoutTitle(workoutId: workoutId, to: workoutTitle)
     }

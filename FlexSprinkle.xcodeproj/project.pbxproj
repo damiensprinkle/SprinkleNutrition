@@ -164,6 +164,11 @@
 			path = images;
 			sourceTree = "<group>";
 		};
+		088B57402EC2FA2A0066CC17 /* ViewModels */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		08EF98262CEF89A700AE8196 /* WorkoutUtilities */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = WorkoutUtilities;
@@ -308,6 +313,7 @@
 				08B78FF52B6DBA390002DA68 /* FlexSprinkle.entitlements */,
 				08B78FF62B6DBA390002DA68 /* Preview Content */,
 				087111382B72AD830054E315 /* Model.xcdatamodeld */,
+				088B57402EC2FA2A0066CC17 /* ViewModels */,
 			);
 			path = FlexSprinkle;
 			sourceTree = "<group>";
@@ -395,6 +401,7 @@
 			fileSystemSynchronizedGroups = (
 				084753592CE3D3D500C6A7F9 /* SharedComponents */,
 				085466322CB618AA00136FBC /* images */,
+				088B57402EC2FA2A0066CC17 /* ViewModels */,
 				08EF98262CEF89A700AE8196 /* WorkoutUtilities */,
 			);
 			name = FlexSprinkle;

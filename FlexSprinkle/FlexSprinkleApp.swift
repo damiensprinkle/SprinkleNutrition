@@ -14,10 +14,15 @@ struct FlexSprinkleApp: App {
     @StateObject private var appViewModel = AppViewModel()
     @StateObject private var workoutManager = WorkoutManager()
     @StateObject private var userManager = UserManager()
-    @StateObject private var controller = WorkoutTrackerController(workoutManager: WorkoutManager())
-    
-    
+    @StateObject private var controller: WorkoutTrackerController
+
+
     init() {
+        // Initialize controller with the shared workoutManager instance
+        let manager = WorkoutManager()
+        _controller = StateObject(wrappedValue: WorkoutTrackerController(workoutManager: manager))
+        _workoutManager = StateObject(wrappedValue: manager)
+
         if let myBlackColor = UIColor(named: "MyBlack") {
             UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: myBlackColor]
             UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: myBlackColor]
@@ -33,10 +38,13 @@ struct FlexSprinkleApp: App {
                 .environmentObject(workoutManager)
                 .environmentObject(controller)
                 .environmentObject(userManager)
-                .onAppear(){
-                    if(controller.workoutManager.context == nil){
-                        controller.workoutManager.context = persistenceController.container.viewContext
+                .onAppear() {
+                    // Initialize CoreData context for managers
+                    if workoutManager.context == nil {
                         workoutManager.context = persistenceController.container.viewContext
+                    }
+                    if userManager.context == nil {
+                        userManager.context = persistenceController.container.viewContext
                     }
                 }
         }

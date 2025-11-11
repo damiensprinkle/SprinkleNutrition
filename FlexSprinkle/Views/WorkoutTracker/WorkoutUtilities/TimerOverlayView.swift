@@ -33,15 +33,17 @@ struct TimerHeaderView: View {
                     .foregroundColor(.myWhite)
             }
 
-            Button(action: { showTimer = false }) {
+            Button(action: {
+                cleanupTimer()
+                showTimer = false
+            }) {
                 Image(systemName: "xmark.circle")
                     .font(.title)
                     .foregroundColor(.myWhite)
             }
         }
         .padding()
-        .onAppear(perform: setupTimer)
-        .onDisappear(perform: stopTimer)
+        .onDisappear(perform: cleanupTimer)
     }
 
     // MARK: - Timer Logic
@@ -49,30 +51,34 @@ struct TimerHeaderView: View {
     private func toggleTimer() {
         timerRunning.toggle()
         if timerRunning {
-            if timer == nil {
-                setupTimer()
-            }
+            startTimer()
+        } else {
+            pauseTimer()
         }
     }
 
-    private func resetTimer() {
-        stopTimer()
-        elapsedTime = 0
+    private func startTimer() {
+        guard timer == nil else { return }
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [self] _ in
+            // Update elapsed time
+            self.elapsedTime += 1
+        }
     }
 
-    private func stopTimer() {
-        timerRunning = false
+    private func pauseTimer() {
         timer?.invalidate()
         timer = nil
     }
 
-    private func setupTimer() {
-        guard timer == nil else { return } 
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
-            if timerRunning {
-                elapsedTime += 1
-            }
-        }
+    private func resetTimer() {
+        cleanupTimer()
+        timerRunning = false
+        elapsedTime = 0
+    }
+
+    private func cleanupTimer() {
+        timer?.invalidate()
+        timer = nil
     }
 
     private func formatTime(_ time: TimeInterval) -> String {

@@ -201,6 +201,7 @@ class WorkoutManager: ObservableObject {
         if let originalDetails = originalWorkout.details as? Set<WorkoutDetail> {
             for originalDetail in originalDetails {
                 let newDetail = WorkoutDetail(context: context)
+                newDetail.id = UUID()  // Set unique ID for the new detail
                 newDetail.exerciseId = UUID()
                 newDetail.exerciseName = originalDetail.exerciseName
                 newDetail.orderIndex = originalDetail.orderIndex
@@ -211,6 +212,7 @@ class WorkoutManager: ObservableObject {
                 if let originalSets = originalDetail.sets as? Set<WorkoutSet> {
                     for originalSet in originalSets {
                         let newSet = WorkoutSet(context: context)
+                        newSet.id = UUID()  // Set unique ID for the new set
                         newSet.reps = originalSet.reps
                         newSet.weight = originalSet.weight
                         newSet.time = originalSet.time
@@ -259,39 +261,26 @@ class WorkoutManager: ObservableObject {
     
     func deleteWorkout(for workoutId: UUID) {
         guard let context = self.context else { return }
-        
+
         let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "Workouts")
         fetchRequest.predicate = NSPredicate(format: "id == %@", workoutId as CVarArg)
-        
+
         do {
             let workoutsToDelete = try context.fetch(fetchRequest) as? [Workouts] ?? []
-            
+
             for workout in workoutsToDelete {
-                if let workoutHistory = workout.history as? Set<WorkoutHistory> {
-                    for history in workoutHistory {
-                        context.delete(history)
-                    }
-                }
-                
-                if let workoutDetails = workout.details as? Set<WorkoutDetail> {
-                    for detail in workoutDetails {
-                        context.delete(detail)
-                    }
-                }
-                
-                if let tempDetails = workout.detailsTemp as? Set<TemporaryWorkoutDetail> {
-                    for tempDetail in tempDetails {
-                        context.delete(tempDetail)
-                    }
-                }
-                
+                // Cascade delete rules will automatically handle:
+                // - WorkoutHistory (history relationship)
+                // - WorkoutDetail (details relationship) and their WorkoutSets
+                // - TemporaryWorkoutDetail (detailsTemp relationship) and their WorkoutSets
+                // - WorkoutSession (sessions relationship)
                 context.delete(workout)
             }
-            
+
             try context.save()
-            print("Workout and its associated history, details, and temporary details deleted successfully")
+            print("Workout and its associated entities deleted successfully (cascade)")
         } catch let error as NSError {
-            print("Error deleting workout and its associated entities: \(error), \(error.userInfo)")
+            print("Error deleting workout: \(error), \(error.userInfo)")
         }
     }
     

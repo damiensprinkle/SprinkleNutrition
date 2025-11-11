@@ -160,6 +160,7 @@ struct AddWorkoutView: View {
                         exerciseName: workoutController.workoutDetails[index].exerciseName,
                         index: index,
                         workoutCount: workoutController.workoutDetails.count,
+                        isKeyboardActive: focusManager.isAnyTextFieldFocused,
                         moveUpAction: {
                             workoutController.moveExercise(from: index, to: index - 1)
                         },
@@ -231,41 +232,48 @@ struct AddWorkoutView: View {
         let exerciseName: String
         let index: Int
         let workoutCount: Int
+        let isKeyboardActive: Bool
         var moveUpAction: (() -> Void)?
         var moveDownAction: (() -> Void)?
         var deleteAction: (() -> Void)?
         var renameAction: (() -> Void)?
-        
+
         var body: some View {
             HStack {
                 Text(exerciseName).font(.title2)
                 Spacer()
-                
-                // Move up
+
+                // Move up - disabled when keyboard is active
                 if index > 0 {
                     Image(systemName: "arrow.up")
-                        .foregroundColor(.blue)
+                        .foregroundColor(isKeyboardActive ? .gray : .blue)
+                        .opacity(isKeyboardActive ? 0.5 : 1.0)
                         .onTapGesture {
-                            moveUpAction?()
+                            if !isKeyboardActive {
+                                moveUpAction?()
+                            }
                         }
                 }
-                
-                // Move down
+
+                // Move down - disabled when keyboard is active
                 if index < workoutCount - 1 {
                     Image(systemName: "arrow.down")
-                        .foregroundColor(.blue)
+                        .foregroundColor(isKeyboardActive ? .gray : .blue)
+                        .opacity(isKeyboardActive ? 0.5 : 1.0)
                         .onTapGesture {
-                            moveDownAction?()
+                            if !isKeyboardActive {
+                                moveDownAction?()
+                            }
                         }
                 }
-                
+
                 // Delete
                 Image(systemName: "trash")
                     .foregroundColor(.red)
                     .onTapGesture {
                         deleteAction?()
                     }
-                
+
                 // Rename
                 Image(systemName: "pencil")
                     .foregroundColor(.myBlack)

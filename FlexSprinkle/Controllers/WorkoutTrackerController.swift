@@ -18,11 +18,11 @@ class WorkoutTrackerController: ObservableObject {
     @Published var cardColor: String? // new
     @Published var selectedWorkoutName: String?
     private let colorManager = ColorManager()
-    
-    
-    var workoutManager: WorkoutManager
-    
-    init(workoutManager: WorkoutManager) {
+
+
+    var workoutManager: any WorkoutManaging
+
+    init(workoutManager: any WorkoutManaging) {
         self.workoutManager = workoutManager
     }
     

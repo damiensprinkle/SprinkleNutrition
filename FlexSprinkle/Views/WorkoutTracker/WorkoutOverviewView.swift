@@ -69,12 +69,13 @@ struct WorkoutOverviewView: View {
         }
         .navigationTitle("Time: \(history?.workoutTimeToComplete ?? "0")")
         .onAppear {
-            history = workoutController.workoutManager.fetchLatestWorkoutHistory(for: workoutId)
-            
+            let manager = workoutController.workoutManager
+            history = manager.fetchLatestWorkoutHistory(for: workoutId)
+
             if let totalCardioTimeInSeconds = Int(history?.timeDoingCardio ?? "0") {
                 totalCardioTime = formatTimeFromSeconds(totalSeconds: totalCardioTimeInSeconds)
             }
-            
+
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
                 withAnimation(.easeIn(duration: 1.0)) {
                     showProceedButton = true

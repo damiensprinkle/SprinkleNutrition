@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-class WorkoutManager: ObservableObject {
+class WorkoutManager: ObservableObject, WorkoutManaging {
     var context: NSManagedObjectContext? {
         didSet {
             print("Context set in WorkoutManager")

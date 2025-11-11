@@ -28,6 +28,11 @@
 		087111AA2B77CA170054E315 /* WorkoutTrackerContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087111A92B77CA170054E315 /* WorkoutTrackerContentView.swift */; };
 		087111AD2B77E9EC0054E315 /* CustomTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087111AC2B77E9EC0054E315 /* CustomTabView.swift */; };
 		087111AF2B77EAF20054E315 /* HomeContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087111AE2B77EAF20054E315 /* HomeContentView.swift */; };
+		088B57732EC3A1C00066CC17 /* WorkoutTrackerControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B57712EC3A1C00066CC17 /* WorkoutTrackerControllerTests.swift */; };
+		088B57742EC3A1C00066CC17 /* MockWorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B576E2EC3A1C00066CC17 /* MockWorkoutManager.swift */; };
+		088B57752EC3A1C00066CC17 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 088B57702EC3A1C00066CC17 /* README.md */; };
+		088B57772EC3A6E40066CC17 /* WorkoutManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B57762EC3A6E40066CC17 /* WorkoutManaging.swift */; };
+		088B577A2EC3A7030066CC17 /* ActiveWorkoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B57782EC3A7030066CC17 /* ActiveWorkoutViewModel.swift */; };
 		08B3CF232B791FB8002F5C92 /* DataCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B3CF222B791FB8002F5C92 /* DataCardView.swift */; };
 		08B3CF512B7BC611002F5C92 /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 08B3CF502B7BC611002F5C92 /* ConfettiSwiftUI */; };
 		08B3CF7B2B7BDD0C002F5C92 /* AddExerciseDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B3CF7A2B7BDD0C002F5C92 /* AddExerciseDialog.swift */; };
@@ -114,6 +119,11 @@
 		087111A92B77CA170054E315 /* WorkoutTrackerContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTrackerContentView.swift; sourceTree = "<group>"; };
 		087111AC2B77E9EC0054E315 /* CustomTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabView.swift; sourceTree = "<group>"; };
 		087111AE2B77EAF20054E315 /* HomeContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeContentView.swift; sourceTree = "<group>"; };
+		088B576E2EC3A1C00066CC17 /* MockWorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWorkoutManager.swift; sourceTree = "<group>"; };
+		088B57702EC3A1C00066CC17 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		088B57712EC3A1C00066CC17 /* WorkoutTrackerControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTrackerControllerTests.swift; sourceTree = "<group>"; };
+		088B57762EC3A6E40066CC17 /* WorkoutManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutManaging.swift; sourceTree = "<group>"; };
+		088B57782EC3A7030066CC17 /* ActiveWorkoutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveWorkoutViewModel.swift; sourceTree = "<group>"; };
 		08B3CF222B791FB8002F5C92 /* DataCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCardView.swift; sourceTree = "<group>"; };
 		08B3CF7A2B7BDD0C002F5C92 /* AddExerciseDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExerciseDialog.swift; sourceTree = "<group>"; };
 		08B3CF7E2B7C088F002F5C92 /* SetHeaders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetHeaders.swift; sourceTree = "<group>"; };
@@ -162,11 +172,6 @@
 		085466322CB618AA00136FBC /* images */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = images;
-			sourceTree = "<group>";
-		};
-		088B57402EC2FA2A0066CC17 /* ViewModels */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		08EF98262CEF89A700AE8196 /* WorkoutUtilities */ = {
@@ -249,6 +254,39 @@
 			path = Main;
 			sourceTree = "<group>";
 		};
+		088B576F2EC3A1C00066CC17 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				088B576E2EC3A1C00066CC17 /* MockWorkoutManager.swift */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
+		088B57722EC3A1C00066CC17 /* FlexSprinkleTests */ = {
+			isa = PBXGroup;
+			children = (
+				088B576F2EC3A1C00066CC17 /* Mocks */,
+				088B57702EC3A1C00066CC17 /* README.md */,
+				088B57712EC3A1C00066CC17 /* WorkoutTrackerControllerTests.swift */,
+			);
+			path = FlexSprinkleTests;
+			sourceTree = "<group>";
+		};
+		088B57792EC3A7030066CC17 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				088B57782EC3A7030066CC17 /* ActiveWorkoutViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		088B577C2EC3AAB30066CC17 /* FlexSprinkleUITests */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = FlexSprinkleUITests;
+			sourceTree = "<group>";
+		};
 		08B3CF7C2B7C07C0002F5C92 /* ModifyWorkout */ = {
 			isa = PBXGroup;
 			children = (
@@ -282,6 +320,8 @@
 		08B78FE32B6DBA370002DA68 = {
 			isa = PBXGroup;
 			children = (
+				088B577C2EC3AAB30066CC17 /* FlexSprinkleUITests */,
+				088B57722EC3A1C00066CC17 /* FlexSprinkleTests */,
 				085466322CB618AA00136FBC /* images */,
 				08B3D00D2B82AC7C002F5C92 /* Launch Screen.storyboard */,
 				08B78FEE2B6DBA370002DA68 /* FlexSprinkle */,
@@ -302,6 +342,7 @@
 		08B78FEE2B6DBA370002DA68 /* FlexSprinkle */ = {
 			isa = PBXGroup;
 			children = (
+				088B57792EC3A7030066CC17 /* ViewModels */,
 				08B3CFE82B7E9F9A002F5C92 /* Helpers */,
 				0871113B2B7306060054E315 /* Manager */,
 				087111352B728F810054E315 /* Enums */,
@@ -313,7 +354,6 @@
 				08B78FF52B6DBA390002DA68 /* FlexSprinkle.entitlements */,
 				08B78FF62B6DBA390002DA68 /* Preview Content */,
 				087111382B72AD830054E315 /* Model.xcdatamodeld */,
-				088B57402EC2FA2A0066CC17 /* ViewModels */,
 			);
 			path = FlexSprinkle;
 			sourceTree = "<group>";
@@ -353,6 +393,7 @@
 		08B790252B6E948C0002DA68 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				088B57762EC3A6E40066CC17 /* WorkoutManaging.swift */,
 				0847535A2CE3D47000C6A7F9 /* WorkoutTrackerController.swift */,
 				08C31FFE2B82EA3A002EE8A7 /* PersistenceController.swift */,
 			);
@@ -401,7 +442,6 @@
 			fileSystemSynchronizedGroups = (
 				084753592CE3D3D500C6A7F9 /* SharedComponents */,
 				085466322CB618AA00136FBC /* images */,
-				088B57402EC2FA2A0066CC17 /* ViewModels */,
 				08EF98262CEF89A700AE8196 /* WorkoutUtilities */,
 			);
 			name = FlexSprinkle;
@@ -506,6 +546,7 @@
 		08B78FFB2B6DBA390002DA68 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			files = (
+				088B57752EC3A1C00066CC17 /* README.md in Resources */,
 			);
 		};
 		08B790052B6DBA390002DA68 /* Resources */ = {
@@ -521,6 +562,7 @@
 			files = (
 				08EF97E82CEEC13500AE8196 /* Workouts+CoreDataProperties.swift in Sources */,
 				08EF97E92CEEC13500AE8196 /* Workouts+CoreDataClass.swift in Sources */,
+				088B57772EC3A6E40066CC17 /* WorkoutManaging.swift in Sources */,
 				08B3CFDD2B7D9567002F5C92 /* WorkoutSet+CoreDataProperties.swift in Sources */,
 				0847535F2CE3D59B00C6A7F9 /* WorkoutSessionModel.swift in Sources */,
 				08C31FFF2B82EA3A002EE8A7 /* PersistenceController.swift in Sources */,
@@ -530,6 +572,7 @@
 				08B3CFEC2B80227E002F5C92 /* WorkoutHistoryView.swift in Sources */,
 				08B3CFEA2B7E9FA6002F5C92 /* TimeHelper.swift in Sources */,
 				087111AA2B77CA170054E315 /* WorkoutTrackerContentView.swift in Sources */,
+				088B577A2EC3A7030066CC17 /* ActiveWorkoutViewModel.swift in Sources */,
 				085466812CDFAD4700136FBC /* WorkoutDetail+CoreDataClass.swift in Sources */,
 				085466822CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataClass.swift in Sources */,
 				085466832CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataProperties.swift in Sources */,
@@ -575,6 +618,8 @@
 		08B78FF92B6DBA390002DA68 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			files = (
+				088B57732EC3A1C00066CC17 /* WorkoutTrackerControllerTests.swift in Sources */,
+				088B57742EC3A1C00066CC17 /* MockWorkoutManager.swift in Sources */,
 			);
 		};
 		08B790032B6DBA390002DA68 /* Sources */ = {
@@ -733,6 +778,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -742,8 +788,8 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
@@ -774,6 +820,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -783,8 +830,8 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphoneos*]" = UIStatusBarStyleDefault;
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
@@ -810,16 +857,17 @@
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = P8P8MB2RC3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.damiensprinkle.FlexSprinkleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FlexSprinkle.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/FlexSprinkle";
 			};
 			name = Debug;
@@ -832,16 +880,17 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.damiensprinkle.FlexSprinkleTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FlexSprinkle.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/FlexSprinkle";
 			};
 			name = Release;
@@ -854,16 +903,17 @@
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = P8P8MB2RC3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.damiensprinkle.FlexSprinkleUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_TARGET_NAME = FlexSprinkle;
 			};
 			name = Debug;
@@ -875,16 +925,17 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.damiensprinkle.FlexSprinkleUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				TEST_TARGET_NAME = FlexSprinkle;
 			};
 			name = Release;

@@ -2,6 +2,7 @@ import SwiftUI
 import ConfettiSwiftUI
 
 
+/// This is the view that occurs when you complete a workout
 struct WorkoutOverviewView: View {
     var workoutId: UUID
     var workoutDetails: [WorkoutDetailInput] = []
@@ -82,4 +83,3 @@ struct WorkoutOverviewView: View {
         }
     }
 }
-

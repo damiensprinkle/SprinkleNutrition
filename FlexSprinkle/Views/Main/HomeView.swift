@@ -14,7 +14,6 @@ struct HomeView: View {
     @EnvironmentObject var workoutController: WorkoutTrackerController
 
     @State private var showUserDetailsForm = false
-    @AppStorage("optOut") private var optOut: Bool = false
 
     var body: some View {
         NavigationStack {
@@ -29,22 +28,33 @@ struct HomeView: View {
                 }
                 .onAppear {
                     userManager.context = persistenceController.container.viewContext
-                    if userManager.userDetails == nil && !optOut {
+                    if userManager.userDetails == nil {
                         showUserDetailsForm = true
                     }
                 }
-                .overlay {
-                    if showUserDetailsForm && !optOut {
-                        UserDetailsFormView(isPresented: $showUserDetailsForm)
-                            .environmentObject(userManager)
-                    }
-                }
             } else {
-                Text("Loading content...")
+                Text("That was quick! Getting things ready...")
             }
         }
+        .overlay {
+            if showUserDetailsForm {
+                ZStack {
+                    Color.black.opacity(0.4)
+                        .ignoresSafeArea()
+
+                    UserDetailsFormView(isPresented: $showUserDetailsForm)
+                        .environmentObject(userManager)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(Color(.systemBackground))
+                        .ignoresSafeArea()
+                }
+                .transition(.opacity)
+                .zIndex(10)
+            }
+        }
+
         .onChange(of: userManager.userDetails) {
-            if userManager.userDetails != nil || optOut {
+            if userManager.userDetails != nil  {
                 showUserDetailsForm = false
             }
         }

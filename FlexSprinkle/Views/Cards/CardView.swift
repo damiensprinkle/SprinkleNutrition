@@ -12,14 +12,18 @@ struct CardView: View {
     @State private var animate = false
     @State private var showAlert = false
     @State private var alertTitle = ""
-    
-    
+    @State private var workout: Workouts?
+
+
     var body: some View {
-        let workout = workoutController.workoutManager.fetchWorkoutById(for: workoutId)
         let backgroundColor = Color(workout?.color ?? "MyBlue")
-        
+
         VStack {
             existingWorkoutCardContent(workout: workout)
+        }
+        .onAppear {
+            let manager = workoutController.workoutManager
+            workout = manager.fetchWorkoutById(for: workoutId)
         }
         .padding()
         .background(backgroundColor)

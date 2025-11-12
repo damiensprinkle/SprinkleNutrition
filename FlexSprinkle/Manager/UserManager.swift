@@ -5,9 +5,9 @@ class UserManager: ObservableObject {
     var context: NSManagedObjectContext? {
         didSet {
             print("Context set in UserManager")
-            if context != nil {
+            if let context = context {
                 loadUserDetails()
-                context!.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+                context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
             }
         }
     }

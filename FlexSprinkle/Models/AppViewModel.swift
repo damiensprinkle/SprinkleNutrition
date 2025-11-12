@@ -28,7 +28,7 @@ class AppViewModel: ObservableObject {
 
     enum ContentViewType : Equatable {
         case main
-        case workoutOverview(UUID)
+        case workoutOverview(UUID, String) // workoutId, elapsedTime
         case workoutActiveView(UUID)
         case workoutHistoryView
         case customizeCardView(UUID)

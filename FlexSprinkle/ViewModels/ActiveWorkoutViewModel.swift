@@ -123,11 +123,15 @@ class ActiveWorkoutViewModel: ObservableObject {
 
         workoutStarted = false
         workoutController.setSessionStatus(workoutId: workoutId, isActive: false)
-        workoutController.saveWorkoutHistory(elapsedTimeFormatted: elapsedTimeFormatted, workoutId: workoutId)
-        workoutController.workoutManager.deleteAllTemporaryWorkoutDetails()
 
-        // Navigate to overview
-        appViewModel.navigateTo(.workoutOverview(workoutId))
+        // Save workout history and navigate when complete
+        workoutController.saveWorkoutHistory(elapsedTimeFormatted: elapsedTimeFormatted, workoutId: workoutId) { [weak self] in
+            guard let self = self else { return }
+            self.workoutController.workoutManager.deleteAllTemporaryWorkoutDetails()
+
+            // Navigate to overview only after history is saved, pass elapsed time for immediate display
+            self.appViewModel.navigateTo(.workoutOverview(workoutId, elapsedTimeFormatted))
+        }
     }
 
     func hasWorkoutChanged() -> Bool {

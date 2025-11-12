@@ -54,7 +54,11 @@ class WorkoutTrackerController: ObservableObject {
     }
     
     func saveWorkoutColor(workoutId: UUID) {
-        workoutManager.updateWorkoutColor(workoutId: workoutId, color: cardColor!)
+        guard let color = cardColor else {
+            print("Cannot save workout color: cardColor is nil")
+            return
+        }
+        workoutManager.updateWorkoutColor(workoutId: workoutId, color: color)
     }
     
     func saveWorkout(title: String, update: Bool, workoutId: UUID) -> Result<Void, WorkoutSaveError> {
@@ -73,8 +77,12 @@ class WorkoutTrackerController: ObservableObject {
             updateWorkoutDetails(for: workoutId, for: title)
         } else {
             workoutDetails.forEach { detail in
+                guard let detailId = detail.id else {
+                    print("Warning: Skipping workout detail with missing id")
+                    return
+                }
                 workoutManager.addWorkoutDetail(
-                    id: detail.id!,
+                    id: detailId,
                     workoutTitle: title,
                     exerciseName: detail.exerciseName,
                     color: colorManager.getRandomColor(),
@@ -132,35 +140,35 @@ class WorkoutTrackerController: ObservableObject {
         return false
     }
     
-    func saveWorkoutHistory(elapsedTimeFormatted: String, workoutId: UUID){
+    func saveWorkoutHistory(elapsedTimeFormatted: String, workoutId: UUID, completion: (() -> Void)? = nil) {
         let totalWeightLifted = workoutDetails.reduce(0) { detailSum, detail in
             detailSum + detail.sets.reduce(0) { setSum, setInput in
                 let reps = setInput.reps > 0 ? Float(setInput.reps) : 1
                 return setSum + (Float(setInput.weight) * reps)
             }
         }
-        
-        
+
+
         let totalReps = workoutDetails.reduce(0) { detailSum, detail in
             detailSum + detail.sets.reduce(0) { setSum, setInput in
                 setSum + Int(setInput.reps)
             }
         }
-        
+
         let workoutTimeToComplete = elapsedTimeFormatted
-        
+
         let totalCardioTime = workoutDetails.reduce(0) { detailSum, detail in
             detailSum + detail.sets.reduce(0) { setSum, setInput in
                 setSum + Int(setInput.time)
             }
         }
-        
+
         let totalDistance = workoutDetails.reduce(0) { detailSum, detail in
             detailSum + detail.sets.reduce(0) { setSum, setInput in
                 setSum + Float(setInput.distance)
             }
         }
-        
+
         workoutManager.saveWorkoutHistory(
             workoutId: workoutId,
             dateCompleted: Date(),
@@ -169,7 +177,8 @@ class WorkoutTrackerController: ObservableObject {
             workoutTimeToComplete: workoutTimeToComplete,
             totalCardioTime: "\(totalCardioTime)",
             totalDistance: Float(totalDistance),
-            workoutDetailsInput: workoutDetails
+            workoutDetailsInput: workoutDetails,
+            completion: completion
         )
     }
     
@@ -184,20 +193,27 @@ class WorkoutTrackerController: ObservableObject {
         
         if let detailsSet = workout.details as? Set<WorkoutDetail> {
             let details = detailsSet.sorted { $0.orderIndex < $1.orderIndex }
-            workoutDetailsList = details.map { detail in
+            workoutDetailsList = details.compactMap { detail in
+                guard let exerciseName = detail.exerciseName,
+                      let exerciseQuantifier = detail.exerciseQuantifier,
+                      let exerciseMeasurement = detail.exerciseMeasurement else {
+                    print("Warning: Skipping workout detail with missing required fields")
+                    return nil
+                }
+
                 let sortedSets = (detail.sets?.allObjects as? [WorkoutSet])?.sorted(by: { $0.setIndex < $1.setIndex }) ?? []
                 let setInputs = sortedSets.map { ws in
                     SetInput(id: ws.id, reps: ws.reps, weight: ws.weight, time: ws.time, distance: ws.distance, isCompleted: ws.isCompleted, setIndex: ws.setIndex)
                 }
-                
+
                 return WorkoutDetailInput(
                     id: detail.id,
                     exerciseId: detail.exerciseId,
-                    exerciseName: detail.exerciseName!,
+                    exerciseName: exerciseName,
                     orderIndex: detail.orderIndex,
                     sets: setInputs,
-                    exerciseQuantifier: detail.exerciseQuantifier!,
-                    exerciseMeasurement: detail.exerciseMeasurement!
+                    exerciseQuantifier: exerciseQuantifier,
+                    exerciseMeasurement: exerciseMeasurement
                 )
             }
         }
@@ -292,7 +308,8 @@ class WorkoutTrackerController: ObservableObject {
     
     
     func duplicateWorkout(_ workoutId: UUID) {
-        workoutManager.duplicateWorkout(originalWorkoutId: workoutId)
-        loadWorkouts()
+        workoutManager.duplicateWorkout(originalWorkoutId: workoutId) { [weak self] in
+            self?.loadWorkouts()
+        }
     }
 }

@@ -5,6 +5,7 @@ import ConfettiSwiftUI
 /// This is the view that occurs when you complete a workout
 struct WorkoutOverviewView: View {
     var workoutId: UUID
+    var elapsedTime: String
     var workoutDetails: [WorkoutDetailInput] = []
     
     @EnvironmentObject var workoutController: WorkoutTrackerController
@@ -67,7 +68,7 @@ struct WorkoutOverviewView: View {
                 }
             }
         }
-        .navigationTitle("Time: \(history?.workoutTimeToComplete ?? "0")")
+        .navigationTitle("Time: \(elapsedTime)")
         .onAppear {
             let manager = workoutController.workoutManager
             history = manager.fetchLatestWorkoutHistory(for: workoutId)

@@ -24,8 +24,8 @@ struct WorkoutContentMainView: View {
                         .environmentObject(workoutController))
                     .transition(.slide)
 
-                case .workoutOverview(let workoutId):
-                    AnyView(WorkoutOverviewView(workoutId: workoutId)
+                case .workoutOverview(let workoutId, let elapsedTime):
+                    AnyView(WorkoutOverviewView(workoutId: workoutId, elapsedTime: elapsedTime)
                         .environmentObject(workoutController)
                         .environmentObject(appViewModel))
                     .transition(.slide)

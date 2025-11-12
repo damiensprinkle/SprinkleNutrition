@@ -259,8 +259,12 @@ struct ExerciseRowActive: View {
     }
     
     func saveWorkoutDetail() {
+        guard let exerciseId = workoutDetails.exerciseId else {
+            print("Error: Cannot save workout detail - exerciseId is nil")
+            return
+        }
         let setsInput = [setInput]
-        workoutController.workoutManager.saveOrUpdateSetsDuringActiveWorkout(workoutId: workoutId, exerciseId: workoutDetails.exerciseId!, exerciseName: workoutDetails.exerciseName, setsInput: setsInput, orderIndex: workoutDetails.orderIndex)
+        workoutController.workoutManager.saveOrUpdateSetsDuringActiveWorkout(workoutId: workoutId, exerciseId: exerciseId, exerciseName: workoutDetails.exerciseName, setsInput: setsInput, orderIndex: workoutDetails.orderIndex)
     }
     
     private func formatInput(_ newValue: String) {

@@ -11,15 +11,19 @@ func validateAndSetInputFloat(_ input: inout String, for setInputField: inout Fl
     if input.count > maxLength {
         input = String(input.prefix(maxLength))
     }
-    
+
     let decimalPattern = "^[0-9]{0,\(maxLength)}(?:\\.[0-9]{0,\(maxDecimals)})?$"
-    let regex = try! NSRegularExpression(pattern: decimalPattern)
+    guard let regex = try? NSRegularExpression(pattern: decimalPattern) else {
+        print("Error: Failed to create regex with pattern: \(decimalPattern)")
+        setInputField = Float(input) ?? 0.0
+        return
+    }
     let range = NSRange(location: 0, length: input.utf16.count)
-    
+
     if regex.firstMatch(in: input, options: [], range: range) == nil {
         input = String(input.dropLast())
     }
-    
+
     setInputField = Float(input) ?? 0.0
 }
 
@@ -27,14 +31,18 @@ func validateAndSetInputInt(_ input: inout String, for setInputField: inout Int3
     if input.count > maxLength {
         input = String(input.prefix(maxLength))
     }
-    
+
     let integerPattern = "^[0-9]{0,\(maxLength)}$"
-    let regex = try! NSRegularExpression(pattern: integerPattern)
+    guard let regex = try? NSRegularExpression(pattern: integerPattern) else {
+        print("Error: Failed to create regex with pattern: \(integerPattern)")
+        setInputField = Int32(input) ?? 0
+        return
+    }
     let range = NSRange(location: 0, length: input.utf16.count)
-    
+
     if regex.firstMatch(in: input, options: [], range: range) == nil {
         input = String(input.dropLast())
     }
-    
+
     setInputField = Int32(input) ?? 0
 }

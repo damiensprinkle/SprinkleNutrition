@@ -33,6 +33,8 @@
 		088B57752EC3A1C00066CC17 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 088B57702EC3A1C00066CC17 /* README.md */; };
 		088B57772EC3A6E40066CC17 /* WorkoutManaging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B57762EC3A6E40066CC17 /* WorkoutManaging.swift */; };
 		088B577A2EC3A7030066CC17 /* ActiveWorkoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B57782EC3A7030066CC17 /* ActiveWorkoutViewModel.swift */; };
+		088B57BB2EC3BC9F0066CC17 /* CoreDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B57B92EC3BC9F0066CC17 /* CoreDataError.swift */; };
+		088B57BC2EC3BC9F0066CC17 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B57BA2EC3BC9F0066CC17 /* ErrorHandler.swift */; };
 		08B3CF232B791FB8002F5C92 /* DataCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B3CF222B791FB8002F5C92 /* DataCardView.swift */; };
 		08B3CF512B7BC611002F5C92 /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 08B3CF502B7BC611002F5C92 /* ConfettiSwiftUI */; };
 		08B3CF7B2B7BDD0C002F5C92 /* AddExerciseDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B3CF7A2B7BDD0C002F5C92 /* AddExerciseDialog.swift */; };
@@ -124,6 +126,8 @@
 		088B57712EC3A1C00066CC17 /* WorkoutTrackerControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTrackerControllerTests.swift; sourceTree = "<group>"; };
 		088B57762EC3A6E40066CC17 /* WorkoutManaging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutManaging.swift; sourceTree = "<group>"; };
 		088B57782EC3A7030066CC17 /* ActiveWorkoutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveWorkoutViewModel.swift; sourceTree = "<group>"; };
+		088B57B92EC3BC9F0066CC17 /* CoreDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataError.swift; sourceTree = "<group>"; };
+		088B57BA2EC3BC9F0066CC17 /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
 		08B3CF222B791FB8002F5C92 /* DataCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCardView.swift; sourceTree = "<group>"; };
 		08B3CF7A2B7BDD0C002F5C92 /* AddExerciseDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExerciseDialog.swift; sourceTree = "<group>"; };
 		08B3CF7E2B7C088F002F5C92 /* SetHeaders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetHeaders.swift; sourceTree = "<group>"; };
@@ -381,6 +385,8 @@
 		08B790242B6E94840002DA68 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				088B57B92EC3BC9F0066CC17 /* CoreDataError.swift */,
+				088B57BA2EC3BC9F0066CC17 /* ErrorHandler.swift */,
 				0847535E2CE3D59900C6A7F9 /* WorkoutSessionModel.swift */,
 				087111442B7519900054E315 /* CoreData */,
 				087111402B7405990054E315 /* WorkoutDetailsInput.swift */,
@@ -606,6 +612,8 @@
 				08B3CFDB2B7D9567002F5C92 /* WorkoutSession+CoreDataProperties.swift in Sources */,
 				08B3CFDA2B7D9567002F5C92 /* WorkoutSession+CoreDataClass.swift in Sources */,
 				08B3CF232B791FB8002F5C92 /* DataCardView.swift in Sources */,
+				088B57BB2EC3BC9F0066CC17 /* CoreDataError.swift in Sources */,
+				088B57BC2EC3BC9F0066CC17 /* ErrorHandler.swift in Sources */,
 				08FC757E2CDFB4DF001E2E5B /* ExerciseRow.swift in Sources */,
 				08B7902B2B7090870002DA68 /* AddWorkoutView.swift in Sources */,
 				081F87F22B87F6ED00BBBDF2 /* CheckboxStyle.swift in Sources */,

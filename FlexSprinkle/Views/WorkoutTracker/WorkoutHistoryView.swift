@@ -11,9 +11,10 @@ struct WorkoutHistoryView: View {
     @EnvironmentObject var appViewModel: AppViewModel
     @EnvironmentObject var workoutController: WorkoutTrackerController
     @State private var histories: [WorkoutHistory] = []
-    
+    @State private var appearedCards: Set<UUID> = []
+
     @State private var deletingWorkoutsHistory: Set<UUID> = []
-    
+
     @State private var selectedMonth: Int = Calendar.current.component(.month, from: Date()) - 1
     @State private var selectedYear: Int = Calendar.current.component(.year, from: Date())
     
@@ -43,10 +44,20 @@ struct WorkoutHistoryView: View {
             else{
                 ScrollView(.vertical, showsIndicators: false) {
                     LazyVStack {
-                        ForEach(histories, id: \.self) { history in
-                            WorkoutHistoryCardView(workoutId: history.workoutR!.id!, history: history, onDelete: {
-                                deleteWorkoutHistory(history.id!)
-                            })
+                        ForEach(Array(histories.enumerated()), id: \.element) { index, history in
+                            if let workoutId = history.workoutR?.id,
+                               let historyId = history.id {
+                                WorkoutHistoryCardView(workoutId: workoutId, history: history, onDelete: {
+                                    deleteWorkoutHistory(historyId)
+                                })
+                                .opacity(appearedCards.contains(historyId) ? 1 : 0)
+                                .offset(y: appearedCards.contains(historyId) ? 0 : 20)
+                                .onAppear {
+                                    withAnimation(.easeOut(duration: 0.3).delay(Double(index) * 0.1)) {
+                                        _ = appearedCards.insert(historyId)
+                                    }
+                                }
+                            }
                         }
                     }
                     .padding()
@@ -64,8 +75,14 @@ struct WorkoutHistoryView: View {
         var components = DateComponents()
         components.year = selectedYear
         components.month = selectedMonth + 1
-        let startDate = calendar.date(from: components)!
-        
+
+        guard let startDate = calendar.date(from: components) else {
+            print("Error: Unable to create date from components - year: \(selectedYear), month: \(selectedMonth + 1)")
+            histories = []
+            return
+        }
+
+        appearedCards.removeAll()
         histories = workoutController.workoutManager.fetchAllWorkoutHistory(for: startDate) ?? []
     }
     

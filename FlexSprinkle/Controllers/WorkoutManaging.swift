@@ -42,7 +42,7 @@ protocol WorkoutManaging: AnyObject, ObservableObject {
     func deleteWorkout(for workoutId: UUID)
 
     /// Duplicates an existing workout
-    func duplicateWorkout(originalWorkoutId: UUID)
+    func duplicateWorkout(originalWorkoutId: UUID, completion: (() -> Void)?)
 
     /// Updates the title of a workout
     func updateWorkoutTitle(workoutId: UUID, to newTitle: String)
@@ -95,7 +95,8 @@ protocol WorkoutManaging: AnyObject, ObservableObject {
         workoutTimeToComplete: String,
         totalCardioTime: String,
         totalDistance: Float,
-        workoutDetailsInput: [WorkoutDetailInput]
+        workoutDetailsInput: [WorkoutDetailInput],
+        completion: (() -> Void)?
     )
 
     /// Fetches the most recent workout history for a specific workout

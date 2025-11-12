@@ -72,14 +72,18 @@ class MockWorkoutManager: ObservableObject, WorkoutManaging {
         workouts.removeAll { $0.id == workoutId }
     }
 
-    func duplicateWorkout(originalWorkoutId: UUID) {
-        guard let original = storedWorkoutData[originalWorkoutId] else { return }
+    func duplicateWorkout(originalWorkoutId: UUID, completion: (() -> Void)? = nil) {
+        guard let original = storedWorkoutData[originalWorkoutId] else {
+            completion?()
+            return
+        }
 
         let newId = UUID()
         storedWorkoutData[newId] = (name: "\(original.name)-copy", color: original.color)
 
         let workoutInfo = WorkoutInfo(id: newId, name: "\(original.name)-copy")
         workouts.append(workoutInfo)
+        completion?()
     }
 
     func updateWorkoutTitle(workoutId: UUID, to newTitle: String) {
@@ -157,9 +161,11 @@ class MockWorkoutManager: ObservableObject, WorkoutManaging {
         workoutTimeToComplete: String,
         totalCardioTime: String,
         totalDistance: Float,
-        workoutDetailsInput: [WorkoutDetailInput]
+        workoutDetailsInput: [WorkoutDetailInput],
+        completion: (() -> Void)? = nil
     ) {
         saveWorkoutHistoryCalled = true
+        completion?()
 
         let history = MockWorkoutHistory(
             id: UUID(),

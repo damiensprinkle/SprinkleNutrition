@@ -18,22 +18,49 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             if persistenceController.isLoaded {
-                VStack {
-                    HStack {
-                        CustomTabView()
-                            .environmentObject(appViewModel)
-                            .environmentObject(userManager)
-                            .environmentObject(workoutController)
+                if let error = persistenceController.loadError {
+                    // Show error if CoreData failed to load
+                    VStack(spacing: 20) {
+                        Image(systemName: "exclamationmark.triangle")
+                            .font(.system(size: 60))
+                            .foregroundColor(.red)
+                        Text("Failed to Load Data")
+                            .font(.title)
+                            .fontWeight(.bold)
+                        Text("There was a problem loading your workout data. Try restarting the app.")
+                            .multilineTextAlignment(.center)
+                            .padding()
+                        Text("Error: \(error.localizedDescription)")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                            .padding()
                     }
-                }
-                .onAppear {
-                    userManager.context = persistenceController.container.viewContext
-                    if userManager.userDetails == nil {
-                        showUserDetailsForm = true
+                    .padding()
+                } else {
+                    VStack {
+                        HStack {
+                            CustomTabView()
+                                .environmentObject(appViewModel)
+                                .environmentObject(userManager)
+                                .environmentObject(workoutController)
+                        }
+                    }
+                    .onAppear {
+                        userManager.context = persistenceController.container.viewContext
+                        // Don't show user form if there was a CoreData error
+                        if persistenceController.loadError == nil && userManager.userDetails == nil {
+                            showUserDetailsForm = true
+                        }
                     }
                 }
             } else {
-                Text("That was quick! Getting things ready...")
+                VStack(spacing: 20) {
+                    ProgressView()
+                        .scaleEffect(1.5)
+                    Text("Loading...")
+                        .font(.title3)
+                        .foregroundColor(.gray)
+                }
             }
         }
         .overlay {
@@ -45,8 +72,6 @@ struct HomeView: View {
                     UserDetailsFormView(isPresented: $showUserDetailsForm)
                         .environmentObject(userManager)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(Color(.systemBackground))
-                        .ignoresSafeArea()
                 }
                 .transition(.opacity)
                 .zIndex(10)

@@ -14,6 +14,10 @@ struct WorkoutTrackerMainView: View {
     @State private var deletingWorkouts: Set<UUID> = []
     @State private var duplicatingWorkouts: Set<UUID> = []
     @State private var presentingModal: ModalType? = nil
+    @State private var showDocumentPicker = false
+    @State private var importedWorkout: ShareableWorkout?
+    @State private var showImportPreview = false
+    @State private var isLoadingImport = false
     
     
     var body: some View {
@@ -23,6 +27,16 @@ struct WorkoutTrackerMainView: View {
         }
         .navigationTitle("Workout Tracker")
         .navigationBarItems(trailing: HStack(spacing: 20) {
+            Button(action: {
+                // Clear any previous import data
+                importedWorkout = nil
+                showImportPreview = false
+                isLoadingImport = false
+                showDocumentPicker = true
+            }) {
+                Image(systemName: "square.and.arrow.down")
+                    .help("Import workout")
+            }
             Button(action: {
                 appViewModel.navigateTo(.workoutHistoryView)
             }) {
@@ -49,6 +63,29 @@ struct WorkoutTrackerMainView: View {
                     .environmentObject(appViewModel)
                     .environmentObject(workoutController)
             }
+        }
+        .sheet(isPresented: $showDocumentPicker, onDismiss: {
+            // When document picker dismisses, wait longer to ensure file is fully read
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                if let _ = importedWorkout, !showImportPreview {
+                    showImportPreview = true
+                } else if importedWorkout == nil {
+                    // If still no workout after delay, file reading may have failed
+                    print("No workout loaded after document picker dismissed")
+                }
+            }
+        }) {
+            DocumentPicker(importedWorkout: $importedWorkout, showImportPreview: .constant(false))
+        }
+        .sheet(isPresented: $showImportPreview, onDismiss: {
+            // Clean up after import preview is dismissed
+            importedWorkout = nil
+        }) {
+            ImportWorkoutPreviewContent(
+                importedWorkout: $importedWorkout,
+                showImportPreview: $showImportPreview
+            )
+            .environmentObject(workoutController)
         }
     }
     
@@ -90,9 +127,15 @@ struct WorkoutTrackerMainView: View {
     private func deleteWorkouts(_ workoutId: UUID) {
         withAnimation {
             deletingWorkouts.insert(workoutId)
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            workoutController.deleteWorkout(workoutId)
+
+            // Wait for workouts array to update, then check if workout is gone
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                withAnimation {
-                    workoutController.deleteWorkout(workoutId)
+                // Only remove from deletingWorkouts if the workout is actually gone
+                if !workoutController.workouts.contains(where: { $0.id == workoutId }) {
                     deletingWorkouts.remove(workoutId)
                 }
             }
@@ -106,6 +149,38 @@ struct WorkoutTrackerMainView: View {
                 withAnimation {
                     workoutController.duplicateWorkout(workoutId)
                     duplicatingWorkouts.remove(workoutId)
+                }
+            }
+        }
+    }
+}
+
+// Helper view that reacts to changes in importedWorkout
+struct ImportWorkoutPreviewContent: View {
+    @Binding var importedWorkout: ShareableWorkout?
+    @Binding var showImportPreview: Bool
+    @EnvironmentObject var workoutController: WorkoutTrackerController
+
+    var body: some View {
+        Group {
+            if let workout = importedWorkout {
+                ImportWorkoutPreviewView(shareableWorkout: workout, isPresented: $showImportPreview)
+                    .environmentObject(workoutController)
+            } else {
+                VStack(spacing: 16) {
+                    ProgressView()
+                        .scaleEffect(1.5)
+                    Text("Loading workout...")
+                        .font(.headline)
+                }
+                .padding()
+                .onAppear {
+                    // Dismiss if workout doesn't load within 2 seconds
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                        if importedWorkout == nil {
+                            showImportPreview = false
+                        }
+                    }
                 }
             }
         }

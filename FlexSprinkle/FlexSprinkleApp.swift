@@ -16,6 +16,8 @@ struct FlexSprinkleApp: App {
     @StateObject private var userManager = UserManager()
     @StateObject private var controller: WorkoutTrackerController
     @StateObject private var errorHandler = ErrorHandler()
+    @State private var importedWorkout: ShareableWorkout?
+    @State private var showImportPreview = false
 
 
     init() {
@@ -54,6 +56,46 @@ struct FlexSprinkleApp: App {
                         userManager.context = persistenceController.container.viewContext
                     }
                 }
+                .onOpenURL { url in
+                    handleImportedFile(url)
+                }
+                .sheet(isPresented: $showImportPreview) {
+                    if let workout = importedWorkout {
+                        ImportWorkoutPreviewView(shareableWorkout: workout, isPresented: $showImportPreview)
+                            .environmentObject(controller)
+                    }
+                }
+        }
+    }
+
+    private func handleImportedFile(_ url: URL) {
+        // Ensure the file is a .flexsprinkle file
+        guard url.pathExtension == "flexsprinkle" else {
+            print("Invalid file type: \(url.pathExtension)")
+            return
+        }
+
+        // Access security-scoped resource
+        guard url.startAccessingSecurityScopedResource() else {
+            print("Failed to access security-scoped resource")
+            return
+        }
+
+        defer {
+            url.stopAccessingSecurityScopedResource()
+        }
+
+        do {
+            let data = try Data(contentsOf: url)
+
+            if let workout = ShareableWorkout.import(from: data) {
+                importedWorkout = workout
+                showImportPreview = true
+            } else {
+                print("Failed to decode workout data")
+            }
+        } catch {
+            print("Error reading file: \(error.localizedDescription)")
         }
     }
 }

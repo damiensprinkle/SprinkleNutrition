@@ -13,6 +13,8 @@ struct CardView: View {
     @State private var showAlert = false
     @State private var alertTitle = ""
     @State private var workout: Workouts?
+    @State private var showShareSheet = false
+    @State private var shareItems: [Any] = []
 
 
     var body: some View {
@@ -24,6 +26,13 @@ struct CardView: View {
         .onAppear {
             let manager = workoutController.workoutManager
             workout = manager.fetchWorkoutById(for: workoutId)
+        }
+        .onChange(of: workoutController.workouts) { newWorkouts in
+            // Only refresh if this workout still exists in the array
+            if newWorkouts.contains(where: { $0.id == workoutId }) {
+                let manager = workoutController.workoutManager
+                workout = manager.fetchWorkoutById(for: workoutId)
+            }
         }
         .padding()
         .background(backgroundColor)
@@ -52,6 +61,11 @@ struct CardView: View {
                 AddWorkoutView(workoutId: workoutId, navigationTitle: "Edit Workout Plan", update: true)
                     .environmentObject(appViewModel)
                     .environmentObject(workoutController)
+            }
+        }
+        .sheet(isPresented: $showShareSheet) {
+            if !shareItems.isEmpty {
+                ActivityViewController(activityItems: shareItems)
             }
         }
     }
@@ -108,19 +122,25 @@ struct CardView: View {
         }) {
             Label("Edit", systemImage: "square.and.pencil")
         }
-        
+
         Button(action: {
             onDuplicate?()
         }) {
             Label("Duplicate", systemImage: "doc.on.doc")
         }
-        
+
+        Button(action: {
+            shareWorkout()
+        }) {
+            Label("Share Workout", systemImage: "square.and.arrow.up")
+        }
+
         Button(action: {
             appViewModel.navigateTo(.customizeCardView(workoutId))
         }) {
             Label("Customize Card", systemImage: "paintpalette")
         }
-        
+
         Button(role: .destructive, action: {
             if  workoutController.activeWorkoutId == workoutId {
                 alertTitle = "You Cannot Delete a Workout That Is In Progress"
@@ -132,6 +152,28 @@ struct CardView: View {
             }
         }) {
             Label("Delete", systemImage: "trash")
+        }
+    }
+
+    private func shareWorkout() {
+        guard let data = workoutController.exportWorkout(workoutId) else {
+            alertTitle = "Failed to export workout"
+            showAlert = true
+            return
+        }
+
+        let workoutName = workout?.name ?? "Workout"
+        let fileName = "\(workoutName.replacingOccurrences(of: " ", with: "_")).flexsprinkle"
+
+        let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
+
+        do {
+            try data.write(to: tempURL)
+            shareItems = [tempURL]
+            showShareSheet = true
+        } catch {
+            alertTitle = "Failed to create shareable file"
+            showAlert = true
         }
     }
 }

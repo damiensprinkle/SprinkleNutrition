@@ -18,13 +18,11 @@ class UserManager: ObservableObject {
         guard let context = self.context else { return }
 
         let request: NSFetchRequest<UserInfo> = UserInfo.fetchRequest()
-        
+
         do {
             let results = try context.fetch(request)
             if let firstUser = results.first {
-                DispatchQueue.main.async {
-                    self.userDetails = firstUser
-                }
+                self.userDetails = firstUser
             } else {
                 print("No User Details found.")
             }
@@ -35,7 +33,7 @@ class UserManager: ObservableObject {
     
     func updateUserName(name: String) {
         guard let context = self.context else { return }
-        
+
         if let user = userDetails {
             user.name = name
         } else {
@@ -43,13 +41,13 @@ class UserManager: ObservableObject {
             newUser.name = name
             userDetails = newUser
         }
-        
+
         saveContext()
     }
-    
+
     private func saveContext() {
         guard let context = self.context else { return }
-        
+
         do {
             try context.save()
             loadUserDetails()

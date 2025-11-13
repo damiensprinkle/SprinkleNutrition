@@ -312,4 +312,22 @@ class WorkoutTrackerController: ObservableObject {
             self?.loadWorkouts()
         }
     }
+
+    func exportWorkout(_ workoutId: UUID) -> Data? {
+        guard let workout = workoutManager.fetchWorkoutById(for: workoutId) else {
+            print("Could not find workout with ID \(workoutId)")
+            return nil
+        }
+
+        loadWorkoutDetails(for: workoutId)
+
+        let workoutName = workout.name ?? "Untitled Workout"
+        let workoutColor = workout.color
+
+        return ShareableWorkout.export(
+            workoutName: workoutName,
+            workoutColor: workoutColor,
+            workoutDetails: workoutDetails
+        )
+    }
 }

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		081DD5892EC511AB00B4074D /* ShareableWorkout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081DD5882EC511AB00B4074D /* ShareableWorkout.swift */; };
+		081DD58B2EC511D000B4074D /* ImportWorkoutPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081DD58A2EC511D000B4074D /* ImportWorkoutPreviewView.swift */; };
 		081F87E62B83A7CD00BBBDF2 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87E52B83A7CD00BBBDF2 /* UserManager.swift */; };
 		081F87EC2B83AC0200BBBDF2 /* UserDetailsFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87EB2B83AC0100BBBDF2 /* UserDetailsFormView.swift */; };
 		081F87F22B87F6ED00BBBDF2 /* CheckboxStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87F12B87F6ED00BBBDF2 /* CheckboxStyle.swift */; };
@@ -100,6 +102,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		081DD5882EC511AB00B4074D /* ShareableWorkout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareableWorkout.swift; sourceTree = "<group>"; };
+		081DD58A2EC511D000B4074D /* ImportWorkoutPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportWorkoutPreviewView.swift; sourceTree = "<group>"; };
+		081DD58C2EC5121B00B4074D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		081F87E52B83A7CD00BBBDF2 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		081F87EB2B83AC0100BBBDF2 /* UserDetailsFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsFormView.swift; sourceTree = "<group>"; };
 		081F87F12B87F6ED00BBBDF2 /* CheckboxStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxStyle.swift; sourceTree = "<group>"; };
@@ -346,6 +351,7 @@
 		08B78FEE2B6DBA370002DA68 /* FlexSprinkle */ = {
 			isa = PBXGroup;
 			children = (
+				081DD58C2EC5121B00B4074D /* Info.plist */,
 				088B57792EC3A7030066CC17 /* ViewModels */,
 				08B3CFE82B7E9F9A002F5C92 /* Helpers */,
 				0871113B2B7306060054E315 /* Manager */,
@@ -385,6 +391,7 @@
 		08B790242B6E94840002DA68 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				081DD5882EC511AB00B4074D /* ShareableWorkout.swift */,
 				088B57B92EC3BC9F0066CC17 /* CoreDataError.swift */,
 				088B57BA2EC3BC9F0066CC17 /* ErrorHandler.swift */,
 				0847535E2CE3D59900C6A7F9 /* WorkoutSessionModel.swift */,
@@ -409,6 +416,7 @@
 		08B790282B708A1F0002DA68 /* WorkoutTracker */ = {
 			isa = PBXGroup;
 			children = (
+				081DD58A2EC511D000B4074D /* ImportWorkoutPreviewView.swift */,
 				08EF98262CEF89A700AE8196 /* WorkoutUtilities */,
 				08EF97E22CEEBC0A00AE8196 /* CustomizeCardView.swift */,
 				08B3CF7D2B7C087C002F5C92 /* Shared */,
@@ -570,6 +578,7 @@
 				08EF97E92CEEC13500AE8196 /* Workouts+CoreDataClass.swift in Sources */,
 				088B57772EC3A6E40066CC17 /* WorkoutManaging.swift in Sources */,
 				08B3CFDD2B7D9567002F5C92 /* WorkoutSet+CoreDataProperties.swift in Sources */,
+				081DD5892EC511AB00B4074D /* ShareableWorkout.swift in Sources */,
 				0847535F2CE3D59B00C6A7F9 /* WorkoutSessionModel.swift in Sources */,
 				08C31FFF2B82EA3A002EE8A7 /* PersistenceController.swift in Sources */,
 				08B3CFF22B810FB7002F5C92 /* WorkoutHistoryCardView.swift in Sources */,
@@ -593,6 +602,7 @@
 				087111722B77B3120054E315 /* WorkoutOverviewView.swift in Sources */,
 				08B78FF22B6DBA370002DA68 /* HomeView.swift in Sources */,
 				087111AD2B77E9EC0054E315 /* CustomTabView.swift in Sources */,
+				081DD58B2EC511D000B4074D /* ImportWorkoutPreviewView.swift in Sources */,
 				084753632CE3F2D500C6A7F9 /* ModalType.swift in Sources */,
 				08B7901E2B6E8F8D0002DA68 /* SettingsView.swift in Sources */,
 				08B3CFDC2B7D9567002F5C92 /* WorkoutSet+CoreDataClass.swift in Sources */,
@@ -786,6 +796,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FlexSprinkle/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
@@ -828,6 +839,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FlexSprinkle/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;

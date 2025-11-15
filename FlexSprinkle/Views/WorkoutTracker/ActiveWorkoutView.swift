@@ -68,10 +68,10 @@ struct ActiveWorkoutView: View {
                         .padding(.top)
                 }
                 .frame(maxHeight: .infinity, alignment: .top)
-                .background(Color.myWhite)
+                .background(Color(.systemGroupedBackground))
             }
         }
-        .background(Color.myWhite.ignoresSafeArea())
+        .background(Color(.systemGroupedBackground).ignoresSafeArea())
         .navigationBarItems(
             leading: Button("Back") {
                 appViewModel.resetToWorkoutMainView()
@@ -161,7 +161,6 @@ struct ActiveWorkoutView: View {
                     .listRowInsets(EdgeInsets())
                 }
             }
-            .listRowBackground(Color(.systemGray4)) // header background color
         }
     }
 

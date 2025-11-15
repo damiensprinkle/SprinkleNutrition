@@ -36,67 +36,64 @@ struct ActiveWorkoutView: View {
     }
 
     var body: some View {
-        NavigationView {
-            ZStack {
-                if viewModel.isLoading {
-                    ProgressView("Loading workout...")
-                        .font(.title)
-                        .progressViewStyle(CircularProgressViewStyle(tint: .blue))
-                }
-                else{
-                    VStack(spacing: 0) {
-                        if showTimer {
-                            TimerHeaderView(showTimer: $showTimer)
-                                .frame(height: 80)
-                                .background(Color.black.opacity(0.8))
-                                .zIndex(1)
-                        }
-                        Form {
-                            displayExerciseDetailsAndSets
-                        }
-                        .onTapGesture {
-                            if focusManager.isAnyTextFieldFocused {
-                                focusManager.isAnyTextFieldFocused = false
-                                focusManager.currentlyFocusedField = nil
-                                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                            }
-                        }
-
-                        Spacer()
-
-                        startWorkoutButton
-                            .padding(.top)
-                    }
-                    .frame(maxHeight: .infinity, alignment: .top)
-                    .background(
-                        Color.myWhite
-                            .ignoresSafeArea(.all, edges: .bottom)
-                    )
-                }
+        ZStack {
+            if viewModel.isLoading {
+                ProgressView("Loading workout...")
+                    .font(.title)
+                    .progressViewStyle(CircularProgressViewStyle(tint: .blue))
             }
-            .navigationBarTitle(viewModel.workoutTitle)
-            .navigationBarItems(
-                leading: Button("Back") {
-                    appViewModel.resetToWorkoutMainView()
-                },
-                trailing: viewModel.workoutStarted ? Menu {
-                    Button(action: {
-                        activeAlert = .cancelWorkout
-                        showAlert = true
-                    }) {
-                        Label("Cancel Workout", systemImage: "xmark.circle")
+            else{
+                VStack(spacing: 0) {
+                    if showTimer {
+                        TimerHeaderView(showTimer: $showTimer)
+                            .frame(height: 80)
+                            .background(Color.black.opacity(0.8))
+                            .zIndex(1)
                     }
-                    Button(action: {
-                        showTimer.toggle()
-                    }) {
-                        Label("Timer", systemImage: "timer")
+                    Form {
+                        displayExerciseDetailsAndSets
                     }
-                } label: {
-                    Image(systemName: "ellipsis")
-                        .font(.title2)
-                        .foregroundColor(.primary)
-                } : nil
-            )
+                    .scrollContentBackground(.hidden)
+                    .onTapGesture {
+                        if focusManager.isAnyTextFieldFocused {
+                            focusManager.isAnyTextFieldFocused = false
+                            focusManager.currentlyFocusedField = nil
+                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                        }
+                    }
+
+                    Spacer()
+
+                    startWorkoutButton
+                        .padding(.top)
+                }
+                .frame(maxHeight: .infinity, alignment: .top)
+                .background(Color.myWhite)
+            }
+        }
+        .background(Color.myWhite.ignoresSafeArea())
+        .navigationBarItems(
+            leading: Button("Back") {
+                appViewModel.resetToWorkoutMainView()
+            },
+            trailing: viewModel.workoutStarted ? Menu {
+                Button(action: {
+                    activeAlert = .cancelWorkout
+                    showAlert = true
+                }) {
+                    Label("Cancel Workout", systemImage: "xmark.circle")
+                }
+                Button(action: {
+                    showTimer.toggle()
+                }) {
+                    Label("Timer", systemImage: "timer")
+                }
+            } label: {
+                Image(systemName: "ellipsis")
+                    .font(.title2)
+                    .foregroundColor(.primary)
+            } : nil
+        )
             .alert(isPresented: $showAlert) {
                 switch(activeAlert) {
                 case .cancelWorkout:
@@ -135,12 +132,13 @@ struct ActiveWorkoutView: View {
                 viewModel.cleanup()
             }
         }
-    }
 
     private var displayExerciseDetailsAndSets: some View {
         ForEach(workoutController.workoutDetails.indices, id: \.self) { index in
             Section(header: HStack {
-                Text(workoutController.workoutDetails[index].exerciseName).font(.title2)
+                Text(workoutController.workoutDetails[index].exerciseName)
+                    .font(.title2)
+                    .foregroundColor(Color.myBlack)
                 Spacer()
             }) {
                 if !workoutController.workoutDetails[index].sets.isEmpty {
@@ -164,6 +162,7 @@ struct ActiveWorkoutView: View {
                 }
             }
         }
+        .listStyle(.insetGrouped)
     }
 
     private func buttonAction() {

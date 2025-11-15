@@ -35,11 +35,12 @@ struct CustomizeCardView: View {
             }
             .padding()
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.myWhite)
         .onAppear {
             workoutController.loadWorkoutColors(for: workoutId)
             colorNames = colorManager.colorNames
         }
-        .navigationTitle("Customize Card")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button("Save") {

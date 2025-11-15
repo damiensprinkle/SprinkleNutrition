@@ -25,7 +25,6 @@ struct WorkoutTrackerMainView: View {
             Divider()
             workoutGrid
         }
-        .navigationTitle("Workout Tracker")
         .navigationBarItems(trailing: HStack(spacing: 20) {
             Button(action: {
                 // Clear any previous import data
@@ -95,14 +94,40 @@ struct WorkoutTrackerMainView: View {
                 Button(action: {
                     appViewModel.navigateTo(.workoutActiveView(workoutId))
                 }) {
-                    Text("\(workoutController.activeWorkoutName ?? "Workout") in Progress: Tap Here To Resume")
-                        .foregroundColor(.staticWhite)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.myBlue)
-                        .edgesIgnoringSafeArea(.horizontal)
+                    HStack(spacing: 12) {
+                        Image(systemName: "figure.run.circle.fill")
+                            .font(.title2)
+                            .foregroundColor(.staticWhite)
+
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(workoutController.activeWorkoutName ?? "Workout")
+                                .font(.headline)
+                                .foregroundColor(.staticWhite)
+                            Text("Tap to Resume")
+                                .font(.subheadline)
+                                .foregroundColor(.staticWhite.opacity(0.9))
+                        }
+
+                        Spacer()
+
+                        Image(systemName: "chevron.right")
+                            .font(.body)
+                            .foregroundColor(.staticWhite.opacity(0.7))
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(
+                        LinearGradient(
+                            gradient: Gradient(colors: [Color.myBlue, Color.myBlue.opacity(0.8)]),
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .cornerRadius(12)
+                    .shadow(color: Color.myBlue.opacity(0.3), radius: 8, x: 0, y: 4)
                 }
-                Spacer()
+                .padding(.horizontal)
+                .padding(.bottom, 8)
             }
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
                 ForEach(workoutController.workouts) { workout in

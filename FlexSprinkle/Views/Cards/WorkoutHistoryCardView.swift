@@ -108,57 +108,74 @@ struct WorkoutHistoryCardView: View {
         .background(Color.myWhite)
         .cornerRadius(15)
         .shadow(radius: 5)
-        .padding(.horizontal)
+        .padding(.horizontal, 8)
         .animation(.easeInOut, value: isExpanded)
     }
     
     @ViewBuilder
     private func exerciseDetailView(detail: WorkoutDetail) -> some View {
-        HStack {
+        HStack(spacing: 12) {
             Text(detail.exerciseName ?? "Unknown Exercise")
-                .frame(width: 100, alignment: .leading)
-                .lineLimit(1)
+                .frame(minWidth: 120, alignment: .leading)
+                .lineLimit(2)
                 .truncationMode(.tail)
+
             Spacer()
-            HStack {
+
+            HStack(spacing: 16) {
                 if detail.exerciseQuantifier == "Reps" {
                     let totalReps = (detail.sets?.allObjects as? [WorkoutSet])?.reduce(0) { $0 + Int($1.reps) } ?? 0
-                    VStack{
-                        Text("Reps:")
+                    VStack(spacing: 4) {
+                        Text("Reps")
+                            .font(.caption)
+                            .foregroundColor(.gray)
                         Text("\(totalReps)")
+                            .font(.subheadline)
+                            .bold()
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .frame(minWidth: 60)
                 }
                 if detail.exerciseQuantifier == "Distance" {
                     let totalDistance = (detail.sets?.allObjects as? [WorkoutSet])?.reduce(0.0) { $0 + ($1.distance) } ?? 0.0
-                    VStack{
-                        Text("Distance:")
+                    VStack(spacing: 4) {
+                        Text("Distance")
+                            .font(.caption)
+                            .foregroundColor(.gray)
                         Text("\(totalDistance, specifier: "%.2f") \(distancePreference)")
-
+                            .font(.subheadline)
+                            .bold()
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .frame(minWidth: 80)
                 }
                 if detail.exerciseMeasurement == "Weight" {
                     let totalWeight = calculateTotalWeight(for: detail)
-                    VStack{
-                        Text("Weight:")
+                    VStack(spacing: 4) {
+                        Text("Weight")
+                            .font(.caption)
+                            .foregroundColor(.gray)
                         Text("\(totalWeight, specifier: "%.2f") \(weightPreference)")
+                            .font(.subheadline)
+                            .bold()
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .frame(minWidth: 80)
                 }
-                
+
                 if detail.exerciseMeasurement == "Time"{
                     let totalTimeInMinutes = calculateTotalTime(for: detail)
                     let totalTime = totalTimeInMinutes / 60
-                    VStack{
-                        Text("Time:")
+                    VStack(spacing: 4) {
+                        Text("Time")
+                            .font(.caption)
+                            .foregroundColor(.gray)
                         Text("\(totalTime) mins")
-                        
+                            .font(.subheadline)
+                            .bold()
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .frame(minWidth: 70)
                 }
             }
         }
+        .padding(.vertical, 4)
     }
  
     private func calculateTotalWeight(for detail: WorkoutDetail) -> Float {

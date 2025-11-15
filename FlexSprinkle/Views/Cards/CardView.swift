@@ -10,6 +10,8 @@ struct CardView: View {
     
     @State private var presentingModal: ModalType? = nil
     @State private var animate = false
+    @State private var pulseOpacity = false
+    @State private var rotation = false
     @State private var showAlert = false
     @State private var alertTitle = ""
     @State private var workout: Workouts?
@@ -93,15 +95,46 @@ struct CardView: View {
             }})
         {
             if(workoutController.hasActiveSession && workoutController.activeWorkoutId == workoutId) {
-                Image(systemName: "figure.run.circle.fill")
-                    .font(.system(size: 40))
-                    .foregroundColor(.green)
-                    .scaleEffect(animate ? 1.2 : 1.0)
-                    .onAppear {
-                        withAnimation(Animation.easeInOut(duration: 1.0).repeatForever(autoreverses: true)) {
-                            animate = true
-                        }
+                ZStack {
+                    // Outer glow ring
+                    Circle()
+                        .stroke(Color.green.opacity(pulseOpacity ? 0.3 : 0.0), lineWidth: 3)
+                        .frame(width: 50, height: 50)
+                        .scaleEffect(pulseOpacity ? 1.4 : 1.0)
+
+                    // Main icon with multiple animations
+                    Image(systemName: "figure.run.circle.fill")
+                        .font(.system(size: 40))
+                        .foregroundColor(.green)
+                        .scaleEffect(animate ? 1.15 : 1.0)
+                        .rotationEffect(.degrees(rotation ? 2 : -2))
+                        .shadow(color: .green.opacity(0.6), radius: animate ? 8 : 4)
+                }
+                .onAppear {
+                    // Pulse scale animation
+                    withAnimation(
+                        Animation.easeInOut(duration: 0.8)
+                            .repeatForever(autoreverses: true)
+                    ) {
+                        animate = true
                     }
+
+                    // Glow ring animation
+                    withAnimation(
+                        Animation.easeOut(duration: 1.5)
+                            .repeatForever(autoreverses: false)
+                    ) {
+                        pulseOpacity = true
+                    }
+
+                    // Subtle rotation animation
+                    withAnimation(
+                        Animation.easeInOut(duration: 1.2)
+                            .repeatForever(autoreverses: true)
+                    ) {
+                        rotation = true
+                    }
+                }
             }
             else{
                 Image(systemName: "play.circle")

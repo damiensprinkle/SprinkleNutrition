@@ -17,34 +17,31 @@ struct SettingsView: View {
 
     
     var body: some View {
-        NavigationView {
-            Form {
-                Picker("Weight Preference", selection: $weightPreference) {
-                    Text("lbs").tag("lbs")
-                    Text("kg").tag("kg")
-                }
-                Picker("Distance Preference", selection: $distancePreference) {
-                    Text("mile").tag("mile")
-                    Text("km").tag("km")
-                }
+        Form {
+            Picker("Weight Preference", selection: $weightPreference) {
+                Text("lbs").tag("lbs")
+                Text("kg").tag("kg")
             }
-            .scrollContentBackground(.hidden)
-            .background(Color.myWhite)
-            .navigationBarTitle("Settings")
-            .toolbar {
-                // Person icon button to show UserDetailsFormView
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: {
-                        showingUserDetailsForm = true
-                    }) {
-                        Image(systemName: "person.fill")
-                    }
+            Picker("Distance Preference", selection: $distancePreference) {
+                Text("mile").tag("mile")
+                Text("km").tag("km")
+            }
+        }
+        .scrollContentBackground(.hidden)
+        .background(Color.myWhite)
+        .toolbar {
+            // Person icon button to show UserDetailsFormView
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: {
+                    showingUserDetailsForm = true
+                }) {
+                    Image(systemName: "person.fill")
                 }
             }
-            .sheet(isPresented: $showingUserDetailsForm) {
-                UserDetailsFormView(isPresented: $showingUserDetailsForm)
-                    .environmentObject(userManager)
-            }
+        }
+        .sheet(isPresented: $showingUserDetailsForm) {
+            UserDetailsFormView(isPresented: $showingUserDetailsForm)
+                .environmentObject(userManager)
         }
     }
 }

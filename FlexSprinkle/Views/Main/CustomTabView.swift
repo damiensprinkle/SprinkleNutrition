@@ -19,39 +19,67 @@ struct CustomTabView: View {
     }
     
     var body: some View {
-        VStack(spacing: 0) {
+        NavigationView {
+            VStack(spacing: 0) {
+                tabContent
+                    .navigationTitle(navigationTitle)
+                    .navigationBarTitleDisplayMode(.inline)
+                    .id(selectedTab)
+
+                Spacer(minLength: 0)
+
+                Divider()
+
+                HStack {
+                    tabButton(for: .home, systemImage: "house.fill")
+
+                    Spacer()
+                    tabButton(for: .workout, systemImage: "dumbbell.fill")
+
+                    Spacer()
+                    tabButton(for: .settings, systemImage :"gearshape")
+                }
+                .padding()
+                .background(
+                    Color("MyGrey").opacity(0.1)
+                        .ignoresSafeArea(.all, edges: .bottom)
+                )
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .navigationViewStyle(.stack)
+    }
+
+    @ViewBuilder
+    private var tabContent: some View {
+        Group {
             switch selectedTab {
             case .home:
-                HomeContentView().navigationTitle("Home")
+                HomeContentView()
                     .environmentObject(workoutController)
+                    .transition(.opacity)
             case .workout:
                 WorkoutContentMainView()
                     .environmentObject(workoutController)
+                    .transition(.opacity)
             case .settings:
                 SettingsView()
                     .environmentObject(userManager)
+                    .transition(.opacity)
             }
-
-            Spacer(minLength: 0)
-
-            Divider()
-
-            HStack {
-                tabButton(for: .home, systemImage: "house.fill")
-
-                Spacer()
-                tabButton(for: .workout, systemImage: "dumbbell.fill")
-
-                Spacer()
-                tabButton(for: .settings, systemImage :"gearshape")
-            }
-            .padding()
-            .background(
-                Color("MyGrey").opacity(0.1)
-                    .ignoresSafeArea(.all, edges: .bottom)
-            )
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .animation(.default, value: selectedTab)
+    }
+
+    private var navigationTitle: String {
+        switch selectedTab {
+        case .home:
+            return "Home"
+        case .workout:
+            return ""
+        case .settings:
+            return "Settings"
+        }
     }
     
     @ViewBuilder

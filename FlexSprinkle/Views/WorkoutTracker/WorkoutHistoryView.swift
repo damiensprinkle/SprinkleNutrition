@@ -77,8 +77,6 @@ struct WorkoutHistoryView: View {
                 }
             }
         }
-        .navigationTitle("Workout History")
-        .navigationBarTitleDisplayMode(.large)
         .background(Color.myWhite)
         .onAppear {
             loadHistories()

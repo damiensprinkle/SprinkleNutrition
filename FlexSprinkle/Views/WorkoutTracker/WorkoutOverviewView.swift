@@ -68,7 +68,6 @@ struct WorkoutOverviewView: View {
                 }
             }
         }
-        .navigationTitle("Time: \(elapsedTime)")
         .onAppear {
             let manager = workoutController.workoutManager
             history = manager.fetchLatestWorkoutHistory(for: workoutId)

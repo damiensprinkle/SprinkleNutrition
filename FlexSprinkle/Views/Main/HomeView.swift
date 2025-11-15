@@ -16,7 +16,7 @@ struct HomeView: View {
     @State private var showUserDetailsForm = false
 
     var body: some View {
-        NavigationStack {
+        Group {
             if persistenceController.isLoaded {
                 if let error = persistenceController.loadError {
                     // Show error if CoreData failed to load
@@ -77,7 +77,6 @@ struct HomeView: View {
                 .zIndex(10)
             }
         }
-
         .onChange(of: userManager.userDetails) {
             if userManager.userDetails != nil  {
                 showUserDetailsForm = false

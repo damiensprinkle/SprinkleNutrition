@@ -18,6 +18,7 @@ struct WorkoutTrackerMainView: View {
     @State private var importedWorkout: ShareableWorkout?
     @State private var showImportPreview = false
     @State private var isLoadingImport = false
+    @State private var isEditMode = false
     
     
     var body: some View {
@@ -26,6 +27,13 @@ struct WorkoutTrackerMainView: View {
             workoutGrid
         }
         .navigationBarItems(trailing: HStack(spacing: 20) {
+            Button(action: {
+                isEditMode.toggle()
+            }) {
+                Image(systemName: isEditMode ? "checkmark.circle.fill" : "arrow.up.arrow.down.circle")
+                    .foregroundColor(isEditMode ? .green : .primary)
+                    .help(isEditMode ? "Done rearranging" : "Rearrange workouts")
+            }
             Button(action: {
                 // Clear any previous import data
                 importedWorkout = nil
@@ -36,18 +44,24 @@ struct WorkoutTrackerMainView: View {
                 Image(systemName: "square.and.arrow.down")
                     .help("Import workout")
             }
+            .disabled(isEditMode)
+            .opacity(isEditMode ? 0.5 : 1.0)
             Button(action: {
                 appViewModel.navigateTo(.workoutHistoryView)
             }) {
                 Image(systemName: "clock")
                     .help("View workout history")
             }
+            .disabled(isEditMode)
+            .opacity(isEditMode ? 0.5 : 1.0)
             Button(action: {
                 presentingModal = .add
             }) {
                 Image(systemName: "plus")
                     .help("Create a new workout")
             }
+            .disabled(isEditMode)
+            .opacity(isEditMode ? 0.5 : 1.0)
         })
         .onAppear(perform: workoutController.loadWorkouts)
         .background(Color.myWhite.ignoresSafeArea())
@@ -90,6 +104,20 @@ struct WorkoutTrackerMainView: View {
     
     private var workoutGrid: some View {
         VStack(spacing: 0) {
+            if isEditMode {
+                HStack(spacing: 8) {
+                    Image(systemName: "hand.draw")
+                        .foregroundColor(.secondary)
+                        .font(.subheadline)
+                    Text("Swipe cards left or right to reorder")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                }
+                .padding(.vertical, 8)
+                .padding(.horizontal)
+                .transition(.move(edge: .top).combined(with: .opacity))
+            }
+
             if workoutController.hasActiveSession, let workoutId = workoutController.activeWorkoutId {
                 Button(action: {
                     appViewModel.navigateTo(.workoutActiveView(workoutId))
@@ -132,20 +160,27 @@ struct WorkoutTrackerMainView: View {
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
                 ForEach(workoutController.workouts) { workout in
                     if !deletingWorkouts.contains(workout.id) {
-                        CardView(workoutId: workout.id, onDelete: {
-                            deleteWorkouts(workout.id)
-                        },
-                                 onDuplicate: {
-                            duplicateWorkout(workout.id)
-                        })
+                        CardView(
+                            workoutId: workout.id,
+                            onDelete: { deleteWorkouts(workout.id) },
+                            onDuplicate: { duplicateWorkout(workout.id) },
+                            isEditMode: isEditMode
+                        )
                         .transition(.asymmetric(insertion: .opacity.combined(with: .scale), removal: .opacity.combined(with: .scale)))
                         .environmentObject(appViewModel)
                         .environmentObject(workoutController)
+                        .scaleEffect(isEditMode ? 0.95 : 1.0)
+                        .gesture(
+                            isEditMode ? DragGesture(minimumDistance: 30)
+                                .onEnded { gesture in
+                                    handleSwipe(for: workout, gesture: gesture)
+                                } : nil
+                        )
                     }
                 }
             }
             .padding()
-            .animation(.easeInOut, value: workoutController.workouts)
+            .animation(.spring(response: 0.3, dampingFraction: 0.8), value: workoutController.workouts)
         }
     }
     
@@ -176,6 +211,40 @@ struct WorkoutTrackerMainView: View {
                     duplicatingWorkouts.remove(workoutId)
                 }
             }
+        }
+    }
+
+    private func handleSwipe(for workout: WorkoutInfo, gesture: DragGesture.Value) {
+        guard let currentIndex = workoutController.workouts.firstIndex(where: { $0.id == workout.id }) else { return }
+
+        let horizontalAmount = gesture.translation.width
+        let verticalAmount = gesture.translation.height
+
+        // Only respond to horizontal swipes to avoid conflict with ScrollView
+        guard abs(horizontalAmount) > abs(verticalAmount) else { return }
+
+        var targetIndex: Int?
+
+        // Horizontal swipe
+        if horizontalAmount > 0 {
+            // Swipe right - move forward in array
+            targetIndex = currentIndex + 1
+        } else {
+            // Swipe left - move backward in array
+            targetIndex = currentIndex - 1
+        }
+
+        // Validate target index and perform move
+        if let target = targetIndex, target >= 0, target < workoutController.workouts.count {
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                workoutController.workouts.move(
+                    fromOffsets: IndexSet(integer: currentIndex),
+                    toOffset: target > currentIndex ? target + 1 : target
+                )
+            }
+
+            // Save the new order
+            workoutController.workoutManager.saveWorkoutOrder(workouts: workoutController.workouts)
         }
     }
 }

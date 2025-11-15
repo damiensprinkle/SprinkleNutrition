@@ -19,6 +19,7 @@ extension Workouts {
     @NSManaged public var color: String?
     @NSManaged public var id: UUID?
     @NSManaged public var name: String?
+    @NSManaged public var orderIndex: Int32
     @NSManaged public var details: NSSet?
     @NSManaged public var history: NSSet?
     @NSManaged public var sessions: WorkoutSession?

@@ -56,6 +56,9 @@ protocol WorkoutManaging: AnyObject, ObservableObject {
     /// Checks if a workout title already exists
     func titleExists(_ title: String) -> Bool
 
+    /// Saves the order of workouts by updating their orderIndex values
+    func saveWorkoutOrder(workouts: [WorkoutInfo])
+
     // MARK: - Active Workout / Temporary Data Management
 
     /// Saves or updates sets during an active workout

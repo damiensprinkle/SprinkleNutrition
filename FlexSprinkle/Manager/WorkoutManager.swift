@@ -233,10 +233,17 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
         if let existingWorkout = (try? context.fetch(request))?.first {
             return existingWorkout
         } else {
+            // Get the maximum orderIndex
+            let maxOrderRequest = NSFetchRequest<Workouts>(entityName: "Workouts")
+            maxOrderRequest.sortDescriptors = [NSSortDescriptor(key: "orderIndex", ascending: false)]
+            maxOrderRequest.fetchLimit = 1
+            let maxOrderIndex = (try? context.fetch(maxOrderRequest))?.first?.orderIndex ?? -1
+
             let newWorkout = Workouts(context: context)
             newWorkout.id = UUID()
             newWorkout.name = title
             newWorkout.color = color
+            newWorkout.orderIndex = maxOrderIndex + 1
             return newWorkout
         }
     }
@@ -355,6 +362,7 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
         }
 
         let request = NSFetchRequest<Workouts>(entityName: "Workouts")
+        request.sortDescriptors = [NSSortDescriptor(key: "orderIndex", ascending: true)]
         do {
             let results = try context.fetch(request)
             self.workouts = results.compactMap { workout in
@@ -399,6 +407,8 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
                     return
                 }
 
+                let deletedOrderIndex = workoutsToDelete.first?.orderIndex ?? 0
+
                 for workout in workoutsToDelete {
                     // Cascade delete rules will automatically handle:
                     // - WorkoutHistory (history relationship)
@@ -406,6 +416,15 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
                     // - TemporaryWorkoutDetail (detailsTemp relationship) and their WorkoutSets
                     // - WorkoutSession (sessions relationship)
                     backgroundContext.delete(workout)
+                }
+
+                // Reindex remaining workouts
+                let reindexRequest = NSFetchRequest<Workouts>(entityName: "Workouts")
+                reindexRequest.predicate = NSPredicate(format: "orderIndex > %d", deletedOrderIndex)
+                if let remainingWorkouts = try? backgroundContext.fetch(reindexRequest) {
+                    for workout in remainingWorkouts {
+                        workout.orderIndex -= 1
+                    }
                 }
 
                 // Save background context
@@ -804,10 +823,10 @@ extension WorkoutManager {
     
     func setSessionStatus(workoutId: UUID, isActive: Bool) {
         guard let context = self.context else { return }
-        
+
         let workoutRequest = NSFetchRequest<Workouts>(entityName: "Workouts")
         workoutRequest.predicate = NSPredicate(format: "id == %@", workoutId as CVarArg)
-        
+
         do {
             if let workout = try context.fetch(workoutRequest).first {
                 context.refresh(workout, mergeChanges: true)
@@ -824,11 +843,54 @@ extension WorkoutManager {
                         existingSession.endTime = Date()
                     }
                 }
-                
+
                 try context.save()
             }
         } catch {
             print("Error setting session status: \(error)")
+        }
+    }
+
+    func saveWorkoutOrder(workouts: [WorkoutInfo]) {
+        guard let backgroundContext = createBackgroundContext() else {
+            errorHandler?.handle(.contextNotAvailable)
+            return
+        }
+
+        backgroundContext.perform { [weak self] in
+            do {
+                // Update orderIndex for each workout based on array position
+                for (index, workoutInfo) in workouts.enumerated() {
+                    let fetchRequest: NSFetchRequest<Workouts> = Workouts.fetchRequest()
+                    fetchRequest.predicate = NSPredicate(format: "id == %@", workoutInfo.id as CVarArg)
+
+                    if let workout = try backgroundContext.fetch(fetchRequest).first {
+                        workout.orderIndex = Int32(index)
+                    }
+                }
+
+                // Save background context
+                try backgroundContext.save()
+
+                // Save parent context on main thread
+                DispatchQueue.main.async {
+                    guard let mainContext = self?.context else { return }
+                    do {
+                        if mainContext.hasChanges {
+                            try mainContext.save()
+                        }
+                        print("Workout order saved successfully")
+                    } catch {
+                        print("Error saving main context after reordering: \(error)")
+                        self?.errorHandler?.handle(.saveFailed(error))
+                    }
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    print("Error saving workout order: \(error)")
+                    self?.errorHandler?.handle(.saveFailed(error))
+                }
+            }
         }
     }
 }

@@ -4,10 +4,11 @@ struct CardView: View {
     var workoutId: UUID
     var onDelete: (() -> Void)?
     var onDuplicate: (() -> Void)?
-    
+    var isEditMode: Bool = false
+
     @EnvironmentObject var workoutController: WorkoutTrackerController
     @EnvironmentObject var appViewModel: AppViewModel
-    
+
     @State private var presentingModal: ModalType? = nil
     @State private var animate = false
     @State private var pulseOpacity = false
@@ -17,6 +18,7 @@ struct CardView: View {
     @State private var workout: Workouts?
     @State private var showShareSheet = false
     @State private var shareItems: [Any] = []
+    @State private var shakeOffset: CGFloat = 0
 
 
     var body: some View {
@@ -28,6 +30,10 @@ struct CardView: View {
         .onAppear {
             let manager = workoutController.workoutManager
             workout = manager.fetchWorkoutById(for: workoutId)
+
+            if isEditMode {
+                startShakeAnimation()
+            }
         }
         .onChange(of: workoutController.workouts) { _, newWorkouts in
             // Only refresh if this workout still exists in the array
@@ -36,13 +42,21 @@ struct CardView: View {
                 workout = manager.fetchWorkoutById(for: workoutId)
             }
         }
+        .onChange(of: isEditMode) { _, newValue in
+            if newValue {
+                startShakeAnimation()
+            }
+        }
         .padding()
         .background(backgroundColor)
         .cornerRadius(15)
         .overlay(RoundedRectangle(cornerRadius: 15).stroke(Color.myBlack, lineWidth: 1))
         .aspectRatio(1, contentMode: .fit)
         .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 15))
-        .contextMenu { contextMenuContent() }
+        .rotationEffect(.degrees(isEditMode ? shakeOffset : 0))
+        .if(!isEditMode) { view in
+            view.contextMenu { contextMenuContent() }
+        }
         .alert(alertTitle, isPresented: $showAlert) {
             if alertTitle.contains("Are you sure you want to delete this workout?") {
                 Button("Delete", role: .destructive) {
@@ -208,6 +222,26 @@ struct CardView: View {
         } catch {
             alertTitle = "Failed to create shareable file"
             showAlert = true
+        }
+    }
+
+    private func startShakeAnimation() {
+        withAnimation(
+            Animation.easeInOut(duration: 0.15)
+                .repeatForever(autoreverses: true)
+        ) {
+            shakeOffset = 1.5
+        }
+    }
+}
+
+// Extension to conditionally apply modifiers
+extension View {
+    @ViewBuilder func `if`<Content: View>(_ condition: Bool, transform: (Self) -> Content) -> some View {
+        if condition {
+            transform(self)
+        } else {
+            self
         }
     }
 }

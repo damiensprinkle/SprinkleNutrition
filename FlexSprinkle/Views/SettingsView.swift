@@ -10,7 +10,6 @@ import SwiftUI
 struct SettingsView: View {
     @AppStorage("weightPreference") private var weightPreference: String = "lbs"
     @AppStorage("distancePreference") private var distancePreference: String = "mile"
-    @AppStorage("userHeightPreference") private var userHeightPreference: String = "inches"
     
     // State to manage the presentation of UserDetailsFormView
     @State private var showingUserDetailsForm = false
@@ -27,10 +26,6 @@ struct SettingsView: View {
                 Picker("Distance Preference", selection: $distancePreference) {
                     Text("mile").tag("mile")
                     Text("km").tag("km")
-                }
-                Picker("Height Preference", selection: $userHeightPreference) {
-                    Text("inches").tag("inches")
-                    Text("cm").tag("cm")
                 }
             }
             .scrollContentBackground(.hidden)

@@ -118,7 +118,7 @@ struct ExerciseRowActive: View {
         .disabled(!workoutStarted)
         .opacity(!workoutStarted ? 0.5 : 1)
         .foregroundColor(!workoutStarted ? .gray : .myBlack)
-        .background(checked ? Color.green.opacity(0.2) : Color.clear)
+        .background(checked ? Color.green.opacity(0.2) : Color(.systemGray4))
     }
     
     private var repsTextField: some View {

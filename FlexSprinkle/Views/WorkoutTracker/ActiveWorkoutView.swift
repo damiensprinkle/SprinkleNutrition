@@ -161,8 +161,8 @@ struct ActiveWorkoutView: View {
                     .listRowInsets(EdgeInsets())
                 }
             }
+            .listRowBackground(Color(.systemGray4)) // header background color
         }
-        .listStyle(.insetGrouped)
     }
 
     private func buttonAction() {

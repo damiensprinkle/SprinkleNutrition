@@ -18,17 +18,20 @@ struct SettingsView: View {
     
     var body: some View {
         Form {
-            Picker("Weight Preference", selection: $weightPreference) {
-                Text("lbs").tag("lbs")
-                Text("kg").tag("kg")
-            }
-            Picker("Distance Preference", selection: $distancePreference) {
-                Text("mile").tag("mile")
-                Text("km").tag("km")
+            Section {
+                Picker("Weight Preference", selection: $weightPreference) {
+                    Text("lbs").tag("lbs")
+                    Text("kg").tag("kg")
+                }
+
+                Picker("Distance Preference", selection: $distancePreference) {
+                    Text("mile").tag("mile")
+                    Text("km").tag("km")
+                }
             }
         }
-        .scrollContentBackground(.hidden)
         .background(Color.myWhite)
+        .listStyle(.insetGrouped)
         .toolbar {
             // Person icon button to show UserDetailsFormView
             ToolbarItem(placement: .topBarTrailing) {

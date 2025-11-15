@@ -150,8 +150,9 @@ struct CardView: View {
             if  workoutController.activeWorkoutId == workoutId {
                 alertTitle = "You Cannot Edit a Workout That Is In Progress"
                 showAlert = true
+            } else {
+                presentingModal = .edit(workoutId: workoutId)
             }
-            presentingModal = .edit(workoutId: workoutId)
         }) {
             Label("Edit", systemImage: "square.and.pencil")
         }

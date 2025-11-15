@@ -37,10 +37,10 @@ struct WorkoutContentMainView: View {
                         .environmentObject(workoutController)
                     .transition(.slide)
                 case .workoutHistoryView:
-                    AnyView(WorkoutHistoryView()
-                        .environmentObject(appViewModel))
+                    WorkoutHistoryView()
+                        .environmentObject(appViewModel)
                         .environmentObject(workoutController)
-                        .transition(.slide)
+                        .transition(.opacity)
                 case .customizeCardView(let workoutId):
                     AnyView(CustomizeCardView(workoutId: workoutId))
                         .environmentObject(appViewModel)

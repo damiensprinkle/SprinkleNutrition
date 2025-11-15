@@ -23,6 +23,19 @@ struct WorkoutHistoryView: View {
             MonthYearPickerView(selectedMonth: $selectedMonth, selectedYear: $selectedYear)
                 .onChange(of: selectedMonth) { loadHistories() }
                 .onChange(of: selectedYear) { loadHistories() }
+
+            // Summary header
+            if !histories.isEmpty {
+                HStack {
+                    Text("\(histories.count) workout\(histories.count == 1 ? "" : "s") completed")
+                        .font(.subheadline)
+                        .foregroundColor(Color("MyGrey"))
+                    Spacer()
+                }
+                .padding(.horizontal)
+                .padding(.top, 8)
+            }
+
             Divider()
             if histories.isEmpty {
                 VStack(spacing: 12) {
@@ -64,10 +77,12 @@ struct WorkoutHistoryView: View {
                 }
             }
         }
+        .navigationTitle("Workout History")
+        .navigationBarTitleDisplayMode(.large)
+        .background(Color.myWhite)
         .onAppear {
             loadHistories()
         }
-        .navigationTitle("Workout History")
     }
     
     private func loadHistories() {

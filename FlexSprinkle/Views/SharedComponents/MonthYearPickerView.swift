@@ -21,34 +21,54 @@ struct MonthYearPickerView: View {
     
     var body: some View {
         VStack{
-            HStack {
-                Picker("Month", selection: $selectedMonth) {
-                    ForEach(0..<months.count, id: \.self) { index in
-                        Text(self.months[index]).tag(index)
+            HStack(spacing: 12) {
+                // Month picker
+                Menu {
+                    Picker("", selection: $selectedMonth) {
+                        ForEach(0..<months.count, id: \.self) { index in
+                            Text(self.months[index]).tag(index)
+                        }
                     }
-                }
-                .pickerStyle(MenuPickerStyle())
-                .frame(maxWidth: .infinity) // Take up maximum available width
-                
-                .accentColor(.myWhite)
-                
-                
-                Picker("Year", selection: $selectedYear) {
-                    ForEach(years, id: \.self) { year in
-                        Text(String(describing: year)).tag(year)
+                } label: {
+                    HStack {
+                        Text(months[selectedMonth])
+                            .foregroundColor(Color("MyBlack"))
+                        Image(systemName: "chevron.down")
+                            .font(.caption)
+                            .foregroundColor(Color("MyGrey"))
                     }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
+                    .background(Color("MyGrey").opacity(0.15))
+                    .cornerRadius(10)
                 }
-                .pickerStyle(MenuPickerStyle())
-                .frame(maxWidth: .infinity) // Take up maximum available width
-                
-                .accentColor(.myWhite)
+                .frame(maxWidth: .infinity)
+
+                // Year picker
+                Menu {
+                    Picker("", selection: $selectedYear) {
+                        ForEach(years, id: \.self) { year in
+                            Text(String(describing: year)).tag(year)
+                        }
+                    }
+                } label: {
+                    HStack {
+                        Text(String(selectedYear))
+                            .foregroundColor(Color("MyBlack"))
+                        Image(systemName: "chevron.down")
+                            .font(.caption)
+                            .foregroundColor(Color("MyGrey"))
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
+                    .background(Color("MyGrey").opacity(0.15))
+                    .cornerRadius(10)
+                }
+                .frame(maxWidth: .infinity)
             }
-            .padding([.top, .bottom], 5) // Reduce vertical padding to minimize vertical space
-            .padding([.leading, .trailing])
-            .background(.myBlue)
-            .cornerRadius(15.0) // Apply corner radius to the background
+            .padding(.horizontal)
+            .padding(.vertical, 8)
         }
-        .padding(.horizontal)
     }
 }
 

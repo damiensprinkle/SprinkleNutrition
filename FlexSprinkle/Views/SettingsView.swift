@@ -33,6 +33,8 @@ struct SettingsView: View {
                     Text("cm").tag("cm")
                 }
             }
+            .scrollContentBackground(.hidden)
+            .background(Color.myWhite)
             .navigationBarTitle("Settings")
             .toolbar {
                 // Person icon button to show UserDetailsFormView

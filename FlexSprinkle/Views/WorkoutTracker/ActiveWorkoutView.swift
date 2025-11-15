@@ -69,7 +69,7 @@ struct ActiveWorkoutView: View {
                     }
                     .frame(maxHeight: .infinity, alignment: .top)
                     .background(
-                        Color(uiColor: .systemGroupedBackground)
+                        Color.myWhite
                             .ignoresSafeArea(.all, edges: .bottom)
                     )
                 }

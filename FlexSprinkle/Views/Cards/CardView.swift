@@ -27,7 +27,7 @@ struct CardView: View {
             let manager = workoutController.workoutManager
             workout = manager.fetchWorkoutById(for: workoutId)
         }
-        .onChange(of: workoutController.workouts) { newWorkouts in
+        .onChange(of: workoutController.workouts) { _, newWorkouts in
             // Only refresh if this workout still exists in the array
             if newWorkouts.contains(where: { $0.id == workoutId }) {
                 let manager = workoutController.workoutManager

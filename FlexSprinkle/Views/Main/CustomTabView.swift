@@ -47,7 +47,7 @@ struct CustomTabView: View {
             }
             .padding()
             .background(
-                Color.gray.opacity(0.1)
+                Color("MyGrey").opacity(0.1)
                     .ignoresSafeArea(.all, edges: .bottom)
             )
         }
@@ -66,7 +66,7 @@ struct CustomTabView: View {
         }) {
             Image(systemName: systemImage)
                 .imageScale(.large)
-                .foregroundColor(selectedTab == tab ? .blue : .gray)
+                .foregroundColor(selectedTab == tab ? Color("MyBlue") : Color("MyGrey"))
         }
     }
 }

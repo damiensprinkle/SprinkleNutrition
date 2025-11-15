@@ -2,15 +2,15 @@
   "colors" : [
     {
       "color" : {
-        "color-space" : "srgb",
+        "color-space" : "display-p3",
         "components" : {
-          "alpha" : "0.835",
-          "blue" : "0.000",
-          "green" : "0.000",
+          "alpha" : "1.000",
+          "blue" : "0.112",
+          "green" : "0.162",
           "red" : "1.000"
         }
       },
-      "idiom" : "iphone"
+      "idiom" : "universal"
     }
   ],
   "info" : {

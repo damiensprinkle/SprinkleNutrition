@@ -9,13 +9,13 @@ struct UserDetailsFormView: View {
     
     var body: some View {
         ZStack {
-            LinearGradient(colors: [.blue.opacity(0.4), .purple.opacity(0.4)],
+            LinearGradient(colors: [Color("MyGrey").opacity(0.3), Color("MyBlack").opacity(0.5)],
                            startPoint: .topLeading,
                            endPoint: .bottomTrailing)
                 .ignoresSafeArea()
                 .overlay(
                     Circle()
-                        .fill(.white.opacity(0.15))
+                        .fill(Color("MyWhite").opacity(0.1))
                         .frame(width: 300, height: 300)
                         .offset(x: animate ? 100 : -100, y: animate ? -150 : 150)
                         .blur(radius: 40)
@@ -52,8 +52,8 @@ struct UserDetailsFormView: View {
                         Text("Continue")
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(name.isEmpty ? Color.gray.opacity(0.5) : Color.blue)
-                            .foregroundColor(.white)
+                            .background(name.isEmpty ? Color("MyGrey") : Color("MyBlue"))
+                            .foregroundColor(.staticWhite)
                             .cornerRadius(12)
                             .shadow(radius: 5)
                     }

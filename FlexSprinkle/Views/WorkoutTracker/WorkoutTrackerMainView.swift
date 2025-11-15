@@ -51,7 +51,7 @@ struct WorkoutTrackerMainView: View {
             }
         })
         .onAppear(perform: workoutController.loadWorkouts)
-        .background(Color(uiColor: .systemBackground).ignoresSafeArea())
+        .background(Color.myWhite.ignoresSafeArea())
         .sheet(item: $presentingModal) { modal in
             switch modal {
             case .add:
@@ -125,7 +125,7 @@ struct WorkoutTrackerMainView: View {
     }
     
     private func deleteWorkouts(_ workoutId: UUID) {
-        withAnimation {
+        _ = withAnimation {
             deletingWorkouts.insert(workoutId)
         }
 

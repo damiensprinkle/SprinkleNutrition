@@ -14,5 +14,7 @@ struct HomeContentView: View {
 
     var body: some View {
         Text("Should display widgets here")
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(Color.myWhite)
     }
 }

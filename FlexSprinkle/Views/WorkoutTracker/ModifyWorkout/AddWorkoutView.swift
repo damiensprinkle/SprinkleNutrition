@@ -54,7 +54,7 @@ struct AddWorkoutView: View {
                         .padding(.bottom)
                     }
                 }
-                .background(Color(UIColor.systemGroupedBackground))
+                .background(Color.myWhite)
                 
                 if showingAddExerciseDialog || selectedExerciseIndexForRenaming != nil {
                     Color.black.opacity(0.4)

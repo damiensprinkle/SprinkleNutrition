@@ -55,7 +55,7 @@ struct CustomTabView: View {
         Group {
             switch selectedTab {
             case .home:
-                HomeContentView()
+                homeContent
                     .environmentObject(workoutController)
                     .transition(.opacity)
             case .workout:
@@ -71,9 +71,29 @@ struct CustomTabView: View {
         .animation(.default, value: selectedTab)
     }
 
+    @ViewBuilder
+    private var homeContent: some View {
+        Group {
+            switch appViewModel.currentView {
+            case .achievementsView:
+                AchievementsView()
+                    .environmentObject(appViewModel)
+                    .transition(.opacity)
+            default:
+                HomeContentView()
+                    .environmentObject(appViewModel)
+                    .transition(.opacity)
+            }
+        }
+        .animation(.default, value: appViewModel.currentView)
+    }
+
     private var navigationTitle: String {
         switch selectedTab {
         case .home:
+            if appViewModel.currentView == .achievementsView {
+                return "Achievements"
+            }
             return "Home"
         case .workout:
             return ""

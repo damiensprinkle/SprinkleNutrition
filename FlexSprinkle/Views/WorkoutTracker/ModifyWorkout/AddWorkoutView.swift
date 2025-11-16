@@ -53,6 +53,7 @@ struct AddWorkoutView: View {
                         .padding(.horizontal)
                         .padding(.bottom)
                     }
+                    Spacer()
                 }
                 .background(Color.myWhite)
                 

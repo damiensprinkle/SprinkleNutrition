@@ -11,35 +11,36 @@ struct DataCardView: View {
     let icon: Image
     let number: String
     let description: String
-    
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .center, spacing: 12) {
+            // Icon at top, centered
             icon
-                .resizable()
-                .scaledToFit()
-                .frame(width: 24, height: 24)
-                .padding(.top, 8)
-                .padding(.leading, 8)
-            
-            Spacer()
-            
+                .font(.system(size: 32))
+                .foregroundColor(.myBlue)
+                .frame(height: 40)
+
+            // Number
             Text(number)
-                .font(.title)
-                .fontWeight(.bold)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal)
-            
+                .font(.system(size: 28, weight: .bold, design: .rounded))
+                .foregroundColor(.primary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+
+            // Description
             Text(description)
-                .font(.subheadline)
+                .font(.caption)
                 .foregroundColor(.secondary)
                 .multilineTextAlignment(.center)
-                .padding(.bottom, 8)
-            
+                .lineLimit(2)
+                .fixedSize(horizontal: false, vertical: true)
         }
-        .frame(width: 160, height: 160)
-        .background(Color.myWhite)
-        .cornerRadius(15)
-        .shadow(radius: 5)
-        .padding()
+        .padding(.vertical, 16)
+        .padding(.horizontal, 12)
+        .frame(maxWidth: .infinity)
+        .frame(height: 140)
+        .background(Color(.secondarySystemGroupedBackground))
+        .cornerRadius(12)
+        .shadow(color: Color.black.opacity(0.1), radius: 4, x: 0, y: 2)
     }
 }

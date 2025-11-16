@@ -66,6 +66,7 @@ struct ActiveWorkoutView: View {
 
                     startWorkoutButton
                         .padding(.top)
+                    Spacer()
                 }
                 .frame(maxHeight: .infinity, alignment: .top)
                 .background(Color(.systemGroupedBackground))

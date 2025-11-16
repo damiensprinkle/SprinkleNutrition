@@ -1,0 +1,299 @@
+//
+//  AchievementManager.swift
+//  FlexSprinkle
+//
+//  Created by Claude Code
+//
+
+import Foundation
+import CoreData
+
+class AchievementManager: ObservableObject {
+    @Published var achievements: [Achievement] = []
+    var workoutManager: WorkoutManager?
+
+    private let unlockedAchievementsKey = "unlockedAchievements"
+
+    init() {
+        loadAchievements()
+    }
+
+    private func loadAchievements() {
+        guard let url = Bundle.main.url(forResource: "achievements", withExtension: "json") else {
+            print("Failed to locate achievements.json in bundle")
+            return
+        }
+
+        do {
+            let data = try Data(contentsOf: url)
+            let decoder = JSONDecoder()
+            let achievementsList = try decoder.decode(AchievementsList.self, from: data)
+            self.achievements = achievementsList.achievements
+            print("Loaded \(achievements.count) achievements")
+        } catch {
+            print("Failed to load achievements: \(error)")
+        }
+    }
+
+    func getAchievementProgress() -> [AchievementProgress] {
+        guard workoutManager != nil else {
+            return achievements.map { achievement in
+                AchievementProgress(achievement: achievement, isUnlocked: false, currentProgress: 0, targetValue: 1)
+            }
+        }
+
+        let stats = calculateWorkoutStats()
+
+        return achievements.map { achievement in
+            let (isUnlocked, current, target) = checkAchievement(achievement, stats: stats)
+            return AchievementProgress(
+                achievement: achievement,
+                isUnlocked: isUnlocked,
+                currentProgress: current,
+                targetValue: target
+            )
+        }
+    }
+
+    /// Returns achievements that were newly unlocked (not previously stored as unlocked)
+    func getNewlyUnlockedAchievements() -> [Achievement] {
+        let currentProgress = getAchievementProgress()
+        let currentlyUnlocked = currentProgress.filter { $0.isUnlocked }.map { $0.achievement }
+
+        // Get previously unlocked achievement names from UserDefaults
+        let previouslyUnlockedNames = getUnlockedAchievementNames()
+
+        // Find achievements that are unlocked now but weren't before
+        let newlyUnlocked = currentlyUnlocked.filter { achievement in
+            !previouslyUnlockedNames.contains(achievement.name)
+        }
+
+        // Save the newly unlocked achievements
+        if !newlyUnlocked.isEmpty {
+            saveUnlockedAchievements(currentlyUnlocked)
+        }
+
+        return newlyUnlocked
+    }
+
+    private func getUnlockedAchievementNames() -> Set<String> {
+        if let data = UserDefaults.standard.data(forKey: unlockedAchievementsKey),
+           let names = try? JSONDecoder().decode([String].self, from: data) {
+            return Set(names)
+        }
+        return Set()
+    }
+
+    private func saveUnlockedAchievements(_ achievements: [Achievement]) {
+        let names = achievements.map { $0.name }
+        if let data = try? JSONEncoder().encode(names) {
+            UserDefaults.standard.set(data, forKey: unlockedAchievementsKey)
+        }
+    }
+
+    private func calculateWorkoutStats() -> WorkoutStats {
+        guard let context = workoutManager?.context else {
+            return WorkoutStats()
+        }
+
+        let fetchRequest: NSFetchRequest<WorkoutHistory> = WorkoutHistory.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "workoutDate", ascending: true)]
+
+        do {
+            let histories = try context.fetch(fetchRequest)
+
+            let totalWorkouts = histories.count
+            var totalWeightLifted: Float = 0
+            var totalTimeInSeconds: Double = 0
+            var totalDistance: Float = 0
+            var totalReps: Int32 = 0
+            var currentStreak = 0
+            var longestStreak = 0
+            var longestWorkoutInMinutes: Double = 0
+            var hasShortWorkout = false
+
+            // Calculate totals
+            for history in histories {
+                totalWeightLifted += history.totalWeightLifted
+                totalDistance += history.totalDistance
+                totalReps += history.repsCompleted
+
+                // Parse time string (format: "HH:MM:SS" or "MM:SS")
+                if let timeString = history.workoutTimeToComplete {
+                    let workoutDuration = parseTimeString(timeString)
+                    totalTimeInSeconds += workoutDuration
+
+                    // Track longest workout
+                    let workoutMinutes = workoutDuration / 60
+                    longestWorkoutInMinutes = max(longestWorkoutInMinutes, workoutMinutes)
+
+                    // Check if any workout is under 2 minutes
+                    if workoutMinutes < 2 {
+                        hasShortWorkout = true
+                    }
+                }
+            }
+
+            // Calculate streaks
+            if !histories.isEmpty {
+                let calendar = Calendar.current
+                var streak = 1
+                var previousDate = histories[0].workoutDate
+
+                for i in 1..<histories.count {
+                    if let current = histories[i].workoutDate,
+                       let previous = previousDate {
+                        let daysBetween = calendar.dateComponents([.day], from: calendar.startOfDay(for: previous), to: calendar.startOfDay(for: current)).day ?? 0
+
+                        if daysBetween == 1 {
+                            streak += 1
+                        } else if daysBetween > 1 {
+                            longestStreak = max(longestStreak, streak)
+                            streak = 1
+                        }
+                    }
+                    previousDate = histories[i].workoutDate
+                }
+                longestStreak = max(longestStreak, streak)
+
+                // Check current streak
+                if let lastWorkoutDate = histories.last?.workoutDate {
+                    let daysSinceLastWorkout = calendar.dateComponents([.day], from: calendar.startOfDay(for: lastWorkoutDate), to: calendar.startOfDay(for: Date())).day ?? 0
+                    currentStreak = daysSinceLastWorkout <= 1 ? streak : 0
+                }
+            }
+
+            return WorkoutStats(
+                totalWorkouts: totalWorkouts,
+                totalWeightLifted: Double(totalWeightLifted),
+                totalTimeInHours: totalTimeInSeconds / 3600,
+                totalDistance: Double(totalDistance),
+                totalReps: Int(totalReps),
+                currentStreak: currentStreak,
+                longestStreak: longestStreak,
+                longestWorkoutInMinutes: longestWorkoutInMinutes,
+                hasShortWorkout: hasShortWorkout
+            )
+        } catch {
+            print("Failed to fetch workout history: \(error)")
+            return WorkoutStats()
+        }
+    }
+
+    private func parseTimeString(_ timeString: String) -> Double {
+        let components = timeString.split(separator: ":").compactMap { Double($0) }
+        if components.count == 3 {
+            // HH:MM:SS
+            return components[0] * 3600 + components[1] * 60 + components[2]
+        } else if components.count == 2 {
+            // MM:SS
+            return components[0] * 60 + components[1]
+        }
+        return 0
+    }
+
+    private func checkAchievement(_ achievement: Achievement, stats: WorkoutStats) -> (isUnlocked: Bool, current: Double, target: Double) {
+        let desc = achievement.description.lowercased()
+
+        // Workout count achievements
+        if desc.contains("first workout") {
+            return (stats.totalWorkouts >= 1, Double(stats.totalWorkouts), 1)
+        } else if desc.contains("10th workout") {
+            return (stats.totalWorkouts >= 10, Double(stats.totalWorkouts), 10)
+        } else if desc.contains("25th workout") {
+            return (stats.totalWorkouts >= 25, Double(stats.totalWorkouts), 25)
+        } else if desc.contains("50th workout") {
+            return (stats.totalWorkouts >= 50, Double(stats.totalWorkouts), 50)
+        } else if desc.contains("100th workout") {
+            return (stats.totalWorkouts >= 100, Double(stats.totalWorkouts), 100)
+        }
+
+        // Weight lifted achievements
+        else if desc.contains("1,000 pounds") {
+            return (stats.totalWeightLifted >= 1000, stats.totalWeightLifted, 1000)
+        } else if desc.contains("10,000 pounds") {
+            return (stats.totalWeightLifted >= 10000, stats.totalWeightLifted, 10000)
+        } else if desc.contains("50,000 pounds") {
+            return (stats.totalWeightLifted >= 50000, stats.totalWeightLifted, 50000)
+        } else if desc.contains("100,000 pounds") {
+            return (stats.totalWeightLifted >= 100000, stats.totalWeightLifted, 100000)
+        } else if desc.contains("500,000 pounds") {
+            return (stats.totalWeightLifted >= 500000, stats.totalWeightLifted, 500000)
+        } else if desc.contains("1,000,000 pounds") {
+            return (stats.totalWeightLifted >= 1000000, stats.totalWeightLifted, 1000000)
+        } else if desc.contains("5,000,000 pounds") {
+            return (stats.totalWeightLifted >= 5000000, stats.totalWeightLifted, 5000000)
+        } else if desc.contains("10,000,000 pounds") {
+            return (stats.totalWeightLifted >= 10000000, stats.totalWeightLifted, 10000000)
+        }
+
+        // Time achievements
+        else if desc.contains("1 hour total") {
+            return (stats.totalTimeInHours >= 1, stats.totalTimeInHours, 1)
+        } else if desc.contains("10 hours total") {
+            return (stats.totalTimeInHours >= 10, stats.totalTimeInHours, 10)
+        } else if desc.contains("100 hours total") {
+            return (stats.totalTimeInHours >= 100, stats.totalTimeInHours, 100)
+        }
+
+        // Distance achievements
+        else if desc.contains("1 mile") && !desc.contains("10") {
+            return (stats.totalDistance >= 1, stats.totalDistance, 1)
+        } else if desc.contains("10 miles") {
+            return (stats.totalDistance >= 10, stats.totalDistance, 10)
+        } else if desc.contains("100 miles") {
+            return (stats.totalDistance >= 100, stats.totalDistance, 100)
+        } else if desc.contains("1000 miles") {
+            return (stats.totalDistance >= 1000, stats.totalDistance, 1000)
+        }
+
+        // Streak achievements
+        else if desc.contains("2 days in a row") {
+            return (stats.longestStreak >= 2, Double(stats.longestStreak), 2)
+        } else if desc.contains("5 days in a row") {
+            return (stats.longestStreak >= 5, Double(stats.longestStreak), 5)
+        } else if desc.contains("7 days in a row") {
+            return (stats.longestStreak >= 7, Double(stats.longestStreak), 7)
+        } else if desc.contains("14 days in a row") {
+            return (stats.longestStreak >= 14, Double(stats.longestStreak), 14)
+        } else if desc.contains("30 days in a row") {
+            return (stats.longestStreak >= 30, Double(stats.longestStreak), 30)
+        } else if desc.contains("100 days in a row") {
+            return (stats.longestStreak >= 100, Double(stats.longestStreak), 100)
+        }
+
+        // Workout duration achievements
+        else if desc.contains("longer than 1 hour") {
+            let isUnlocked = stats.longestWorkoutInMinutes >= 60
+            return (isUnlocked, stats.longestWorkoutInMinutes, 60)
+        } else if desc.contains("under 2 minutes") {
+            return (stats.hasShortWorkout, stats.hasShortWorkout ? 1 : 0, 1)
+        }
+
+        // Rep achievements
+        else if desc.contains("1,000 total reps") {
+            return (stats.totalReps >= 1000, Double(stats.totalReps), 1000)
+        } else if desc.contains("10,000 total reps") {
+            return (stats.totalReps >= 10000, Double(stats.totalReps), 10000)
+        } else if desc.contains("50,000 total reps") {
+            return (stats.totalReps >= 50000, Double(stats.totalReps), 50000)
+        } else if desc.contains("100,000 total reps") {
+            return (stats.totalReps >= 100000, Double(stats.totalReps), 100000)
+        }
+
+        // Default: not unlocked
+        return (false, 0, 1)
+    }
+}
+
+struct WorkoutStats {
+    var totalWorkouts: Int = 0
+    var totalWeightLifted: Double = 0
+    var totalTimeInHours: Double = 0
+    var totalDistance: Double = 0
+    var totalReps: Int = 0
+    var currentStreak: Int = 0
+    var longestStreak: Int = 0
+    var longestWorkoutInMinutes: Double = 0
+    var hasShortWorkout: Bool = false // < 2 minutes
+}

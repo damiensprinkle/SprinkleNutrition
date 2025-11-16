@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		081DD5892EC511AB00B4074D /* ShareableWorkout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081DD5882EC511AB00B4074D /* ShareableWorkout.swift */; };
 		081DD58B2EC511D000B4074D /* ImportWorkoutPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081DD58A2EC511D000B4074D /* ImportWorkoutPreviewView.swift */; };
+		081DD5902EC90D8500B4074D /* achievements.json in Resources */ = {isa = PBXBuildFile; fileRef = 081DD58F2EC90D7E00B4074D /* achievements.json */; };
+		081DD5922EC90F0100B4074D /* AchievementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081DD5912EC90F0100B4074D /* AchievementManager.swift */; };
+		081DD5942EC90F1400B4074D /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081DD5932EC90F1400B4074D /* Achievement.swift */; };
+		081DD5962EC90F2700B4074D /* AchievementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081DD5952EC90F2700B4074D /* AchievementsView.swift */; };
 		081F87E62B83A7CD00BBBDF2 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87E52B83A7CD00BBBDF2 /* UserManager.swift */; };
 		081F87EC2B83AC0200BBBDF2 /* UserDetailsFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87EB2B83AC0100BBBDF2 /* UserDetailsFormView.swift */; };
 		081F87F22B87F6ED00BBBDF2 /* CheckboxStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87F12B87F6ED00BBBDF2 /* CheckboxStyle.swift */; };
@@ -105,6 +109,10 @@
 		081DD5882EC511AB00B4074D /* ShareableWorkout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareableWorkout.swift; sourceTree = "<group>"; };
 		081DD58A2EC511D000B4074D /* ImportWorkoutPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportWorkoutPreviewView.swift; sourceTree = "<group>"; };
 		081DD58C2EC5121B00B4074D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		081DD58F2EC90D7E00B4074D /* achievements.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = achievements.json; sourceTree = "<group>"; };
+		081DD5912EC90F0100B4074D /* AchievementManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementManager.swift; sourceTree = "<group>"; };
+		081DD5932EC90F1400B4074D /* Achievement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Achievement.swift; sourceTree = "<group>"; };
+		081DD5952EC90F2700B4074D /* AchievementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsView.swift; sourceTree = "<group>"; };
 		081F87E52B83A7CD00BBBDF2 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		081F87EB2B83AC0100BBBDF2 /* UserDetailsFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsFormView.swift; sourceTree = "<group>"; };
 		081F87F12B87F6ED00BBBDF2 /* CheckboxStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxStyle.swift; sourceTree = "<group>"; };
@@ -222,6 +230,7 @@
 		0871113B2B7306060054E315 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				081DD5912EC90F0100B4074D /* AchievementManager.swift */,
 				08B790302B7138F70002DA68 /* WorkoutManager.swift */,
 				0871113C2B7306C20054E315 /* ColorManager.swift */,
 				08B3CFE62B7E6E40002F5C92 /* FocusManager.swift */,
@@ -254,6 +263,7 @@
 		087111AB2B77E9DB0054E315 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				081DD5952EC90F2700B4074D /* AchievementsView.swift */,
 				087111A92B77CA170054E315 /* WorkoutTrackerContentView.swift */,
 				08B78FF12B6DBA370002DA68 /* HomeView.swift */,
 				087111AC2B77E9EC0054E315 /* CustomTabView.swift */,
@@ -351,6 +361,7 @@
 		08B78FEE2B6DBA370002DA68 /* FlexSprinkle */ = {
 			isa = PBXGroup;
 			children = (
+				081DD58F2EC90D7E00B4074D /* achievements.json */,
 				081DD58C2EC5121B00B4074D /* Info.plist */,
 				088B57792EC3A7030066CC17 /* ViewModels */,
 				08B3CFE82B7E9F9A002F5C92 /* Helpers */,
@@ -391,6 +402,7 @@
 		08B790242B6E94840002DA68 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				081DD5932EC90F1400B4074D /* Achievement.swift */,
 				081DD5882EC511AB00B4074D /* ShareableWorkout.swift */,
 				088B57B92EC3BC9F0066CC17 /* CoreDataError.swift */,
 				088B57BA2EC3BC9F0066CC17 /* ErrorHandler.swift */,
@@ -554,6 +566,7 @@
 			files = (
 				08B3D00E2B82AC7C002F5C92 /* Launch Screen.storyboard in Resources */,
 				08B78FF82B6DBA390002DA68 /* Preview Assets.xcassets in Resources */,
+				081DD5902EC90D8500B4074D /* achievements.json in Resources */,
 				08B78FF42B6DBA390002DA68 /* Assets.xcassets in Resources */,
 			);
 		};
@@ -593,6 +606,7 @@
 				085466832CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataProperties.swift in Sources */,
 				085466842CDFAD4700136FBC /* WorkoutDetail+CoreDataProperties.swift in Sources */,
 				081F87EC2B83AC0200BBBDF2 /* UserDetailsFormView.swift in Sources */,
+				081DD5922EC90F0100B4074D /* AchievementManager.swift in Sources */,
 				08EF97E32CEEBC0D00AE8196 /* CustomizeCardView.swift in Sources */,
 				0871113A2B72AD830054E315 /* Model.xcdatamodeld in Sources */,
 				08B3CFE72B7E6E40002F5C92 /* FocusManager.swift in Sources */,
@@ -626,10 +640,12 @@
 				088B57BC2EC3BC9F0066CC17 /* ErrorHandler.swift in Sources */,
 				08FC757E2CDFB4DF001E2E5B /* ExerciseRow.swift in Sources */,
 				08B7902B2B7090870002DA68 /* AddWorkoutView.swift in Sources */,
+				081DD5942EC90F1400B4074D /* Achievement.swift in Sources */,
 				081F87F22B87F6ED00BBBDF2 /* CheckboxStyle.swift in Sources */,
 				08FC75802CDFCA86001E2E5B /* ExerciseRowActive.swift in Sources */,
 				081F87E62B83A7CD00BBBDF2 /* UserManager.swift in Sources */,
 				0847536F2CE5205D00C6A7F9 /* WorkoutSaveError.swift in Sources */,
+				081DD5962EC90F2700B4074D /* AchievementsView.swift in Sources */,
 				0847535B2CE3D47D00C6A7F9 /* WorkoutTrackerController.swift in Sources */,
 			);
 		};

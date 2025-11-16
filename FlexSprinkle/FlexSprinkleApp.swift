@@ -16,6 +16,7 @@ struct FlexSprinkleApp: App {
     @StateObject private var userManager = UserManager()
     @StateObject private var controller: WorkoutTrackerController
     @StateObject private var errorHandler = ErrorHandler()
+    @StateObject private var achievementManager = AchievementManager()
     @State private var importedWorkout: ShareableWorkout?
     @State private var showImportPreview = false
 
@@ -46,6 +47,7 @@ struct FlexSprinkleApp: App {
                 .environmentObject(controller)
                 .environmentObject(userManager)
                 .environmentObject(errorHandler)
+                .environmentObject(achievementManager)
                 .errorAlert(errorHandler)
                 .onAppear() {
                     // Initialize CoreData context for managers
@@ -55,6 +57,8 @@ struct FlexSprinkleApp: App {
                     if userManager.context == nil {
                         userManager.context = persistenceController.container.viewContext
                     }
+                    // Link achievement manager to workout manager
+                    achievementManager.workoutManager = workoutManager
                 }
                 .onOpenURL { url in
                     handleImportedFile(url)

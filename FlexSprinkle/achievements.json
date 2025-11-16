@@ -1,0 +1,190 @@
+{
+  "achievements": [
+    {
+      "name": "First Step Forward",
+      "description": "Completed your first workout",
+      "trophy": "Bronze"
+    },
+    {
+      "name": "Double-Digit Dynamo",
+      "description": "Completed your 10th workout",
+      "trophy": "Bronze"
+    },
+    {
+      "name": "Quarter Century Crusher",
+      "description": "Completed your 25th workout",
+      "trophy": "Silver"
+    },
+    {
+      "name": "Halfway Heavy Hitter",
+      "description": "Completed your 50th workout",
+      "trophy": "Silver"
+    },
+    {
+      "name": "Centurion Athlete",
+      "description": "Completed your 100th workout",
+      "trophy": "Gold"
+    },
+
+    {
+      "name": "Featherweight Lifter",
+      "description": "Lifted 1,000 pounds total",
+      "trophy": "Bronze"
+    },
+    {
+      "name": "Iron Initiate",
+      "description": "Lifted 10,000 pounds total",
+      "trophy": "Bronze"
+    },
+    {
+      "name": "Steel Specialist",
+      "description": "Lifted 50,000 pounds total",
+      "trophy": "Silver"
+    },
+    {
+      "name": "Titan Trainee",
+      "description": "Lifted 100,000 pounds total",
+      "trophy": "Silver"
+    },
+    {
+      "name": "Colossus Mode",
+      "description": "Lifted 500,000 pounds total",
+      "trophy": "Gold"
+    },
+    {
+      "name": "Millennium Muscle",
+      "description": "Lifted 1,000,000 pounds total",
+      "trophy": "Gold"
+    },
+    {
+      "name": "Five-Million Force",
+      "description": "Lifted 5,000,000 pounds total",
+      "trophy": "Platinum"
+    },
+    {
+      "name": "Ten-Million Titan",
+      "description": "Lifted 10,000,000 pounds total",
+      "trophy": "Platinum"
+    },
+
+    {
+      "name": "One-Hour Warrior",
+      "description": "Exercised for 1 hour total",
+      "trophy": "Bronze"
+    },
+    {
+      "name": "Endurance Engine",
+      "description": "Exercised for 10 hours total",
+      "trophy": "Silver"
+    },
+    {
+      "name": "Time-Forged Athlete",
+      "description": "Exercised for 100 hours total",
+      "trophy": "Gold"
+    },
+
+    {
+      "name": "First Mile Milestone",
+      "description": "Traveled 1 mile",
+      "trophy": "Bronze"
+    },
+    {
+      "name": "Trail Trekker",
+      "description": "Traveled 10 miles",
+      "trophy": "Silver"
+    },
+    {
+      "name": "Centurion Strider",
+      "description": "Traveled 100 miles",
+      "trophy": "Gold"
+    },
+    {
+      "name": "Pathfinder Prodigy",
+      "description": "Traveled 1000 miles",
+      "trophy": "Platinum"
+    },
+
+    {
+      "name": "Spark Starter",
+      "description": "Logged workouts 2 days in a row",
+      "trophy": "Bronze"
+    },
+    {
+      "name": "Heatwave",
+      "description": "Logged workouts 5 days in a row",
+      "trophy": "Bronze"
+    },
+    {
+      "name": "One-Week Warrior",
+      "description": "Logged workouts 7 days in a row",
+      "trophy": "Silver"
+    },
+    {
+      "name": "Two-Week Titan",
+      "description": "Logged workouts 14 days in a row",
+      "trophy": "Silver"
+    },
+    {
+      "name": "Consistency Conqueror",
+      "description": "Logged workouts 30 days in a row",
+      "trophy": "Gold"
+    },
+    {
+      "name": "Unbreakable Streaker",
+      "description": "Logged workouts 100 days in a row",
+      "trophy": "Platinum"
+    },
+
+    {
+      "name": "Weekly Grinder",
+      "description": "3 workouts in a week",
+      "trophy": "Bronze"
+    },
+    {
+      "name": "Relentless Rhythm",
+      "description": "5 workouts in a week",
+      "trophy": "Silver"
+    },
+    {
+      "name": "Calendar Crusher",
+      "description": "20 workouts in a month",
+      "trophy": "Gold"
+    },
+    {
+      "name": "Month of Mastery",
+      "description": "Perfect month (met your goal every week)",
+      "trophy": "Platinum"
+    },
+
+    {
+      "name": "Marathon Mindset",
+      "description": "Complete a workout longer than 1 hour",
+      "trophy": "Gold"
+    },
+    {
+      "name": "Did You Even Lift?",
+      "description": "Logged a workout under 2 minutes",
+      "trophy": "Wood"
+    },
+    {
+      "name": "Rep Rookie",
+      "description": "Completed 1,000 total reps",
+      "trophy": "Bronze"
+    },
+    {
+      "name": "Repetition Renegade",
+      "description": "Completed 10,000 total reps",
+      "trophy": "Silver"
+    },
+    {
+      "name": "Volume Vanguard",
+      "description": "Completed 50,000 total reps",
+      "trophy": "Gold"
+    },
+    {
+      "name": "Master of Motion",
+      "description": "Completed 100,000 total reps",
+      "trophy": "Platinum"
+    }
+  ]
+}

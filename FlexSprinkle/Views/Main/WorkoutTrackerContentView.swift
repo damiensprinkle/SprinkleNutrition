@@ -55,6 +55,10 @@ struct WorkoutContentMainView: View {
                     .environmentObject(appViewModel)
                     .environmentObject(workoutController)
                     .transition(.slide)
+
+            case .achievementsView:
+                // Achievements view is handled in CustomTabView's homeContent
+                EmptyView()
             }
         }
         .animation(.default, value: appViewModel.currentView)
@@ -72,6 +76,8 @@ struct WorkoutContentMainView: View {
             return ""
         case .customizeCardView:
             return "Customize Card"
+        case .achievementsView:
+            return "Achievements"
         }
     }
 

@@ -410,11 +410,19 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
                 let deletedOrderIndex = workoutsToDelete.first?.orderIndex ?? 0
 
                 for workout in workoutsToDelete {
+                    // IMPORTANT: Preserve WorkoutHistory for achievements!
+                    // Break the relationship instead of deleting history records
+                    if let histories = workout.history as? Set<WorkoutHistory> {
+                        for history in histories {
+                            history.workoutR = nil
+                        }
+                    }
+
                     // Cascade delete rules will automatically handle:
-                    // - WorkoutHistory (history relationship)
                     // - WorkoutDetail (details relationship) and their WorkoutSets
                     // - TemporaryWorkoutDetail (detailsTemp relationship) and their WorkoutSets
                     // - WorkoutSession (sessions relationship)
+                    // WorkoutHistory is preserved but relationship is broken above
                     backgroundContext.delete(workout)
                 }
 

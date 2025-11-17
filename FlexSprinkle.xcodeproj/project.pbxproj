@@ -13,6 +13,9 @@
 		081DD5922EC90F0100B4074D /* AchievementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081DD5912EC90F0100B4074D /* AchievementManager.swift */; };
 		081DD5942EC90F1400B4074D /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081DD5932EC90F1400B4074D /* Achievement.swift */; };
 		081DD5962EC90F2700B4074D /* AchievementsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081DD5952EC90F2700B4074D /* AchievementsView.swift */; };
+		081DD5982ECA1A7900B4074D /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081DD5972ECA1A7900B4074D /* DashboardView.swift */; };
+		081DD59A2ECA1C9400B4074D /* PrivacyPolicyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081DD5992ECA1C9400B4074D /* PrivacyPolicyView.swift */; };
+		081DD59C2ECA9D3D00B4074D /* FAQView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081DD59B2ECA9D3D00B4074D /* FAQView.swift */; };
 		081F87E62B83A7CD00BBBDF2 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87E52B83A7CD00BBBDF2 /* UserManager.swift */; };
 		081F87EC2B83AC0200BBBDF2 /* UserDetailsFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87EB2B83AC0100BBBDF2 /* UserDetailsFormView.swift */; };
 		081F87F22B87F6ED00BBBDF2 /* CheckboxStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87F12B87F6ED00BBBDF2 /* CheckboxStyle.swift */; };
@@ -33,7 +36,6 @@
 		087111A82B77C6DF0054E315 /* WorkoutInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087111A72B77C6DF0054E315 /* WorkoutInfo.swift */; };
 		087111AA2B77CA170054E315 /* WorkoutTrackerContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087111A92B77CA170054E315 /* WorkoutTrackerContentView.swift */; };
 		087111AD2B77E9EC0054E315 /* CustomTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087111AC2B77E9EC0054E315 /* CustomTabView.swift */; };
-		087111AF2B77EAF20054E315 /* HomeContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 087111AE2B77EAF20054E315 /* HomeContentView.swift */; };
 		088B57732EC3A1C00066CC17 /* WorkoutTrackerControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B57712EC3A1C00066CC17 /* WorkoutTrackerControllerTests.swift */; };
 		088B57742EC3A1C00066CC17 /* MockWorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B576E2EC3A1C00066CC17 /* MockWorkoutManager.swift */; };
 		088B57752EC3A1C00066CC17 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 088B57702EC3A1C00066CC17 /* README.md */; };
@@ -113,6 +115,9 @@
 		081DD5912EC90F0100B4074D /* AchievementManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementManager.swift; sourceTree = "<group>"; };
 		081DD5932EC90F1400B4074D /* Achievement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Achievement.swift; sourceTree = "<group>"; };
 		081DD5952EC90F2700B4074D /* AchievementsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsView.swift; sourceTree = "<group>"; };
+		081DD5972ECA1A7900B4074D /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		081DD5992ECA1C9400B4074D /* PrivacyPolicyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyView.swift; sourceTree = "<group>"; };
+		081DD59B2ECA9D3D00B4074D /* FAQView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQView.swift; sourceTree = "<group>"; };
 		081F87E52B83A7CD00BBBDF2 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		081F87EB2B83AC0100BBBDF2 /* UserDetailsFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsFormView.swift; sourceTree = "<group>"; };
 		081F87F12B87F6ED00BBBDF2 /* CheckboxStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxStyle.swift; sourceTree = "<group>"; };
@@ -133,7 +138,6 @@
 		087111A72B77C6DF0054E315 /* WorkoutInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutInfo.swift; sourceTree = "<group>"; };
 		087111A92B77CA170054E315 /* WorkoutTrackerContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTrackerContentView.swift; sourceTree = "<group>"; };
 		087111AC2B77E9EC0054E315 /* CustomTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabView.swift; sourceTree = "<group>"; };
-		087111AE2B77EAF20054E315 /* HomeContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeContentView.swift; sourceTree = "<group>"; };
 		088B576E2EC3A1C00066CC17 /* MockWorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockWorkoutManager.swift; sourceTree = "<group>"; };
 		088B57702EC3A1C00066CC17 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		088B57712EC3A1C00066CC17 /* WorkoutTrackerControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTrackerControllerTests.swift; sourceTree = "<group>"; };
@@ -263,11 +267,13 @@
 		087111AB2B77E9DB0054E315 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				081DD59B2ECA9D3D00B4074D /* FAQView.swift */,
+				081DD5992ECA1C9400B4074D /* PrivacyPolicyView.swift */,
+				081DD5972ECA1A7900B4074D /* DashboardView.swift */,
 				081DD5952EC90F2700B4074D /* AchievementsView.swift */,
 				087111A92B77CA170054E315 /* WorkoutTrackerContentView.swift */,
 				08B78FF12B6DBA370002DA68 /* HomeView.swift */,
 				087111AC2B77E9EC0054E315 /* CustomTabView.swift */,
-				087111AE2B77EAF20054E315 /* HomeContentView.swift */,
 				081F87EB2B83AC0100BBBDF2 /* UserDetailsFormView.swift */,
 			);
 			path = Main;
@@ -591,6 +597,7 @@
 				08EF97E92CEEC13500AE8196 /* Workouts+CoreDataClass.swift in Sources */,
 				088B57772EC3A6E40066CC17 /* WorkoutManaging.swift in Sources */,
 				08B3CFDD2B7D9567002F5C92 /* WorkoutSet+CoreDataProperties.swift in Sources */,
+				081DD5982ECA1A7900B4074D /* DashboardView.swift in Sources */,
 				081DD5892EC511AB00B4074D /* ShareableWorkout.swift in Sources */,
 				0847535F2CE3D59B00C6A7F9 /* WorkoutSessionModel.swift in Sources */,
 				08C31FFF2B82EA3A002EE8A7 /* PersistenceController.swift in Sources */,
@@ -599,11 +606,13 @@
 				08B3CF7B2B7BDD0C002F5C92 /* AddExerciseDialog.swift in Sources */,
 				08B3CFEC2B80227E002F5C92 /* WorkoutHistoryView.swift in Sources */,
 				08B3CFEA2B7E9FA6002F5C92 /* TimeHelper.swift in Sources */,
+				081DD59A2ECA1C9400B4074D /* PrivacyPolicyView.swift in Sources */,
 				087111AA2B77CA170054E315 /* WorkoutTrackerContentView.swift in Sources */,
 				088B577A2EC3A7030066CC17 /* ActiveWorkoutViewModel.swift in Sources */,
 				085466812CDFAD4700136FBC /* WorkoutDetail+CoreDataClass.swift in Sources */,
 				085466822CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataClass.swift in Sources */,
 				085466832CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataProperties.swift in Sources */,
+				081DD59C2ECA9D3D00B4074D /* FAQView.swift in Sources */,
 				085466842CDFAD4700136FBC /* WorkoutDetail+CoreDataProperties.swift in Sources */,
 				081F87EC2B83AC0200BBBDF2 /* UserDetailsFormView.swift in Sources */,
 				081DD5922EC90F0100B4074D /* AchievementManager.swift in Sources */,
@@ -621,7 +630,6 @@
 				08B7901E2B6E8F8D0002DA68 /* SettingsView.swift in Sources */,
 				08B3CFDC2B7D9567002F5C92 /* WorkoutSet+CoreDataClass.swift in Sources */,
 				08B3CFEF2B810DFF002F5C92 /* WorkoutHistory+CoreDataClass.swift in Sources */,
-				087111AF2B77EAF20054E315 /* HomeContentView.swift in Sources */,
 				08C4181C2E4BB9F8004EA360 /* UserInfo+CoreDataClass.swift in Sources */,
 				08C4181D2E4BB9F8004EA360 /* UserInfo+CoreDataProperties.swift in Sources */,
 				0871113D2B7306C20054E315 /* ColorManager.swift in Sources */,

@@ -62,7 +62,9 @@ struct WorkoutTrackerMainView: View {
             }
             .disabled(isEditMode)
             .opacity(isEditMode ? 0.5 : 1.0)
-        })
+        }
+        .glassEffect(in: Capsule())
+        )
         .onAppear(perform: workoutController.loadWorkouts)
         .background(Color.myWhite.ignoresSafeArea())
         .sheet(item: $presentingModal) { modal in
@@ -157,6 +159,49 @@ struct WorkoutTrackerMainView: View {
                 .padding(.horizontal)
                 .padding(.bottom, 8)
             }
+            if workoutController.workouts.isEmpty && !isEditMode {
+                VStack(spacing: 24) {
+                    Spacer()
+                        .frame(height: 60)
+
+                    Image(systemName: "dumbbell.fill")
+                        .font(.system(size: 80))
+                        .foregroundColor(.myBlue.opacity(0.5))
+
+                    VStack(spacing: 8) {
+                        Text("No Workouts Yet")
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .foregroundColor(.primary)
+
+                        Text("Create your first workout to get started")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                            .multilineTextAlignment(.center)
+                    }
+
+                    Button(action: {
+                        presentingModal = .add
+                    }) {
+                        HStack(spacing: 8) {
+                            Image(systemName: "plus.circle.fill")
+                                .font(.title3)
+                            Text("Create Workout")
+                                .font(.headline)
+                        }
+                        .foregroundColor(.staticWhite)
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 12)
+                        .background(Color.myBlue)
+                        .cornerRadius(10)
+                    }
+
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+            }
+
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
                 ForEach(workoutController.workouts) { workout in
                     if !deletingWorkouts.contains(workout.id) {

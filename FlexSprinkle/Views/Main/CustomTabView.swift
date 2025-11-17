@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct CustomTabView: View {
-    @State private var selectedTab: Tab = .home
+    @State private var selectedTab: Tab = .workout
     @EnvironmentObject var appViewModel: AppViewModel
     @EnvironmentObject var userManager: UserManager
     @EnvironmentObject var workoutController: WorkoutTrackerController
 
-    
+
     enum Tab: String {
-        case home, workout, settings
+        case dashboard, workout, settings
     }
     
     var body: some View {
@@ -31,10 +31,10 @@ struct CustomTabView: View {
                 Divider()
 
                 HStack {
-                    tabButton(for: .home, systemImage: "house.fill")
+                    tabButton(for: .workout, systemImage: "dumbbell.fill")
 
                     Spacer()
-                    tabButton(for: .workout, systemImage: "dumbbell.fill")
+                    tabButton(for: .dashboard, systemImage: "chart.bar.fill")
 
                     Spacer()
                     tabButton(for: .settings, systemImage :"gearshape")
@@ -54,12 +54,12 @@ struct CustomTabView: View {
     private var tabContent: some View {
         Group {
             switch selectedTab {
-            case .home:
-                homeContent
-                    .environmentObject(workoutController)
-                    .transition(.opacity)
             case .workout:
                 WorkoutContentMainView()
+                    .environmentObject(workoutController)
+                    .transition(.opacity)
+            case .dashboard:
+                dashboardContent
                     .environmentObject(workoutController)
                     .transition(.opacity)
             case .settings:
@@ -72,7 +72,7 @@ struct CustomTabView: View {
     }
 
     @ViewBuilder
-    private var homeContent: some View {
+    private var dashboardContent: some View {
         Group {
             switch appViewModel.currentView {
             case .achievementsView:
@@ -80,7 +80,7 @@ struct CustomTabView: View {
                     .environmentObject(appViewModel)
                     .transition(.opacity)
             default:
-                HomeContentView()
+                DashboardView()
                     .environmentObject(appViewModel)
                     .transition(.opacity)
             }
@@ -90,13 +90,13 @@ struct CustomTabView: View {
 
     private var navigationTitle: String {
         switch selectedTab {
-        case .home:
+        case .workout:
+            return ""
+        case .dashboard:
             if appViewModel.currentView == .achievementsView {
                 return "Achievements"
             }
-            return "Home"
-        case .workout:
-            return ""
+            return "Dashboard"
         case .settings:
             return "Settings"
         }

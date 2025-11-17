@@ -55,6 +55,56 @@ class AchievementManager: ObservableObject {
         }
     }
 
+    /// Returns current workout statistics
+    func getWorkoutStats() -> WorkoutStats {
+        return calculateWorkoutStats()
+    }
+
+    /// Returns personal records from workout history
+    func getPersonalRecords() -> PersonalRecords {
+        guard let context = workoutManager?.context else {
+            return PersonalRecords()
+        }
+
+        let fetchRequest: NSFetchRequest<WorkoutHistory> = WorkoutHistory.fetchRequest()
+
+        do {
+            let histories = try context.fetch(fetchRequest)
+
+            var records = PersonalRecords()
+
+            for history in histories {
+                // Track heaviest weight in single workout
+                if Double(history.totalWeightLifted) > records.heaviestWeight {
+                    records.heaviestWeight = Double(history.totalWeightLifted)
+                }
+
+                // Track most reps in single workout
+                if Int(history.repsCompleted) > records.mostReps {
+                    records.mostReps = Int(history.repsCompleted)
+                }
+
+                // Track furthest distance in single workout
+                if Double(history.totalDistance) > records.furthestDistance {
+                    records.furthestDistance = Double(history.totalDistance)
+                }
+
+                // Track longest workout
+                if let timeString = history.workoutTimeToComplete {
+                    let workoutMinutes = parseTimeString(timeString) / 60
+                    if workoutMinutes > records.longestWorkoutMinutes {
+                        records.longestWorkoutMinutes = workoutMinutes
+                    }
+                }
+            }
+
+            return records
+        } catch {
+            print("Failed to fetch workout history for PRs: \(error)")
+            return PersonalRecords()
+        }
+    }
+
     /// Returns achievements that were newly unlocked (not previously stored as unlocked)
     func getNewlyUnlockedAchievements() -> [Achievement] {
         let currentProgress = getAchievementProgress()
@@ -296,4 +346,11 @@ struct WorkoutStats {
     var longestStreak: Int = 0
     var longestWorkoutInMinutes: Double = 0
     var hasShortWorkout: Bool = false // < 2 minutes
+}
+
+struct PersonalRecords {
+    var heaviestWeight: Double = 0 // Single workout
+    var mostReps: Int = 0 // Single workout
+    var longestWorkoutMinutes: Double = 0 // Single workout
+    var furthestDistance: Double = 0 // Single workout
 }

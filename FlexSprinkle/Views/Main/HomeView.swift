@@ -37,20 +37,19 @@ struct HomeView: View {
                     }
                     .padding()
                 } else {
-                    VStack {
-                        HStack {
-                            CustomTabView()
-                                .environmentObject(appViewModel)
-                                .environmentObject(userManager)
-                                .environmentObject(workoutController)
+                    if userManager.userDetails != nil {
+                        VStack {
+                            HStack {
+                                CustomTabView()
+                                    .environmentObject(appViewModel)
+                                    .environmentObject(userManager)
+                                    .environmentObject(workoutController)
+                            }
                         }
-                    }
-                    .onAppear {
-                        userManager.context = persistenceController.container.viewContext
-                        // Don't show user form if there was a CoreData error
-                        if persistenceController.loadError == nil && userManager.userDetails == nil {
-                            showUserDetailsForm = true
-                        }
+                    } else {
+                        // Show blank view while waiting for user details
+                        Color(.systemGroupedBackground)
+                            .ignoresSafeArea()
                     }
                 }
             } else {
@@ -63,10 +62,17 @@ struct HomeView: View {
                 }
             }
         }
+        .onAppear {
+            userManager.context = persistenceController.container.viewContext
+            // Don't show user form if there was a CoreData error
+            if persistenceController.loadError == nil && userManager.userDetails == nil {
+                showUserDetailsForm = true
+            }
+        }
         .overlay {
             if showUserDetailsForm {
                 ZStack {
-                    Color.black.opacity(0.4)
+                    Color(.systemGroupedBackground)
                         .ignoresSafeArea()
 
                     UserDetailsFormView(isPresented: $showUserDetailsForm)

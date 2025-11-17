@@ -29,6 +29,13 @@ struct AchievementsView: View {
         }
     }
 
+    var completionStats: (completed: Int, total: Int, percentage: Double) {
+        let completed = achievementProgress.filter { $0.isUnlocked }.count
+        let total = achievementProgress.count
+        let percentage = total > 0 ? (Double(completed) / Double(total)) * 100 : 0
+        return (completed, total, percentage)
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             // Filter Picker
@@ -40,6 +47,51 @@ struct AchievementsView: View {
             .pickerStyle(.segmented)
             .padding()
             .background(Color(.systemGroupedBackground))
+
+            // Progress Section
+            VStack(spacing: 12) {
+                HStack {
+                    Image(systemName: "chart.bar.fill")
+                        .foregroundColor(.myBlue)
+                        .font(.title2)
+
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Overall Progress")
+                            .font(.headline)
+                            .foregroundColor(.primary)
+
+                        Text("\(completionStats.completed) / \(completionStats.total) completed (\(String(format: "%.1f", completionStats.percentage))%)")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                    }
+
+                    Spacer()
+                }
+                .padding(.horizontal)
+
+                // Progress bar
+                GeometryReader { geometry in
+                    ZStack(alignment: .leading) {
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color.secondary.opacity(0.2))
+                            .frame(height: 12)
+
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [Color.myBlue, Color.myLightBlue]),
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                            .frame(width: geometry.size.width * CGFloat(completionStats.percentage / 100), height: 12)
+                    }
+                }
+                .frame(height: 12)
+                .padding(.horizontal)
+            }
+            .padding(.vertical, 16)
+            .background(Color(.secondarySystemGroupedBackground))
 
             // Achievements List
             List {

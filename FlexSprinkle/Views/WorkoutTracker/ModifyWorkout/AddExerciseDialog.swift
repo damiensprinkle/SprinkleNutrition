@@ -16,60 +16,104 @@ struct AddExerciseDialog: View {
     @State private var exerciseName: String = ""
     
     var body: some View {
-        VStack(spacing: 15) {
-            Text("Exercise Details")
-                .font(.headline)
-            
-            ZStack {
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(Color(UIColor.systemBackground))
-                    .frame(height: 36)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.gray, lineWidth: 1)
-                    )
-                
-                TextField("Exercise Name", text: $exerciseName)
+        VStack(spacing: 0) {
+            // Header
+            VStack(spacing: 8) {
+                Text("Add Exercise")
+                    .font(.title2)
+                    .fontWeight(.bold)
                     .foregroundColor(.primary)
-                    .padding(.horizontal)
+
+                Text("Configure your new exercise")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
             }
-            .frame(height: 36)
-            
-            Picker("Workout Quantifier", selection: $selectedWorkoutQuantifier) {
-                Text("Reps").tag("Reps")
-                Text("Distance").tag("Distance")
-            }
-            .pickerStyle(SegmentedPickerStyle())
-            .padding()
-            
-            Picker("Workout Measurement", selection: $selectedWorkoutMeasurement) {
-                Text("Weight").tag("Weight")
-                Text("Time").tag("Time")
-            }
-            .pickerStyle(SegmentedPickerStyle())
-            .padding()
-            
-            HStack {
-                Button("Cancel") {
-                    self.showingDialog = false
+            .padding(.top, 24)
+            .padding(.bottom, 20)
+
+            VStack(alignment: .leading, spacing: 20) {
+                // Exercise Name
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Exercise Name")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.primary)
+
+                    TextField("e.g., Bench Press", text: $exerciseName)
+                        .textFieldStyle(.plain)
+                        .padding(12)
+                        .background(Color(.secondarySystemGroupedBackground))
+                        .cornerRadius(10)
                 }
-                Spacer()
-                
-                Button("  Add  ") {
+
+                // Quantifier
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Track By")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.primary)
+
+                    Picker("Track By", selection: $selectedWorkoutQuantifier) {
+                        Text("Reps").tag("Reps")
+                        Text("Distance").tag("Distance")
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                }
+
+                // Measurement
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Measure With")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.primary)
+
+                    Picker("Measure With", selection: $selectedWorkoutMeasurement) {
+                        Text("Weight").tag("Weight")
+                        Text("Time").tag("Time")
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
+                }
+            }
+            .padding(.horizontal, 20)
+            .padding(.bottom, 24)
+
+            // Buttons
+            HStack(spacing: 12) {
+                Button(action: {
+                    self.showingDialog = false
+                }) {
+                    Text("Cancel")
+                        .font(.headline)
+                        .foregroundColor(.primary)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(Color(.secondarySystemGroupedBackground))
+                        .cornerRadius(10)
+                }
+
+                Button(action: {
                     addNewExercise()
+                }) {
+                    Text("Add Exercise")
+                        .font(.headline)
+                        .foregroundColor(.staticWhite)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(exerciseName.isEmpty ? Color.gray : Color.myBlue)
+                        .cornerRadius(10)
                 }
                 .disabled(exerciseName.isEmpty)
-                .opacity(exerciseName.isEmpty ? 0.5 : 1.0)
-                
             }
+            .padding(.horizontal, 20)
+            .padding(.bottom, 20)
         }
-        .onAppear{
+        .background(Color(.systemGroupedBackground))
+        .cornerRadius(20)
+        .shadow(color: Color.black.opacity(0.15), radius: 20, x: 0, y: 10)
+        .frame(maxWidth: 400)
+        .onAppear {
             hideKeyboard()
         }
-        .padding()
-        .background(Color.myWhite)
-        .cornerRadius(15)
-        .shadow(radius: 10)
     }
     
     private func addNewExercise() {

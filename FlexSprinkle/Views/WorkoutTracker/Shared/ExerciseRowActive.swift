@@ -26,6 +26,10 @@ struct ExerciseRowActive: View {
     @State private var weightInput: String = ""
     @State private var repsInput: String = ""
     @State private var checked: Bool = false
+    @State private var repsModified: Bool = false
+    @State private var distanceModified: Bool = false
+    @State private var weightModified: Bool = false
+    @State private var timeModified: Bool = false
     @EnvironmentObject var focusManager: FocusManager
     @EnvironmentObject var workoutController: WorkoutTrackerController
     
@@ -141,7 +145,9 @@ struct ExerciseRowActive: View {
                     let newReps = Int32(repsInput) ?? 0
                     if setInput.reps != newReps {
                         setInput.reps = newReps
+                        repsModified = true
                         saveWorkoutDetail()
+                        checkAutoComplete()
                     }
                 }
             }
@@ -178,7 +184,9 @@ struct ExerciseRowActive: View {
                     let newDistance = Float(distanceInput) ?? 0.0
                     if(setInput.distance != newDistance){
                         setInput.distance = newDistance
+                        distanceModified = true
                         saveWorkoutDetail()
+                        checkAutoComplete()
                     }
                 }
             }
@@ -208,7 +216,9 @@ struct ExerciseRowActive: View {
                     let newWeight = Float(weightInput) ?? 0
                     if(setInput.weight != newWeight){
                         setInput.weight = newWeight
+                        weightModified = true
                         saveWorkoutDetail()
+                        checkAutoComplete()
                     }
                 }
             }
@@ -245,7 +255,9 @@ struct ExerciseRowActive: View {
                 if(!timeInput.isEmpty){
                     let formattedTime = formatTimeFromSeconds(totalSeconds: Int(setInput.time))
                     if formattedTime != "00:00:00" && timeInput != formattedTime {
+                        timeModified = true
                         saveWorkoutDetail()
+                        checkAutoComplete()
                     }
                 }
             }
@@ -287,5 +299,32 @@ struct ExerciseRowActive: View {
         timeInput = formatTimeFromSeconds(totalSeconds: Int(setInput.time))
         checked = setInput.isCompleted
     }
-    
+
+    private func checkAutoComplete() {
+        // Only auto-complete if both required fields have been MODIFIED and not already checked
+        guard !checked else { return }
+
+        var shouldAutoComplete = false
+
+        if exerciseQuantifier == "Reps" && exerciseMeasurement == "Weight" {
+            // Check if both reps and weight have been modified
+            shouldAutoComplete = repsModified && weightModified && setInput.reps > 0 && setInput.weight > 0
+        } else if exerciseQuantifier == "Reps" && exerciseMeasurement == "Time" {
+            // Check if both reps and time have been modified
+            shouldAutoComplete = repsModified && timeModified && setInput.reps > 0 && setInput.time > 0
+        } else if exerciseQuantifier == "Distance" && exerciseMeasurement == "Weight" {
+            // Check if both distance and weight have been modified
+            shouldAutoComplete = distanceModified && weightModified && setInput.distance > 0 && setInput.weight > 0
+        } else if exerciseQuantifier == "Distance" && exerciseMeasurement == "Time" {
+            // Check if both distance and time have been modified
+            shouldAutoComplete = distanceModified && timeModified && setInput.distance > 0 && setInput.time > 0
+        }
+
+        if shouldAutoComplete {
+            checked = true
+            setInput.isCompleted = true
+            saveWorkoutDetail()
+        }
+    }
+
 }

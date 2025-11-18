@@ -1,62 +1,64 @@
 //
-//  RenameExerciseDialog.swift
+//  ExerciseNotesDialogView.swift
 //  FlexSprinkle
 //
-//  Created by Damien Sprinkle on 2/18/24.
+//  Created by Damien Sprinkle on 11/18/24.
 //
 
 import SwiftUI
 
-struct RenameExerciseDialogView: View {
+struct ExerciseNotesDialogView: View {
     @Binding var isPresented: Bool
-    @Binding var exerciseName: String
-    var onRename: (String) -> Void
+    @Binding var exerciseNotes: String?
 
-    @State private var temporaryName: String
+    @State private var temporaryNotes: String
 
-    init(isPresented: Binding<Bool>, exerciseName: Binding<String>, onRename: @escaping (String) -> Void) {
+    init(isPresented: Binding<Bool>, exerciseNotes: Binding<String?>) {
         self._isPresented = isPresented
-        self._exerciseName = exerciseName
-        self.onRename = onRename
-        self._temporaryName = State(initialValue: exerciseName.wrappedValue)
+        self._exerciseNotes = exerciseNotes
+        self._temporaryNotes = State(initialValue: exerciseNotes.wrappedValue ?? "")
     }
 
     var body: some View {
         VStack(spacing: 0) {
             // Header
             VStack(spacing: 8) {
-                Text("Rename Exercise")
+                Text("Exercise Notes")
                     .font(.title2)
                     .fontWeight(.bold)
                     .foregroundColor(.myBlack)
-                Text("Update the exercise name")
+                Text("Add notes or instructions for this exercise")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
             }
             .padding(.top, 24)
             .padding(.bottom, 20)
 
             // Form Field
             VStack(alignment: .leading, spacing: 8) {
-                Text("Exercise Name")
+                Text("Notes")
                     .font(.subheadline)
                     .fontWeight(.medium)
                     .foregroundColor(.myBlack)
 
-                ZStack {
+                ZStack(alignment: .topLeading) {
                     RoundedRectangle(cornerRadius: 8)
                         .fill(Color(UIColor.systemBackground))
-                        .frame(height: 44)
+                        .frame(height: 140)
                         .overlay(
                             RoundedRectangle(cornerRadius: 8)
                                 .stroke(Color.gray.opacity(0.3), lineWidth: 1)
                         )
 
-                    TextField("Enter exercise name", text: $temporaryName)
+                    TextEditor(text: $temporaryNotes)
                         .foregroundColor(.primary)
-                        .padding(.horizontal, 12)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 8)
+                        .frame(height: 140)
+                        .scrollContentBackground(.hidden)
                 }
-                .frame(height: 44)
+                .frame(height: 140)
             }
             .padding(.horizontal, 24)
             .padding(.bottom, 24)
@@ -77,7 +79,7 @@ struct RenameExerciseDialogView: View {
                 }
 
                 Button(action: {
-                    onRename(temporaryName)
+                    exerciseNotes = temporaryNotes.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : temporaryNotes
                     isPresented = false
                 }) {
                     Text("Save")
@@ -86,10 +88,9 @@ struct RenameExerciseDialogView: View {
                         .foregroundColor(.staticWhite)
                         .frame(maxWidth: .infinity)
                         .frame(height: 44)
-                        .background(temporaryName.isEmpty ? Color.myBlue.opacity(0.5) : Color.myBlue)
+                        .background(Color.myBlue)
                         .cornerRadius(8)
                 }
-                .disabled(temporaryName.isEmpty)
             }
             .padding(.horizontal, 24)
             .padding(.bottom, 24)

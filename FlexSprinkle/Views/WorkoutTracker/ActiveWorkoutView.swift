@@ -32,6 +32,7 @@ struct ActiveWorkoutView: View {
     @State private var showAddExerciseDialog = false
     @State private var editMode: EditMode = .inactive
     @State private var showChangesPreview = false
+    @State private var selectedExerciseIndexForNotes: Int?
 
     init(workoutId: UUID) {
         self.workoutId = workoutId
@@ -178,40 +179,84 @@ struct ActiveWorkoutView: View {
                     }
                 )
             }
+            .sheet(isPresented: Binding(
+                get: { selectedExerciseIndexForNotes != nil },
+                set: { if !$0 { selectedExerciseIndexForNotes = nil } }
+            )) {
+                if let selectedIndex = selectedExerciseIndexForNotes,
+                   selectedIndex < workoutController.workoutDetails.count {
+                    ZStack {
+                        Color.black.opacity(0.4)
+                            .edgesIgnoringSafeArea(.all)
+                        ExerciseNotesDialogView(
+                            isPresented: Binding(
+                                get: { selectedExerciseIndexForNotes != nil },
+                                set: { if !$0 { selectedExerciseIndexForNotes = nil } }
+                            ),
+                            exerciseNotes: $workoutController.workoutDetails[selectedIndex].notes
+                        )
+                        .padding()
+                    }
+                }
+            }
         }
 
     private var displayExerciseDetailsAndSets: some View {
         ForEach(workoutController.workoutDetails.indices, id: \.self) { index in
-            Section(header: HStack {
-                Text(workoutController.workoutDetails[index].exerciseName)
-                    .font(.title2)
-                    .foregroundColor(Color.myBlack)
-                Spacer()
+            Section(header: VStack(alignment: .leading, spacing: 4) {
+                HStack {
+                    Text(workoutController.workoutDetails[index].exerciseName)
+                        .font(.title2)
+                        .foregroundColor(Color.myBlack)
+                    Spacer()
 
-                if editMode == .active && viewModel.workoutStarted {
-                    // Move up arrow
-                    if index > 0 {
-                        Image(systemName: "arrow.up")
-                            .foregroundColor(focusManager.isAnyTextFieldFocused ? .gray : .blue)
-                            .opacity(focusManager.isAnyTextFieldFocused ? 0.5 : 1.0)
-                            .onTapGesture {
-                                if !focusManager.isAnyTextFieldFocused {
-                                    moveExercise(from: index, direction: .up)
-                                }
-                            }
-                    }
+                    // Notes icon
+                    let hasNotes = workoutController.workoutDetails[index].notes != nil && !workoutController.workoutDetails[index].notes!.isEmpty
+                    Image(systemName: hasNotes ? "note.text.badge.plus" : "note.text")
+                        .foregroundColor(hasNotes ? .orange : .gray)
+                        .onTapGesture {
+                            selectedExerciseIndexForNotes = index
+                        }
 
-                    // Move down arrow
-                    if index < workoutController.workoutDetails.count - 1 {
-                        Image(systemName: "arrow.down")
-                            .foregroundColor(focusManager.isAnyTextFieldFocused ? .gray : .blue)
-                            .opacity(focusManager.isAnyTextFieldFocused ? 0.5 : 1.0)
-                            .onTapGesture {
-                                if !focusManager.isAnyTextFieldFocused {
-                                    moveExercise(from: index, direction: .down)
+                    if editMode == .active && viewModel.workoutStarted {
+                        // Move up arrow
+                        if index > 0 {
+                            Image(systemName: "arrow.up")
+                                .foregroundColor(focusManager.isAnyTextFieldFocused ? .gray : .blue)
+                                .opacity(focusManager.isAnyTextFieldFocused ? 0.5 : 1.0)
+                                .onTapGesture {
+                                    if !focusManager.isAnyTextFieldFocused {
+                                        moveExercise(from: index, direction: .up)
+                                    }
                                 }
-                            }
+                        }
+
+                        // Move down arrow
+                        if index < workoutController.workoutDetails.count - 1 {
+                            Image(systemName: "arrow.down")
+                                .foregroundColor(focusManager.isAnyTextFieldFocused ? .gray : .blue)
+                                .opacity(focusManager.isAnyTextFieldFocused ? 0.5 : 1.0)
+                                .onTapGesture {
+                                    if !focusManager.isAnyTextFieldFocused {
+                                        moveExercise(from: index, direction: .down)
+                                    }
+                                }
+                        }
                     }
+                }
+
+                // Display notes if they exist
+                if let notes = workoutController.workoutDetails[index].notes, !notes.isEmpty {
+                    HStack(alignment: .top, spacing: 6) {
+                        Image(systemName: "note.text")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                        Text(notes)
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .padding(.top, 4)
                 }
             }) {
                 if !workoutController.workoutDetails[index].sets.isEmpty {
@@ -233,11 +278,9 @@ struct ActiveWorkoutView: View {
                     .environmentObject(workoutController)
                     .listRowInsets(EdgeInsets())
                 }
-                .onDelete { offsets in
-                    if editMode == .active {
-                        workoutController.workoutDetails[index].sets.remove(atOffsets: offsets)
-                    }
-                }
+                .onDelete(perform: editMode == .active ? { offsets in
+                    workoutController.workoutDetails[index].sets.remove(atOffsets: offsets)
+                } : nil)
 
                 if viewModel.workoutStarted && editMode == .active {
                     Button("Add Set") {

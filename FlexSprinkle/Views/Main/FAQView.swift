@@ -53,7 +53,13 @@ struct FAQView: View {
 
                     FAQItem(
                         question: "Can I modify a workout while it's in progress?",
-                        answer: "Yes! During an active workout, you can add or remove sets, adjust weights, reps, or times. After completing the workout, you'll be asked if you want to update the original workout template with your changes.",
+                        answer: "Yes! During an active workout, tap the pencil icon to enter edit mode. You can then:\n\n• Add new exercises\n• Add or remove sets\n• Rearrange exercises with up/down arrows\n• Adjust weights, reps, or times\n\nAfter completing the workout, you can preview your changes before deciding whether to update the original workout template.",
+                        expandedQuestion: $expandedQuestion
+                    )
+
+                    FAQItem(
+                        question: "What happens when I finish a workout with changes?",
+                        answer: "If you made changes during your workout, you'll see a preview showing exactly what changed (exercises added/removed, sets modified, etc.). You can then choose to:\n\n• Update Workout - Save changes to your template\n• Keep Original - Save the workout history but don't update the template\n\nThis lets you adapt workouts on the fly without permanently changing your template if you don't want to.",
                         expandedQuestion: $expandedQuestion
                     )
 
@@ -80,7 +86,19 @@ struct FAQView: View {
 
                     FAQItem(
                         question: "How do I add or remove sets?",
-                        answer: "When creating or editing a workout, tap 'Add Set' to add more sets to an exercise. To remove a set, swipe left on it and tap delete.",
+                        answer: "When creating or editing a workout, tap 'Add Set' to add more sets to an exercise. During an active workout, you need to enter edit mode first (tap the pencil icon). New sets automatically copy the values from your previous set for convenience.\n\nTo remove a set, swipe left on it and tap delete. In active workouts, sets can only be deleted when in edit mode.",
+                        expandedQuestion: $expandedQuestion
+                    )
+
+                    FAQItem(
+                        question: "Can I add notes to exercises?",
+                        answer: "Yes! Tap the notebook icon next to any exercise name to add notes. You can use notes to record form cues, personal records, or any reminders. Notes appear below the exercise title and are saved with your workout template.",
+                        expandedQuestion: $expandedQuestion
+                    )
+
+                    FAQItem(
+                        question: "Do sets auto-complete?",
+                        answer: "Yes! When you're tracking an active workout, sets will automatically mark as complete when you enter values in both required fields (e.g., reps AND weight). You can also manually check off sets using the slider.",
                         expandedQuestion: $expandedQuestion
                     )
 

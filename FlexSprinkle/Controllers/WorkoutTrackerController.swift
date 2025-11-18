@@ -89,7 +89,8 @@ class WorkoutTrackerController: ObservableObject {
                     orderIndex: Int32(detail.orderIndex),
                     sets: detail.sets,
                     exerciseMeasurement: detail.exerciseMeasurement,
-                    exerciseQuantifier: detail.exerciseQuantifier
+                    exerciseQuantifier: detail.exerciseQuantifier,
+                    notes: detail.notes
                 )
             }
         }
@@ -210,6 +211,7 @@ class WorkoutTrackerController: ObservableObject {
                     id: detail.id,
                     exerciseId: detail.exerciseId,
                     exerciseName: exerciseName,
+                    notes: detail.notes,
                     orderIndex: detail.orderIndex,
                     sets: setInputs,
                     exerciseQuantifier: exerciseQuantifier,

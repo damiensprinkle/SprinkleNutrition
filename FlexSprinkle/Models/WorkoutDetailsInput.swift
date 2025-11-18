@@ -11,6 +11,7 @@ struct WorkoutDetailInput: Equatable {
     var id: UUID?
     var exerciseId: UUID?
     var exerciseName: String = ""
+    var notes: String? = nil
     var orderIndex: Int32 = 0
     var sets: [SetInput] = []
     var exerciseQuantifier: String = ""

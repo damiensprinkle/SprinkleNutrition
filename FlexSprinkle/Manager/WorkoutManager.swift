@@ -71,7 +71,7 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
     
     // MARK: Core Data Operations
     
-    func addWorkoutDetail(id: UUID, workoutTitle: String, exerciseName: String, color: String , orderIndex: Int32, sets: [SetInput], exerciseMeasurement: String, exerciseQuantifier: String) {
+    func addWorkoutDetail(id: UUID, workoutTitle: String, exerciseName: String, color: String , orderIndex: Int32, sets: [SetInput], exerciseMeasurement: String, exerciseQuantifier: String, notes: String? = nil) {
         guard let context = self.context else { return }
 
         let workout = findOrCreateWorkout(withTitle: workoutTitle, color: color)
@@ -84,6 +84,7 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
         newExerciseDetail.orderIndex = orderIndex
         newExerciseDetail.exerciseQuantifier = exerciseQuantifier
         newExerciseDetail.exerciseMeasurement = exerciseMeasurement
+        newExerciseDetail.notes = notes
         print("\(exerciseName):  \(orderIndex)")
         // Add sets to the exercise detail
         for setInput in sets {
@@ -579,6 +580,7 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
             detail.orderIndex = inputDetail.orderIndex
             detail.exerciseQuantifier = inputDetail.exerciseQuantifier
             detail.exerciseMeasurement = inputDetail.exerciseMeasurement
+            detail.notes = inputDetail.notes
             updateOrAddSets(forDetail: detail, withSetsInput: inputDetail.sets, inContext: context)
         }
 

@@ -16,6 +16,7 @@
 		081DD5982ECA1A7900B4074D /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081DD5972ECA1A7900B4074D /* DashboardView.swift */; };
 		081DD59A2ECA1C9400B4074D /* PrivacyPolicyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081DD5992ECA1C9400B4074D /* PrivacyPolicyView.swift */; };
 		081DD59C2ECA9D3D00B4074D /* FAQView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081DD59B2ECA9D3D00B4074D /* FAQView.swift */; };
+		081DD59E2ECD167400B4074D /* ExerciseNotesDialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081DD59D2ECD167400B4074D /* ExerciseNotesDialogView.swift */; };
 		081F87E62B83A7CD00BBBDF2 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87E52B83A7CD00BBBDF2 /* UserManager.swift */; };
 		081F87EC2B83AC0200BBBDF2 /* UserDetailsFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87EB2B83AC0100BBBDF2 /* UserDetailsFormView.swift */; };
 		081F87F22B87F6ED00BBBDF2 /* CheckboxStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87F12B87F6ED00BBBDF2 /* CheckboxStyle.swift */; };
@@ -118,6 +119,7 @@
 		081DD5972ECA1A7900B4074D /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		081DD5992ECA1C9400B4074D /* PrivacyPolicyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyView.swift; sourceTree = "<group>"; };
 		081DD59B2ECA9D3D00B4074D /* FAQView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQView.swift; sourceTree = "<group>"; };
+		081DD59D2ECD167400B4074D /* ExerciseNotesDialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseNotesDialogView.swift; sourceTree = "<group>"; };
 		081F87E52B83A7CD00BBBDF2 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		081F87EB2B83AC0100BBBDF2 /* UserDetailsFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsFormView.swift; sourceTree = "<group>"; };
 		081F87F12B87F6ED00BBBDF2 /* CheckboxStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxStyle.swift; sourceTree = "<group>"; };
@@ -315,6 +317,7 @@
 		08B3CF7C2B7C07C0002F5C92 /* ModifyWorkout */ = {
 			isa = PBXGroup;
 			children = (
+				081DD59D2ECD167400B4074D /* ExerciseNotesDialogView.swift */,
 				08B3CF7A2B7BDD0C002F5C92 /* AddExerciseDialog.swift */,
 				08B7902A2B7090870002DA68 /* AddWorkoutView.swift */,
 				08B3D0092B826C59002F5C92 /* RenameExerciseDialogView.swift */,
@@ -623,6 +626,7 @@
 				08B3D00A2B826C59002F5C92 /* RenameExerciseDialogView.swift in Sources */,
 				087111412B7405990054E315 /* WorkoutDetailsInput.swift in Sources */,
 				087111722B77B3120054E315 /* WorkoutOverviewView.swift in Sources */,
+				081DD59E2ECD167400B4074D /* ExerciseNotesDialogView.swift in Sources */,
 				08B78FF22B6DBA370002DA68 /* HomeView.swift in Sources */,
 				087111AD2B77E9EC0054E315 /* CustomTabView.swift in Sources */,
 				081DD58B2EC511D000B4074D /* ImportWorkoutPreviewView.swift in Sources */,

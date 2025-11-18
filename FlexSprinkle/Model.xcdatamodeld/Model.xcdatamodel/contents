@@ -6,6 +6,7 @@
         <attribute name="exerciseName" attributeType="String" defaultValueString="Bench Press"/>
         <attribute name="exerciseQuantifier" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="notes" optional="YES" attributeType="String"/>
         <attribute name="orderIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="history" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutHistory" inverseName="detailsTemp" inverseEntity="WorkoutHistory"/>
         <relationship name="sessions" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutSession" inverseName="detailsTemp" inverseEntity="WorkoutSession"/>
@@ -21,6 +22,7 @@
         <attribute name="exerciseName" attributeType="String" defaultValueString="Bench Press"/>
         <attribute name="exerciseQuantifier" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="notes" optional="YES" attributeType="String"/>
         <attribute name="orderIndex" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="history" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutHistory" inverseName="details" inverseEntity="WorkoutHistory"/>
         <relationship name="sessions" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WorkoutSession" inverseName="workoutDetails" inverseEntity="WorkoutSession"/>

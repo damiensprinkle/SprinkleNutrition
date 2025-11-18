@@ -22,6 +22,7 @@ extension WorkoutDetail {
     @NSManaged public var id: UUID?
     @NSManaged public var orderIndex: Int32
     @NSManaged public var exerciseMeasurement: String?
+    @NSManaged public var notes: String?
     @NSManaged public var history: WorkoutHistory?
     @NSManaged public var sessions: WorkoutSession?
     @NSManaged public var sets: NSSet?

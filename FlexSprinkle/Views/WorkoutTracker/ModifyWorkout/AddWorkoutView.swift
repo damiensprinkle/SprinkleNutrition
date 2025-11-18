@@ -22,10 +22,11 @@ struct AddWorkoutView: View {
     @State private var alertMessage: String = ""
     @State private var indexToDelete: Int? = nil
     @State private var selectedExerciseIndexForRenaming: Int?
+    @State private var selectedExerciseIndexForNotes: Int?
     @State private var activeAlert: ActiveAlert = .error
     @State private var workoutSaveError: WorkoutSaveError = .emptyTitle
     @State private var initialWorkoutDetails: [WorkoutDetailInput] = []
-    
+
     private let colorManager = ColorManager()
     @State private var showingAddExerciseDialog = false
     @EnvironmentObject var appViewModel: AppViewModel
@@ -84,6 +85,17 @@ struct AddWorkoutView: View {
                         onRename: { newName in
                             workoutController.renameExercise(at: selectedIndex, to: newName)
                         }
+                    )
+                    .transition(.scale)
+                }
+
+                if let selectedIndex = selectedExerciseIndexForNotes, selectedIndex < $workoutController.workoutDetails.count {
+                    ExerciseNotesDialogView(
+                        isPresented: .init(
+                            get: { self.selectedExerciseIndexForNotes != nil },
+                            set: { _ in self.selectedExerciseIndexForNotes = nil }
+                        ),
+                        exerciseNotes: $workoutController.workoutDetails[selectedIndex].notes
                     )
                     .transition(.scale)
                 }
@@ -161,6 +173,7 @@ struct AddWorkoutView: View {
                 Section(
                     header: ExerciseHeaderView(
                         exerciseName: workoutController.workoutDetails[index].exerciseName,
+                        hasNotes: workoutController.workoutDetails[index].notes != nil && !workoutController.workoutDetails[index].notes!.isEmpty,
                         index: index,
                         workoutCount: workoutController.workoutDetails.count,
                         isKeyboardActive: focusManager.isAnyTextFieldFocused,
@@ -179,6 +192,11 @@ struct AddWorkoutView: View {
                         renameAction: {
                             withAnimation(.easeOut(duration: 0.2)) {
                                 self.selectedExerciseIndexForRenaming = index
+                            }
+                        },
+                        notesAction: {
+                            withAnimation(.easeOut(duration: 0.2)) {
+                                self.selectedExerciseIndexForNotes = index
                             }
                         }
                     )
@@ -233,6 +251,7 @@ struct AddWorkoutView: View {
     
     struct ExerciseHeaderView: View {
         let exerciseName: String
+        let hasNotes: Bool
         let index: Int
         let workoutCount: Int
         let isKeyboardActive: Bool
@@ -240,11 +259,19 @@ struct AddWorkoutView: View {
         var moveDownAction: (() -> Void)?
         var deleteAction: (() -> Void)?
         var renameAction: (() -> Void)?
+        var notesAction: (() -> Void)?
 
         var body: some View {
             HStack {
                 Text(exerciseName).font(.title2)
                 Spacer()
+
+                // Notes icon
+                Image(systemName: hasNotes ? "note.text.badge.plus" : "note.text")
+                    .foregroundColor(hasNotes ? .orange : .gray)
+                    .onTapGesture {
+                        notesAction?()
+                    }
 
                 // Move up - disabled when keyboard is active
                 if index > 0 {

@@ -21,7 +21,7 @@ struct FAQView: View {
                             .font(.title2)
                             .fontWeight(.bold)
 
-                        Text("Learn how to use FlexSprinkle")
+                        Text("Learn how to use Soleus")
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                     }
@@ -110,13 +110,13 @@ struct FAQView: View {
 
                     FAQItem(
                         question: "Is my data synced to the cloud?",
-                        answer: "No. All your data stays on your device. FlexSprinkle doesn't use any cloud services, which means your workout data is completely private and under your control.",
+                        answer: "No. All your data stays on your device. Soleus doesn't use any cloud services, which means your workout data is completely private and under your control.",
                         expandedQuestion: $expandedQuestion
                     )
 
                     FAQItem(
                         question: "Can I export my workouts?",
-                        answer: "Yes! Long press on any workout card and select 'Share'. You can share the workout file with others or save it as a backup. Recipients can import the workout into their FlexSprinkle app.",
+                        answer: "Yes! Long press on any workout card and select 'Share'. You can share the workout file with others or save it as a backup. Recipients can import the workout into their Soleus app.",
                         expandedQuestion: $expandedQuestion
                     )
 
@@ -144,7 +144,7 @@ struct FAQView: View {
                     // Video Tutorials Section
                     SectionHeader(title: "Video Tutorials")
 
-                    Text("Coming soon! Video tutorials will be added here to help you get the most out of FlexSprinkle.")
+                    Text("Coming soon! Video tutorials will be added here to help you get the most out of Soleus.")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                         .padding()

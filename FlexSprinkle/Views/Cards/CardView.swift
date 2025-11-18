@@ -24,9 +24,36 @@ struct CardView: View {
     var body: some View {
         let backgroundColor = Color(workout?.color ?? "MyBlue")
 
-        VStack {
-            existingWorkoutCardContent(workout: workout)
+        ZStack {
+            // Base card
+            VStack {
+                existingWorkoutCardContent(workout: workout)
+            }
+            .padding()
+            .background(
+                ZStack {
+                    // Main color background
+                    backgroundColor
+
+                    // Subtle gradient overlay for depth
+                    LinearGradient(
+                        gradient: Gradient(colors: [
+                            Color.white.opacity(0.1),
+                            Color.clear,
+                            Color.black.opacity(0.15)
+                        ]),
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                }
+            )
+            .cornerRadius(18)
         }
+        .aspectRatio(1, contentMode: .fit)
+        .shadow(color: Color.black.opacity(0.15), radius: 8, x: 0, y: 4)
+        .shadow(color: backgroundColor.opacity(0.3), radius: 12, x: 0, y: 6)
+        .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 18))
+        .rotationEffect(.degrees(isEditMode ? shakeOffset : 0))
         .onAppear {
             let manager = workoutController.workoutManager
             workout = manager.fetchWorkoutById(for: workoutId)
@@ -47,13 +74,6 @@ struct CardView: View {
                 startShakeAnimation()
             }
         }
-        .padding()
-        .background(backgroundColor)
-        .cornerRadius(15)
-        .overlay(RoundedRectangle(cornerRadius: 15).stroke(Color.myBlack, lineWidth: 1))
-        .aspectRatio(1, contentMode: .fit)
-        .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 15))
-        .rotationEffect(.degrees(isEditMode ? shakeOffset : 0))
         .if(!isEditMode) { view in
             view.contextMenu { contextMenuContent() }
         }
@@ -88,27 +108,39 @@ struct CardView: View {
     
     @ViewBuilder
     private func existingWorkoutCardContent(workout: Workouts?) -> some View {
-        HStack {
+        VStack(alignment: .leading, spacing: 0) {
+            // Workout name
             Text(workout?.name ?? "Workout")
-                .font(.title)
-                .fontWeight(.bold)
+                .font(.system(size: 22, weight: .bold, design: .rounded))
                 .foregroundColor(.staticWhite)
-                .multilineTextAlignment(.center)
-                .frame(maxWidth: .infinity)
-                .shadow(color: Color.myWhite, radius: 0.4)
+                .multilineTextAlignment(.leading)
+                .lineLimit(3)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .shadow(color: Color.black.opacity(0.3), radius: 2, x: 0, y: 1)
+
             Spacer()
+
+            // Play button
+            HStack {
+                Spacer()
+                Button(action: {
+                    if let activeWorkoutId = workoutController.activeWorkoutId, activeWorkoutId != workoutId {
+                        alertTitle = "You must complete your current session before starting a new one"
+                        showAlert = true
+                    } else {
+                        appViewModel.navigateTo(.workoutActiveView(workoutId))
+                    }
+                }) {
+                    playButtonContent()
+                }
+            }
         }
-        
-        Spacer()
-        Button(action: {
-            if let activeWorkoutId = workoutController.activeWorkoutId, activeWorkoutId != workoutId {
-                alertTitle = "You must complete your current session before starting a new one"
-                showAlert = true
-            } else {
-                appViewModel.navigateTo(.workoutActiveView(workoutId))
-            }})
-        {
-            if(workoutController.hasActiveSession && workoutController.activeWorkoutId == workoutId) {
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    @ViewBuilder
+    private func playButtonContent() -> some View {
+        if(workoutController.hasActiveSession && workoutController.activeWorkoutId == workoutId) {
                 ZStack {
                     // Outer glow ring
                     Circle()
@@ -149,11 +181,18 @@ struct CardView: View {
                         rotation = true
                     }
                 }
-            }
-            else{
-                Image(systemName: "play.circle")
-                    .font(.system(size: 40))
+        } else {
+            ZStack {
+                // Background circle
+                Circle()
+                    .fill(Color.white.opacity(0.2))
+                    .frame(width: 56, height: 56)
+
+                // Play icon
+                Image(systemName: "play.circle.fill")
+                    .font(.system(size: 48))
                     .foregroundColor(.staticWhite)
+                    .shadow(color: Color.black.opacity(0.3), radius: 4, x: 0, y: 2)
             }
         }
     }

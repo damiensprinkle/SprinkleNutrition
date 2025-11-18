@@ -161,14 +161,14 @@
 		08B3CFF12B810FB7002F5C92 /* WorkoutHistoryCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutHistoryCardView.swift; sourceTree = "<group>"; };
 		08B3D0092B826C59002F5C92 /* RenameExerciseDialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenameExerciseDialogView.swift; sourceTree = "<group>"; };
 		08B3D00D2B82AC7C002F5C92 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
-		08B78FEC2B6DBA370002DA68 /* FlexSprinkle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlexSprinkle.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		08B78FEC2B6DBA370002DA68 /* Soleus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Soleus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08B78FEF2B6DBA370002DA68 /* FlexSprinkleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexSprinkleApp.swift; sourceTree = "<group>"; };
 		08B78FF12B6DBA370002DA68 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		08B78FF32B6DBA390002DA68 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		08B78FF52B6DBA390002DA68 /* FlexSprinkle.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlexSprinkle.entitlements; sourceTree = "<group>"; };
 		08B78FF72B6DBA390002DA68 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		08B78FFD2B6DBA390002DA68 /* FlexSprinkleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlexSprinkleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		08B790072B6DBA390002DA68 /* FlexSprinkleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlexSprinkleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		08B78FFD2B6DBA390002DA68 /* SoleusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoleusTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		08B790072B6DBA390002DA68 /* SoleusUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoleusUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		08B7901A2B6DC28F0002DA68 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		08B7901D2B6E8F8D0002DA68 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		08B7901F2B6E91010002DA68 /* WorkoutTrackerMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTrackerMainView.swift; sourceTree = "<group>"; };
@@ -357,9 +357,9 @@
 		08B78FED2B6DBA370002DA68 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				08B78FEC2B6DBA370002DA68 /* FlexSprinkle.app */,
-				08B78FFD2B6DBA390002DA68 /* FlexSprinkleTests.xctest */,
-				08B790072B6DBA390002DA68 /* FlexSprinkleUITests.xctest */,
+				08B78FEC2B6DBA370002DA68 /* Soleus.app */,
+				08B78FFD2B6DBA390002DA68 /* SoleusTests.xctest */,
+				08B790072B6DBA390002DA68 /* SoleusUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -460,9 +460,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		08B78FEB2B6DBA370002DA68 /* FlexSprinkle */ = {
+		08B78FEB2B6DBA370002DA68 /* Soleus */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 08B790112B6DBA390002DA68 /* Build configuration list for PBXNativeTarget "FlexSprinkle" */;
+			buildConfigurationList = 08B790112B6DBA390002DA68 /* Build configuration list for PBXNativeTarget "Soleus" */;
 			buildPhases = (
 				08B78FE82B6DBA370002DA68 /* Sources */,
 				08B78FE92B6DBA370002DA68 /* Frameworks */,
@@ -476,17 +476,17 @@
 				085466322CB618AA00136FBC /* images */,
 				08EF98262CEF89A700AE8196 /* WorkoutUtilities */,
 			);
-			name = FlexSprinkle;
+			name = Soleus;
 			packageProductDependencies = (
 				08B3CF502B7BC611002F5C92 /* ConfettiSwiftUI */,
 			);
 			productName = FlexSprinkle;
-			productReference = 08B78FEC2B6DBA370002DA68 /* FlexSprinkle.app */;
+			productReference = 08B78FEC2B6DBA370002DA68 /* Soleus.app */;
 			productType = "com.apple.product-type.application";
 		};
-		08B78FFC2B6DBA390002DA68 /* FlexSprinkleTests */ = {
+		08B78FFC2B6DBA390002DA68 /* SoleusTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 08B790142B6DBA390002DA68 /* Build configuration list for PBXNativeTarget "FlexSprinkleTests" */;
+			buildConfigurationList = 08B790142B6DBA390002DA68 /* Build configuration list for PBXNativeTarget "SoleusTests" */;
 			buildPhases = (
 				08B78FF92B6DBA390002DA68 /* Sources */,
 				08B78FFA2B6DBA390002DA68 /* Frameworks */,
@@ -497,14 +497,14 @@
 			dependencies = (
 				08B78FFF2B6DBA390002DA68 /* PBXTargetDependency */,
 			);
-			name = FlexSprinkleTests;
+			name = SoleusTests;
 			productName = FlexSprinkleTests;
-			productReference = 08B78FFD2B6DBA390002DA68 /* FlexSprinkleTests.xctest */;
+			productReference = 08B78FFD2B6DBA390002DA68 /* SoleusTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		08B790062B6DBA390002DA68 /* FlexSprinkleUITests */ = {
+		08B790062B6DBA390002DA68 /* SoleusUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 08B790172B6DBA390002DA68 /* Build configuration list for PBXNativeTarget "FlexSprinkleUITests" */;
+			buildConfigurationList = 08B790172B6DBA390002DA68 /* Build configuration list for PBXNativeTarget "SoleusUITests" */;
 			buildPhases = (
 				08B790032B6DBA390002DA68 /* Sources */,
 				08B790042B6DBA390002DA68 /* Frameworks */,
@@ -515,9 +515,9 @@
 			dependencies = (
 				08B790092B6DBA390002DA68 /* PBXTargetDependency */,
 			);
-			name = FlexSprinkleUITests;
+			name = SoleusUITests;
 			productName = FlexSprinkleUITests;
-			productReference = 08B790072B6DBA390002DA68 /* FlexSprinkleUITests.xctest */;
+			productReference = 08B790072B6DBA390002DA68 /* SoleusUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -543,7 +543,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 08B78FE72B6DBA370002DA68 /* Build configuration list for PBXProject "FlexSprinkle" */;
+			buildConfigurationList = 08B78FE72B6DBA370002DA68 /* Build configuration list for PBXProject "Soleus" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -559,9 +559,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				08B78FEB2B6DBA370002DA68 /* FlexSprinkle */,
-				08B78FFC2B6DBA390002DA68 /* FlexSprinkleTests */,
-				08B790062B6DBA390002DA68 /* FlexSprinkleUITests */,
+				08B78FEB2B6DBA370002DA68 /* Soleus */,
+				08B78FFC2B6DBA390002DA68 /* SoleusTests */,
+				08B790062B6DBA390002DA68 /* SoleusUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -674,18 +674,18 @@
 /* Begin PBXTargetDependency section */
 		08B78FFF2B6DBA390002DA68 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 08B78FEB2B6DBA370002DA68 /* FlexSprinkle */;
+			target = 08B78FEB2B6DBA370002DA68 /* Soleus */;
 			targetProxy = 08B78FFE2B6DBA390002DA68 /* PBXContainerItemProxy */;
 		};
 		08B790092B6DBA390002DA68 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 08B78FEB2B6DBA370002DA68 /* FlexSprinkle */;
+			target = 08B78FEB2B6DBA370002DA68 /* Soleus */;
 			targetProxy = 08B790082B6DBA390002DA68 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		08B7900F2B6DBA390002DA68 /* Debug configuration for PBXProject "FlexSprinkle" */ = {
+		08B7900F2B6DBA390002DA68 /* Debug configuration for PBXProject "Soleus" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -749,7 +749,7 @@
 			};
 			name = Debug;
 		};
-		08B790102B6DBA390002DA68 /* Release configuration for PBXProject "FlexSprinkle" */ = {
+		08B790102B6DBA390002DA68 /* Release configuration for PBXProject "Soleus" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -805,7 +805,7 @@
 			};
 			name = Release;
 		};
-		08B790122B6DBA390002DA68 /* Debug configuration for PBXNativeTarget "FlexSprinkle" */ = {
+		08B790122B6DBA390002DA68 /* Debug configuration for PBXNativeTarget "Soleus" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -821,7 +821,9 @@
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FlexSprinkle/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Soleus;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -838,7 +840,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.damiensprinkle.FlexSprinkle;
+				PRODUCT_BUNDLE_IDENTIFIER = com.damiensprinkle.Soleus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -849,7 +851,7 @@
 			};
 			name = Debug;
 		};
-		08B790132B6DBA390002DA68 /* Release configuration for PBXNativeTarget "FlexSprinkle" */ = {
+		08B790132B6DBA390002DA68 /* Release configuration for PBXNativeTarget "Soleus" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -864,7 +866,9 @@
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = FlexSprinkle/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Soleus;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -892,7 +896,7 @@
 			};
 			name = Release;
 		};
-		08B790152B6DBA390002DA68 /* Debug configuration for PBXNativeTarget "FlexSprinkleTests" */ = {
+		08B790152B6DBA390002DA68 /* Debug configuration for PBXNativeTarget "SoleusTests" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -912,11 +916,11 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FlexSprinkle.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/FlexSprinkle";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Soleus.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Soleus";
 			};
 			name = Debug;
 		};
-		08B790162B6DBA390002DA68 /* Release configuration for PBXNativeTarget "FlexSprinkleTests" */ = {
+		08B790162B6DBA390002DA68 /* Release configuration for PBXNativeTarget "SoleusTests" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -935,11 +939,11 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FlexSprinkle.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/FlexSprinkle";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Soleus.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Soleus";
 			};
 			name = Release;
 		};
-		08B790182B6DBA390002DA68 /* Debug configuration for PBXNativeTarget "FlexSprinkleUITests" */ = {
+		08B790182B6DBA390002DA68 /* Debug configuration for PBXNativeTarget "SoleusUITests" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -962,7 +966,7 @@
 			};
 			name = Debug;
 		};
-		08B790192B6DBA390002DA68 /* Release configuration for PBXNativeTarget "FlexSprinkleUITests" */ = {
+		08B790192B6DBA390002DA68 /* Release configuration for PBXNativeTarget "SoleusUITests" */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -987,35 +991,35 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		08B78FE72B6DBA370002DA68 /* Build configuration list for PBXProject "FlexSprinkle" */ = {
+		08B78FE72B6DBA370002DA68 /* Build configuration list for PBXProject "Soleus" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				08B7900F2B6DBA390002DA68 /* Debug configuration for PBXProject "FlexSprinkle" */,
-				08B790102B6DBA390002DA68 /* Release configuration for PBXProject "FlexSprinkle" */,
+				08B7900F2B6DBA390002DA68 /* Debug configuration for PBXProject "Soleus" */,
+				08B790102B6DBA390002DA68 /* Release configuration for PBXProject "Soleus" */,
 			);
 			defaultConfigurationName = Release;
 		};
-		08B790112B6DBA390002DA68 /* Build configuration list for PBXNativeTarget "FlexSprinkle" */ = {
+		08B790112B6DBA390002DA68 /* Build configuration list for PBXNativeTarget "Soleus" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				08B790122B6DBA390002DA68 /* Debug configuration for PBXNativeTarget "FlexSprinkle" */,
-				08B790132B6DBA390002DA68 /* Release configuration for PBXNativeTarget "FlexSprinkle" */,
+				08B790122B6DBA390002DA68 /* Debug configuration for PBXNativeTarget "Soleus" */,
+				08B790132B6DBA390002DA68 /* Release configuration for PBXNativeTarget "Soleus" */,
 			);
 			defaultConfigurationName = Release;
 		};
-		08B790142B6DBA390002DA68 /* Build configuration list for PBXNativeTarget "FlexSprinkleTests" */ = {
+		08B790142B6DBA390002DA68 /* Build configuration list for PBXNativeTarget "SoleusTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				08B790152B6DBA390002DA68 /* Debug configuration for PBXNativeTarget "FlexSprinkleTests" */,
-				08B790162B6DBA390002DA68 /* Release configuration for PBXNativeTarget "FlexSprinkleTests" */,
+				08B790152B6DBA390002DA68 /* Debug configuration for PBXNativeTarget "SoleusTests" */,
+				08B790162B6DBA390002DA68 /* Release configuration for PBXNativeTarget "SoleusTests" */,
 			);
 			defaultConfigurationName = Release;
 		};
-		08B790172B6DBA390002DA68 /* Build configuration list for PBXNativeTarget "FlexSprinkleUITests" */ = {
+		08B790172B6DBA390002DA68 /* Build configuration list for PBXNativeTarget "SoleusUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				08B790182B6DBA390002DA68 /* Debug configuration for PBXNativeTarget "FlexSprinkleUITests" */,
-				08B790192B6DBA390002DA68 /* Release configuration for PBXNativeTarget "FlexSprinkleUITests" */,
+				08B790182B6DBA390002DA68 /* Debug configuration for PBXNativeTarget "SoleusUITests" */,
+				08B790192B6DBA390002DA68 /* Release configuration for PBXNativeTarget "SoleusUITests" */,
 			);
 			defaultConfigurationName = Release;
 		};

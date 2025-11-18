@@ -32,7 +32,7 @@ struct PrivacyPolicyView: View {
                         icon: "lock.shield.fill",
                         iconColor: .green,
                         title: "No Data Collection",
-                        description: "FlexSprinkle doesn't collect, store, or transmit any of your personal information. All your workout data stays on your device."
+                        description: "Soleus doesn't collect, store, or transmit any of your personal information. All your workout data stays on your device."
                     )
 
                     // No Tracking
@@ -48,7 +48,7 @@ struct PrivacyPolicyView: View {
                         icon: "rectangle.slash.fill",
                         iconColor: .orange,
                         title: "No Advertisements",
-                        description: "FlexSprinkle is completely ad-free. No third-party advertisers, no analytics services, no interruptions."
+                        description: "Soleus is completely ad-free. No third-party advertisers, no analytics services, no interruptions."
                     )
 
                     // Offline First
@@ -75,7 +75,7 @@ struct PrivacyPolicyView: View {
                             .font(.headline)
                             .foregroundColor(.primary)
 
-                        Text("We built FlexSprinkle to be a simple, private workout tracker. No accounts, no sign-ups, no cloud syncing. Just you and your workouts.")
+                        Text("We built Soleus to be a simple, private workout tracker. No accounts, no sign-ups, no cloud syncing. Just you and your workouts.")
                             .font(.subheadline)
                             .foregroundColor(.secondary)
                             .multilineTextAlignment(.center)

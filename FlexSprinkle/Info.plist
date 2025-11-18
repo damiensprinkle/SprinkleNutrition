@@ -6,14 +6,14 @@
 	<array>
 		<dict>
 			<key>CFBundleTypeName</key>
-			<string>Flex Workout</string>
+			<string>Soleus Workout</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>LSHandlerRank</key>
 			<string>Default</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>com.flex.workout</string>
+				<string>com.damiensprinkle.Soleus</string>
 			</array>
 		</dict>
 	</array>
@@ -38,7 +38,5 @@
 			</dict>
 		</dict>
 	</array>
-	<key>LSSupportsOpeningDocumentsInPlace</key>
-	<false/>
 </dict>
 </plist>

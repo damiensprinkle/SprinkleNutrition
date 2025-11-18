@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "08B78FEB2B6DBA370002DA68"
-               BuildableName = "FlexSprinkle.app"
-               BlueprintName = "FlexSprinkle"
-               ReferencedContainer = "container:FlexSprinkle.xcodeproj">
+               BuildableName = "Soleus.app"
+               BlueprintName = "Soleus"
+               ReferencedContainer = "container:Soleus.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,9 +35,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "08B78FFC2B6DBA390002DA68"
-               BuildableName = "FlexSprinkleTests.xctest"
-               BlueprintName = "FlexSprinkleTests"
-               ReferencedContainer = "container:FlexSprinkle.xcodeproj">
+               BuildableName = "SoleusTests.xctest"
+               BlueprintName = "SoleusTests"
+               ReferencedContainer = "container:Soleus.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -46,9 +46,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "08B790062B6DBA390002DA68"
-               BuildableName = "FlexSprinkleUITests.xctest"
-               BlueprintName = "FlexSprinkleUITests"
-               ReferencedContainer = "container:FlexSprinkle.xcodeproj">
+               BuildableName = "SoleusUITests.xctest"
+               BlueprintName = "SoleusUITests"
+               ReferencedContainer = "container:Soleus.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -68,9 +68,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "08B78FEB2B6DBA370002DA68"
-            BuildableName = "FlexSprinkle.app"
-            BlueprintName = "FlexSprinkle"
-            ReferencedContainer = "container:FlexSprinkle.xcodeproj">
+            BuildableName = "Soleus.app"
+            BlueprintName = "Soleus"
+            ReferencedContainer = "container:Soleus.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -85,9 +85,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "08B78FEB2B6DBA370002DA68"
-            BuildableName = "FlexSprinkle.app"
-            BlueprintName = "FlexSprinkle"
-            ReferencedContainer = "container:FlexSprinkle.xcodeproj">
+            BuildableName = "Soleus.app"
+            BlueprintName = "Soleus"
+            ReferencedContainer = "container:Soleus.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

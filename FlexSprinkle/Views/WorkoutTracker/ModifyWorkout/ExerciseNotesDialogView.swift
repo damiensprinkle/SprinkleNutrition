@@ -10,12 +10,14 @@ import SwiftUI
 struct ExerciseNotesDialogView: View {
     @Binding var isPresented: Bool
     @Binding var exerciseNotes: String?
+    var onSave: ((String?) -> Void)?
 
     @State private var temporaryNotes: String
 
-    init(isPresented: Binding<Bool>, exerciseNotes: Binding<String?>) {
+    init(isPresented: Binding<Bool>, exerciseNotes: Binding<String?>, onSave: ((String?) -> Void)? = nil) {
         self._isPresented = isPresented
         self._exerciseNotes = exerciseNotes
+        self.onSave = onSave
         self._temporaryNotes = State(initialValue: exerciseNotes.wrappedValue ?? "")
     }
 
@@ -79,7 +81,9 @@ struct ExerciseNotesDialogView: View {
                 }
 
                 Button(action: {
-                    exerciseNotes = temporaryNotes.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : temporaryNotes
+                    let updatedNotes = temporaryNotes.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : temporaryNotes
+                    exerciseNotes = updatedNotes
+                    onSave?(updatedNotes)
                     isPresented = false
                 }) {
                     Text("Save")

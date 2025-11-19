@@ -156,7 +156,44 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
             errorHandler?.handle(.saveFailed(error))
         }
     }
-    
+
+    func updateExerciseNotesDuringActiveWorkout(workoutId: UUID, exerciseId: UUID, notes: String?) {
+        guard let context = self.context else {
+            errorHandler?.handle(.contextNotAvailable)
+            return
+        }
+
+        // Fetch the Workout entity
+        let workoutRequest: NSFetchRequest<Workouts> = Workouts.fetchRequest()
+        workoutRequest.predicate = NSPredicate(format: "id == %@", workoutId as CVarArg)
+
+        do {
+            guard let workout = try context.fetch(workoutRequest).first else {
+                print("No workout found with ID: \(workoutId)")
+                errorHandler?.handle(.workoutNotFound(workoutId))
+                return
+            }
+
+            if let tempDetails = workout.detailsTemp as? Set<TemporaryWorkoutDetail> {
+                // Find the existing detail for this exercise
+                if let existingDetail = tempDetails.first(where: { $0.exerciseId == exerciseId }) {
+                    context.refresh(existingDetail, mergeChanges: true)
+                    existingDetail.notes = notes
+
+                    if context.hasChanges {
+                        try context.save()
+                        print("Exercise notes updated for exerciseId: \(exerciseId)")
+                    }
+                } else {
+                    print("No temporary workout detail found for exerciseId: \(exerciseId)")
+                }
+            }
+        } catch {
+            print("Failed to update exercise notes: \(error)")
+            errorHandler?.handle(.saveFailed(error))
+        }
+    }
+
     private func updateOrAddSetsForTempDetail(forDetail tempDetail: TemporaryWorkoutDetail, withSetsInput setsInput: [SetInput], inContext context: NSManagedObjectContext) {
         let existingSets = tempDetail.sets as? Set<WorkoutSet> ?? Set()
         

@@ -71,6 +71,13 @@ protocol WorkoutManaging: AnyObject, ObservableObject {
         orderIndex: Int32
     )
 
+    /// Updates exercise notes during an active workout
+    func updateExerciseNotesDuringActiveWorkout(
+        workoutId: UUID,
+        exerciseId: UUID,
+        notes: String?
+    )
+
     /// Loads temporary workout data for an active workout
     func loadTemporaryWorkoutData(for workoutId: UUID) -> [WorkoutDetailInput]
 

@@ -193,7 +193,17 @@ struct ActiveWorkoutView: View {
                                 get: { selectedExerciseIndexForNotes != nil },
                                 set: { if !$0 { selectedExerciseIndexForNotes = nil } }
                             ),
-                            exerciseNotes: $workoutController.workoutDetails[selectedIndex].notes
+                            exerciseNotes: $workoutController.workoutDetails[selectedIndex].notes,
+                            onSave: { updatedNotes in
+                                // Save notes to temporary workout detail during active workout
+                                if let exerciseId = workoutController.workoutDetails[selectedIndex].exerciseId {
+                                    workoutController.workoutManager.updateExerciseNotesDuringActiveWorkout(
+                                        workoutId: workoutId,
+                                        exerciseId: exerciseId,
+                                        notes: updatedNotes
+                                    )
+                                }
+                            }
                         )
                         .padding()
                     }

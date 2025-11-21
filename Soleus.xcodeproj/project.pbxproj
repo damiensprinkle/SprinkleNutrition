@@ -17,8 +17,6 @@
 		081DD59A2ECA1C9400B4074D /* PrivacyPolicyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081DD5992ECA1C9400B4074D /* PrivacyPolicyView.swift */; };
 		081DD59C2ECA9D3D00B4074D /* FAQView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081DD59B2ECA9D3D00B4074D /* FAQView.swift */; };
 		081DD59E2ECD167400B4074D /* ExerciseNotesDialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081DD59D2ECD167400B4074D /* ExerciseNotesDialogView.swift */; };
-		081F87E62B83A7CD00BBBDF2 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87E52B83A7CD00BBBDF2 /* UserManager.swift */; };
-		081F87EC2B83AC0200BBBDF2 /* UserDetailsFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87EB2B83AC0100BBBDF2 /* UserDetailsFormView.swift */; };
 		081F87F22B87F6ED00BBBDF2 /* CheckboxStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87F12B87F6ED00BBBDF2 /* CheckboxStyle.swift */; };
 		0828683F2CE7E13900835C08 /* ExerciseInputHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0828683E2CE7E13500835C08 /* ExerciseInputHelper.swift */; };
 		0847535B2CE3D47D00C6A7F9 /* WorkoutTrackerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0847535A2CE3D47000C6A7F9 /* WorkoutTrackerController.swift */; };
@@ -61,7 +59,7 @@
 		08B3CFF22B810FB7002F5C92 /* WorkoutHistoryCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B3CFF12B810FB7002F5C92 /* WorkoutHistoryCardView.swift */; };
 		08B3D00A2B826C59002F5C92 /* RenameExerciseDialogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B3D0092B826C59002F5C92 /* RenameExerciseDialogView.swift */; };
 		08B3D00E2B82AC7C002F5C92 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08B3D00D2B82AC7C002F5C92 /* Launch Screen.storyboard */; };
-		08B78FF02B6DBA370002DA68 /* FlexSprinkleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B78FEF2B6DBA370002DA68 /* FlexSprinkleApp.swift */; };
+		08B78FF02B6DBA370002DA68 /* SoleusApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B78FEF2B6DBA370002DA68 /* SoleusApp.swift */; };
 		08B78FF22B6DBA370002DA68 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B78FF12B6DBA370002DA68 /* HomeView.swift */; };
 		08B78FF42B6DBA390002DA68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08B78FF32B6DBA390002DA68 /* Assets.xcassets */; };
 		08B78FF82B6DBA390002DA68 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 08B78FF72B6DBA390002DA68 /* Preview Assets.xcassets */; };
@@ -71,8 +69,6 @@
 		08B7902B2B7090870002DA68 /* AddWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B7902A2B7090870002DA68 /* AddWorkoutView.swift */; };
 		08B790312B7138F70002DA68 /* WorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B790302B7138F70002DA68 /* WorkoutManager.swift */; };
 		08C31FFF2B82EA3A002EE8A7 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C31FFE2B82EA3A002EE8A7 /* PersistenceController.swift */; };
-		08C4181C2E4BB9F8004EA360 /* UserInfo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C4181A2E4BB9F8004EA360 /* UserInfo+CoreDataClass.swift */; };
-		08C4181D2E4BB9F8004EA360 /* UserInfo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C4181B2E4BB9F8004EA360 /* UserInfo+CoreDataProperties.swift */; };
 		08EF97E32CEEBC0D00AE8196 /* CustomizeCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF97E22CEEBC0A00AE8196 /* CustomizeCardView.swift */; };
 		08EF97E82CEEC13500AE8196 /* Workouts+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF97E72CEEC13500AE8196 /* Workouts+CoreDataProperties.swift */; };
 		08EF97E92CEEC13500AE8196 /* Workouts+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF97E62CEEC13500AE8196 /* Workouts+CoreDataClass.swift */; };
@@ -120,8 +116,6 @@
 		081DD5992ECA1C9400B4074D /* PrivacyPolicyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyView.swift; sourceTree = "<group>"; };
 		081DD59B2ECA9D3D00B4074D /* FAQView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQView.swift; sourceTree = "<group>"; };
 		081DD59D2ECD167400B4074D /* ExerciseNotesDialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseNotesDialogView.swift; sourceTree = "<group>"; };
-		081F87E52B83A7CD00BBBDF2 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
-		081F87EB2B83AC0100BBBDF2 /* UserDetailsFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsFormView.swift; sourceTree = "<group>"; };
 		081F87F12B87F6ED00BBBDF2 /* CheckboxStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxStyle.swift; sourceTree = "<group>"; };
 		0828683E2CE7E13500835C08 /* ExerciseInputHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseInputHelper.swift; sourceTree = "<group>"; };
 		0847535A2CE3D47000C6A7F9 /* WorkoutTrackerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTrackerController.swift; sourceTree = "<group>"; };
@@ -164,10 +158,10 @@
 		08B3D0092B826C59002F5C92 /* RenameExerciseDialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenameExerciseDialogView.swift; sourceTree = "<group>"; };
 		08B3D00D2B82AC7C002F5C92 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		08B78FEC2B6DBA370002DA68 /* Soleus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Soleus.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		08B78FEF2B6DBA370002DA68 /* FlexSprinkleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexSprinkleApp.swift; sourceTree = "<group>"; };
+		08B78FEF2B6DBA370002DA68 /* SoleusApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoleusApp.swift; sourceTree = "<group>"; };
 		08B78FF12B6DBA370002DA68 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		08B78FF32B6DBA390002DA68 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		08B78FF52B6DBA390002DA68 /* FlexSprinkle.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FlexSprinkle.entitlements; sourceTree = "<group>"; };
+		08B78FF52B6DBA390002DA68 /* Soleus.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Soleus.entitlements; sourceTree = "<group>"; };
 		08B78FF72B6DBA390002DA68 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		08B78FFD2B6DBA390002DA68 /* SoleusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoleusTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		08B790072B6DBA390002DA68 /* SoleusUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoleusUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -177,8 +171,6 @@
 		08B7902A2B7090870002DA68 /* AddWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWorkoutView.swift; sourceTree = "<group>"; };
 		08B790302B7138F70002DA68 /* WorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutManager.swift; sourceTree = "<group>"; };
 		08C31FFE2B82EA3A002EE8A7 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
-		08C4181A2E4BB9F8004EA360 /* UserInfo+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfo+CoreDataClass.swift"; sourceTree = "<group>"; };
-		08C4181B2E4BB9F8004EA360 /* UserInfo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		08EF97E22CEEBC0A00AE8196 /* CustomizeCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeCardView.swift; sourceTree = "<group>"; };
 		08EF97E62CEEC13500AE8196 /* Workouts+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workouts+CoreDataClass.swift"; sourceTree = "<group>"; };
 		08EF97E72CEEC13500AE8196 /* Workouts+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workouts+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -240,7 +232,6 @@
 				08B790302B7138F70002DA68 /* WorkoutManager.swift */,
 				0871113C2B7306C20054E315 /* ColorManager.swift */,
 				08B3CFE62B7E6E40002F5C92 /* FocusManager.swift */,
-				081F87E52B83A7CD00BBBDF2 /* UserManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -260,8 +251,6 @@
 				085466802CDFAD4700136FBC /* WorkoutDetail+CoreDataProperties.swift */,
 				08EF97E62CEEC13500AE8196 /* Workouts+CoreDataClass.swift */,
 				08EF97E72CEEC13500AE8196 /* Workouts+CoreDataProperties.swift */,
-				08C4181A2E4BB9F8004EA360 /* UserInfo+CoreDataClass.swift */,
-				08C4181B2E4BB9F8004EA360 /* UserInfo+CoreDataProperties.swift */,
 			);
 			path = CoreData;
 			sourceTree = "<group>";
@@ -276,7 +265,6 @@
 				087111A92B77CA170054E315 /* WorkoutTrackerContentView.swift */,
 				08B78FF12B6DBA370002DA68 /* HomeView.swift */,
 				087111AC2B77E9EC0054E315 /* CustomTabView.swift */,
-				081F87EB2B83AC0100BBBDF2 /* UserDetailsFormView.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -289,14 +277,14 @@
 			path = Mocks;
 			sourceTree = "<group>";
 		};
-		088B57722EC3A1C00066CC17 /* FlexSprinkleTests */ = {
+		088B57722EC3A1C00066CC17 /* SoleusTests */ = {
 			isa = PBXGroup;
 			children = (
 				088B576F2EC3A1C00066CC17 /* Mocks */,
 				088B57702EC3A1C00066CC17 /* README.md */,
 				088B57712EC3A1C00066CC17 /* WorkoutTrackerControllerTests.swift */,
 			);
-			path = FlexSprinkleTests;
+			path = SoleusTests;
 			sourceTree = "<group>";
 		};
 		088B57792EC3A7030066CC17 /* ViewModels */ = {
@@ -307,11 +295,11 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		088B577C2EC3AAB30066CC17 /* FlexSprinkleUITests */ = {
+		088B577C2EC3AAB30066CC17 /* SoleusUITests */ = {
 			isa = PBXGroup;
 			children = (
 			);
-			path = FlexSprinkleUITests;
+			path = SoleusUITests;
 			sourceTree = "<group>";
 		};
 		08B3CF7C2B7C07C0002F5C92 /* ModifyWorkout */ = {
@@ -348,11 +336,11 @@
 		08B78FE32B6DBA370002DA68 = {
 			isa = PBXGroup;
 			children = (
-				088B577C2EC3AAB30066CC17 /* FlexSprinkleUITests */,
-				088B57722EC3A1C00066CC17 /* FlexSprinkleTests */,
+				088B577C2EC3AAB30066CC17 /* SoleusUITests */,
+				088B57722EC3A1C00066CC17 /* SoleusTests */,
 				085466322CB618AA00136FBC /* images */,
 				08B3D00D2B82AC7C002F5C92 /* Launch Screen.storyboard */,
-				08B78FEE2B6DBA370002DA68 /* FlexSprinkle */,
+				08B78FEE2B6DBA370002DA68 /* Soleus */,
 				08B78FED2B6DBA370002DA68 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -367,7 +355,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		08B78FEE2B6DBA370002DA68 /* FlexSprinkle */ = {
+		08B78FEE2B6DBA370002DA68 /* Soleus */ = {
 			isa = PBXGroup;
 			children = (
 				081DD58F2EC90D7E00B4074D /* achievements.json */,
@@ -379,13 +367,13 @@
 				08B790252B6E948C0002DA68 /* Controllers */,
 				08B790242B6E94840002DA68 /* Models */,
 				08B7901C2B6E8F230002DA68 /* Views */,
-				08B78FEF2B6DBA370002DA68 /* FlexSprinkleApp.swift */,
+				08B78FEF2B6DBA370002DA68 /* SoleusApp.swift */,
 				08B78FF32B6DBA390002DA68 /* Assets.xcassets */,
-				08B78FF52B6DBA390002DA68 /* FlexSprinkle.entitlements */,
+				08B78FF52B6DBA390002DA68 /* Soleus.entitlements */,
 				08B78FF62B6DBA390002DA68 /* Preview Content */,
 				087111382B72AD830054E315 /* Model.xcdatamodeld */,
 			);
-			path = FlexSprinkle;
+			path = Soleus;
 			sourceTree = "<group>";
 		};
 		08B78FF62B6DBA390002DA68 /* Preview Content */ = {
@@ -617,7 +605,6 @@
 				085466832CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataProperties.swift in Sources */,
 				081DD59C2ECA9D3D00B4074D /* FAQView.swift in Sources */,
 				085466842CDFAD4700136FBC /* WorkoutDetail+CoreDataProperties.swift in Sources */,
-				081F87EC2B83AC0200BBBDF2 /* UserDetailsFormView.swift in Sources */,
 				081DD5922EC90F0100B4074D /* AchievementManager.swift in Sources */,
 				08EF97E32CEEBC0D00AE8196 /* CustomizeCardView.swift in Sources */,
 				0871113A2B72AD830054E315 /* Model.xcdatamodeld in Sources */,
@@ -634,15 +621,13 @@
 				08B7901E2B6E8F8D0002DA68 /* SettingsView.swift in Sources */,
 				08B3CFDC2B7D9567002F5C92 /* WorkoutSet+CoreDataClass.swift in Sources */,
 				08B3CFEF2B810DFF002F5C92 /* WorkoutHistory+CoreDataClass.swift in Sources */,
-				08C4181C2E4BB9F8004EA360 /* UserInfo+CoreDataClass.swift in Sources */,
-				08C4181D2E4BB9F8004EA360 /* UserInfo+CoreDataProperties.swift in Sources */,
 				0871113D2B7306C20054E315 /* ColorManager.swift in Sources */,
 				08B790312B7138F70002DA68 /* WorkoutManager.swift in Sources */,
 				08B7901B2B6DC28F0002DA68 /* CardView.swift in Sources */,
 				08B3CF852B7C1D84002F5C92 /* ActiveWorkoutView.swift in Sources */,
 				08B3CFF02B810DFF002F5C92 /* WorkoutHistory+CoreDataProperties.swift in Sources */,
 				087111A62B77C32D0054E315 /* AppViewModel.swift in Sources */,
-				08B78FF02B6DBA370002DA68 /* FlexSprinkleApp.swift in Sources */,
+				08B78FF02B6DBA370002DA68 /* SoleusApp.swift in Sources */,
 				087111A82B77C6DF0054E315 /* WorkoutInfo.swift in Sources */,
 				08B790202B6E91010002DA68 /* WorkoutTrackerMainView.swift in Sources */,
 				08B3CFDB2B7D9567002F5C92 /* WorkoutSession+CoreDataProperties.swift in Sources */,
@@ -655,7 +640,6 @@
 				081DD5942EC90F1400B4074D /* Achievement.swift in Sources */,
 				081F87F22B87F6ED00BBBDF2 /* CheckboxStyle.swift in Sources */,
 				08FC75802CDFCA86001E2E5B /* ExerciseRowActive.swift in Sources */,
-				081F87E62B83A7CD00BBBDF2 /* UserManager.swift in Sources */,
 				0847536F2CE5205D00C6A7F9 /* WorkoutSaveError.swift in Sources */,
 				081DD5962EC90F2700B4074D /* AchievementsView.swift in Sources */,
 				0847535B2CE3D47D00C6A7F9 /* WorkoutTrackerController.swift in Sources */,
@@ -814,17 +798,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = FlexSprinkle/FlexSprinkle.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Soleus/Soleus.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_ASSET_PATHS = "\"FlexSprinkle/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Soleus/Preview Content\"";
 				DEVELOPMENT_TEAM = P8P8MB2RC3;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = FlexSprinkle/Info.plist;
+				INFOPLIST_FILE = Soleus/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Soleus;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;
@@ -860,16 +844,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = FlexSprinkle/FlexSprinkle.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Soleus/Soleus.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_ASSET_PATHS = "\"FlexSprinkle/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Soleus/Preview Content\"";
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = FlexSprinkle/Info.plist;
+				INFOPLIST_FILE = Soleus/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Soleus;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = NO;

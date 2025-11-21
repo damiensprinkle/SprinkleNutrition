@@ -11,11 +11,8 @@ struct SettingsView: View {
     @AppStorage("weightPreference") private var weightPreference: String = "lbs"
     @AppStorage("distancePreference") private var distancePreference: String = "mile"
     
-    // State to manage the presentation of UserDetailsFormView
-    @State private var showingUserDetailsForm = false
     @State private var showingPrivacyPolicy = false
     @State private var showingFAQ = false
-    @EnvironmentObject var userManager: UserManager
 
 
     var body: some View {
@@ -62,20 +59,6 @@ struct SettingsView: View {
         }
         .background(Color.myWhite)
         .listStyle(.insetGrouped)
-        .toolbar {
-            // Person icon button to show UserDetailsFormView
-            ToolbarItem(placement: .topBarTrailing) {
-                Button(action: {
-                    showingUserDetailsForm = true
-                }) {
-                    Image(systemName: "person.fill")
-                }
-            }
-        }
-        .sheet(isPresented: $showingUserDetailsForm) {
-            UserDetailsFormView(isPresented: $showingUserDetailsForm)
-                .environmentObject(userManager)
-        }
         .sheet(isPresented: $showingPrivacyPolicy) {
             PrivacyPolicyView()
         }

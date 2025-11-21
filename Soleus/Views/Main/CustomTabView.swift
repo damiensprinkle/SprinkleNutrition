@@ -10,7 +10,6 @@ import SwiftUI
 struct CustomTabView: View {
     @State private var selectedTab: Tab = .workout
     @EnvironmentObject var appViewModel: AppViewModel
-    @EnvironmentObject var userManager: UserManager
     @EnvironmentObject var workoutController: WorkoutTrackerController
 
 
@@ -64,7 +63,6 @@ struct CustomTabView: View {
                     .transition(.opacity)
             case .settings:
                 SettingsView()
-                    .environmentObject(userManager)
                     .transition(.opacity)
             }
         }

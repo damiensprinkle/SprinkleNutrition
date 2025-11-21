@@ -13,7 +13,6 @@ struct FlexSprinkleApp: App {
     @StateObject private var persistenceController = PersistenceController.shared
     @StateObject private var appViewModel = AppViewModel()
     @StateObject private var workoutManager = WorkoutManager()
-    @StateObject private var userManager = UserManager()
     @StateObject private var controller: WorkoutTrackerController
     @StateObject private var errorHandler = ErrorHandler()
     @StateObject private var achievementManager = AchievementManager()
@@ -45,7 +44,6 @@ struct FlexSprinkleApp: App {
                 .environmentObject(appViewModel)
                 .environmentObject(workoutManager)
                 .environmentObject(controller)
-                .environmentObject(userManager)
                 .environmentObject(errorHandler)
                 .environmentObject(achievementManager)
                 .errorAlert(errorHandler)
@@ -53,9 +51,6 @@ struct FlexSprinkleApp: App {
                     // Initialize CoreData context for managers
                     if workoutManager.context == nil {
                         workoutManager.context = persistenceController.container.viewContext
-                    }
-                    if userManager.context == nil {
-                        userManager.context = persistenceController.container.viewContext
                     }
                     // Link achievement manager to workout manager
                     achievementManager.workoutManager = workoutManager

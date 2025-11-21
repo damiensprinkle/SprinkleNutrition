@@ -10,10 +10,7 @@ import SwiftUI
 struct HomeView: View {
     @EnvironmentObject var appViewModel: AppViewModel
     @EnvironmentObject var persistenceController: PersistenceController
-    @EnvironmentObject var userManager: UserManager
     @EnvironmentObject var workoutController: WorkoutTrackerController
-
-    @State private var showUserDetailsForm = false
 
     var body: some View {
         Group {
@@ -37,19 +34,12 @@ struct HomeView: View {
                     }
                     .padding()
                 } else {
-                    if userManager.userDetails != nil {
-                        VStack {
-                            HStack {
-                                CustomTabView()
-                                    .environmentObject(appViewModel)
-                                    .environmentObject(userManager)
-                                    .environmentObject(workoutController)
-                            }
+                    VStack {
+                        HStack {
+                            CustomTabView()
+                                .environmentObject(appViewModel)
+                                .environmentObject(workoutController)
                         }
-                    } else {
-                        // Show blank view while waiting for user details
-                        Color(.systemGroupedBackground)
-                            .ignoresSafeArea()
                     }
                 }
             } else {
@@ -60,32 +50,6 @@ struct HomeView: View {
                         .font(.title3)
                         .foregroundColor(.gray)
                 }
-            }
-        }
-        .onAppear {
-            userManager.context = persistenceController.container.viewContext
-            // Don't show user form if there was a CoreData error
-            if persistenceController.loadError == nil && userManager.userDetails == nil {
-                showUserDetailsForm = true
-            }
-        }
-        .overlay {
-            if showUserDetailsForm {
-                ZStack {
-                    Color(.systemGroupedBackground)
-                        .ignoresSafeArea()
-
-                    UserDetailsFormView(isPresented: $showUserDetailsForm)
-                        .environmentObject(userManager)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                }
-                .transition(.opacity)
-                .zIndex(10)
-            }
-        }
-        .onChange(of: userManager.userDetails) {
-            if userManager.userDetails != nil  {
-                showUserDetailsForm = false
             }
         }
     }

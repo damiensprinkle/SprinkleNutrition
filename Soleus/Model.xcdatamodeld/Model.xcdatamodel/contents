@@ -13,9 +13,6 @@
         <relationship name="sets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="WorkoutSet" inverseName="detailsTemp" inverseEntity="WorkoutSet"/>
         <relationship name="workoutR" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Workouts" inverseName="detailsTemp" inverseEntity="Workouts"/>
     </entity>
-    <entity name="UserInfo" representedClassName="UserInfo" syncable="YES">
-        <attribute name="name" attributeType="String"/>
-    </entity>
     <entity name="WorkoutDetail" representedClassName="WorkoutDetail" syncable="YES">
         <attribute name="exerciseId" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="exerciseMeasurement" optional="YES" attributeType="String"/>

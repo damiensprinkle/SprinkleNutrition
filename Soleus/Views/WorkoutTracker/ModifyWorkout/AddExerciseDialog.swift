@@ -124,11 +124,28 @@ struct AddExerciseDialog: View {
             let measurement = selectedWorkoutMeasurement
             let quantifier = selectedWorkoutQuantifier
             let newIndex = workoutDetails.last?.orderIndex ?? 0
-            let newDetail = WorkoutDetailInput(id: UUID(), exerciseName: exerciseName, orderIndex: newIndex + 1, sets: [SetInput(reps: 0, weight: 0, time: 0, distance: 0)], exerciseQuantifier: quantifier, exerciseMeasurement: measurement)
+            let newDetail = WorkoutDetailInput(
+                id: UUID(),
+                exerciseName: exerciseName,
+                orderIndex: newIndex + 1,
+                sets: [SetInput(
+                    id: UUID(),
+                    reps: 0,
+                    weight: 0,
+                    time: 0,
+                    distance: 0,
+                    isCompleted: false,
+                    setIndex: 1,
+                    exerciseQuantifier: quantifier,
+                    exerciseMeasurement: measurement
+                )],
+                exerciseQuantifier: quantifier,
+                exerciseMeasurement: measurement
+            )
             workoutDetails.append(newDetail)
             self.showingDialog = false
         }
-        
+
     }
     
     private func hideKeyboard()

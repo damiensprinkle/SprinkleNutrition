@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import OSLog
 
 struct ExerciseRow: View {
     let setIndex: Int
@@ -61,9 +62,17 @@ struct ExerciseRow: View {
                             }
                         }
                     }
-                    .onAppear {
-                        repsInput = "\(setInput.reps)"
-                        originalReps = repsInput
+                    .task(id: setInput.id) {
+                        // Safely guard against invalid setInput
+                        guard setInput.id != nil else {
+                            AppLogger.validation.warning("setInput has nil ID in repsTextField task")
+                            return
+                        }
+
+                        if repsInput.isEmpty {
+                            repsInput = "\(setInput.reps)"
+                            originalReps = repsInput
+                        }
                     }
                     .keyboardType(.numberPad)
                     .frame(width: 100, height: 20)
@@ -97,9 +106,17 @@ struct ExerciseRow: View {
                             }
                         }
                     }
-                    .onAppear {
-                        distanceInput = String(setInput.distance)
-                        originalDistance = distanceInput
+                    .task(id: setInput.id) {
+                        // Safely guard against invalid setInput
+                        guard setInput.id != nil else {
+                            AppLogger.validation.warning("setInput has nil ID in distanceTextField task")
+                            return
+                        }
+
+                        if distanceInput.isEmpty {
+                            distanceInput = String(setInput.distance)
+                            originalDistance = distanceInput
+                        }
                     }
                     .keyboardType(.decimalPad)
                     .frame(width: 100, height: 20)
@@ -126,9 +143,17 @@ struct ExerciseRow: View {
                     .onChange(of: weightInput) {
                         validateAndSetInputFloat(&weightInput, for: &setInput.weight, maxLength: 5, maxDecimals: 2)
                     }
-                    .onAppear {
-                        weightInput = String(setInput.weight)
-                        originalWeight = weightInput
+                    .task(id: setInput.id) {
+                        // Safely guard against invalid setInput
+                        guard setInput.id != nil else {
+                            AppLogger.validation.warning("setInput has nil ID in weightTextField task")
+                            return
+                        }
+
+                        if weightInput.isEmpty {
+                            weightInput = String(setInput.weight)
+                            originalWeight = weightInput
+                        }
                     }
                     .keyboardType(.decimalPad)
                     .frame(width: 100, height: 20)
@@ -150,10 +175,18 @@ struct ExerciseRow: View {
                     .onChange(of: timeInput) {
                         formatInput(timeInput)
                     }
-                    .onAppear {
-                        let formattedTime = formatTimeFromSeconds(totalSeconds: Int(setInput.time))
-                        timeInput = "\(formattedTime)"
-                        originalTime = timeInput
+                    .task(id: setInput.id) {
+                        // Safely guard against invalid setInput
+                        guard setInput.id != nil else {
+                            AppLogger.validation.warning("setInput has nil ID in timeTextField task")
+                            return
+                        }
+
+                        if timeInput.isEmpty {
+                            let formattedTime = formatTimeFromSeconds(totalSeconds: Int(setInput.time))
+                            timeInput = "\(formattedTime)"
+                            originalTime = timeInput
+                        }
                     }
                     .keyboardType(.numberPad)
                     .frame(width: 100, height: 20)

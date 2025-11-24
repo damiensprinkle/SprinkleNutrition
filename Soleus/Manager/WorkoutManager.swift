@@ -7,11 +7,12 @@
 
 import Foundation
 import CoreData
+import OSLog
 
 class WorkoutManager: ObservableObject, WorkoutManaging {
     var context: NSManagedObjectContext? {
         didSet {
-            print("Context set in WorkoutManager")
+            AppLogger.coreData.info("Context set in WorkoutManager")
             if let context = context {
                 loadWorkoutsWithId()
                 context.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
@@ -85,7 +86,7 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
         newExerciseDetail.exerciseQuantifier = exerciseQuantifier
         newExerciseDetail.exerciseMeasurement = exerciseMeasurement
         newExerciseDetail.notes = notes
-        print("\(exerciseName):  \(orderIndex)")
+        AppLogger.workout.debug("Adding exercise '\(exerciseName)' at order index \(orderIndex)")
         // Add sets to the exercise detail
         for setInput in sets {
             let newSet = WorkoutSet(context: context)
@@ -103,9 +104,9 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
         let result = saveContext()
         switch result {
         case .success:
-            print("Workout ID: \(String(describing: workout.id)), Exercise Created with ID: \(String(describing: newExerciseDetail.exerciseId))")
+            AppLogger.workout.info("Created exercise with ID: \(String(describing: newExerciseDetail.exerciseId)) for workout: \(String(describing: workout.id))")
         case .failure(let error):
-            print("Error saving workout: \(error.localizedDescription)")
+            AppLogger.coreData.error("Error saving workout: \(error.localizedDescription)")
             errorHandler?.handle(error)
         }
     }
@@ -152,7 +153,7 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
                 }
             }
         } catch {
-            print("Failed to save or update temporary workout details: \(error)")
+            AppLogger.coreData.error("Failed to save or update temporary workout details: \(error.localizedDescription)")
             errorHandler?.handle(.saveFailed(error))
         }
     }
@@ -169,7 +170,7 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
 
         do {
             guard let workout = try context.fetch(workoutRequest).first else {
-                print("No workout found with ID: \(workoutId)")
+                AppLogger.workout.error("No workout found with ID: \(workoutId)")
                 errorHandler?.handle(.workoutNotFound(workoutId))
                 return
             }
@@ -182,15 +183,75 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
 
                     if context.hasChanges {
                         try context.save()
-                        print("Exercise notes updated for exerciseId: \(exerciseId)")
+                        AppLogger.workout.info("Exercise notes updated for exerciseId: \(exerciseId)")
                     }
                 } else {
-                    print("No temporary workout detail found for exerciseId: \(exerciseId)")
+                    AppLogger.workout.warning("No temporary workout detail found for exerciseId: \(exerciseId)")
                 }
             }
         } catch {
-            print("Failed to update exercise notes: \(error)")
+            AppLogger.coreData.error("Failed to update exercise notes: \(error.localizedDescription)")
             errorHandler?.handle(.saveFailed(error))
+        }
+    }
+
+    func addExerciseDuringActiveWorkout(workoutId: UUID, exerciseName: String, orderIndex: Int32, exerciseQuantifier: String, exerciseMeasurement: String, sets: [SetInput], notes: String? = nil) -> UUID? {
+        guard let context = self.context else {
+            errorHandler?.handle(.contextNotAvailable)
+            return nil
+        }
+
+        // Fetch the Workout entity
+        let workoutRequest: NSFetchRequest<Workouts> = Workouts.fetchRequest()
+        workoutRequest.predicate = NSPredicate(format: "id == %@", workoutId as CVarArg)
+
+        do {
+            guard let workout = try context.fetch(workoutRequest).first else {
+                AppLogger.workout.error("No workout found with ID: \(workoutId)")
+                errorHandler?.handle(.workoutNotFound(workoutId))
+                return nil
+            }
+
+            // Generate a new exerciseId
+            let newExerciseId = UUID()
+
+            // Create a new TemporaryWorkoutDetail
+            let newTempDetail = TemporaryWorkoutDetail(context: context)
+            newTempDetail.id = UUID()
+            newTempDetail.exerciseId = newExerciseId
+            newTempDetail.exerciseName = exerciseName
+            newTempDetail.orderIndex = orderIndex
+            newTempDetail.exerciseQuantifier = exerciseQuantifier
+            newTempDetail.exerciseMeasurement = exerciseMeasurement
+            newTempDetail.notes = notes
+
+            // Add initial sets
+            for setInput in sets {
+                let newSet = WorkoutSet(context: context)
+                newSet.id = setInput.id ?? UUID()
+                newSet.reps = setInput.reps
+                newSet.weight = setInput.weight
+                newSet.time = setInput.time
+                newSet.distance = setInput.distance
+                newSet.isCompleted = setInput.isCompleted
+                newSet.setIndex = setInput.setIndex
+                newTempDetail.addToSets(newSet)
+            }
+
+            // Add to workout
+            workout.addToDetailsTemp(newTempDetail)
+
+            if context.hasChanges {
+                try context.save()
+                AppLogger.workout.info("New exercise '\(exerciseName)' added during active workout with exerciseId: \(newExerciseId)")
+            }
+
+            return newExerciseId
+
+        } catch {
+            AppLogger.coreData.error("Failed to add exercise during active workout: \(error.localizedDescription)")
+            errorHandler?.handle(.saveFailed(error))
+            return nil
         }
     }
 
@@ -229,14 +290,29 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
         deleteRequest.resultType = .resultTypeObjectIDs
 
         do {
-            let result = try context.execute(deleteRequest) as? NSBatchDeleteResult
-            let objectIDArray = result?.result as? [NSManagedObjectID]
+            // Execute the batch delete and properly validate the result
+            guard let result = try context.execute(deleteRequest) as? NSBatchDeleteResult else {
+                AppLogger.coreData.warning("Batch delete returned unexpected result type")
+                return
+            }
+
+            // Validate that we got object IDs back
+            guard let objectIDArray = result.result as? [NSManagedObjectID], !objectIDArray.isEmpty else {
+                AppLogger.coreData.info("No temporary workout details to delete")
+                return
+            }
+
+            AppLogger.coreData.info("Successfully deleted \(objectIDArray.count) temporary workout details")
+
+            // Properly merge the changes into the context
             let changes = [NSDeletedObjectsKey: objectIDArray]
             NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes as [AnyHashable : Any], into: [context])
 
+            // Refresh to ensure the context is clean
             context.refreshAllObjects()
+
         } catch let error as NSError {
-            print("Error deleting all TemporaryWorkoutDetail entities: \(error), \(error.userInfo)")
+            AppLogger.coreData.error("Failed to delete temporary workout details: \(error.localizedDescription)")
             errorHandler?.handle(.deleteFailed(error))
         }
     }
@@ -296,14 +372,14 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
             let result = try context.fetch(request)
             return result.first
         } catch {
-            print("Error fetching workout by ID: \(error)")
+            AppLogger.coreData.error("Error fetching workout by ID: \(error.localizedDescription)")
             return nil
         }
     }
     
     func duplicateWorkout(originalWorkoutId: UUID, completion: (() -> Void)? = nil) {
         guard let backgroundContext = createBackgroundContext() else {
-            print("Failed to create background context")
+            AppLogger.coreData.error("Failed to create background context")
             errorHandler?.handle(.contextNotAvailable)
             completion?()
             return
@@ -318,7 +394,7 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
             do {
                 guard let originalWorkout = try backgroundContext.fetch(fetchRequest).first else {
                     DispatchQueue.main.async {
-                        print("Failed to fetch original workout with ID \(originalWorkoutId)")
+                        AppLogger.workout.error("Failed to fetch original workout with ID \(originalWorkoutId)")
                         self?.errorHandler?.handle(.workoutNotFound(originalWorkoutId))
                         completion?()
                     }
@@ -372,17 +448,17 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
                         if mainContext.hasChanges {
                             try mainContext.save()
                         }
-                        print("Successfully duplicated workout with ID: \(originalWorkoutId)")
+                        AppLogger.workout.info("Successfully duplicated workout with ID: \(originalWorkoutId)")
                         completion?()
                     } catch {
-                        print("Error saving main context: \(error.localizedDescription)")
+                        AppLogger.coreData.error("Error saving main context: \(error.localizedDescription)")
                         self?.errorHandler?.handle(.saveFailed(error))
                         completion?()
                     }
                 }
             } catch {
                 DispatchQueue.main.async {
-                    print("Error duplicating workout: \(error.localizedDescription)")
+                    AppLogger.coreData.error("Error duplicating workout: \(error.localizedDescription)")
                     self?.errorHandler?.handle(.saveFailed(error))
                     completion?()
                 }
@@ -394,7 +470,7 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
     
     func loadWorkoutsWithId() {
         guard let context = self.context else {
-            print("Context is nil in loadWorkoutsWithId")
+            AppLogger.coreData.error("Context is nil in loadWorkoutsWithId")
             errorHandler?.handle(.contextNotAvailable)
             return
         }
@@ -405,20 +481,16 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
             let results = try context.fetch(request)
             self.workouts = results.compactMap { workout in
                 guard let id = workout.id, let name = workout.name else {
-                    print("Warning: Skipping workout with missing id or name")
+                    AppLogger.validation.warning("Skipping workout with missing id or name")
                     return nil
                 }
                 return WorkoutInfo(id: id, name: name)
             }
 
-            for workout in self.workouts {
-                print("Workout ID: \(workout.id), Name: \(workout.name)")
+            AppLogger.workout.debug("Loaded \(self.workouts.count) workouts")
 
-            }
-
-            print("Total Loaded workouts: \(self.workouts.count)")
         } catch {
-            print("Failed to fetch workouts: \(error)")
+            AppLogger.coreData.error("Failed to fetch workouts: \(error.localizedDescription)")
             errorHandler?.handle(.fetchFailed(error))
         }
     }
@@ -483,15 +555,15 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
                         if mainContext.hasChanges {
                             try mainContext.save()
                         }
-                        print("Workout and its associated entities deleted successfully (cascade)")
+                        AppLogger.workout.info("Workout and its associated entities deleted successfully")
                     } catch {
-                        print("Error saving main context: \(error)")
+                        AppLogger.coreData.error("Error saving main context: \(error.localizedDescription)")
                         self?.errorHandler?.handle(.deleteFailed(error))
                     }
                 }
             } catch let error as NSError {
                 DispatchQueue.main.async {
-                    print("Error deleting workout: \(error), \(error.userInfo)")
+                    AppLogger.coreData.error("Error deleting workout: \(error.localizedDescription)")
                     self?.errorHandler?.handle(.deleteFailed(error))
                 }
             }
@@ -516,9 +588,9 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
             }
 
             try context.save()
-            print("Workout history deleted successfully")
+            AppLogger.workout.info("Workout history deleted successfully")
         } catch let error as NSError {
-            print("Error deleting workout history: \(error), \(error.userInfo)")
+            AppLogger.coreData.error("Error deleting workout history: \(error.localizedDescription)")
             errorHandler?.handle(.deleteFailed(error))
         }
     }
@@ -554,7 +626,7 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
             // Notify observers of the change
             objectWillChange.send()
         } catch {
-            print("Error updating workout title: \(error)")
+            AppLogger.coreData.error("Error updating workout title: \(error.localizedDescription)")
             errorHandler?.handle(.saveFailed(error))
         }
     }
@@ -567,7 +639,7 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
         }
 
         guard let workout = fetchWorkoutById(for: workoutId) else {
-            print("Failed to fetch workout for ID \(workoutId)")
+            AppLogger.workout.error("Failed to fetch workout for ID \(workoutId)")
             errorHandler?.handle(.workoutNotFound(workoutId))
             return
         }
@@ -576,7 +648,7 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
         do {
             try context.save()
         } catch {
-            print("Error saving context after updating workout color: \(error)")
+            AppLogger.coreData.error("Error saving context after updating workout color: \(error.localizedDescription)")
             errorHandler?.handle(.saveFailed(error))
         }
     }
@@ -591,7 +663,7 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
         }
 
         guard let workout = fetchWorkoutById(for: workoutId) else {
-            print("Failed to fetch workout for ID \(workoutId)")
+            AppLogger.workout.error("Failed to fetch workout for ID \(workoutId)")
             errorHandler?.handle(.workoutNotFound(workoutId))
             return
         }
@@ -633,7 +705,7 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
         do {
             try context.save()
         } catch {
-            print("Error saving context after updating workout details: \(error)")
+            AppLogger.coreData.error("Error saving context after updating workout details: \(error.localizedDescription)")
             errorHandler?.handle(.saveFailed(error))
         }
     }
@@ -679,7 +751,7 @@ extension WorkoutManager {
             let count = try context.count(for: request)
             return count > 0
         } catch {
-            print("Error checking title existence: \(error)")
+            AppLogger.coreData.error("Error checking title existence: \(error.localizedDescription)")
             return false
         }
     }
@@ -692,7 +764,7 @@ extension WorkoutManager {
         do {
             return try context.fetch(request)
         } catch {
-            print("Error fetching active sessions: \(error)")
+            AppLogger.coreData.error("Error fetching active sessions: \(error.localizedDescription)")
             return []
         }
     }
@@ -708,9 +780,9 @@ extension WorkoutManager {
                 return activeSession.workoutsR?.id
             }
         } catch {
-            print("Error fetching active sessions: \(error)")
+            AppLogger.coreData.error("Error fetching active sessions: \(error.localizedDescription)")
         }
-        
+
         return nil
     }
     
@@ -722,10 +794,10 @@ extension WorkoutManager {
         
         do {
             guard let workout = try context.fetch(workoutRequest).first else {
-                print("No workout found with ID: \(workoutId)")
+                AppLogger.workout.warning("No workout found with ID: \(workoutId)")
                 return []
             }
-            
+
             if let tempDetails = workout.detailsTemp as? Set<TemporaryWorkoutDetail> {
                 return tempDetails.sorted(by: { $0.orderIndex < $1.orderIndex }).map { tempDetail in
                     let sets = tempDetail.sets?.allObjects as? [WorkoutSet] ?? []
@@ -739,9 +811,9 @@ extension WorkoutManager {
                 }
             }
         } catch {
-            print("Failed to load temporary workout data: \(error)")
+            AppLogger.coreData.error("Failed to load temporary workout data: \(error.localizedDescription)")
         }
-        
+
         return []
     }
     
@@ -811,17 +883,17 @@ extension WorkoutManager {
                         if mainContext.hasChanges {
                             try mainContext.save()
                         }
-                        print("Workout history saved successfully")
+                        AppLogger.workout.info("Workout history saved successfully")
                         completion?()
                     } catch {
-                        print("Failed to save main context: \(error)")
+                        AppLogger.coreData.error("Failed to save main context: \(error.localizedDescription)")
                         self?.errorHandler?.handle(.saveFailed(error))
                         completion?()
                     }
                 }
             } catch {
                 DispatchQueue.main.async {
-                    print("Failed to save workout history: \(error)")
+                    AppLogger.coreData.error("Failed to save workout history: \(error.localizedDescription)")
                     self?.errorHandler?.handle(.saveFailed(error))
                     completion?()
                 }
@@ -841,7 +913,7 @@ extension WorkoutManager {
             let histories = try context.fetch(fetchRequest)
             return histories.first
         } catch {
-            print("Failed to fetch latest workout history: \(error)")
+            AppLogger.coreData.error("Failed to fetch latest workout history: \(error.localizedDescription)")
             return nil
         }
     }
@@ -852,8 +924,7 @@ extension WorkoutManager {
         let calendar = Calendar.current
         let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: calendar.startOfDay(for: date)))!
         let endOfMonth = calendar.date(byAdding: DateComponents(month: 1, second: -1), to: startOfMonth)!
-        print(startOfMonth)
-        print(endOfMonth)
+
         let fetchRequest: NSFetchRequest<WorkoutHistory> = WorkoutHistory.fetchRequest()
         // Create a predicate to filter workouts within the start and end of the month
         fetchRequest.predicate = NSPredicate(format: "(workoutDate >= %@) AND (workoutDate <= %@)", argumentArray: [startOfMonth, endOfMonth])
@@ -863,7 +934,7 @@ extension WorkoutManager {
             let histories = try context.fetch(fetchRequest)
             return histories
         } catch {
-            print("Failed to fetch workout history: \(error)")
+            AppLogger.coreData.error("Failed to fetch workout history: \(error.localizedDescription)")
             return nil
         }
     }
@@ -894,7 +965,7 @@ extension WorkoutManager {
                 try context.save()
             }
         } catch {
-            print("Error setting session status: \(error)")
+            AppLogger.coreData.error("Error setting session status: \(error.localizedDescription)")
         }
     }
 
@@ -926,15 +997,15 @@ extension WorkoutManager {
                         if mainContext.hasChanges {
                             try mainContext.save()
                         }
-                        print("Workout order saved successfully")
+                        AppLogger.workout.info("Workout order saved successfully")
                     } catch {
-                        print("Error saving main context after reordering: \(error)")
+                        AppLogger.coreData.error("Error saving main context after reordering: \(error.localizedDescription)")
                         self?.errorHandler?.handle(.saveFailed(error))
                     }
                 }
             } catch {
                 DispatchQueue.main.async {
-                    print("Error saving workout order: \(error)")
+                    AppLogger.coreData.error("Error saving workout order: \(error.localizedDescription)")
                     self?.errorHandler?.handle(.saveFailed(error))
                 }
             }

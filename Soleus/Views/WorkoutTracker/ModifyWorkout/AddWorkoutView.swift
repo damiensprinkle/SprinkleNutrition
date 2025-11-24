@@ -34,71 +34,45 @@ struct AddWorkoutView: View {
     var body: some View {
         NavigationView {
             ZStack {
+                Color(.systemGroupedBackground)
+                    .ignoresSafeArea()
+
                 VStack(spacing: 0) {
                     addWorkoutForm
-                    Spacer()
+
                     if(!focusManager.isAnyTextFieldFocused){
                         Button(action: {
-                            withAnimation(.easeOut(duration: 0.2)) {
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                                 showingAddExerciseDialog = true
                             }
                         }) {
-                            Text("Add Exercise")
-                                .font(.title2)
-                                .foregroundColor(.staticWhite)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.myBlue)
-                                .cornerRadius(10)
+                            HStack(spacing: 8) {
+                                Image(systemName: "plus.circle.fill")
+                                    .font(.title3)
+                                Text("Add Exercise")
+                                    .font(.headline)
+                                    .fontWeight(.semibold)
+                            }
+                            .foregroundColor(.staticWhite)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 16)
+                            .background(
+                                LinearGradient(
+                                    gradient: Gradient(colors: [Color.myBlue, Color.myBlue.opacity(0.8)]),
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                            .cornerRadius(14)
+                            .shadow(color: Color.myBlue.opacity(0.3), radius: 8, x: 0, y: 4)
                         }
-                        .padding(.horizontal)
-                        .padding(.bottom)
+                        .padding(.horizontal, 20)
+                        .padding(.bottom, 20)
+                        .padding(.top, 12)
                     }
-                    Spacer()
                 }
-                .background(Color.myWhite)
+                .background(Color(.systemGroupedBackground))
                 
-                if showingAddExerciseDialog || selectedExerciseIndexForRenaming != nil {
-                    Color.black.opacity(0.4)
-                        .edgesIgnoringSafeArea(.all)
-                }
-                
-                if showingAddExerciseDialog {
-                    AddExerciseDialog(
-                        workoutDetails: $workoutController.workoutDetails,
-                        showingDialog: $showingAddExerciseDialog
-                    )
-                    .background(Color.staticWhite)
-                    .cornerRadius(20)
-                    .shadow(radius: 10)
-                    .transition(.scale)
-                    .padding(.horizontal)
-                }
-                
-                if let selectedIndex = selectedExerciseIndexForRenaming, selectedIndex < $workoutController.workoutDetails.count {
-                    RenameExerciseDialogView(
-                        isPresented: .init(
-                            get: { self.selectedExerciseIndexForRenaming != nil },
-                            set: { _ in self.selectedExerciseIndexForRenaming = nil }
-                        ),
-                        exerciseName: $workoutController.workoutDetails[selectedIndex].exerciseName,
-                        onRename: { newName in
-                            workoutController.renameExercise(at: selectedIndex, to: newName)
-                        }
-                    )
-                    .transition(.scale)
-                }
-
-                if let selectedIndex = selectedExerciseIndexForNotes, selectedIndex < $workoutController.workoutDetails.count {
-                    ExerciseNotesDialogView(
-                        isPresented: .init(
-                            get: { self.selectedExerciseIndexForNotes != nil },
-                            set: { _ in self.selectedExerciseIndexForNotes = nil }
-                        ),
-                        exerciseNotes: $workoutController.workoutDetails[selectedIndex].notes
-                    )
-                    .transition(.scale)
-                }
             }
             .navigationBarTitle(navigationTitle)
             .navigationBarItems(
@@ -163,20 +137,88 @@ struct AddWorkoutView: View {
                     workoutController.workoutDetails.removeAll()
                 }
             }
+            .sheet(isPresented: $showingAddExerciseDialog) {
+                AddExerciseDialog(
+                    workoutDetails: $workoutController.workoutDetails,
+                    showingDialog: $showingAddExerciseDialog
+                )
+                .presentationDetents([.medium])
+                .presentationDragIndicator(.visible)
+            }
+            .sheet(isPresented: Binding(
+                get: { selectedExerciseIndexForRenaming != nil },
+                set: { if !$0 { selectedExerciseIndexForRenaming = nil } }
+            )) {
+                if let selectedIndex = selectedExerciseIndexForRenaming,
+                   selectedIndex < workoutController.workoutDetails.count {
+                    RenameExerciseDialogView(
+                        isPresented: .init(
+                            get: { self.selectedExerciseIndexForRenaming != nil },
+                            set: { _ in self.selectedExerciseIndexForRenaming = nil }
+                        ),
+                        exerciseName: $workoutController.workoutDetails[selectedIndex].exerciseName,
+                        onRename: { newName in
+                            workoutController.renameExercise(at: selectedIndex, to: newName)
+                        }
+                    )
+                    .presentationDetents([.medium])
+                    .presentationDragIndicator(.visible)
+                }
+            }
+            .sheet(isPresented: Binding(
+                get: { selectedExerciseIndexForNotes != nil },
+                set: { if !$0 { selectedExerciseIndexForNotes = nil } }
+            )) {
+                if let selectedIndex = selectedExerciseIndexForNotes,
+                   selectedIndex < workoutController.workoutDetails.count {
+                    ExerciseNotesDialogView(
+                        isPresented: .init(
+                            get: { self.selectedExerciseIndexForNotes != nil },
+                            set: { _ in self.selectedExerciseIndexForNotes = nil }
+                        ),
+                        exerciseNotes: $workoutController.workoutDetails[selectedIndex].notes
+                    )
+                    .presentationDetents([.medium, .large])
+                    .presentationDragIndicator(.visible)
+                }
+            }
         }
     }
     
     private var addWorkoutForm: some View {
-        Form {
-            workoutTitleSection
-            ForEach($workoutController.workoutDetails.indices, id: \.self) { index in
-                Section(
-                    header: ExerciseHeaderView(
+        ScrollView {
+            VStack(spacing: 16) {
+                // Workout Title Card
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Workout Title")
+                        .font(.subheadline)
+                        .fontWeight(.semibold)
+                        .foregroundColor(.secondary)
+                        .padding(.horizontal, 20)
+                        .padding(.top, 16)
+
+                    TextField("Enter Workout Title", text: $workoutTitle)
+                        .font(.body)
+                        .padding(16)
+                        .background(Color(.secondarySystemGroupedBackground))
+                        .cornerRadius(12)
+                        .padding(.horizontal, 20)
+                }
+                .padding(.bottom, 8)
+
+                // Exercise Cards
+                ForEach(0..<workoutController.workoutDetails.count, id: \.self) { index in
+                    ExerciseCard(
                         exerciseName: workoutController.workoutDetails[index].exerciseName,
                         hasNotes: workoutController.workoutDetails[index].notes != nil && !workoutController.workoutDetails[index].notes!.isEmpty,
+                        notes: workoutController.workoutDetails[index].notes,
                         index: index,
                         workoutCount: workoutController.workoutDetails.count,
                         isKeyboardActive: focusManager.isAnyTextFieldFocused,
+                        sets: $workoutController.workoutDetails[index].sets,
+                        exerciseQuantifier: workoutController.workoutDetails[index].exerciseQuantifier,
+                        exerciseMeasurement: workoutController.workoutDetails[index].exerciseMeasurement,
+                        focusManager: focusManager,
                         moveUpAction: {
                             workoutController.moveExercise(from: index, to: index - 1)
                         },
@@ -190,33 +232,182 @@ struct AddWorkoutView: View {
                             showAlert = true
                         },
                         renameAction: {
-                            withAnimation(.easeOut(duration: 0.2)) {
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                                 self.selectedExerciseIndexForRenaming = index
                             }
                         },
                         notesAction: {
-                            withAnimation(.easeOut(duration: 0.2)) {
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                                 self.selectedExerciseIndexForNotes = index
                             }
-                        }
-                    )
-                ) {
-                    WorkoutSetListView(
-                        sets: $workoutController.workoutDetails[index].sets,
-                        exerciseQuantifier: workoutController.workoutDetails[index].exerciseQuantifier,
-                        exerciseMeasurement: workoutController.workoutDetails[index].exerciseMeasurement,
+                        },
                         addSetAction: {
                             workoutController.addSet(for: index)
-                        },
-                        focusManager: focusManager
+                        }
                     )
+                    .padding(.horizontal, 20)
                 }
             }
-            .onDelete(perform: deleteExercise)
+            .padding(.vertical, 8)
+        }
+        .onTapGesture {
+            if focusManager.isAnyTextFieldFocused {
+                focusManager.isAnyTextFieldFocused = false
+                focusManager.currentlyFocusedField = nil
+                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+            }
         }
     }
     
     
+    // MARK: - Exercise Card
+    struct ExerciseCard: View {
+        let exerciseName: String
+        let hasNotes: Bool
+        let notes: String?
+        let index: Int
+        let workoutCount: Int
+        let isKeyboardActive: Bool
+        @Binding var sets: [SetInput]
+        let exerciseQuantifier: String
+        let exerciseMeasurement: String
+        let focusManager: FocusManager
+        var moveUpAction: (() -> Void)?
+        var moveDownAction: (() -> Void)?
+        var deleteAction: (() -> Void)?
+        var renameAction: (() -> Void)?
+        var notesAction: (() -> Void)?
+        var addSetAction: (() -> Void)?
+
+        var body: some View {
+            VStack(spacing: 0) {
+                // Header
+                VStack(spacing: 12) {
+                    // Title and primary actions
+                    HStack {
+                        Text(exerciseName)
+                            .font(.title3)
+                            .fontWeight(.bold)
+                            .foregroundColor(.primary)
+
+                        Spacer()
+
+                        HStack(spacing: 16) {
+                            // Notes icon
+                            Button(action: { notesAction?() }) {
+                                Image(systemName: hasNotes ? "note.text.badge.plus" : "note.text")
+                                    .font(.body)
+                                    .foregroundColor(hasNotes ? .orange : .gray)
+                            }
+
+                            // More options menu
+                            Menu {
+                                Button(action: { renameAction?() }) {
+                                    Label("Rename Exercise", systemImage: "pencil")
+                                }
+
+                                if index > 0 {
+                                    Button(action: { moveUpAction?() }) {
+                                        Label("Move Up", systemImage: "arrow.up")
+                                    }
+                                    .disabled(isKeyboardActive)
+                                }
+
+                                if index < workoutCount - 1 {
+                                    Button(action: { moveDownAction?() }) {
+                                        Label("Move Down", systemImage: "arrow.down")
+                                    }
+                                    .disabled(isKeyboardActive)
+                                }
+
+                                Divider()
+
+                                Button(role: .destructive, action: { deleteAction?() }) {
+                                    Label("Delete Exercise", systemImage: "trash")
+                                }
+                            } label: {
+                                Image(systemName: "ellipsis.circle")
+                                    .font(.body)
+                                    .foregroundColor(.primary)
+                            }
+                        }
+                    }
+
+                    // Notes display
+                    if let notes = notes, !notes.isEmpty {
+                        HStack(alignment: .top, spacing: 8) {
+                            Image(systemName: "quote.bubble.fill")
+                                .font(.caption)
+                                .foregroundColor(.orange)
+                            Text(notes)
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                                .fixedSize(horizontal: false, vertical: true)
+                            Spacer()
+                        }
+                        .padding(12)
+                        .background(Color.orange.opacity(0.1))
+                        .cornerRadius(10)
+                    }
+                }
+                .padding(16)
+
+                Divider()
+                    .padding(.horizontal, 16)
+
+                // Sets section
+                VStack(spacing: 8) {
+                    if !sets.isEmpty {
+                        SetHeaders(exerciseQuantifier: exerciseQuantifier, exerciseMeasurement: exerciseMeasurement, active: false)
+                            .padding(.horizontal, 16)
+                            .padding(.top, 12)
+                    }
+
+                    ForEach(Array(sets.enumerated()), id: \.element.id) { setIndex, _ in
+                        VStack(spacing: 0) {
+                            ExerciseRow(
+                                setIndex: setIndex + 1,
+                                setInput: $sets[setIndex],
+                                exerciseQuantifier: exerciseQuantifier,
+                                exerciseMeasurement: exerciseMeasurement
+                            )
+                            .environmentObject(focusManager)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 8)
+
+                            if setIndex < sets.count - 1 {
+                                Divider()
+                                    .padding(.horizontal, 16)
+                            }
+                        }
+                    }
+
+                    // Add Set Button
+                    Button(action: { addSetAction?() }) {
+                        HStack {
+                            Image(systemName: "plus.circle.fill")
+                                .font(.body)
+                            Text("Add Set")
+                                .font(.subheadline)
+                                .fontWeight(.medium)
+                        }
+                        .foregroundColor(.myBlue)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                        .background(Color.myBlue.opacity(0.1))
+                        .cornerRadius(10)
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.top, 4)
+                    .padding(.bottom, 16)
+                }
+            }
+            .background(Color(.secondarySystemGroupedBackground))
+            .cornerRadius(16)
+            .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 2)
+        }
+    }
+
     struct WorkoutSetListView: View {
         @Binding var sets: [SetInput]
         let exerciseQuantifier: String
@@ -246,78 +437,6 @@ struct AddWorkoutView: View {
             Button("Add Set") {
                 addSetAction()
             }
-        }
-    }
-    
-    struct ExerciseHeaderView: View {
-        let exerciseName: String
-        let hasNotes: Bool
-        let index: Int
-        let workoutCount: Int
-        let isKeyboardActive: Bool
-        var moveUpAction: (() -> Void)?
-        var moveDownAction: (() -> Void)?
-        var deleteAction: (() -> Void)?
-        var renameAction: (() -> Void)?
-        var notesAction: (() -> Void)?
-
-        var body: some View {
-            HStack {
-                Text(exerciseName).font(.title2)
-                Spacer()
-
-                // Notes icon
-                Image(systemName: hasNotes ? "note.text.badge.plus" : "note.text")
-                    .foregroundColor(hasNotes ? .orange : .gray)
-                    .onTapGesture {
-                        notesAction?()
-                    }
-
-                // Move up - disabled when keyboard is active
-                if index > 0 {
-                    Image(systemName: "arrow.up")
-                        .foregroundColor(isKeyboardActive ? .gray : .blue)
-                        .opacity(isKeyboardActive ? 0.5 : 1.0)
-                        .onTapGesture {
-                            if !isKeyboardActive {
-                                moveUpAction?()
-                            }
-                        }
-                }
-
-                // Move down - disabled when keyboard is active
-                if index < workoutCount - 1 {
-                    Image(systemName: "arrow.down")
-                        .foregroundColor(isKeyboardActive ? .gray : .blue)
-                        .opacity(isKeyboardActive ? 0.5 : 1.0)
-                        .onTapGesture {
-                            if !isKeyboardActive {
-                                moveDownAction?()
-                            }
-                        }
-                }
-
-                // Delete
-                Image(systemName: "trash")
-                    .foregroundColor(.red)
-                    .onTapGesture {
-                        deleteAction?()
-                    }
-
-                // Rename
-                Image(systemName: "pencil")
-                    .foregroundColor(.myBlack)
-                    .onTapGesture {
-                        renameAction?()
-                    }
-            }
-        }
-    }
-    
-    
-    private var workoutTitleSection: some View {
-        Section(header: Text("Workout Title")) {
-            TextField("Enter Workout Title", text: $workoutTitle)
         }
     }
     

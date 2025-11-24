@@ -17,7 +17,7 @@ struct SetHeaders: View {
     
     var body: some View {
         HStack {
-            Text("Set").frame(width: 50, alignment: .leading)
+            Text("Set").frame(width: 50, alignment: .center)
             Spacer()
             if(exerciseQuantifier == "Reps") {
                 Text("Reps").frame(width: 100)
@@ -36,6 +36,9 @@ struct SetHeaders: View {
             }
             if(active){
                 Spacer()
+                Image(systemName: "checkmark.circle")
+                    .font(.headline)
+                    .foregroundColor(.secondary)
             }
         }
         .font(.headline)

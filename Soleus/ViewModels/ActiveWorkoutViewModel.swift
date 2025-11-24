@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Combine
+import OSLog
 
 class ActiveWorkoutViewModel: ObservableObject {
     // MARK: - Published Properties
@@ -69,10 +70,10 @@ class ActiveWorkoutViewModel: ObservableObject {
 
             initSession()
             isLoading = false
-            print("Finished loading active workout")
+            AppLogger.workout.info("Finished loading active workout")
         } else {
             isLoading = false
-            print("Error: workout details not found")
+            AppLogger.workout.error("Error: workout details not found")
         }
     }
 
@@ -85,7 +86,11 @@ class ActiveWorkoutViewModel: ObservableObject {
     private func initSession() {
         if workoutController.hasActiveSession {
             self.workoutStarted = true
-            let activeSession = workoutController.workoutManager.getSessions().first!
+            guard let activeSession = workoutController.workoutManager.getSessions().first else {
+                AppLogger.workout.error("No active session found despite hasActiveSession being true")
+                self.workoutStarted = false
+                return
+            }
             if let startTime = activeSession.startTime {
                 self.elapsedTime = Int(Date().timeIntervalSince(startTime))
                 startTimer()
@@ -100,6 +105,7 @@ class ActiveWorkoutViewModel: ObservableObject {
         elapsedTime = 0
         startTimer()
         workoutController.workoutManager.setSessionStatus(workoutId: workoutId, isActive: true)
+        AppLogger.workout.info("Started workout with ID: \(workoutId)")
     }
 
     func cancelWorkout() {
@@ -109,6 +115,7 @@ class ActiveWorkoutViewModel: ObservableObject {
         workoutController.workoutManager.deleteAllTemporaryWorkoutDetails()
         workoutController.loadWorkoutDetails(for: workoutId)
         workoutCancelled = true
+        AppLogger.workout.info("Canceled workout with ID: \(workoutId)")
     }
 
     func completeWorkout(shouldUpdateTemplate: Bool) {
@@ -119,6 +126,7 @@ class ActiveWorkoutViewModel: ObservableObject {
                 workoutId: workoutId,
                 workoutDetailsInput: workoutController.workoutDetails
             )
+            AppLogger.workout.info("Updated workout template after completion")
         }
 
         workoutStarted = false
@@ -131,6 +139,7 @@ class ActiveWorkoutViewModel: ObservableObject {
 
             // Navigate to overview only after history is saved, pass elapsed time for immediate display
             self.appViewModel.navigateTo(.workoutOverview(workoutId, elapsedTimeFormatted))
+            AppLogger.workout.info("Completed workout with ID: \(workoutId), elapsed time: \(elapsedTimeFormatted)")
         }
     }
 
@@ -139,6 +148,9 @@ class ActiveWorkoutViewModel: ObservableObject {
     }
 
     func isAnyOtherSessionActive() -> Bool {
+        guard let workoutController = workoutController else {
+            return false
+        }
         let sessionsWorkoutId = workoutController.workoutManager.getWorkoutIdOfActiveSession()
         if sessionsWorkoutId != workoutId {
             if sessionsWorkoutId == nil {

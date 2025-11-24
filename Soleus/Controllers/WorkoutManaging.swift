@@ -78,6 +78,17 @@ protocol WorkoutManaging: AnyObject, ObservableObject {
         notes: String?
     )
 
+    /// Adds a new exercise during an active workout and returns the generated exerciseId
+    func addExerciseDuringActiveWorkout(
+        workoutId: UUID,
+        exerciseName: String,
+        orderIndex: Int32,
+        exerciseQuantifier: String,
+        exerciseMeasurement: String,
+        sets: [SetInput],
+        notes: String?
+    ) -> UUID?
+
     /// Loads temporary workout data for an active workout
     func loadTemporaryWorkoutData(for workoutId: UUID) -> [WorkoutDetailInput]
 

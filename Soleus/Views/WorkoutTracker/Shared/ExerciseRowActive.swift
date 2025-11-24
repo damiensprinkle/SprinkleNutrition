@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import OSLog
 
 struct ExerciseRowActive: View {
     @Binding var setInput: SetInput
@@ -30,6 +31,8 @@ struct ExerciseRowActive: View {
     @State private var distanceModified: Bool = false
     @State private var weightModified: Bool = false
     @State private var timeModified: Bool = false
+    @State private var saveFailedError: Bool = false
+    @State private var showSaveErrorMessage: Bool = false
     @EnvironmentObject var focusManager: FocusManager
     @EnvironmentObject var workoutController: WorkoutTrackerController
     
@@ -38,8 +41,8 @@ struct ExerciseRowActive: View {
         HStack {
             Spacer()
             Text("\(setIndex)")
-                .frame(width: 50, alignment: .leading)
-                .padding(.leading, 8)
+                .frame(width: 50, alignment: .center)
+                .padding(.leading, 10)
             Divider()
             if exerciseQuantifier == "Reps" {
                 repsTextField
@@ -122,12 +125,55 @@ struct ExerciseRowActive: View {
         .disabled(!workoutStarted)
         .opacity(!workoutStarted ? 0.5 : 1)
         .foregroundColor(!workoutStarted ? .gray : .myBlack)
-        .background(checked ? Color.green.opacity(0.2) : Color(.secondarySystemGroupedBackground))
+        .background(rowBackground)
+        .overlay(errorBorder)
+        .overlay(errorMessage)
     }
-    
+
+    private var rowBackground: some View {
+        Group {
+            if saveFailedError {
+                Color.red.opacity(0.15)
+            } else if checked {
+                Color.green.opacity(0.2)
+            } else {
+                Color(.secondarySystemGroupedBackground)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var errorBorder: some View {
+        if saveFailedError {
+            RoundedRectangle(cornerRadius: 4)
+                .stroke(Color.red, lineWidth: 2)
+        }
+    }
+
+    @ViewBuilder
+    private var errorMessage: some View {
+        if showSaveErrorMessage {
+            VStack {
+                HStack {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .foregroundColor(.red)
+                    Text("Save failed - exercise not initialized")
+                        .font(.caption)
+                        .foregroundColor(.red)
+                }
+                .padding(6)
+                .background(Color.white)
+                .cornerRadius(6)
+                .shadow(radius: 4)
+                .offset(y: -30)
+            }
+        }
+    }
+
     private var repsTextField: some View {
         TextField("Reps", text: $repsInput)
             .focused($focusedField, equals: .reps)
+            .multilineTextAlignment(.center)
             .onChange(of: focusedField) {
                 if focusedField == .reps {
                     focusManager.isAnyTextFieldFocused = true
@@ -167,6 +213,7 @@ struct ExerciseRowActive: View {
     private var distanceTextField: some View {
         TextField("Distance", text: $distanceInput)
             .focused($focusedField, equals: .distance)
+            .multilineTextAlignment(.center)
             .onChange(of: focusedField) {
                 if focusedField == .distance {
                     distanceInput = ""
@@ -200,6 +247,7 @@ struct ExerciseRowActive: View {
     private var weightTextField: some View {
         TextField("Weight", text: $weightInput)
             .focused($focusedField, equals: .weight)
+            .multilineTextAlignment(.center)
             .onChange(of: focusedField) {
                 if focusedField == .weight {
                     focusManager.isAnyTextFieldFocused = true
@@ -232,6 +280,7 @@ struct ExerciseRowActive: View {
     private var timeTextField : some View {
         TextField("Time", text: $timeInput)
             .focused($focusedField, equals: .time)
+            .multilineTextAlignment(.center)
             .onChange(of: focusedField) {
                 if focusedField == .time {
                     originalTimeInput = timeInput
@@ -272,9 +321,24 @@ struct ExerciseRowActive: View {
     
     func saveWorkoutDetail() {
         guard let exerciseId = workoutDetails.exerciseId else {
-            print("Error: Cannot save workout detail - exerciseId is nil")
+            AppLogger.validation.warning("Cannot save workout detail - exerciseId is nil")
+
+            // Show visual error feedback to user
+            saveFailedError = true
+            showSaveErrorMessage = true
+
+            // Auto-hide error message after 3 seconds
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                showSaveErrorMessage = false
+            }
+
             return
         }
+
+        // Clear any previous errors on successful save
+        saveFailedError = false
+        showSaveErrorMessage = false
+
         let setsInput = [setInput]
         workoutController.workoutManager.saveOrUpdateSetsDuringActiveWorkout(workoutId: workoutId, exerciseId: exerciseId, exerciseName: workoutDetails.exerciseName, setsInput: setsInput, orderIndex: workoutDetails.orderIndex)
     }
@@ -292,7 +356,15 @@ struct ExerciseRowActive: View {
         guard let updatedWorkoutDetails = workoutController.workoutDetails.first(where: { $0.id == workoutDetails.id }) else {
             return
         }
-        setInput = updatedWorkoutDetails.sets[setIndex - 1]
+
+        // Validate array bounds before accessing
+        let arrayIndex = setIndex - 1
+        guard arrayIndex >= 0 && arrayIndex < updatedWorkoutDetails.sets.count else {
+            AppLogger.validation.error("Invalid set index \(setIndex) for exercise with \(updatedWorkoutDetails.sets.count) sets")
+            return
+        }
+
+        setInput = updatedWorkoutDetails.sets[arrayIndex]
         repsInput = "\(setInput.reps)"
         distanceInput = "\(setInput.distance)"
         weightInput = "\(setInput.weight)"

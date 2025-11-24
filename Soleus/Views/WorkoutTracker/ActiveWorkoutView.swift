@@ -30,9 +30,12 @@ struct ActiveWorkoutView: View {
     @State private var endWorkoutConfirmationShown = false
     @State private var showTimer: Bool = false
     @State private var showAddExerciseDialog = false
+    @State private var showAddExerciseConfirmation = false
     @State private var editMode: EditMode = .inactive
     @State private var showChangesPreview = false
     @State private var selectedExerciseIndexForNotes: Int?
+    @State private var selectedExerciseIndexForDelete: Int?
+    @State private var expandedExercises: Set<Int> = []
 
     init(workoutId: UUID) {
         self.workoutId = workoutId
@@ -91,11 +94,14 @@ struct ActiveWorkoutView: View {
                         .foregroundColor(editMode == .active ? .green : .primary)
                 }
 
-                Button(action: {
-                    showAddExerciseDialog = true
-                }) {
-                    Image(systemName: "plus.circle")
-                        .foregroundColor(.primary)
+                if editMode == .active {
+                    Button(action: {
+                        activeAlert = .addExerciseConfirmation
+                        showAlert = true
+                    }) {
+                        Image(systemName: "plus.circle")
+                            .foregroundColor(.primary)
+                    }
                 }
 
                 Menu {
@@ -142,6 +148,36 @@ struct ActiveWorkoutView: View {
                         secondaryButton: .cancel(Text("Keep Original Values"), action: {
                             viewModel.completeWorkout(shouldUpdateTemplate: false)
                         }))
+
+                case .exerciseAdded:
+                    return Alert(
+                        title: Text("Exercise Added"),
+                        message: Text("This exercise has been added to your workout plan and will be saved even if you cancel this workout session."),
+                        dismissButton: .default(Text("OK"))
+                    )
+
+                case .addExerciseConfirmation:
+                    return Alert(
+                        title: Text("Add Exercise"),
+                        message: Text("This exercise will be permanently added to your workout plan, even if you cancel this workout session. Continue?"),
+                        primaryButton: .default(Text("Add Exercise"), action: {
+                            showAddExerciseDialog = true
+                        }),
+                        secondaryButton: .cancel()
+                    )
+
+                case .deleteExercise:
+                    return Alert(
+                        title: Text("Delete Exercise"),
+                        message: Text("This will permanently remove this exercise from your workout plan. Continue?"),
+                        primaryButton: .destructive(Text("Delete"), action: {
+                            if let index = selectedExerciseIndexForDelete {
+                                deleteExercise(at: index)
+                                selectedExerciseIndexForDelete = nil
+                            }
+                        }),
+                        secondaryButton: .cancel()
+                    )
                 }
 
             }
@@ -150,6 +186,20 @@ struct ActiveWorkoutView: View {
                 // Setup ViewModel with dependencies
                 viewModel.setup(workoutController: workoutController, appViewModel: appViewModel)
                 viewModel.loadWorkout()
+
+                // Expand all exercises by default
+                expandedExercises = Set(workoutController.workoutDetails.indices)
+            }
+            .onChange(of: workoutController.workoutDetails.count) { oldCount, newCount in
+                // When exercises are added, expand them automatically
+                if newCount > oldCount {
+                    expandedExercises = Set(workoutController.workoutDetails.indices)
+
+                    // If workout is active, save new exercises directly to template
+                    if viewModel.workoutStarted {
+                        saveNewExercisesToTemplate()
+                    }
+                }
             }
             .onDisappear {
                 viewModel.cleanup()
@@ -215,6 +265,13 @@ struct ActiveWorkoutView: View {
         ForEach(workoutController.workoutDetails.indices, id: \.self) { index in
             Section(header: VStack(alignment: .leading, spacing: 4) {
                 HStack {
+                    // Chevron indicator
+                    Image(systemName: "chevron.right")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .rotationEffect(.degrees(expandedExercises.contains(index) ? 90 : 0))
+                        .animation(.easeInOut(duration: 0.2), value: expandedExercises.contains(index))
+
                     Text(workoutController.workoutDetails[index].exerciseName)
                         .font(.title2)
                         .foregroundColor(Color.myBlack)
@@ -252,6 +309,28 @@ struct ActiveWorkoutView: View {
                                     }
                                 }
                         }
+
+                        // Delete button
+                        Image(systemName: "trash")
+                            .foregroundColor(focusManager.isAnyTextFieldFocused ? .gray : .red)
+                            .opacity(focusManager.isAnyTextFieldFocused ? 0.5 : 1.0)
+                            .onTapGesture {
+                                if !focusManager.isAnyTextFieldFocused {
+                                    selectedExerciseIndexForDelete = index
+                                    activeAlert = .deleteExercise
+                                    showAlert = true
+                                }
+                            }
+                    }
+                }
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    withAnimation {
+                        if expandedExercises.contains(index) {
+                            expandedExercises.remove(index)
+                        } else {
+                            expandedExercises.insert(index)
+                        }
                     }
                 }
 
@@ -269,34 +348,36 @@ struct ActiveWorkoutView: View {
                     .padding(.top, 4)
                 }
             }) {
-                if !workoutController.workoutDetails[index].sets.isEmpty {
-                    SetHeaders(exerciseQuantifier: workoutController.workoutDetails[index].exerciseQuantifier, exerciseMeasurement: workoutController.workoutDetails[index].exerciseMeasurement, active: true)
-                }
-
-                ForEach(workoutController.workoutDetails[index].sets.indices, id: \.self) { setIndex in
-                    ExerciseRowActive(
-                        setInput: $workoutController.workoutDetails[index].sets[setIndex],
-                        setIndex: setIndex + 1,
-                        workoutDetails: workoutController.workoutDetails[index],
-                        workoutId: workoutId,
-                        workoutStarted: viewModel.workoutStarted,
-                        workoutCancelled: viewModel.workoutCancelled,
-                        exerciseQuantifier: workoutController.workoutDetails[index].exerciseQuantifier,
-                        exerciseMeasurement: workoutController.workoutDetails[index].exerciseMeasurement
-                    )
-                    .environmentObject(focusManager)
-                    .environmentObject(workoutController)
-                    .listRowInsets(EdgeInsets())
-                }
-                .onDelete(perform: editMode == .active ? { offsets in
-                    workoutController.workoutDetails[index].sets.remove(atOffsets: offsets)
-                } : nil)
-
-                if viewModel.workoutStarted && editMode == .active {
-                    Button("Add Set") {
-                        addSet(to: index)
+                if expandedExercises.contains(index) {
+                    if !workoutController.workoutDetails[index].sets.isEmpty {
+                        SetHeaders(exerciseQuantifier: workoutController.workoutDetails[index].exerciseQuantifier, exerciseMeasurement: workoutController.workoutDetails[index].exerciseMeasurement, active: true)
                     }
-                    .buttonStyle(BorderlessButtonStyle())
+
+                    ForEach(workoutController.workoutDetails[index].sets.indices, id: \.self) { setIndex in
+                        ExerciseRowActive(
+                            setInput: $workoutController.workoutDetails[index].sets[setIndex],
+                            setIndex: setIndex + 1,
+                            workoutDetails: workoutController.workoutDetails[index],
+                            workoutId: workoutId,
+                            workoutStarted: viewModel.workoutStarted,
+                            workoutCancelled: viewModel.workoutCancelled,
+                            exerciseQuantifier: workoutController.workoutDetails[index].exerciseQuantifier,
+                            exerciseMeasurement: workoutController.workoutDetails[index].exerciseMeasurement
+                        )
+                        .environmentObject(focusManager)
+                        .environmentObject(workoutController)
+                        .listRowInsets(EdgeInsets())
+                    }
+                    .onDelete(perform: editMode == .active ? { offsets in
+                        workoutController.workoutDetails[index].sets.remove(atOffsets: offsets)
+                    } : nil)
+
+                    if viewModel.workoutStarted && editMode == .active {
+                        Button("Add Set") {
+                            addSet(to: index)
+                        }
+                        .buttonStyle(BorderlessButtonStyle())
+                    }
                 }
             }
         }
@@ -356,6 +437,43 @@ struct ActiveWorkoutView: View {
         }
     }
 
+    private func deleteExercise(at index: Int) {
+        guard index < workoutController.workoutDetails.count else { return }
+
+        let detail = workoutController.workoutDetails[index]
+
+        // Remove from in-memory array
+        workoutController.workoutDetails.remove(at: index)
+
+        // Remove from workout template and temporary data if it has an exerciseId
+        if let exerciseId = detail.exerciseId {
+            guard let context = workoutController.workoutManager.context else { return }
+            guard let workout = workoutController.workoutManager.fetchWorkoutById(for: workoutId) else { return }
+
+            // Delete from CoreData template (WorkoutDetail)
+            if let details = workout.details as? Set<WorkoutDetail>,
+               let detailToDelete = details.first(where: { $0.exerciseId == exerciseId }) {
+                context.delete(detailToDelete)
+            }
+
+            // Delete from temporary workout details (TemporaryWorkoutDetail)
+            if let tempDetails = workout.detailsTemp as? Set<TemporaryWorkoutDetail>,
+               let tempDetailToDelete = tempDetails.first(where: { $0.exerciseId == exerciseId }) {
+                context.delete(tempDetailToDelete)
+            }
+
+            do {
+                try context.save()
+                print("Deleted exercise '\(detail.exerciseName)' from workout template and temporary data")
+            } catch {
+                print("Failed to delete exercise: \(error)")
+            }
+        }
+
+        // Update expanded exercises set
+        expandedExercises = Set(workoutController.workoutDetails.indices)
+    }
+
     private func buttonAction() {
         if viewModel.workoutStarted {
             if showEndWorkoutOption {
@@ -380,17 +498,89 @@ struct ActiveWorkoutView: View {
         }
     }
 
+    private func saveNewExercisesToTemplate() {
+        guard let workout = workoutController.workoutManager.fetchWorkoutById(for: workoutId) else {
+            print("Failed to fetch workout")
+            return
+        }
+
+        var exerciseWasAdded = false
+
+        // Find exercises without exerciseId and save them to the template
+        for index in workoutController.workoutDetails.indices {
+            if workoutController.workoutDetails[index].exerciseId == nil {
+                let detail = workoutController.workoutDetails[index]
+
+                // Save directly to workout template
+                workoutController.workoutManager.addWorkoutDetail(
+                    id: detail.id ?? UUID(),
+                    workoutTitle: workout.name ?? "",
+                    exerciseName: detail.exerciseName,
+                    color: workout.color ?? "",
+                    orderIndex: detail.orderIndex,
+                    sets: detail.sets,
+                    exerciseMeasurement: detail.exerciseMeasurement,
+                    exerciseQuantifier: detail.exerciseQuantifier,
+                    notes: detail.notes
+                )
+
+                // Fetch the workout again to get the newly created exerciseId
+                if let updatedWorkout = workoutController.workoutManager.fetchWorkoutById(for: workoutId),
+                   let details = updatedWorkout.details as? Set<WorkoutDetail>,
+                   let newDetail = details.first(where: { $0.exerciseName == detail.exerciseName && $0.orderIndex == detail.orderIndex }),
+                   let newExerciseId = newDetail.exerciseId {
+
+                    // Update the exerciseId in memory so saves work
+                    workoutController.workoutDetails[index].exerciseId = newExerciseId
+                    print("Added exercise '\(detail.exerciseName)' to workout template with exerciseId: \(newExerciseId)")
+                    exerciseWasAdded = true
+                }
+            }
+        }
+
+        // Show alert to inform user
+        if exerciseWasAdded {
+            activeAlert = .exerciseAdded
+            showAlert = true
+        }
+    }
+
     private var startWorkoutButton: some View {
         Button(action: buttonAction) {
-            Text(workoutButtonText)
-                .font(.title2)
-                .foregroundColor(Color.myWhite)
-                .padding()
-                .frame(maxWidth: .infinity)
-                .background(Color.myBlue)
-                .cornerRadius(10)
+            HStack(spacing: 8) {
+                if viewModel.workoutStarted {
+                    if showEndWorkoutOption {
+                        Image(systemName: "stop.circle.fill")
+                            .font(.title3)
+                    } else {
+                        Image(systemName: "timer")
+                            .font(.title3)
+                    }
+                } else {
+                    Image(systemName: "play.circle.fill")
+                        .font(.title3)
+                }
+                Text(workoutButtonText)
+                    .font(.headline)
+                    .fontWeight(.semibold)
+            }
+            .foregroundColor(.staticWhite)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 16)
+            .background(
+                LinearGradient(
+                    gradient: Gradient(colors: [
+                        showEndWorkoutOption ? Color.red : Color.myBlue,
+                        showEndWorkoutOption ? Color.red.opacity(0.8) : Color.myBlue.opacity(0.8)
+                    ]),
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+            )
+            .cornerRadius(14)
+            .shadow(color: (showEndWorkoutOption ? Color.red : Color.myBlue).opacity(0.3), radius: 8, x: 0, y: 4)
         }
-        .padding(.horizontal)
+        .padding(.horizontal, 20)
         .disabled(!viewModel.workoutStarted && showEndWorkoutOption || viewModel.isAnyOtherSessionActive())
         .confirmationDialog("Are you sure you want to end this workout?", isPresented: $endWorkoutConfirmationShown, titleVisibility: .visible) {
             Button("End Workout", action: endWorkout)
@@ -414,7 +604,7 @@ struct ActiveWorkoutView: View {
 }
 
 enum ActiveWorkoutAlert {
-    case updateValues, cancelWorkout
+    case updateValues, cancelWorkout, exerciseAdded, addExerciseConfirmation, deleteExercise
 }
 
 // MARK: - Workout Changes Preview

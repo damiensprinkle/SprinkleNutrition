@@ -42,6 +42,7 @@
 		088B577A2EC3A7030066CC17 /* ActiveWorkoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B57782EC3A7030066CC17 /* ActiveWorkoutViewModel.swift */; };
 		088B57BB2EC3BC9F0066CC17 /* CoreDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B57B92EC3BC9F0066CC17 /* CoreDataError.swift */; };
 		088B57BC2EC3BC9F0066CC17 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B57BA2EC3BC9F0066CC17 /* ErrorHandler.swift */; };
+		08A2EBE12ED4BF9C00B60FF9 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A2EBDF2ED4BF9C00B60FF9 /* AppLogger.swift */; };
 		08B3CF232B791FB8002F5C92 /* DataCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B3CF222B791FB8002F5C92 /* DataCardView.swift */; };
 		08B3CF512B7BC611002F5C92 /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 08B3CF502B7BC611002F5C92 /* ConfettiSwiftUI */; };
 		08B3CF7B2B7BDD0C002F5C92 /* AddExerciseDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B3CF7A2B7BDD0C002F5C92 /* AddExerciseDialog.swift */; };
@@ -141,6 +142,7 @@
 		088B57782EC3A7030066CC17 /* ActiveWorkoutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveWorkoutViewModel.swift; sourceTree = "<group>"; };
 		088B57B92EC3BC9F0066CC17 /* CoreDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataError.swift; sourceTree = "<group>"; };
 		088B57BA2EC3BC9F0066CC17 /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
+		08A2EBDF2ED4BF9C00B60FF9 /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
 		08B3CF222B791FB8002F5C92 /* DataCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCardView.swift; sourceTree = "<group>"; };
 		08B3CF7A2B7BDD0C002F5C92 /* AddExerciseDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExerciseDialog.swift; sourceTree = "<group>"; };
 		08B3CF7E2B7C088F002F5C92 /* SetHeaders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetHeaders.swift; sourceTree = "<group>"; };
@@ -302,6 +304,14 @@
 			path = SoleusUITests;
 			sourceTree = "<group>";
 		};
+		08A2EBE02ED4BF9C00B60FF9 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				08A2EBDF2ED4BF9C00B60FF9 /* AppLogger.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
 		08B3CF7C2B7C07C0002F5C92 /* ModifyWorkout */ = {
 			isa = PBXGroup;
 			children = (
@@ -358,6 +368,7 @@
 		08B78FEE2B6DBA370002DA68 /* Soleus */ = {
 			isa = PBXGroup;
 			children = (
+				08A2EBE02ED4BF9C00B60FF9 /* Utilities */,
 				081DD58F2EC90D7E00B4074D /* achievements.json */,
 				081DD58C2EC5121B00B4074D /* Info.plist */,
 				088B57792EC3A7030066CC17 /* ViewModels */,
@@ -604,6 +615,7 @@
 				085466822CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataClass.swift in Sources */,
 				085466832CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataProperties.swift in Sources */,
 				081DD59C2ECA9D3D00B4074D /* FAQView.swift in Sources */,
+				08A2EBE12ED4BF9C00B60FF9 /* AppLogger.swift in Sources */,
 				085466842CDFAD4700136FBC /* WorkoutDetail+CoreDataProperties.swift in Sources */,
 				081DD5922EC90F0100B4074D /* AchievementManager.swift in Sources */,
 				08EF97E32CEEBC0D00AE8196 /* CustomizeCardView.swift in Sources */,

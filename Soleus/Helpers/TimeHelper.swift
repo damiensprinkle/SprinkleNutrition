@@ -1,10 +1,3 @@
-//
-//  SwiftUIView.swift
-//  FlexSprinkle
-//
-//  Created by Damien Sprinkle on 2/15/24.
-//
-
 import SwiftUI
 
 func formatTimeFromSeconds(totalSeconds: Int) -> String {

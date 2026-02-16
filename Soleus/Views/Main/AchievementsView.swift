@@ -1,10 +1,3 @@
-//
-//  AchievementsView.swift
-//  FlexSprinkle
-//
-//  Created by Claude Code
-//
-
 import SwiftUI
 
 enum AchievementFilter: String, CaseIterable {

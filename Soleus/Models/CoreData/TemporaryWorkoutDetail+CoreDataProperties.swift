@@ -1,6 +1,6 @@
 //
 //  TemporaryWorkoutDetail+CoreDataProperties.swift
-//  FlexSprinkle
+//  Soleus
 //
 //  Created by Damien Sprinkle on 11/9/24.
 //

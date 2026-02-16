@@ -1,10 +1,3 @@
-//
-//  ActiveWorkoutViewModel.swift
-//  FlexSprinkle
-//
-//  Created by Claude Code
-//
-
 import Foundation
 import SwiftUI
 import Combine
@@ -105,7 +98,8 @@ class ActiveWorkoutViewModel: ObservableObject {
         elapsedTime = 0
         startTimer()
         workoutController.workoutManager.setSessionStatus(workoutId: workoutId, isActive: true)
-        AppLogger.workout.info("Started workout with ID: \(workoutId)")
+        HapticManager.shared.workoutStarted()
+        AppLogger.workout.info("Started workout with ID: \(self.workoutId)")
     }
 
     func cancelWorkout() {
@@ -115,7 +109,8 @@ class ActiveWorkoutViewModel: ObservableObject {
         workoutController.workoutManager.deleteAllTemporaryWorkoutDetails()
         workoutController.loadWorkoutDetails(for: workoutId)
         workoutCancelled = true
-        AppLogger.workout.info("Canceled workout with ID: \(workoutId)")
+        HapticManager.shared.workoutCancelled()
+        AppLogger.workout.info("Canceled workout with ID: \(self.workoutId)")
     }
 
     func completeWorkout(shouldUpdateTemplate: Bool) {
@@ -131,6 +126,7 @@ class ActiveWorkoutViewModel: ObservableObject {
 
         workoutStarted = false
         workoutController.setSessionStatus(workoutId: workoutId, isActive: false)
+        HapticManager.shared.workoutCompleted()
 
         // Save workout history and navigate when complete
         workoutController.saveWorkoutHistory(elapsedTimeFormatted: elapsedTimeFormatted, workoutId: workoutId) { [weak self] in

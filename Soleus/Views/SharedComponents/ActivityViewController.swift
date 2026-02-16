@@ -1,10 +1,3 @@
-//
-//  ActivityViewController.swift
-//  FlexSprinkle
-//
-//  Created by Claude Code
-//
-
 import SwiftUI
 import UIKit
 

@@ -1,10 +1,3 @@
-//
-//  WorkoutTrackerMainView.swift
-//  FlexSprinkle
-//
-//  Created by Damien Sprinkle on 2/3/24.
-//
-
 import SwiftUI
 import SwiftData
 

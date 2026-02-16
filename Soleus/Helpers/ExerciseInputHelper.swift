@@ -1,9 +1,3 @@
-//
-//  ExerciseInputHelper.swift
-//  FlexSprinkle
-//
-//  Created by Damien Sprinkle on 11/15/24.
-//
 import SwiftUI
 
 
@@ -14,7 +8,7 @@ func validateAndSetInputFloat(_ input: inout String, for setInputField: inout Fl
 
     let decimalPattern = "^[0-9]{0,\(maxLength)}(?:\\.[0-9]{0,\(maxDecimals)})?$"
     guard let regex = try? NSRegularExpression(pattern: decimalPattern) else {
-        print("Error: Failed to create regex with pattern: \(decimalPattern)")
+        AppLogger.workout.error("Error: Failed to create regex with pattern : \(decimalPattern)")
         setInputField = Float(input) ?? 0.0
         return
     }
@@ -34,7 +28,7 @@ func validateAndSetInputInt(_ input: inout String, for setInputField: inout Int3
 
     let integerPattern = "^[0-9]{0,\(maxLength)}$"
     guard let regex = try? NSRegularExpression(pattern: integerPattern) else {
-        print("Error: Failed to create regex with pattern: \(integerPattern)")
+        AppLogger.workout .error("Error: Failed to create regex with pattern : \(integerPattern)")
         setInputField = Int32(input) ?? 0
         return
     }

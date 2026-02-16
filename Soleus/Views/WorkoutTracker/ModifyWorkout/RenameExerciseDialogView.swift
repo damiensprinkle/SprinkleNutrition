@@ -1,10 +1,3 @@
-//
-//  RenameExerciseDialog.swift
-//  FlexSprinkle
-//
-//  Created by Damien Sprinkle on 2/18/24.
-//
-
 import SwiftUI
 
 struct RenameExerciseDialogView: View {

@@ -1,10 +1,3 @@
-//
-//  ExerciciseRow.swift
-//  FlexSprinkle
-//
-//  Created by Damien Sprinkle on 11/9/24.
-//
-
 import SwiftUI
 import OSLog
 

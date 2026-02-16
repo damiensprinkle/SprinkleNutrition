@@ -1,10 +1,3 @@
-//
-//  WorkoutManaging.swift
-//  FlexSprinkle
-//
-//  Created by Claude Code
-//
-
 import Foundation
 import CoreData
 import Combine
@@ -126,6 +119,10 @@ protocol WorkoutManaging: AnyObject, ObservableObject {
 
     /// Fetches all workout history for a specific month
     func fetchAllWorkoutHistory(for date: Date) -> [WorkoutHistory]?
+    
+    /// Fetches all workout history for all time
+    func fetchAllWorkoutHistoryAllTime() -> [WorkoutHistory]?
+
 
     /// Deletes a specific workout history entry
     func deleteWorkoutHistory(for historyId: UUID)

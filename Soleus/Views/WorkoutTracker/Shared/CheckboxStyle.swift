@@ -1,10 +1,3 @@
-//
-//  CheckboxStyle.swift
-//  FlexSprinkle
-//
-//  Created by Damien Sprinkle on 2/22/24.
-//
-
 import SwiftUI
 
 struct CheckboxStyle: ToggleStyle {

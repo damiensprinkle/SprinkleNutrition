@@ -1,10 +1,3 @@
-//
-//  MonthYearPickerView.swift
-//  FlexSprinkle
-//
-//  Created by Damien Sprinkle on 2/17/24.
-//
-
 import SwiftUI
 
 struct MonthYearPickerView: View {
@@ -42,7 +35,6 @@ struct MonthYearPickerView: View {
                     .background(Color("MyGrey").opacity(0.15))
                     .cornerRadius(10)
                 }
-                .frame(maxWidth: .infinity)
 
                 // Year picker
                 Menu {
@@ -64,7 +56,8 @@ struct MonthYearPickerView: View {
                     .background(Color("MyGrey").opacity(0.15))
                     .cornerRadius(10)
                 }
-                .frame(maxWidth: .infinity)
+
+                Spacer()
             }
             .padding(.horizontal)
             .padding(.vertical, 8)

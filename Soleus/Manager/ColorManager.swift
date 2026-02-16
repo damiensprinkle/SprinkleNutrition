@@ -1,10 +1,3 @@
-//
-//  ColorManager.swift
-//  FlexSprinkle
-//
-//  Created by Damien Sprinkle on 2/6/24.
-//
-
 import SwiftUI
 
 class ColorManager {

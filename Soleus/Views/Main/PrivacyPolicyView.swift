@@ -1,10 +1,3 @@
-//
-//  PrivacyPolicyView.swift
-//  FlexSprinkle
-//
-//  Created by Claude Code
-//
-
 import SwiftUI
 
 struct PrivacyPolicyView: View {

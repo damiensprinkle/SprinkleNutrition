@@ -1,6 +1,6 @@
 //
 //  WorkoutHistory+CoreDataProperties.swift
-//  FlexSprinkle
+//  SOLEUS
 //
 //  Created by Damien Sprinkle on 2/17/24.
 //

@@ -1,10 +1,3 @@
-//
-//  FAQView.swift
-//  FlexSprinkle
-//
-//  Created by Claude Code
-//
-
 import SwiftUI
 
 struct FAQView: View {
@@ -80,7 +73,7 @@ struct FAQView: View {
 
                     FAQItem(
                         question: "What types of exercises can I track?",
-                        answer: "FlexSprinkle supports four types of exercises:\n\n• Reps (like push-ups, pull-ups)\n• Weight & Reps (like bench press, squats)\n• Time (like planks, wall sits)\n• Distance (like running, cycling)\n\nEach exercise type has appropriate fields for tracking your performance.",
+                        answer: "Soleus supports four types of exercises:\n\n• Reps (like push-ups, pull-ups)\n• Weight & Reps (like bench press, squats)\n• Time (like planks, wall sits)\n• Distance (like running, cycling)\n\nEach exercise type has appropriate fields for tracking your performance.",
                         expandedQuestion: $expandedQuestion
                     )
 

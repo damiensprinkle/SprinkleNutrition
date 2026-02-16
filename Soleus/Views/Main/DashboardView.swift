@@ -1,10 +1,3 @@
-//
-//  DashboardView.swift
-//  FlexSprinkle
-//
-//  Created by Damien Sprinkle on 2/10/24.
-//
-
 import SwiftUI
 
 struct DashboardView: View {

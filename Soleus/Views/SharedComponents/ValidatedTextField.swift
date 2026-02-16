@@ -1,10 +1,3 @@
-//
-//  ValidatedTextField.swift
-//  FlexSprinkle
-//
-//  Created by Damien Sprinkle on 11/13/24.
-//
-
 import SwiftUI
 
 enum InputType: Equatable {

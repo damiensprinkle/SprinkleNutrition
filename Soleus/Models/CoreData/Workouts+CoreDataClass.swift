@@ -1,6 +1,6 @@
 //
 //  Workouts+CoreDataClass.swift
-//  FlexSprinkle
+//  Soleus
 //
 //  Created by Damien Sprinkle on 11/20/24.
 //

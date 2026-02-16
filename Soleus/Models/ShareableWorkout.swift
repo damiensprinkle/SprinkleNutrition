@@ -1,10 +1,3 @@
-//
-//  ShareableWorkout.swift
-//  FlexSprinkle
-//
-//  Created by Claude Code
-//
-
 import Foundation
 
 /// Codable model for exporting/importing workouts as JSON

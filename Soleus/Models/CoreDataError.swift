@@ -1,10 +1,3 @@
-//
-//  CoreDataError.swift
-//  FlexSprinkle
-//
-//  Created by Claude Code
-//
-
 import Foundation
 
 /// Errors that can occur during CoreData operations

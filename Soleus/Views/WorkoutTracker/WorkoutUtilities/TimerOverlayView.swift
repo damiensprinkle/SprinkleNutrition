@@ -1,10 +1,3 @@
-//
-//  TimerOverlayView.swift
-//  FlexSprinkle
-//
-//  Created by Damien Sprinkle on 11/21/24.
-//
-
 import SwiftUI
 
 struct TimerHeaderView: View {
@@ -14,35 +7,69 @@ struct TimerHeaderView: View {
     @State private var timer: Timer?
 
     var body: some View {
-        HStack {
-            Text(formatTime(elapsedTime))
-                .font(.headline)
-                .foregroundColor(.myWhite)
+        HStack(spacing: 16) {
+            // Timer circle with animated border
+            ZStack {
+                Circle()
+                    .stroke(Color.white.opacity(0.3), lineWidth: 4)
+                    .frame(width: 60, height: 60)
+
+                // Animated rotating circle when timer is running
+                if timerRunning {
+                    Circle()
+                        .trim(from: 0, to: 0.7)
+                        .stroke(Color.green, style: StrokeStyle(lineWidth: 4, lineCap: .round))
+                        .frame(width: 60, height: 60)
+                        .rotationEffect(.degrees(Double(elapsedTime) * 60))
+                        .animation(.linear(duration: 1), value: elapsedTime)
+                }
+
+                VStack(spacing: 2) {
+                    Image(systemName: "stopwatch")
+                        .font(.system(size: 14))
+                        .foregroundColor(.white)
+                    Text(formatTime(elapsedTime))
+                        .font(.system(size: 12, weight: .bold, design: .monospaced))
+                        .foregroundColor(.white)
+                }
+            }
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Custom Timer")
+                    .font(.caption)
+                    .foregroundColor(.white.opacity(0.8))
+
+                HStack(spacing: 12) {
+                    // Play/Pause button
+                    Button(action: toggleTimer) {
+                        Image(systemName: timerRunning ? "pause.circle.fill" : "play.circle.fill")
+                            .font(.system(size: 28))
+                            .foregroundColor(timerRunning ? .yellow : .green)
+                    }
+
+                    // Reset button
+                    Button(action: resetTimer) {
+                        Image(systemName: "arrow.counterclockwise.circle.fill")
+                            .font(.system(size: 28))
+                            .foregroundColor(.blue)
+                    }
+                }
+            }
 
             Spacer()
 
-            Button(action: toggleTimer) {
-                Image(systemName: timerRunning ? "pause.circle" : "play.circle")
-                    .font(.title)
-                    .foregroundColor(.myWhite)
-            }
-
-            Button(action: resetTimer) {
-                Image(systemName: "stop.circle")
-                    .font(.title)
-                    .foregroundColor(.myWhite)
-            }
-
+            // Close button
             Button(action: {
                 cleanupTimer()
                 showTimer = false
             }) {
-                Image(systemName: "xmark.circle")
-                    .font(.title)
-                    .foregroundColor(.myWhite)
+                Image(systemName: "xmark.circle.fill")
+                    .font(.system(size: 28))
+                    .foregroundColor(.white.opacity(0.8))
             }
         }
-        .padding()
+        .padding(.horizontal, 20)
+        .padding(.vertical, 12)
         .onDisappear(perform: cleanupTimer)
     }
 

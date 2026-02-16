@@ -1,11 +1,3 @@
-//
-//  ModalType.swift
-//  FlexSprinkle
-//
-//  Created by Damien Sprinkle on 11/12/24.
-//
-
-
 import SwiftUI
 
 enum ModalType: Identifiable {

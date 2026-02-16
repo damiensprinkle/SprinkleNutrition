@@ -1,10 +1,3 @@
-//
-//  WorkoutManager.swift
-//  FlexSprinkle
-//
-//  Created by Damien Sprinkle on 2/5/24.
-//
-
 import Foundation
 import CoreData
 import OSLog
@@ -123,7 +116,7 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
 
         do {
             guard let workout = try context.fetch(workoutRequest).first else {
-                print("No workout found with ID: \(workoutId)")
+                AppLogger.workout.error("No workout found with ID: \(workoutId)")
                 errorHandler?.handle(.workoutNotFound(workoutId))
                 return
             }
@@ -929,7 +922,7 @@ extension WorkoutManager {
         // Create a predicate to filter workouts within the start and end of the month
         fetchRequest.predicate = NSPredicate(format: "(workoutDate >= %@) AND (workoutDate <= %@)", argumentArray: [startOfMonth, endOfMonth])
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "workoutDate", ascending: true)]
-        
+
         do {
             let histories = try context.fetch(fetchRequest)
             return histories
@@ -938,7 +931,24 @@ extension WorkoutManager {
             return nil
         }
     }
-    
+
+    /// Fetches all workout history records (all time, no date filter)
+    func fetchAllWorkoutHistoryAllTime() -> [WorkoutHistory]? {
+        guard let context = self.context else { return nil }
+
+        let fetchRequest: NSFetchRequest<WorkoutHistory> = WorkoutHistory.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "workoutDate", ascending: false)]
+
+        do {
+            let histories = try context.fetch(fetchRequest)
+            AppLogger.coreData.info("Fetched \(histories.count) workout histories (all time)")
+            return histories
+        } catch {
+            AppLogger.coreData.error("Failed to fetch all workout history: \(error.localizedDescription)")
+            return nil
+        }
+    }
+
     func setSessionStatus(workoutId: UUID, isActive: Bool) {
         guard let context = self.context else { return }
 

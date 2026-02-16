@@ -1,10 +1,3 @@
-//
-//  NewWorkoutView.swift
-//  FlexSprinkle
-//
-//  Created by Damien Sprinkle on 2/4/24.
-//
-
 import SwiftUI
 import Combine
 
@@ -18,6 +11,10 @@ struct ActiveWorkoutView: View {
 
     @StateObject private var focusManager = FocusManager()
     @StateObject private var viewModel: ActiveWorkoutViewModel
+    @StateObject private var restTimer = RestTimerManager()
+
+    @AppStorage("autoStartRestTimer") private var autoStartRestTimer: Bool = true
+    @AppStorage("defaultRestDuration") private var defaultRestDuration: Int = 90
 
     // UI State only
     @State private var errorMessage: String = ""
@@ -57,6 +54,14 @@ struct ActiveWorkoutView: View {
                             .background(Color.black.opacity(0.8))
                             .zIndex(1)
                     }
+
+                    // Rest timer at top
+                    if viewModel.workoutStarted {
+                        RestTimerView(restTimer: restTimer)
+                            .padding(.top, 8)
+                            .zIndex(1)
+                    }
+
                     Form {
                         displayExerciseDetailsAndSets
                     }
@@ -203,6 +208,8 @@ struct ActiveWorkoutView: View {
             }
             .onDisappear {
                 viewModel.cleanup()
+                // Stop rest timer when leaving the view
+                restTimer.skipRest()
             }
             .sheet(isPresented: $showAddExerciseDialog) {
                 ZStack {
@@ -262,7 +269,7 @@ struct ActiveWorkoutView: View {
         }
 
     private var displayExerciseDetailsAndSets: some View {
-        ForEach(workoutController.workoutDetails.indices, id: \.self) { index in
+        ForEach(Array(workoutController.workoutDetails.enumerated()), id: \.element.exerciseId) { index, detail in
             Section(header: VStack(alignment: .leading, spacing: 4) {
                 HStack {
                     // Chevron indicator
@@ -271,16 +278,21 @@ struct ActiveWorkoutView: View {
                         .foregroundColor(.secondary)
                         .rotationEffect(.degrees(expandedExercises.contains(index) ? 90 : 0))
                         .animation(.easeInOut(duration: 0.2), value: expandedExercises.contains(index))
+                        .accessibilityHidden(true)
 
                     Text(workoutController.workoutDetails[index].exerciseName)
                         .font(.title2)
                         .foregroundColor(Color.myBlack)
+                        .accessibilityAddTraits(.isHeader)
                     Spacer()
 
                     // Notes icon
                     let hasNotes = workoutController.workoutDetails[index].notes != nil && !workoutController.workoutDetails[index].notes!.isEmpty
                     Image(systemName: hasNotes ? "note.text.badge.plus" : "note.text")
                         .foregroundColor(hasNotes ? .orange : .gray)
+                        .accessibilityLabel(hasNotes ? "Exercise has notes" : "Add exercise notes")
+                        .accessibilityHint("Double tap to \(hasNotes ? "view or edit" : "add") notes for this exercise")
+                        .accessibilityAddTraits(.isButton)
                         .onTapGesture {
                             selectedExerciseIndexForNotes = index
                         }
@@ -291,6 +303,9 @@ struct ActiveWorkoutView: View {
                             Image(systemName: "arrow.up")
                                 .foregroundColor(focusManager.isAnyTextFieldFocused ? .gray : .blue)
                                 .opacity(focusManager.isAnyTextFieldFocused ? 0.5 : 1.0)
+                                .accessibilityLabel("Move exercise up")
+                                .accessibilityHint("Double tap to move \(workoutController.workoutDetails[index].exerciseName) up in the workout order")
+                                .accessibilityAddTraits(.isButton)
                                 .onTapGesture {
                                     if !focusManager.isAnyTextFieldFocused {
                                         moveExercise(from: index, direction: .up)
@@ -303,6 +318,9 @@ struct ActiveWorkoutView: View {
                             Image(systemName: "arrow.down")
                                 .foregroundColor(focusManager.isAnyTextFieldFocused ? .gray : .blue)
                                 .opacity(focusManager.isAnyTextFieldFocused ? 0.5 : 1.0)
+                                .accessibilityLabel("Move exercise down")
+                                .accessibilityHint("Double tap to move \(workoutController.workoutDetails[index].exerciseName) down in the workout order")
+                                .accessibilityAddTraits(.isButton)
                                 .onTapGesture {
                                     if !focusManager.isAnyTextFieldFocused {
                                         moveExercise(from: index, direction: .down)
@@ -314,6 +332,9 @@ struct ActiveWorkoutView: View {
                         Image(systemName: "trash")
                             .foregroundColor(focusManager.isAnyTextFieldFocused ? .gray : .red)
                             .opacity(focusManager.isAnyTextFieldFocused ? 0.5 : 1.0)
+                            .accessibilityLabel("Delete exercise")
+                            .accessibilityHint("Double tap to permanently remove \(workoutController.workoutDetails[index].exerciseName) from this workout")
+                            .accessibilityAddTraits(.isButton)
                             .onTapGesture {
                                 if !focusManager.isAnyTextFieldFocused {
                                     selectedExerciseIndexForDelete = index
@@ -333,6 +354,10 @@ struct ActiveWorkoutView: View {
                         }
                     }
                 }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel("\(workoutController.workoutDetails[index].exerciseName), \(expandedExercises.contains(index) ? "expanded" : "collapsed")")
+                .accessibilityHint("Double tap to \(expandedExercises.contains(index) ? "collapse" : "expand") exercise details")
+                .accessibilityAddTraits(.isButton)
 
                 // Display notes if they exist
                 if let notes = workoutController.workoutDetails[index].notes, !notes.isEmpty {
@@ -366,6 +391,7 @@ struct ActiveWorkoutView: View {
                         )
                         .environmentObject(focusManager)
                         .environmentObject(workoutController)
+                        .environmentObject(restTimer)
                         .listRowInsets(EdgeInsets())
                     }
                     .onDelete(perform: editMode == .active ? { offsets in
@@ -430,10 +456,43 @@ struct ActiveWorkoutView: View {
                 targetIndex = index + 1
             }
 
+            // Move the exercise in the array
             workoutController.workoutDetails.move(
                 fromOffsets: IndexSet(integer: index),
                 toOffset: targetIndex > index ? targetIndex + 1 : targetIndex
             )
+
+            // CRITICAL: Update orderIndex for all exercises after reordering
+            for (newIndex, _) in workoutController.workoutDetails.enumerated() {
+                workoutController.workoutDetails[newIndex].orderIndex = Int32(newIndex)
+            }
+
+            // Save the updated order to CoreData
+            guard let workout = workoutController.workoutManager.fetchWorkoutById(for: workoutId) else {
+                AppLogger.activeWorkout.error("Failed to fetch workout for reordering")
+                return
+            }
+
+            // Update temporary workout details order
+            if let tempDetails = workout.detailsTemp as? Set<TemporaryWorkoutDetail> {
+                for detail in workoutController.workoutDetails {
+                    if let exerciseId = detail.exerciseId,
+                       let tempDetail = tempDetails.first(where: { $0.exerciseId == exerciseId }) {
+                        tempDetail.orderIndex = Int32(Int16(detail.orderIndex))
+                    }
+                }
+            }
+
+            // Save the context
+            if let context = workoutController.workoutManager.context {
+                do {
+                    try context.save()
+                    HapticManager.shared.exerciseReordered()
+                    AppLogger.activeWorkout.info("Successfully reordered exercises and saved to CoreData")
+                } catch {
+                    AppLogger.activeWorkout.error("Failed to save reordered exercises: \(error.localizedDescription)")
+                }
+            }
         }
     }
 
@@ -464,9 +523,10 @@ struct ActiveWorkoutView: View {
 
             do {
                 try context.save()
-                print("Deleted exercise '\(detail.exerciseName)' from workout template and temporary data")
+                HapticManager.shared.exerciseDeleted()
+                AppLogger.activeWorkout.info("Deleted exercise '\(detail.exerciseName)' from workout template and temporary data")
             } catch {
-                print("Failed to delete exercise: \(error)")
+                AppLogger.activeWorkout.error("Failed to delete exercise: \(error)")
             }
         }
 
@@ -500,7 +560,7 @@ struct ActiveWorkoutView: View {
 
     private func saveNewExercisesToTemplate() {
         guard let workout = workoutController.workoutManager.fetchWorkoutById(for: workoutId) else {
-            print("Failed to fetch workout")
+            AppLogger.activeWorkout.error("Failed to fetch workout")
             return
         }
 
@@ -532,7 +592,7 @@ struct ActiveWorkoutView: View {
 
                     // Update the exerciseId in memory so saves work
                     workoutController.workoutDetails[index].exerciseId = newExerciseId
-                    print("Added exercise '\(detail.exerciseName)' to workout template with exerciseId: \(newExerciseId)")
+                    AppLogger.activeWorkout.info("Added exercise '\(detail.exerciseName)' to workout template with exerciseId: \(newExerciseId)")
                     exerciseWasAdded = true
                 }
             }
@@ -580,6 +640,9 @@ struct ActiveWorkoutView: View {
             .cornerRadius(14)
             .shadow(color: (showEndWorkoutOption ? Color.red : Color.myBlue).opacity(0.3), radius: 8, x: 0, y: 4)
         }
+        .accessibilityLabel(workoutButtonAccessibilityLabel)
+        .accessibilityHint(workoutButtonAccessibilityHint)
+        .accessibilityAddTraits(.isButton)
         .padding(.horizontal, 20)
         .disabled(!viewModel.workoutStarted && showEndWorkoutOption || viewModel.isAnyOtherSessionActive())
         .confirmationDialog("Are you sure you want to end this workout?", isPresented: $endWorkoutConfirmationShown, titleVisibility: .visible) {
@@ -591,6 +654,22 @@ struct ActiveWorkoutView: View {
         .confirmationDialog("Are you sure you want to start this workout?", isPresented: $showingStartConfirmation, titleVisibility: .visible) {
             Button("Start", action: { viewModel.startWorkout() })
             Button("Cancel", role: .cancel) {}
+        }
+    }
+
+    private var workoutButtonAccessibilityLabel: String {
+        if viewModel.workoutStarted {
+            return showEndWorkoutOption ? "End workout" : "Workout timer: \(viewModel.elapsedTimeFormatted)"
+        } else {
+            return "Start workout"
+        }
+    }
+
+    private var workoutButtonAccessibilityHint: String {
+        if viewModel.workoutStarted {
+            return showEndWorkoutOption ? "Double tap to confirm ending workout" : "Tap to end workout"
+        } else {
+            return "Double tap to begin tracking your workout"
         }
     }
 

@@ -1,10 +1,3 @@
-//
-//  ErrorHandler.swift
-//  FlexSprinkle
-//
-//  Created by Claude Code
-//
-
 import Foundation
 import SwiftUI
 

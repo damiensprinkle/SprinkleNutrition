@@ -1,10 +1,3 @@
-//
-//  WorkoutDetailsInput.swift
-//  FlexSprinkle
-//
-//  Created by Damien Sprinkle on 2/7/24.
-//
-
 import SwiftUI
 
 struct WorkoutDetailInput: Equatable {

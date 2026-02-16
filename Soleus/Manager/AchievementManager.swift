@@ -1,10 +1,3 @@
-//
-//  AchievementManager.swift
-//  FlexSprinkle
-//
-//  Created by Claude Code
-//
-
 import Foundation
 import CoreData
 
@@ -213,6 +206,9 @@ class AchievementManager: ObservableObject {
                 }
             }
 
+            // Calculate weekly and monthly workout counts
+            let (workoutsThisWeek, workoutsThisMonth, maxWeek, maxMonth) = calculateWeeklyMonthlyStats(histories: histories)
+
             return WorkoutStats(
                 totalWorkouts: totalWorkouts,
                 totalWeightLifted: Double(totalWeightLifted),
@@ -222,7 +218,11 @@ class AchievementManager: ObservableObject {
                 currentStreak: currentStreak,
                 longestStreak: longestStreak,
                 longestWorkoutInMinutes: longestWorkoutInMinutes,
-                hasShortWorkout: hasShortWorkout
+                hasShortWorkout: hasShortWorkout,
+                workoutsThisWeek: workoutsThisWeek,
+                workoutsThisMonth: workoutsThisMonth,
+                maxWorkoutsInAnyWeek: maxWeek,
+                maxWorkoutsInAnyMonth: maxMonth
             )
         } catch {
             print("Failed to fetch workout history: \(error)")
@@ -240,6 +240,52 @@ class AchievementManager: ObservableObject {
             return components[0] * 60 + components[1]
         }
         return 0
+    }
+
+    private func calculateWeeklyMonthlyStats(histories: [WorkoutHistory]) -> (thisWeek: Int, thisMonth: Int, maxWeek: Int, maxMonth: Int) {
+        guard !histories.isEmpty else { return (0, 0, 0, 0) }
+
+        let calendar = Calendar.current
+        let now = Date()
+        let currentWeekStart = calendar.dateInterval(of: .weekOfYear, for: now)?.start ?? now
+        let currentMonthStart = calendar.dateInterval(of: .month, for: now)?.start ?? now
+
+        var workoutsThisWeek = 0
+        var workoutsThisMonth = 0
+
+        // Track workouts per week and month
+        var weekCounts: [Date: Int] = [:]
+        var monthCounts: [Date: Int] = [:]
+
+        for history in histories {
+            guard let workoutDate = history.workoutDate else { continue }
+
+            // Count workouts in current week
+            if let weekInterval = calendar.dateInterval(of: .weekOfYear, for: workoutDate),
+               weekInterval.start == currentWeekStart {
+                workoutsThisWeek += 1
+            }
+
+            // Count workouts in current month
+            if let monthInterval = calendar.dateInterval(of: .month, for: workoutDate),
+               monthInterval.start == currentMonthStart {
+                workoutsThisMonth += 1
+            }
+
+            // Track all weeks and months for max calculation
+            if let weekStart = calendar.dateInterval(of: .weekOfYear, for: workoutDate)?.start {
+                weekCounts[weekStart, default: 0] += 1
+            }
+
+            if let monthStart = calendar.dateInterval(of: .month, for: workoutDate)?.start {
+                monthCounts[monthStart, default: 0] += 1
+            }
+        }
+
+        let maxWorkoutsInWeek = weekCounts.values.max() ?? 0
+        let maxWorkoutsInMonth = monthCounts.values.max() ?? 0
+
+        return (workoutsThisWeek, workoutsThisMonth, maxWorkoutsInWeek, maxWorkoutsInMonth)
     }
 
     private func checkAchievement(_ achievement: Achievement, stats: WorkoutStats) -> (isUnlocked: Bool, current: Double, target: Double) {
@@ -331,6 +377,24 @@ class AchievementManager: ObservableObject {
             return (stats.totalReps >= 100000, Double(stats.totalReps), 100000)
         }
 
+        // Weekly achievements (based on best week ever, not just current week)
+        else if desc.contains("3 workouts in a week") {
+            return (stats.maxWorkoutsInAnyWeek >= 3, Double(stats.maxWorkoutsInAnyWeek), 3)
+        } else if desc.contains("5 workouts in a week") {
+            return (stats.maxWorkoutsInAnyWeek >= 5, Double(stats.maxWorkoutsInAnyWeek), 5)
+        }
+
+        // Monthly achievements (based on best month ever, not just current month)
+        else if desc.contains("20 workouts in a month") {
+            return (stats.maxWorkoutsInAnyMonth >= 20, Double(stats.maxWorkoutsInAnyMonth), 20)
+        }
+
+        // Perfect month achievement (placeholder - requires goal tracking)
+        else if desc.contains("perfect month") {
+            // This would require tracking weekly goals - for now return not unlocked
+            return (false, 0, 1)
+        }
+
         // Default: not unlocked
         return (false, 0, 1)
     }
@@ -346,6 +410,10 @@ struct WorkoutStats {
     var longestStreak: Int = 0
     var longestWorkoutInMinutes: Double = 0
     var hasShortWorkout: Bool = false // < 2 minutes
+    var workoutsThisWeek: Int = 0 // Current week
+    var workoutsThisMonth: Int = 0 // Current month
+    var maxWorkoutsInAnyWeek: Int = 0 // Best week ever
+    var maxWorkoutsInAnyMonth: Int = 0 // Best month ever
 }
 
 struct PersonalRecords {

@@ -1,10 +1,3 @@
-//
-//  DocumentPicker.swift
-//  FlexSprinkle
-//
-//  Created by Claude Code
-//
-
 import SwiftUI
 import UIKit
 import UniformTypeIdentifiers
@@ -14,7 +7,7 @@ struct DocumentPicker: UIViewControllerRepresentable {
     @Binding var showImportPreview: Bool
 
     func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
-        let picker = UIDocumentPickerViewController(forOpeningContentTypes: [UTType(filenameExtension: "flexsprinkle")!])
+        let picker = UIDocumentPickerViewController(forOpeningContentTypes: [UTType(filenameExtension: "soleus")!])
         picker.delegate = context.coordinator
         picker.allowsMultipleSelection = false
         return picker

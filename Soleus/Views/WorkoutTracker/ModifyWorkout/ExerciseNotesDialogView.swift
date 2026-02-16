@@ -1,10 +1,3 @@
-//
-//  ExerciseNotesDialogView.swift
-//  FlexSprinkle
-//
-//  Created by Damien Sprinkle on 11/18/24.
-//
-
 import SwiftUI
 
 struct ExerciseNotesDialogView: View {

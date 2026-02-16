@@ -133,6 +133,8 @@ struct CardView: View {
                 }) {
                     playButtonContent()
                 }
+                .accessibilityLabel(playButtonAccessibilityLabel())
+                .accessibilityHint("Double tap to \(playButtonAccessibilityHint())")
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -250,7 +252,7 @@ struct CardView: View {
         }
 
         let workoutName = workout?.name ?? "Workout"
-        let fileName = "\(workoutName.replacingOccurrences(of: " ", with: "_")).flexsprinkle"
+        let fileName = "\(workoutName.replacingOccurrences(of: " ", with: "_")).soleus"
 
         let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
 
@@ -261,6 +263,23 @@ struct CardView: View {
         } catch {
             alertTitle = "Failed to create shareable file"
             showAlert = true
+        }
+    }
+
+    private func playButtonAccessibilityLabel() -> String {
+        let workoutName = workout?.name ?? "Workout"
+        if workoutController.hasActiveSession && workoutController.activeWorkoutId == workoutId {
+            return "Resume \(workoutName)"
+        } else {
+            return "Start \(workoutName)"
+        }
+    }
+
+    private func playButtonAccessibilityHint() -> String {
+        if workoutController.hasActiveSession && workoutController.activeWorkoutId == workoutId {
+            return "resume your active workout session"
+        } else {
+            return "begin tracking this workout"
         }
     }
 

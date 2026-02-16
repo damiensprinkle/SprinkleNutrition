@@ -1,14 +1,7 @@
-//
-//  MockWorkoutManager.swift
-//  FlexSprinkleTests
-//
-//  Created by Claude Code
-//
-
 import Foundation
 import CoreData
 import Combine
-@testable import FlexSprinkle
+@testable import Soleus
 
 class MockWorkoutManager: ObservableObject, WorkoutManaging {
     @Published var workouts: [WorkoutInfo] = []
@@ -39,7 +32,8 @@ class MockWorkoutManager: ObservableObject, WorkoutManaging {
         orderIndex: Int32,
         sets: [SetInput],
         exerciseMeasurement: String,
-        exerciseQuantifier: String
+        exerciseQuantifier: String,
+        notes: String? = nil
     ) {
         addWorkoutDetailCalled = true
 
@@ -48,6 +42,35 @@ class MockWorkoutManager: ObservableObject, WorkoutManaging {
 
         let workoutInfo = WorkoutInfo(id: id, name: workoutTitle)
         workouts.append(workoutInfo)
+    }
+
+    func saveWorkoutOrder(workouts: [WorkoutInfo]) {
+        // Update the internal workouts array to match the new order
+        self.workouts = workouts
+    }
+
+    func updateExerciseNotesDuringActiveWorkout(workoutId: UUID, exerciseId: UUID, notes: String?) {
+        // Mock implementation - in real implementation this would update CoreData
+        // For testing purposes, this is a no-op
+    }
+
+    func addExerciseDuringActiveWorkout(
+        workoutId: UUID,
+        exerciseName: String,
+        orderIndex: Int32,
+        exerciseQuantifier: String,
+        exerciseMeasurement: String,
+        sets: [SetInput],
+        notes: String?
+    ) -> UUID? {
+        // Return a new UUID for the exercise
+        return UUID()
+    }
+
+    func fetchAllWorkoutHistoryAllTime() -> [WorkoutHistory]? {
+        // Return all stored history across all workouts
+        let allHistory = storedHistory.values.flatMap { $0 }
+        return allHistory.isEmpty ? nil : allHistory
     }
 
     func fetchWorkoutById(for workoutId: UUID) -> Workouts? {

@@ -1,6 +1,6 @@
 //
-//  FlexSprinkleApp.swift
-//  FlexSprinkle
+//  SoleusApp.swift
+//  Soleus
 //
 //  Created by Damien Sprinkle on 2/2/24.
 //
@@ -68,8 +68,8 @@ struct FlexSprinkleApp: App {
     }
 
     private func handleImportedFile(_ url: URL) {
-        // Ensure the file is a .flexsprinkle file
-        guard url.pathExtension == "flexsprinkle" else {
+        // Ensure the file is a .soleus file
+        guard url.pathExtension == "soleus" else {
             print("Invalid file type: \(url.pathExtension)")
             return
         }

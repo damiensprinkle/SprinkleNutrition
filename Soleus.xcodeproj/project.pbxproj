@@ -43,6 +43,14 @@
 		088B57BB2EC3BC9F0066CC17 /* CoreDataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B57B92EC3BC9F0066CC17 /* CoreDataError.swift */; };
 		088B57BC2EC3BC9F0066CC17 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B57BA2EC3BC9F0066CC17 /* ErrorHandler.swift */; };
 		08A2EBE12ED4BF9C00B60FF9 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A2EBDF2ED4BF9C00B60FF9 /* AppLogger.swift */; };
+		08A2EC032ED4C30C00B60FF9 /* RestTimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A2EC022ED4C30C00B60FF9 /* RestTimerManager.swift */; };
+		08A2EC062ED4C32600B60FF9 /* RestTimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A2EC042ED4C32600B60FF9 /* RestTimerView.swift */; };
+		08A2EC082ED4CC4800B60FF9 /* WorkoutProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A2EC072ED4CC4800B60FF9 /* WorkoutProgressView.swift */; };
+		08A2EC0A2ED4D53800B60FF9 /* DevMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A2EC092ED4D53800B60FF9 /* DevMenuView.swift */; };
+		08A2EC0C2ED6443900B60FF9 /* LogCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A2EC0B2ED6443900B60FF9 /* LogCapture.swift */; };
+		08A2EC0E2ED6444500B60FF9 /* LogViewerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A2EC0D2ED6444500B60FF9 /* LogViewerView.swift */; };
+		08A2EC102ED8BF3400B60FF9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 08A2EC0F2ED8BF3400B60FF9 /* PrivacyInfo.xcprivacy */; };
+		08A2EC122ED8BFAA00B60FF9 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A2EC112ED8BFAA00B60FF9 /* HapticManager.swift */; };
 		08B3CF232B791FB8002F5C92 /* DataCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B3CF222B791FB8002F5C92 /* DataCardView.swift */; };
 		08B3CF512B7BC611002F5C92 /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 08B3CF502B7BC611002F5C92 /* ConfettiSwiftUI */; };
 		08B3CF7B2B7BDD0C002F5C92 /* AddExerciseDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B3CF7A2B7BDD0C002F5C92 /* AddExerciseDialog.swift */; };
@@ -143,6 +151,14 @@
 		088B57B92EC3BC9F0066CC17 /* CoreDataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataError.swift; sourceTree = "<group>"; };
 		088B57BA2EC3BC9F0066CC17 /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
 		08A2EBDF2ED4BF9C00B60FF9 /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
+		08A2EC022ED4C30C00B60FF9 /* RestTimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestTimerManager.swift; sourceTree = "<group>"; };
+		08A2EC042ED4C32600B60FF9 /* RestTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestTimerView.swift; sourceTree = "<group>"; };
+		08A2EC072ED4CC4800B60FF9 /* WorkoutProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutProgressView.swift; sourceTree = "<group>"; };
+		08A2EC092ED4D53800B60FF9 /* DevMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevMenuView.swift; sourceTree = "<group>"; };
+		08A2EC0B2ED6443900B60FF9 /* LogCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogCapture.swift; sourceTree = "<group>"; };
+		08A2EC0D2ED6444500B60FF9 /* LogViewerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogViewerView.swift; sourceTree = "<group>"; };
+		08A2EC0F2ED8BF3400B60FF9 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		08A2EC112ED8BFAA00B60FF9 /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		08B3CF222B791FB8002F5C92 /* DataCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataCardView.swift; sourceTree = "<group>"; };
 		08B3CF7A2B7BDD0C002F5C92 /* AddExerciseDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExerciseDialog.swift; sourceTree = "<group>"; };
 		08B3CF7E2B7C088F002F5C92 /* SetHeaders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetHeaders.swift; sourceTree = "<group>"; };
@@ -230,6 +246,8 @@
 		0871113B2B7306060054E315 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				08A2EC112ED8BFAA00B60FF9 /* HapticManager.swift */,
+				08A2EC022ED4C30C00B60FF9 /* RestTimerManager.swift */,
 				081DD5912EC90F0100B4074D /* AchievementManager.swift */,
 				08B790302B7138F70002DA68 /* WorkoutManager.swift */,
 				0871113C2B7306C20054E315 /* ColorManager.swift */,
@@ -312,6 +330,14 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
+		08A2EC052ED4C32600B60FF9 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				08A2EC042ED4C32600B60FF9 /* RestTimerView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		08B3CF7C2B7C07C0002F5C92 /* ModifyWorkout */ = {
 			isa = PBXGroup;
 			children = (
@@ -337,6 +363,7 @@
 		08B3CFE82B7E9F9A002F5C92 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				08A2EC0B2ED6443900B60FF9 /* LogCapture.swift */,
 				0828683E2CE7E13500835C08 /* ExerciseInputHelper.swift */,
 				08B3CFE92B7E9FA6002F5C92 /* TimeHelper.swift */,
 			);
@@ -368,6 +395,7 @@
 		08B78FEE2B6DBA370002DA68 /* Soleus */ = {
 			isa = PBXGroup;
 			children = (
+				08A2EC0F2ED8BF3400B60FF9 /* PrivacyInfo.xcprivacy */,
 				08A2EBE02ED4BF9C00B60FF9 /* Utilities */,
 				081DD58F2EC90D7E00B4074D /* achievements.json */,
 				081DD58C2EC5121B00B4074D /* Info.plist */,
@@ -398,6 +426,8 @@
 		08B7901C2B6E8F230002DA68 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				08A2EC0D2ED6444500B60FF9 /* LogViewerView.swift */,
+				08A2EC092ED4D53800B60FF9 /* DevMenuView.swift */,
 				084753592CE3D3D500C6A7F9 /* SharedComponents */,
 				08B7901D2B6E8F8D0002DA68 /* SettingsView.swift */,
 				087111AB2B77E9DB0054E315 /* Main */,
@@ -436,6 +466,8 @@
 		08B790282B708A1F0002DA68 /* WorkoutTracker */ = {
 			isa = PBXGroup;
 			children = (
+				08A2EC072ED4CC4800B60FF9 /* WorkoutProgressView.swift */,
+				08A2EC052ED4C32600B60FF9 /* Components */,
 				081DD58A2EC511D000B4074D /* ImportWorkoutPreviewView.swift */,
 				08EF98262CEF89A700AE8196 /* WorkoutUtilities */,
 				08EF97E22CEEBC0A00AE8196 /* CustomizeCardView.swift */,
@@ -573,6 +605,7 @@
 			isa = PBXResourcesBuildPhase;
 			files = (
 				08B3D00E2B82AC7C002F5C92 /* Launch Screen.storyboard in Resources */,
+				08A2EC102ED8BF3400B60FF9 /* PrivacyInfo.xcprivacy in Resources */,
 				08B78FF82B6DBA390002DA68 /* Preview Assets.xcassets in Resources */,
 				081DD5902EC90D8500B4074D /* achievements.json in Resources */,
 				08B78FF42B6DBA390002DA68 /* Assets.xcassets in Resources */,
@@ -618,6 +651,7 @@
 				08A2EBE12ED4BF9C00B60FF9 /* AppLogger.swift in Sources */,
 				085466842CDFAD4700136FBC /* WorkoutDetail+CoreDataProperties.swift in Sources */,
 				081DD5922EC90F0100B4074D /* AchievementManager.swift in Sources */,
+				08A2EC0A2ED4D53800B60FF9 /* DevMenuView.swift in Sources */,
 				08EF97E32CEEBC0D00AE8196 /* CustomizeCardView.swift in Sources */,
 				0871113A2B72AD830054E315 /* Model.xcdatamodeld in Sources */,
 				08B3CFE72B7E6E40002F5C92 /* FocusManager.swift in Sources */,
@@ -631,6 +665,7 @@
 				081DD58B2EC511D000B4074D /* ImportWorkoutPreviewView.swift in Sources */,
 				084753632CE3F2D500C6A7F9 /* ModalType.swift in Sources */,
 				08B7901E2B6E8F8D0002DA68 /* SettingsView.swift in Sources */,
+				08A2EC0E2ED6444500B60FF9 /* LogViewerView.swift in Sources */,
 				08B3CFDC2B7D9567002F5C92 /* WorkoutSet+CoreDataClass.swift in Sources */,
 				08B3CFEF2B810DFF002F5C92 /* WorkoutHistory+CoreDataClass.swift in Sources */,
 				0871113D2B7306C20054E315 /* ColorManager.swift in Sources */,
@@ -640,6 +675,7 @@
 				08B3CFF02B810DFF002F5C92 /* WorkoutHistory+CoreDataProperties.swift in Sources */,
 				087111A62B77C32D0054E315 /* AppViewModel.swift in Sources */,
 				08B78FF02B6DBA370002DA68 /* SoleusApp.swift in Sources */,
+				08A2EC0C2ED6443900B60FF9 /* LogCapture.swift in Sources */,
 				087111A82B77C6DF0054E315 /* WorkoutInfo.swift in Sources */,
 				08B790202B6E91010002DA68 /* WorkoutTrackerMainView.swift in Sources */,
 				08B3CFDB2B7D9567002F5C92 /* WorkoutSession+CoreDataProperties.swift in Sources */,
@@ -648,11 +684,15 @@
 				088B57BB2EC3BC9F0066CC17 /* CoreDataError.swift in Sources */,
 				088B57BC2EC3BC9F0066CC17 /* ErrorHandler.swift in Sources */,
 				08FC757E2CDFB4DF001E2E5B /* ExerciseRow.swift in Sources */,
+				08A2EC032ED4C30C00B60FF9 /* RestTimerManager.swift in Sources */,
 				08B7902B2B7090870002DA68 /* AddWorkoutView.swift in Sources */,
 				081DD5942EC90F1400B4074D /* Achievement.swift in Sources */,
 				081F87F22B87F6ED00BBBDF2 /* CheckboxStyle.swift in Sources */,
+				08A2EC082ED4CC4800B60FF9 /* WorkoutProgressView.swift in Sources */,
 				08FC75802CDFCA86001E2E5B /* ExerciseRowActive.swift in Sources */,
 				0847536F2CE5205D00C6A7F9 /* WorkoutSaveError.swift in Sources */,
+				08A2EC122ED8BFAA00B60FF9 /* HapticManager.swift in Sources */,
+				08A2EC062ED4C32600B60FF9 /* RestTimerView.swift in Sources */,
 				081DD5962EC90F2700B4074D /* AchievementsView.swift in Sources */,
 				0847535B2CE3D47D00C6A7F9 /* WorkoutTrackerController.swift in Sources */,
 			);

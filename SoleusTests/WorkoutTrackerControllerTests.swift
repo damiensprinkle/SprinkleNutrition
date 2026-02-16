@@ -1,13 +1,6 @@
-//
-//  WorkoutTrackerControllerTests.swift
-//  FlexSprinkleTests
-//
-//  Created by Claude Code
-//
-
 import XCTest
 import Combine
-@testable import FlexSprinkle
+@testable import Soleus
 
 final class WorkoutTrackerControllerTests: XCTestCase {
     var sut: WorkoutTrackerController!

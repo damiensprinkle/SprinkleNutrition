@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  FlexSprinkle
-//
-//  Created by Damien Sprinkle on 2/2/24.
-//
-
 import SwiftUI
 
 struct HomeView: View {

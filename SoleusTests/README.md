@@ -1,28 +1,22 @@
-# FlexSprinkle Unit Tests
+# Soleus Unit Tests
 
 ## Overview
 
-This directory contains unit tests for the FlexSprinkle workout tracking app. Tests use mock implementations to verify business logic without requiring CoreData or UI.
+This directory contains unit tests for the Soleus workout tracking app. Tests use mock implementations to verify business logic without requiring CoreData or UI.
 
 ---
 
 ## Running Tests
 
 ### In Xcode:
-1. Open FlexSprinkle.xcodeproj
+1. Open Soleus.xcodeproj
 2. Press `Cmd + U` to run all tests
 3. Or navigate to Test Navigator (Cmd + 6) and click the play button
 
 ### From Command Line:
 ```bash
 # Run all tests
-xcodebuild test -scheme FlexSprinkle -destination 'platform=iOS Simulator,name=iPhone 15'
-
-# Run specific test class
-xcodebuild test -scheme FlexSprinkle -destination 'platform=iOS Simulator,name=iPhone 15' -only-testing:FlexSprinkleTests/WorkoutTrackerControllerTests
-
-# Run specific test
-xcodebuild test -scheme FlexSprinkle -destination 'platform=iOS Simulator,name=iPhone 15' -only-testing:FlexSprinkleTests/WorkoutTrackerControllerTests/testSaveWorkout_WithEmptyTitle_ReturnsError
+xcodebuild test -scheme Soleus -destination 'platform=iOS Simulator,name=iPhone 15'
 ```
 
 ---
@@ -69,7 +63,7 @@ func testExample() {
 ### 1. Test File Structure
 ```swift
 import XCTest
-@testable import FlexSprinkle
+@testable import Soleus
 
 final class YourTests: XCTestCase {
     var sut: SystemUnderTest!

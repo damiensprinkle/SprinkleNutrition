@@ -1,10 +1,3 @@
-//
-//  SetHeaders.swift
-//  FlexSprinkle
-//
-//  Created by Damien Sprinkle on 2/13/24.
-//
-
 import SwiftUI
 
 struct SetHeaders: View {

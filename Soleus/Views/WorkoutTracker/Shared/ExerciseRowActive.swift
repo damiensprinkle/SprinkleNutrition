@@ -1,10 +1,3 @@
-//
-//  ExerciseRowActive.swift
-//  FlexSprinkle
-//
-//  Created by Damien Sprinkle on 11/9/24.
-//
-
 import SwiftUI
 import OSLog
 
@@ -35,6 +28,10 @@ struct ExerciseRowActive: View {
     @State private var showSaveErrorMessage: Bool = false
     @EnvironmentObject var focusManager: FocusManager
     @EnvironmentObject var workoutController: WorkoutTrackerController
+    @EnvironmentObject var restTimer: RestTimerManager
+
+    @AppStorage("autoStartRestTimer") private var autoStartRestTimer: Bool = true
+    @AppStorage("defaultRestDuration") private var defaultRestDuration: Int = 90
     
     
     var body: some View {
@@ -78,11 +75,26 @@ struct ExerciseRowActive: View {
             .onChange(of: checked) {
                 setInput.isCompleted = checked
                 saveWorkoutDetail()
+
+                // Haptic feedback for set completion
+                if checked {
+                    HapticManager.shared.setCompleted()
+                } else {
+                    HapticManager.shared.setUncompleted()
+                }
+
+                // Auto-start rest timer when set is completed
+                if checked && autoStartRestTimer && workoutStarted {
+                    restTimer.startRest(duration: defaultRestDuration)
+                }
             }
             .frame(width: 50)
             .toggleStyle(SwitchToggleStyle(tint: Color(UIColor.green)))
             .scaleEffect(0.8)
             .padding(.trailing, 10)
+            .accessibilityLabel("Set \(setIndex) completion")
+            .accessibilityValue(checked ? "Completed" : "Not completed")
+            .accessibilityHint("Double tap to mark set as \(checked ? "incomplete" : "complete")")
             
         }
         .onAppear{
@@ -202,6 +214,9 @@ struct ExerciseRowActive: View {
             }
             .keyboardType(.numberPad)
             .frame(width: 100, height: 20)
+            .accessibilityLabel("Reps for set \(setIndex)")
+            .accessibilityValue("\(setInput.reps) reps")
+            .accessibilityHint("Double tap to edit number of repetitions")
     }
     
     private func resetFocusedField(){
@@ -242,6 +257,9 @@ struct ExerciseRowActive: View {
             }
             .keyboardType(.numberPad)
             .frame(width: 100, height: 20)
+            .accessibilityLabel("Distance for set \(setIndex)")
+            .accessibilityValue("\(setInput.distance) miles")
+            .accessibilityHint("Double tap to edit distance")
     }
     
     private var weightTextField: some View {
@@ -275,6 +293,9 @@ struct ExerciseRowActive: View {
             }
             .keyboardType(.decimalPad)
             .frame(width: 100, height: 20)
+            .accessibilityLabel("Weight for set \(setIndex)")
+            .accessibilityValue("\(setInput.weight) pounds")
+            .accessibilityHint("Double tap to edit weight amount")
     }
     
     private var timeTextField : some View {
@@ -314,9 +335,12 @@ struct ExerciseRowActive: View {
                 let formattedTime = formatTimeFromSeconds(totalSeconds: Int(setInput.time))
                 timeInput = "\(formattedTime)"
             }
-        
+
             .frame(width: 100, height: 20)
             .keyboardType(.numberPad)
+            .accessibilityLabel("Time for set \(setIndex)")
+            .accessibilityValue(timeInput)
+            .accessibilityHint("Double tap to edit time duration in hours, minutes, and seconds")
     }
     
     func saveWorkoutDetail() {
@@ -396,6 +420,8 @@ struct ExerciseRowActive: View {
             checked = true
             setInput.isCompleted = true
             saveWorkoutDetail()
+            // Haptic feedback for auto-completion
+            HapticManager.shared.setCompleted()
         }
     }
 

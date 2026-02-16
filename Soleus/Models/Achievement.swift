@@ -1,10 +1,3 @@
-//
-//  Achievement.swift
-//  FlexSprinkle
-//
-//  Created by Claude Code
-//
-
 import Foundation
 
 struct Achievement: Codable, Identifiable {

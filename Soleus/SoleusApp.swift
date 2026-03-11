@@ -9,7 +9,7 @@ import SwiftUI
 import CoreData
 
 @main
-struct FlexSprinkleApp: App {
+struct SoleusApp: App {
     @StateObject private var persistenceController: PersistenceController
     @StateObject private var appViewModel = AppViewModel()
     @StateObject private var workoutManager = WorkoutManager()

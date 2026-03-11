@@ -199,6 +199,7 @@
 		08B7902A2B7090870002DA68 /* AddWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWorkoutView.swift; sourceTree = "<group>"; };
 		08B790302B7138F70002DA68 /* WorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutManager.swift; sourceTree = "<group>"; };
 		08C31FFE2B82EA3A002EE8A7 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
+		08C5DDC72F6218F400FC40DB /* Soleus.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = Soleus.xctestplan; path = ../Soleus.xctestplan; sourceTree = "<group>"; };
 		08EF97E22CEEBC0A00AE8196 /* CustomizeCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeCardView.swift; sourceTree = "<group>"; };
 		08EF97E62CEEC13500AE8196 /* Workouts+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workouts+CoreDataClass.swift"; sourceTree = "<group>"; };
 		08EF97E72CEEC13500AE8196 /* Workouts+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workouts+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -404,6 +405,7 @@
 		08B78FE32B6DBA370002DA68 = {
 			isa = PBXGroup;
 			children = (
+				08C5DDC72F6218F400FC40DB /* Soleus.xctestplan */,
 				088B577C2EC3AAB30066CC17 /* SoleusUITests */,
 				088B57722EC3A1C00066CC17 /* SoleusTests */,
 				085466322CB618AA00136FBC /* images */,

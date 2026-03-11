@@ -9,7 +9,6 @@ class MockWorkoutManager: ObservableObject, WorkoutManaging {
 
     // Test data storage - simplified to avoid CoreData
     private var storedWorkoutData: [UUID: (name: String, color: String?)] = [:]
-    private var storedHistory: [UUID: [WorkoutHistory]] = [:]
     private var storedSessions: [WorkoutSession] = []
     private var activeSessionWorkoutId: UUID?
 
@@ -21,6 +20,11 @@ class MockWorkoutManager: ObservableObject, WorkoutManaging {
     var setSessionStatusCalled = false
     var lastDeletedWorkoutId: UUID?
     var lastUpdatedWorkoutId: UUID?
+    var lastSavedTotalWeight: Float?
+    var lastSavedRepsCompleted: Int32?
+    var lastSavedTotalCardioTime: String?
+    var lastSavedTotalDistance: Float?
+    var lastSavedWorkoutTime: String?
 
     // MARK: - Workout CRUD Operations
 
@@ -68,9 +72,7 @@ class MockWorkoutManager: ObservableObject, WorkoutManaging {
     }
 
     func fetchAllWorkoutHistoryAllTime() -> [WorkoutHistory]? {
-        // Return all stored history across all workouts
-        let allHistory = storedHistory.values.flatMap { $0 }
-        return allHistory.isEmpty ? nil : allHistory
+        return nil
     }
 
     func fetchWorkoutById(for workoutId: UUID) -> Workouts? {
@@ -188,65 +190,24 @@ class MockWorkoutManager: ObservableObject, WorkoutManaging {
         completion: (() -> Void)? = nil
     ) {
         saveWorkoutHistoryCalled = true
+        lastSavedTotalWeight = totalWeightLifted
+        lastSavedRepsCompleted = repsCompleted
+        lastSavedWorkoutTime = workoutTimeToComplete
+        lastSavedTotalCardioTime = totalCardioTime
+        lastSavedTotalDistance = totalDistance
         completion?()
-
-        let history = MockWorkoutHistory(
-            id: UUID(),
-            workoutDate: dateCompleted,
-            totalWeightLifted: totalWeightLifted,
-            repsCompleted: repsCompleted,
-            workoutTimeToComplete: workoutTimeToComplete
-        )
-
-        if storedHistory[workoutId] == nil {
-            storedHistory[workoutId] = []
-        }
-        storedHistory[workoutId]?.append(history)
     }
 
     func fetchLatestWorkoutHistory(for workoutId: UUID) -> WorkoutHistory? {
-        return storedHistory[workoutId]?.last
+        return nil
     }
 
     func fetchAllWorkoutHistory(for date: Date) -> [WorkoutHistory]? {
-        let calendar = Calendar.current
-        let month = calendar.component(.month, from: date)
-        let year = calendar.component(.year, from: date)
-
-        return storedHistory.values.flatMap { $0 }.filter { history in
-            guard let historyDate = history.workoutDate else { return false }
-            let historyMonth = calendar.component(.month, from: historyDate)
-            let historyYear = calendar.component(.year, from: historyDate)
-            return historyMonth == month && historyYear == year
-        }
+        return nil
     }
 
     func deleteWorkoutHistory(for historyId: UUID) {
-        for (workoutId, histories) in storedHistory {
-            storedHistory[workoutId] = histories.filter { $0.id != historyId }
-        }
+        // No-op in mock
     }
 }
 
-// MARK: - Mock CoreData Objects
-
-class MockWorkoutHistory: WorkoutHistory {
-    override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
-        super.init(entity: entity, insertInto: context)
-    }
-
-    init(id: UUID, workoutDate: Date, totalWeightLifted: Float, repsCompleted: Int32, workoutTimeToComplete: String) {
-        let entity = NSEntityDescription()
-        entity.name = "WorkoutHistory"
-        super.init(entity: entity, insertInto: nil)
-        self.id = id
-        self.workoutDate = workoutDate
-        self.totalWeightLifted = totalWeightLifted
-        self.repsCompleted = repsCompleted
-        self.workoutTimeToComplete = workoutTimeToComplete
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}

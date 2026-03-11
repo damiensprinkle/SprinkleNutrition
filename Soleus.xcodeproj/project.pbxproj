@@ -91,6 +91,8 @@
 		0CA10006300000000000AA01 /* WorkoutValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10015300000000000AA01 /* WorkoutValidationTests.swift */; };
 		0CA10007300000000000AA01 /* HistoryViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10016300000000000AA01 /* HistoryViewTests.swift */; };
 		0CA10008300000000000AA01 /* SettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10017300000000000AA01 /* SettingsTests.swift */; };
+		0CA10020300000000000AA01 /* TimeHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10022300000000000AA01 /* TimeHelperTests.swift */; };
+		0CA10021300000000000AA01 /* ShareableWorkoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10023300000000000AA01 /* ShareableWorkoutTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -210,6 +212,8 @@
 		0CA10015300000000000AA01 /* WorkoutValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutValidationTests.swift; sourceTree = "<group>"; };
 		0CA10016300000000000AA01 /* HistoryViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewTests.swift; sourceTree = "<group>"; };
 		0CA10017300000000000AA01 /* SettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTests.swift; sourceTree = "<group>"; };
+		0CA10022300000000000AA01 /* TimeHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeHelperTests.swift; sourceTree = "<group>"; };
+		0CA10023300000000000AA01 /* ShareableWorkoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareableWorkoutTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -319,6 +323,8 @@
 				088B576F2EC3A1C00066CC17 /* Mocks */,
 				088B57702EC3A1C00066CC17 /* README.md */,
 				088B57712EC3A1C00066CC17 /* WorkoutTrackerControllerTests.swift */,
+				0CA10022300000000000AA01 /* TimeHelperTests.swift */,
+				0CA10023300000000000AA01 /* ShareableWorkoutTests.swift */,
 			);
 			path = SoleusTests;
 			sourceTree = "<group>";
@@ -727,6 +733,8 @@
 			files = (
 				088B57732EC3A1C00066CC17 /* WorkoutTrackerControllerTests.swift in Sources */,
 				088B57742EC3A1C00066CC17 /* MockWorkoutManager.swift in Sources */,
+				0CA10020300000000000AA01 /* TimeHelperTests.swift in Sources */,
+				0CA10021300000000000AA01 /* ShareableWorkoutTests.swift in Sources */,
 			);
 		};
 		08B790032B6DBA390002DA68 /* Sources */ = {

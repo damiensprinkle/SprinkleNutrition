@@ -28,8 +28,8 @@
                                 <color key="textColor" name="MyBlack"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Soleus_Bright.png" translatesAutoresizingMaskIntoConstraints="NO" id="h2n-mr-sim">
-                                <rect key="frame" x="76" y="266" width="240" height="128"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Soleus_Launch.png" translatesAutoresizingMaskIntoConstraints="NO" id="h2n-mr-sim">
+                                <rect key="frame" x="76" y="391" width="240" height="128"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                         </subviews>
@@ -51,7 +51,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Soleus_Bright.png" width="1024" height="1024"/>
+        <image name="Soleus_Launch.png" width="1024" height="1024"/>
         <namedColor name="MyBlack">
             <color red="0.12156862745098039" green="0.12156862745098039" blue="0.12156862745098039" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>

@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-test:
+    runs-on: macos-15
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+
+      - name: Show Xcode version
+        run: xcodebuild -version
+
+      - name: List available simulators
+        run: xcrun simctl list devices available iPhone
+
+      - name: Resolve SPM dependencies
+        run: xcodebuild -resolvePackageDependencies -scheme FlexSprinkle -project Soleus.xcodeproj
+
+      - name: Build and run tests
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -scheme FlexSprinkle \
+            -project Soleus.xcodeproj \
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
+            -resultBundlePath TestResults.xcresult \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            2>&1 | tee build.log | xcbeautify --is-ci || true
+
+          # Check if tests actually passed by looking at the log
+          if grep -q "** TEST SUCCEEDED **" build.log; then
+            echo "Tests passed!"
+          else
+            echo "Tests failed!"
+            exit 1
+          fi
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: TestResults.xcresult
+          retention-days: 7
+
+      - name: Upload build log
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: build.log
+          retention-days: 7

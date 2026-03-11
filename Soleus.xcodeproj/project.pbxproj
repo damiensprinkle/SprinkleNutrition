@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0CA10001300000000000AA01 /* AccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10010300000000000AA01 /* AccessibilityIdentifiers.swift */; };
+		0CA10002300000000000AA01 /* TestAccessibilityIDs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10011300000000000AA01 /* TestAccessibilityIDs.swift */; };
+		0CA10003300000000000AA01 /* SoleusUITestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10012300000000000AA01 /* SoleusUITestBase.swift */; };
+		0CA10004300000000000AA01 /* TabNavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10013300000000000AA01 /* TabNavigationTests.swift */; };
+		0CA10005300000000000AA01 /* CreateWorkoutFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10014300000000000AA01 /* CreateWorkoutFlowTests.swift */; };
+		0CA10006300000000000AA01 /* WorkoutValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10015300000000000AA01 /* WorkoutValidationTests.swift */; };
+		0CA10007300000000000AA01 /* HistoryViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10016300000000000AA01 /* HistoryViewTests.swift */; };
+		0CA10008300000000000AA01 /* SettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10017300000000000AA01 /* SettingsTests.swift */; };
 		081DD5892EC511AB00B4074D /* ShareableWorkout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081DD5882EC511AB00B4074D /* ShareableWorkout.swift */; };
 		081DD58B2EC511D000B4074D /* ImportWorkoutPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081DD58A2EC511D000B4074D /* ImportWorkoutPreviewView.swift */; };
 		081DD5902EC90D8500B4074D /* achievements.json in Resources */ = {isa = PBXBuildFile; fileRef = 081DD58F2EC90D7E00B4074D /* achievements.json */; };
@@ -114,6 +122,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0CA10010300000000000AA01 /* AccessibilityIdentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityIdentifiers.swift; sourceTree = "<group>"; };
+		0CA10011300000000000AA01 /* TestAccessibilityIDs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAccessibilityIDs.swift; sourceTree = "<group>"; };
+		0CA10012300000000000AA01 /* SoleusUITestBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoleusUITestBase.swift; sourceTree = "<group>"; };
+		0CA10013300000000000AA01 /* TabNavigationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabNavigationTests.swift; sourceTree = "<group>"; };
+		0CA10014300000000000AA01 /* CreateWorkoutFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWorkoutFlowTests.swift; sourceTree = "<group>"; };
+		0CA10015300000000000AA01 /* WorkoutValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutValidationTests.swift; sourceTree = "<group>"; };
+		0CA10016300000000000AA01 /* HistoryViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewTests.swift; sourceTree = "<group>"; };
+		0CA10017300000000000AA01 /* SettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTests.swift; sourceTree = "<group>"; };
 		081DD5882EC511AB00B4074D /* ShareableWorkout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareableWorkout.swift; sourceTree = "<group>"; };
 		081DD58A2EC511D000B4074D /* ImportWorkoutPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportWorkoutPreviewView.swift; sourceTree = "<group>"; };
 		081DD58C2EC5121B00B4074D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -318,6 +334,13 @@
 		088B577C2EC3AAB30066CC17 /* SoleusUITests */ = {
 			isa = PBXGroup;
 			children = (
+				0CA10011300000000000AA01 /* TestAccessibilityIDs.swift */,
+				0CA10012300000000000AA01 /* SoleusUITestBase.swift */,
+				0CA10013300000000000AA01 /* TabNavigationTests.swift */,
+				0CA10014300000000000AA01 /* CreateWorkoutFlowTests.swift */,
+				0CA10015300000000000AA01 /* WorkoutValidationTests.swift */,
+				0CA10016300000000000AA01 /* HistoryViewTests.swift */,
+				0CA10017300000000000AA01 /* SettingsTests.swift */,
 			);
 			path = SoleusUITests;
 			sourceTree = "<group>";
@@ -363,6 +386,7 @@
 		08B3CFE82B7E9F9A002F5C92 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				0CA10010300000000000AA01 /* AccessibilityIdentifiers.swift */,
 				08A2EC0B2ED6443900B60FF9 /* LogCapture.swift */,
 				0828683E2CE7E13500835C08 /* ExerciseInputHelper.swift */,
 				08B3CFE92B7E9FA6002F5C92 /* TimeHelper.swift */,
@@ -628,6 +652,7 @@
 		08B78FE82B6DBA370002DA68 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			files = (
+				0CA10001300000000000AA01 /* AccessibilityIdentifiers.swift in Sources */,
 				08EF97E82CEEC13500AE8196 /* Workouts+CoreDataProperties.swift in Sources */,
 				08EF97E92CEEC13500AE8196 /* Workouts+CoreDataClass.swift in Sources */,
 				088B57772EC3A6E40066CC17 /* WorkoutManaging.swift in Sources */,
@@ -707,6 +732,13 @@
 		08B790032B6DBA390002DA68 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			files = (
+				0CA10002300000000000AA01 /* TestAccessibilityIDs.swift in Sources */,
+				0CA10003300000000000AA01 /* SoleusUITestBase.swift in Sources */,
+				0CA10004300000000000AA01 /* TabNavigationTests.swift in Sources */,
+				0CA10005300000000000AA01 /* CreateWorkoutFlowTests.swift in Sources */,
+				0CA10006300000000000AA01 /* WorkoutValidationTests.swift in Sources */,
+				0CA10007300000000000AA01 /* HistoryViewTests.swift in Sources */,
+				0CA10008300000000000AA01 /* SettingsTests.swift in Sources */,
 			);
 		};
 /* End PBXSourcesBuildPhase section */
@@ -1002,7 +1034,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
-				TEST_TARGET_NAME = FlexSprinkle;
+				TEST_TARGET_NAME = Soleus;
 			};
 			name = Debug;
 		};
@@ -1024,7 +1056,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
-				TEST_TARGET_NAME = FlexSprinkle;
+				TEST_TARGET_NAME = Soleus;
 			};
 			name = Release;
 		};

@@ -27,6 +27,7 @@ struct WorkoutTrackerMainView: View {
                     .foregroundColor(isEditMode ? .green : .primary)
                     .help(isEditMode ? "Done rearranging" : "Rearrange workouts")
             }
+            .accessibilityIdentifier(AccessibilityID.navReorderButton)
             Button(action: {
                 // Clear any previous import data
                 importedWorkout = nil
@@ -37,6 +38,7 @@ struct WorkoutTrackerMainView: View {
                 Image(systemName: "square.and.arrow.down")
                     .help("Import workout")
             }
+            .accessibilityIdentifier(AccessibilityID.navImportButton)
             .disabled(isEditMode)
             .opacity(isEditMode ? 0.5 : 1.0)
             Button(action: {
@@ -45,6 +47,7 @@ struct WorkoutTrackerMainView: View {
                 Image(systemName: "clock")
                     .help("View workout history")
             }
+            .accessibilityIdentifier(AccessibilityID.navHistoryButton)
             .disabled(isEditMode)
             .opacity(isEditMode ? 0.5 : 1.0)
             Button(action: {
@@ -53,6 +56,7 @@ struct WorkoutTrackerMainView: View {
                 Image(systemName: "plus")
                     .help("Create a new workout")
             }
+            .accessibilityIdentifier(AccessibilityID.navAddWorkoutButton)
             .disabled(isEditMode)
             .opacity(isEditMode ? 0.5 : 1.0)
         }
@@ -151,6 +155,7 @@ struct WorkoutTrackerMainView: View {
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 8)
+                .accessibilityIdentifier(AccessibilityID.activeSessionBanner)
             }
             if workoutController.workouts.isEmpty && !isEditMode {
                 VStack(spacing: 24) {
@@ -166,6 +171,7 @@ struct WorkoutTrackerMainView: View {
                             .font(.title2)
                             .fontWeight(.bold)
                             .foregroundColor(.primary)
+                            .accessibilityIdentifier(AccessibilityID.emptyStateTitle)
 
                         Text("Create your first workout to get started")
                             .font(.subheadline)
@@ -188,6 +194,7 @@ struct WorkoutTrackerMainView: View {
                         .background(Color.myBlue)
                         .cornerRadius(10)
                     }
+                    .accessibilityIdentifier(AccessibilityID.emptyStateCreateButton)
 
                     Spacer()
                 }

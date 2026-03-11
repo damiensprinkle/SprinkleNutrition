@@ -10,7 +10,7 @@ import CoreData
 
 @main
 struct FlexSprinkleApp: App {
-    @StateObject private var persistenceController = PersistenceController.shared
+    @StateObject private var persistenceController: PersistenceController
     @StateObject private var appViewModel = AppViewModel()
     @StateObject private var workoutManager = WorkoutManager()
     @StateObject private var controller: WorkoutTrackerController
@@ -21,6 +21,9 @@ struct FlexSprinkleApp: App {
 
 
     init() {
+        let isUITesting = CommandLine.arguments.contains("--uitesting")
+        _persistenceController = StateObject(wrappedValue: isUITesting ? PersistenceController.forUITesting : PersistenceController.shared)
+
         // Initialize controller with the shared workoutManager instance
         let manager = WorkoutManager()
         let handler = ErrorHandler()

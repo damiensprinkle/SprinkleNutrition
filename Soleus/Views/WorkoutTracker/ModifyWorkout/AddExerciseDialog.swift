@@ -37,6 +37,7 @@ struct AddExerciseDialog: View {
                         .padding(12)
                         .background(Color(.secondarySystemGroupedBackground))
                         .cornerRadius(10)
+                        .accessibilityIdentifier(AccessibilityID.exerciseNameField)
                 }
 
                 // Quantifier
@@ -51,6 +52,7 @@ struct AddExerciseDialog: View {
                         Text("Distance").tag("Distance")
                     }
                     .pickerStyle(SegmentedPickerStyle())
+                    .accessibilityIdentifier(AccessibilityID.exerciseTrackByPicker)
                 }
 
                 // Measurement
@@ -65,6 +67,7 @@ struct AddExerciseDialog: View {
                         Text("Time").tag("Time")
                     }
                     .pickerStyle(SegmentedPickerStyle())
+                    .accessibilityIdentifier(AccessibilityID.exerciseMeasureWithPicker)
                 }
             }
             .padding(.horizontal, 20)
@@ -83,6 +86,7 @@ struct AddExerciseDialog: View {
                         .background(Color(.secondarySystemGroupedBackground))
                         .cornerRadius(10)
                 }
+                .accessibilityIdentifier(AccessibilityID.exerciseDialogCancelButton)
 
                 Button(action: {
                     addNewExercise()
@@ -95,6 +99,7 @@ struct AddExerciseDialog: View {
                         .background(exerciseName.isEmpty ? Color.gray : Color.myBlue)
                         .cornerRadius(10)
                 }
+                .accessibilityIdentifier(AccessibilityID.exerciseDialogAddButton)
                 .disabled(exerciseName.isEmpty)
             }
             .padding(.horizontal, 20)

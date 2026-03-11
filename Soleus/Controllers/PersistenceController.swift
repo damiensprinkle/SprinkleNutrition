@@ -4,12 +4,30 @@ import CoreData
 class PersistenceController: ObservableObject {
     static let shared = PersistenceController()
     let container: NSPersistentContainer
-    
+
     @Published var isLoaded = false
     @Published var loadError: Error?
 
-    private init() {
+    static var forUITesting: PersistenceController {
+        PersistenceController(inMemory: true)
+    }
+
+    private init(inMemory: Bool = false) {
         container = NSPersistentContainer(name: "Model")
+
+        if inMemory {
+            let description = NSPersistentStoreDescription()
+            description.type = NSInMemoryStoreType
+            container.persistentStoreDescriptions = [description]
+            container.loadPersistentStores { _, error in
+                if let error = error as NSError? {
+                    print("CoreData in-memory error: \(error), \(error.userInfo)")
+                }
+            }
+            container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+            isLoaded = true
+            return
+        }
 
         // Configure automatic migration
         let description = container.persistentStoreDescriptions.first

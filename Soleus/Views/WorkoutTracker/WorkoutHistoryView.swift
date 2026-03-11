@@ -64,6 +64,7 @@ struct WorkoutHistoryView: View {
                                     .fill(timePeriod == period ? Color.blue : Color.gray.opacity(0.2))
                             )
                         }
+                        .accessibilityIdentifier(period == .monthly ? AccessibilityID.historyTimePeriodMonthly : AccessibilityID.historyTimePeriodAllTime)
                     }
                     Spacer()
                 }
@@ -129,6 +130,7 @@ struct WorkoutHistoryView: View {
                     Text("No workout history yet")
                         .font(.headline)
                         .foregroundColor(.gray)
+                        .accessibilityIdentifier(AccessibilityID.historyEmptyStateText)
                     Text("Your past workouts will appear here once you complete them.")
                         .font(.subheadline)
                         .multilineTextAlignment(.center)

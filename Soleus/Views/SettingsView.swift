@@ -20,16 +20,19 @@ struct SettingsView: View {
                     Text("lbs").tag("lbs")
                     Text("kg").tag("kg")
                 }
+                .accessibilityIdentifier(AccessibilityID.settingsWeightPicker)
 
                 Picker("Distance Preference", selection: $distancePreference) {
                     Text("mile").tag("mile")
                     Text("km").tag("km")
                 }
+                .accessibilityIdentifier(AccessibilityID.settingsDistancePicker)
             }
 
             Section(header: Text("Rest Timer")) {
                 Toggle("Auto-start rest timer", isOn: $autoStartRestTimer)
                     .tint(.green)
+                    .accessibilityIdentifier(AccessibilityID.settingsRestTimerToggle)
 
                 if autoStartRestTimer {
                     VStack(alignment: .leading, spacing: 8) {
@@ -79,6 +82,7 @@ struct SettingsView: View {
                             .foregroundColor(.secondary)
                     }
                 }
+                .accessibilityIdentifier(AccessibilityID.settingsHelpButton)
 
                 Button(action: {
                     showingPrivacyPolicy = true
@@ -92,6 +96,7 @@ struct SettingsView: View {
                             .foregroundColor(.secondary)
                     }
                 }
+                .accessibilityIdentifier(AccessibilityID.settingsPrivacyButton)
 
                 // Secret dev menu trigger (invisible)
                 Color.clear

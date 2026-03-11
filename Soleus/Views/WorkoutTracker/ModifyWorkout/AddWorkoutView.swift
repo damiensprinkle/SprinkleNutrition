@@ -62,6 +62,7 @@ struct AddWorkoutView: View {
                         .padding(.horizontal, 20)
                         .padding(.bottom, 20)
                         .padding(.top, 12)
+                        .accessibilityIdentifier(AccessibilityID.addWorkoutAddExerciseButton)
                     }
                 }
                 .background(Color(.systemGroupedBackground))
@@ -78,7 +79,8 @@ struct AddWorkoutView: View {
                     else{
                         presentationMode.wrappedValue.dismiss()
                     }
-                },
+                }
+                .accessibilityIdentifier(AccessibilityID.addWorkoutCancelButton),
                 trailing: Button("Save") {
                     let result = workoutController.saveWorkout(title: workoutTitle, update: update, workoutId: workoutId)
                     switch result {
@@ -88,6 +90,7 @@ struct AddWorkoutView: View {
                         handleSaveError(error)
                     }
                 }
+                .accessibilityIdentifier(AccessibilityID.addWorkoutSaveButton)
             )
             .alert(isPresented: $showAlert) {
                 switch activeAlert {
@@ -196,6 +199,7 @@ struct AddWorkoutView: View {
                         .background(Color(.secondarySystemGroupedBackground))
                         .cornerRadius(12)
                         .padding(.horizontal, 20)
+                        .accessibilityIdentifier(AccessibilityID.addWorkoutTitleField)
                 }
                 .padding(.bottom, 8)
 
@@ -239,6 +243,7 @@ struct AddWorkoutView: View {
                         }
                     )
                     .padding(.horizontal, 20)
+                    .accessibilityIdentifier("\(AccessibilityID.exerciseCard)_\(index)")
                 }
             }
             .padding(.vertical, 8)

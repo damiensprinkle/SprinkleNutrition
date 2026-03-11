@@ -24,12 +24,15 @@ struct CustomTabView: View {
 
                 HStack {
                     tabButton(for: .workout, systemImage: "dumbbell.fill")
+                        .accessibilityIdentifier(AccessibilityID.tabWorkout)
 
                     Spacer()
                     tabButton(for: .dashboard, systemImage: "chart.bar.fill")
+                        .accessibilityIdentifier(AccessibilityID.tabDashboard)
 
                     Spacer()
                     tabButton(for: .settings, systemImage :"gearshape")
+                        .accessibilityIdentifier(AccessibilityID.tabSettings)
                 }
                 .padding()
                 .background(

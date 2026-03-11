@@ -4,6 +4,14 @@
 
 All notable changes to FlexSprinkle will be documented in this file.
 
+
+## v0.1.1
+
+### Testing
+- Added UI Tests
+- Added support for UI tests
+- Added github actions
+
 ## v0.1.0
 
 ### Performance Enhancements

@@ -52,7 +52,7 @@
 		08A2EC102ED8BF3400B60FF9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 08A2EC0F2ED8BF3400B60FF9 /* PrivacyInfo.xcprivacy */; };
 		08A2EC122ED8BFAA00B60FF9 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A2EC112ED8BFAA00B60FF9 /* HapticManager.swift */; };
 		08B3CF232B791FB8002F5C92 /* DataCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B3CF222B791FB8002F5C92 /* DataCardView.swift */; };
-		08B3CF512B7BC611002F5C92 /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 08B3CF502B7BC611002F5C92 /* ConfettiSwiftUI */; };
+		0CA30001300000000000CC01 /* ConfettiEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA30002300000000000CC01 /* ConfettiEffect.swift */; };
 		08B3CF7B2B7BDD0C002F5C92 /* AddExerciseDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B3CF7A2B7BDD0C002F5C92 /* AddExerciseDialog.swift */; };
 		08B3CF7F2B7C088F002F5C92 /* SetHeaders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B3CF7E2B7C088F002F5C92 /* SetHeaders.swift */; };
 		08B3CF852B7C1D84002F5C92 /* ActiveWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B3CF842B7C1D84002F5C92 /* ActiveWorkoutView.swift */; };
@@ -163,6 +163,7 @@
 		08A2EBDF2ED4BF9C00B60FF9 /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
 		08A2EC022ED4C30C00B60FF9 /* RestTimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestTimerManager.swift; sourceTree = "<group>"; };
 		08A2EC042ED4C32600B60FF9 /* RestTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestTimerView.swift; sourceTree = "<group>"; };
+		0CA30002300000000000CC01 /* ConfettiEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiEffect.swift; sourceTree = "<group>"; };
 		08A2EC072ED4CC4800B60FF9 /* WorkoutProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutProgressView.swift; sourceTree = "<group>"; };
 		08A2EC092ED4D53800B60FF9 /* DevMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevMenuView.swift; sourceTree = "<group>"; };
 		08A2EC0B2ED6443900B60FF9 /* LogCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogCapture.swift; sourceTree = "<group>"; };
@@ -238,7 +239,6 @@
 		08B78FE92B6DBA370002DA68 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			files = (
-				08B3CF512B7BC611002F5C92 /* ConfettiSwiftUI in Frameworks */,
 			);
 		};
 		08B78FFA2B6DBA390002DA68 /* Frameworks */ = {
@@ -362,6 +362,7 @@
 		08A2EC052ED4C32600B60FF9 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				0CA30002300000000000CC01 /* ConfettiEffect.swift */,
 				08A2EC042ED4C32600B60FF9 /* RestTimerView.swift */,
 			);
 			path = Components;
@@ -541,9 +542,6 @@
 				08EF98262CEF89A700AE8196 /* WorkoutUtilities */,
 			);
 			name = Soleus;
-			packageProductDependencies = (
-				08B3CF502B7BC611002F5C92 /* ConfettiSwiftUI */,
-			);
 			productName = FlexSprinkle;
 			productReference = 08B78FEC2B6DBA370002DA68 /* Soleus.app */;
 			productType = "com.apple.product-type.application";
@@ -616,7 +614,6 @@
 			);
 			mainGroup = 08B78FE32B6DBA370002DA68;
 			packageReferences = (
-				087111B02B77F79F0054E315 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
 			);
 			preferredProjectObjectVersion = 90;
 			productRefGroup = 08B78FED2B6DBA370002DA68 /* Products */;
@@ -724,6 +721,7 @@
 				0847536F2CE5205D00C6A7F9 /* WorkoutSaveError.swift in Sources */,
 				08A2EC122ED8BFAA00B60FF9 /* HapticManager.swift in Sources */,
 				08A2EC062ED4C32600B60FF9 /* RestTimerView.swift in Sources */,
+				0CA30001300000000000CC01 /* ConfettiEffect.swift in Sources */,
 				081DD5962EC90F2700B4074D /* AchievementsView.swift in Sources */,
 				0847535B2CE3D47D00C6A7F9 /* WorkoutTrackerController.swift in Sources */,
 			);
@@ -1105,24 +1103,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		087111B02B77F79F0054E315 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/simibac/ConfettiSwiftUI.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.1.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		08B3CF502B7BC611002F5C92 /* ConfettiSwiftUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 087111B02B77F79F0054E315 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */;
-			productName = ConfettiSwiftUI;
-		};
-/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		087111382B72AD830054E315 /* Model.xcdatamodeld */ = {

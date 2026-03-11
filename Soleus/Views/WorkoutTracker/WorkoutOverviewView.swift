@@ -1,5 +1,4 @@
 import SwiftUI
-import ConfettiSwiftUI
 
 
 /// This is the view that occurs when you complete a workout
@@ -109,7 +108,7 @@ struct WorkoutOverviewView: View {
                     }
                     .padding(.horizontal)
                     .padding(.bottom)
-                    .confettiCannon(counter: $counter, confettis: [.sfSymbol(symbolName: "dumbbell.fill"), .sfSymbol(symbolName: "trophy.fill")], confettiSize: 20.0, radius: 500.0)
+                    .confettiCannon(counter: $counter)
                 }
                 .onAppear{
                     counter += 1
@@ -118,24 +117,34 @@ struct WorkoutOverviewView: View {
         }
         .onAppear {
             let manager = workoutController.workoutManager
-            history = manager.fetchLatestWorkoutHistory(for: workoutId)
+            let fetchedHistory = manager.fetchLatestWorkoutHistory(for: workoutId)
 
-            if let totalCardioTimeInSeconds = Int(history?.timeDoingCardio ?? "0") {
-                totalCardioTime = formatTimeFromSeconds(totalSeconds: totalCardioTimeInSeconds)
+            var cardioTime = ""
+            if let totalCardioTimeInSeconds = Int(fetchedHistory?.timeDoingCardio ?? "0") {
+                cardioTime = formatTimeFromSeconds(totalSeconds: totalCardioTimeInSeconds)
             }
 
             // Check for newly unlocked achievements (only those unlocked during this workout)
             let newlyUnlocked = achievementManager.getNewlyUnlockedAchievements()
 
             // Show only Gold and Platinum tier achievements, or first 3 achievements
-            unlockedAchievements = newlyUnlocked
+            var achievements = newlyUnlocked
                 .filter { $0.trophy == .gold || $0.trophy == .platinum }
                 .prefix(3)
                 .map { $0 }
 
             // If no Gold/Platinum, show any unlocked (limit to 3)
-            if unlockedAchievements.isEmpty {
-                unlockedAchievements = Array(newlyUnlocked.prefix(3))
+            if achievements.isEmpty {
+                achievements = Array(newlyUnlocked.prefix(3))
+            }
+
+            // Animate cards in after a short delay
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                withAnimation(.easeOut(duration: 0.6)) {
+                    history = fetchedHistory
+                    totalCardioTime = cardioTime
+                    unlockedAchievements = achievements
+                }
             }
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {

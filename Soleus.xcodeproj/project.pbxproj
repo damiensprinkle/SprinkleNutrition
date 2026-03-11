@@ -52,7 +52,6 @@
 		08A2EC102ED8BF3400B60FF9 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 08A2EC0F2ED8BF3400B60FF9 /* PrivacyInfo.xcprivacy */; };
 		08A2EC122ED8BFAA00B60FF9 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A2EC112ED8BFAA00B60FF9 /* HapticManager.swift */; };
 		08B3CF232B791FB8002F5C92 /* DataCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B3CF222B791FB8002F5C92 /* DataCardView.swift */; };
-		0CA30001300000000000CC01 /* ConfettiEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA30002300000000000CC01 /* ConfettiEffect.swift */; };
 		08B3CF7B2B7BDD0C002F5C92 /* AddExerciseDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B3CF7A2B7BDD0C002F5C92 /* AddExerciseDialog.swift */; };
 		08B3CF7F2B7C088F002F5C92 /* SetHeaders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B3CF7E2B7C088F002F5C92 /* SetHeaders.swift */; };
 		08B3CF852B7C1D84002F5C92 /* ActiveWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B3CF842B7C1D84002F5C92 /* ActiveWorkoutView.swift */; };
@@ -93,6 +92,7 @@
 		0CA10008300000000000AA01 /* SettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10017300000000000AA01 /* SettingsTests.swift */; };
 		0CA10020300000000000AA01 /* TimeHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10022300000000000AA01 /* TimeHelperTests.swift */; };
 		0CA10021300000000000AA01 /* ShareableWorkoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10023300000000000AA01 /* ShareableWorkoutTests.swift */; };
+		0CA30001300000000000CC01 /* ConfettiEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA30002300000000000CC01 /* ConfettiEffect.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -163,7 +163,6 @@
 		08A2EBDF2ED4BF9C00B60FF9 /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
 		08A2EC022ED4C30C00B60FF9 /* RestTimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestTimerManager.swift; sourceTree = "<group>"; };
 		08A2EC042ED4C32600B60FF9 /* RestTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestTimerView.swift; sourceTree = "<group>"; };
-		0CA30002300000000000CC01 /* ConfettiEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiEffect.swift; sourceTree = "<group>"; };
 		08A2EC072ED4CC4800B60FF9 /* WorkoutProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutProgressView.swift; sourceTree = "<group>"; };
 		08A2EC092ED4D53800B60FF9 /* DevMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevMenuView.swift; sourceTree = "<group>"; };
 		08A2EC0B2ED6443900B60FF9 /* LogCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogCapture.swift; sourceTree = "<group>"; };
@@ -215,6 +214,7 @@
 		0CA10017300000000000AA01 /* SettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTests.swift; sourceTree = "<group>"; };
 		0CA10022300000000000AA01 /* TimeHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeHelperTests.swift; sourceTree = "<group>"; };
 		0CA10023300000000000AA01 /* ShareableWorkoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareableWorkoutTests.swift; sourceTree = "<group>"; };
+		0CA30002300000000000CC01 /* ConfettiEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiEffect.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -939,6 +939,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Soleus/Preview Content\"";
+				DEVELOPMENT_TEAM = P8P8MB2RC3;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
@@ -963,7 +964,7 @@
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.damiensprinkle.FlexSprinkle;
+				PRODUCT_BUNDLE_IDENTIFIER = com.damiensprinkle.Soleus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1102,7 +1103,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
 
 /* Begin XCVersionGroup section */
 		087111382B72AD830054E315 /* Model.xcdatamodeld */ = {

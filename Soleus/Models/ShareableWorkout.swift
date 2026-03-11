@@ -14,6 +14,7 @@ struct ShareableWorkout: Codable {
         let quantifier: String // "Reps" or "Distance"
         let measurement: String // "Weight" or "Time"
         let sets: [ShareableSet]
+        let notes: String?
     }
 
     struct ShareableSet: Codable {
@@ -42,7 +43,8 @@ struct ShareableWorkout: Codable {
                 orderIndex: detail.orderIndex,
                 quantifier: detail.exerciseQuantifier,
                 measurement: detail.exerciseMeasurement,
-                sets: sets
+                sets: sets,
+                notes: detail.notes
             )
         }
 
@@ -85,7 +87,7 @@ struct ShareableWorkout: Codable {
                 id: UUID(), // Generate new ID for imported workout
                 exerciseId: UUID(), // Generate new exercise ID
                 exerciseName: exercise.name,
-                orderIndex: exercise.orderIndex,
+                notes: exercise.notes, orderIndex: exercise.orderIndex,
                 sets: setInputs,
                 exerciseQuantifier: exercise.quantifier,
                 exerciseMeasurement: exercise.measurement

@@ -28,7 +28,7 @@
 			<key>UTTypeDescription</key>
 			<string>Soleus Workout</string>
 			<key>UTTypeIdentifier</key>
-			<string>com.flex.workout</string>
+			<string>com.soleus.workout</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>

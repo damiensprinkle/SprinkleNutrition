@@ -7,14 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0CA10001300000000000AA01 /* AccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10010300000000000AA01 /* AccessibilityIdentifiers.swift */; };
-		0CA10002300000000000AA01 /* TestAccessibilityIDs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10011300000000000AA01 /* TestAccessibilityIDs.swift */; };
-		0CA10003300000000000AA01 /* SoleusUITestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10012300000000000AA01 /* SoleusUITestBase.swift */; };
-		0CA10004300000000000AA01 /* TabNavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10013300000000000AA01 /* TabNavigationTests.swift */; };
-		0CA10005300000000000AA01 /* CreateWorkoutFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10014300000000000AA01 /* CreateWorkoutFlowTests.swift */; };
-		0CA10006300000000000AA01 /* WorkoutValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10015300000000000AA01 /* WorkoutValidationTests.swift */; };
-		0CA10007300000000000AA01 /* HistoryViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10016300000000000AA01 /* HistoryViewTests.swift */; };
-		0CA10008300000000000AA01 /* SettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10017300000000000AA01 /* SettingsTests.swift */; };
 		081DD5892EC511AB00B4074D /* ShareableWorkout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081DD5882EC511AB00B4074D /* ShareableWorkout.swift */; };
 		081DD58B2EC511D000B4074D /* ImportWorkoutPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081DD58A2EC511D000B4074D /* ImportWorkoutPreviewView.swift */; };
 		081DD5902EC90D8500B4074D /* achievements.json in Resources */ = {isa = PBXBuildFile; fileRef = 081DD58F2EC90D7E00B4074D /* achievements.json */; };
@@ -91,6 +83,14 @@
 		08EF97E92CEEC13500AE8196 /* Workouts+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF97E62CEEC13500AE8196 /* Workouts+CoreDataClass.swift */; };
 		08FC757E2CDFB4DF001E2E5B /* ExerciseRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FC757D2CDFB4D4001E2E5B /* ExerciseRow.swift */; };
 		08FC75802CDFCA86001E2E5B /* ExerciseRowActive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FC757F2CDFCA81001E2E5B /* ExerciseRowActive.swift */; };
+		0CA10001300000000000AA01 /* AccessibilityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10010300000000000AA01 /* AccessibilityIdentifiers.swift */; };
+		0CA10002300000000000AA01 /* TestAccessibilityIDs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10011300000000000AA01 /* TestAccessibilityIDs.swift */; };
+		0CA10003300000000000AA01 /* SoleusUITestBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10012300000000000AA01 /* SoleusUITestBase.swift */; };
+		0CA10004300000000000AA01 /* TabNavigationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10013300000000000AA01 /* TabNavigationTests.swift */; };
+		0CA10005300000000000AA01 /* CreateWorkoutFlowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10014300000000000AA01 /* CreateWorkoutFlowTests.swift */; };
+		0CA10006300000000000AA01 /* WorkoutValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10015300000000000AA01 /* WorkoutValidationTests.swift */; };
+		0CA10007300000000000AA01 /* HistoryViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10016300000000000AA01 /* HistoryViewTests.swift */; };
+		0CA10008300000000000AA01 /* SettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10017300000000000AA01 /* SettingsTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -122,14 +122,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0CA10010300000000000AA01 /* AccessibilityIdentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityIdentifiers.swift; sourceTree = "<group>"; };
-		0CA10011300000000000AA01 /* TestAccessibilityIDs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAccessibilityIDs.swift; sourceTree = "<group>"; };
-		0CA10012300000000000AA01 /* SoleusUITestBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoleusUITestBase.swift; sourceTree = "<group>"; };
-		0CA10013300000000000AA01 /* TabNavigationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabNavigationTests.swift; sourceTree = "<group>"; };
-		0CA10014300000000000AA01 /* CreateWorkoutFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWorkoutFlowTests.swift; sourceTree = "<group>"; };
-		0CA10015300000000000AA01 /* WorkoutValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutValidationTests.swift; sourceTree = "<group>"; };
-		0CA10016300000000000AA01 /* HistoryViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewTests.swift; sourceTree = "<group>"; };
-		0CA10017300000000000AA01 /* SettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTests.swift; sourceTree = "<group>"; };
 		081DD5882EC511AB00B4074D /* ShareableWorkout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareableWorkout.swift; sourceTree = "<group>"; };
 		081DD58A2EC511D000B4074D /* ImportWorkoutPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportWorkoutPreviewView.swift; sourceTree = "<group>"; };
 		081DD58C2EC5121B00B4074D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -210,6 +202,14 @@
 		08EF97E72CEEC13500AE8196 /* Workouts+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workouts+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		08FC757D2CDFB4D4001E2E5B /* ExerciseRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseRow.swift; sourceTree = "<group>"; };
 		08FC757F2CDFCA81001E2E5B /* ExerciseRowActive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseRowActive.swift; sourceTree = "<group>"; };
+		0CA10010300000000000AA01 /* AccessibilityIdentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityIdentifiers.swift; sourceTree = "<group>"; };
+		0CA10011300000000000AA01 /* TestAccessibilityIDs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAccessibilityIDs.swift; sourceTree = "<group>"; };
+		0CA10012300000000000AA01 /* SoleusUITestBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoleusUITestBase.swift; sourceTree = "<group>"; };
+		0CA10013300000000000AA01 /* TabNavigationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabNavigationTests.swift; sourceTree = "<group>"; };
+		0CA10014300000000000AA01 /* CreateWorkoutFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWorkoutFlowTests.swift; sourceTree = "<group>"; };
+		0CA10015300000000000AA01 /* WorkoutValidationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutValidationTests.swift; sourceTree = "<group>"; };
+		0CA10016300000000000AA01 /* HistoryViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewTests.swift; sourceTree = "<group>"; };
+		0CA10017300000000000AA01 /* SettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -810,7 +810,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -868,7 +868,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;

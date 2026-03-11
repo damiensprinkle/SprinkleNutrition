@@ -45,12 +45,12 @@ jobs:
             2>&1 | tee build.log | xcbeautify --is-ci || true
 
           # Check if tests actually passed by looking at the log
-          if grep -q "** TEST SUCCEEDED **" build.log; then
-            echo "Tests passed!"
-          else
-            echo "Tests failed!"
-            exit 1
-          fi
+            if grep -q "\*\* TEST SUCCEEDED \*\*" build.log; then
+              echo "Tests passed!"
+            else
+              echo "Tests failed!"
+              exit 1
+            fi
 
       - name: Upload test results
         if: failure()

@@ -66,9 +66,8 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
     // MARK: Core Data Operations
     
     func addWorkoutDetail(id: UUID, workoutTitle: String, exerciseName: String, color: String , orderIndex: Int32, sets: [SetInput], exerciseMeasurement: String, exerciseQuantifier: String, notes: String? = nil) {
-        guard let context = self.context else { return }
-
-        let workout = findOrCreateWorkout(withTitle: workoutTitle, color: color)
+        guard let context = self.context,
+              let workout = findOrCreateWorkout(withTitle: workoutTitle, color: color) else { return }
 
         // Create and configure a new WorkoutDetail instance
         let newExerciseDetail = WorkoutDetail(context: context)
@@ -329,9 +328,10 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
     }
     
     //good
-    private func findOrCreateWorkout(withTitle title: String, color: String) -> Workouts {
+    private func findOrCreateWorkout(withTitle title: String, color: String) -> Workouts? {
         guard let context = self.context else {
-            preconditionFailure("CoreData context must be available when creating workouts")
+            AppLogger.coreData.error("CoreData context unavailable when creating workout")
+            return nil
         }
 
         let request = NSFetchRequest<Workouts>(entityName: "Workouts")

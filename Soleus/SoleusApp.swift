@@ -58,6 +58,7 @@ struct SoleusApp: App {
                     // Link achievement manager to workout manager
                     achievementManager.workoutManager = workoutManager
 
+                    #if DEBUG
                     // Inject a test workout for UI testing the import preview
                     if let jsonString = ProcessInfo.processInfo.environment["UI_TEST_IMPORT_WORKOUT"],
                        let data = jsonString.data(using: .utf8),
@@ -80,6 +81,7 @@ struct SoleusApp: App {
                             notes: nil
                         )
                     }
+                    #endif
                 }
                 .onOpenURL { url in
                     handleImportedFile(url)
@@ -96,13 +98,13 @@ struct SoleusApp: App {
     private func handleImportedFile(_ url: URL) {
         // Ensure the file is a .soleus file
         guard url.pathExtension == "soleus" else {
-            print("Invalid file type: \(url.pathExtension)")
+            AppLogger.lifecycle.warning("Invalid file type: \(url.pathExtension)")
             return
         }
 
         // Access security-scoped resource
         guard url.startAccessingSecurityScopedResource() else {
-            print("Failed to access security-scoped resource")
+            AppLogger.lifecycle.error("Failed to access security-scoped resource")
             return
         }
 
@@ -117,10 +119,10 @@ struct SoleusApp: App {
                 importedWorkout = workout
                 showImportPreview = true
             } else {
-                print("Failed to decode workout data")
+                AppLogger.lifecycle.error("Failed to decode workout data")
             }
         } catch {
-            print("Error reading file: \(error.localizedDescription)")
+            AppLogger.lifecycle.error("Error reading file: \(error.localizedDescription)")
         }
     }
 }

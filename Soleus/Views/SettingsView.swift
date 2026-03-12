@@ -1,4 +1,5 @@
 import SwiftUI
+import CoreData
 
 struct SettingsView: View {
     @AppStorage("weightPreference") private var weightPreference: String = "lbs"
@@ -10,7 +11,15 @@ struct SettingsView: View {
     @State private var showingFAQ = false
     @State private var showingContactUs = false
     @State private var showingDevMenu = false
-    @State private var devMenuTapCount = 0
+
+    @FetchRequest(
+        sortDescriptors: [],
+        predicate: NSPredicate(format: "name == %@", "Soleus Developer"),
+        animation: .none
+    )
+    private var developerWorkouts: FetchedResults<Workouts>
+
+    private var isDeveloperModeEnabled: Bool { !developerWorkouts.isEmpty }
 
     private let restDurationOptions = [30, 45, 60, 90, 120, 180, 240, 300]
 
@@ -113,21 +122,20 @@ struct SettingsView: View {
                 }
                 .accessibilityIdentifier(AccessibilityID.settingsContactUsButton)
 
-                // Secret dev menu trigger (invisible)
-                Color.clear
-                    .frame(height: 10)
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        devMenuTapCount += 1
-                        if devMenuTapCount >= 5 {
-                            showingDevMenu = true
-                            devMenuTapCount = 0
-                        }
-                        // Reset counter after 3 seconds of no taps
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                            devMenuTapCount = 0
+                if isDeveloperModeEnabled {
+                    Button(action: {
+                        showingDevMenu = true
+                    }) {
+                        HStack {
+                            Label("Developer Menu", systemImage: "hammer.fill")
+                                .foregroundColor(.primary)
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
                         }
                     }
+                }
             }
         }
         .background(Color.myWhite)

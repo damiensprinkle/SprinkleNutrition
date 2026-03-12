@@ -13,7 +13,7 @@ class AchievementManager: ObservableObject {
 
     private func loadAchievements() {
         guard let url = Bundle.main.url(forResource: "achievements", withExtension: "json") else {
-            print("Failed to locate achievements.json in bundle")
+            AppLogger.workout.error("Failed to locate achievements.json in bundle")
             return
         }
 
@@ -22,9 +22,9 @@ class AchievementManager: ObservableObject {
             let decoder = JSONDecoder()
             let achievementsList = try decoder.decode(AchievementsList.self, from: data)
             self.achievements = achievementsList.achievements
-            print("Loaded \(achievements.count) achievements")
+            AppLogger.workout.info("Loaded \(achievements.count) achievements")
         } catch {
-            print("Failed to load achievements: \(error)")
+            AppLogger.workout.error("Failed to load achievements: \(error)")
         }
     }
 
@@ -93,7 +93,7 @@ class AchievementManager: ObservableObject {
 
             return records
         } catch {
-            print("Failed to fetch workout history for PRs: \(error)")
+            AppLogger.workout.error("Failed to fetch workout history for PRs: \(error)")
             return PersonalRecords()
         }
     }
@@ -225,7 +225,7 @@ class AchievementManager: ObservableObject {
                 maxWorkoutsInAnyMonth: maxMonth
             )
         } catch {
-            print("Failed to fetch workout history: \(error)")
+            AppLogger.workout.error("Failed to fetch workout history: \(error)")
             return WorkoutStats()
         }
     }

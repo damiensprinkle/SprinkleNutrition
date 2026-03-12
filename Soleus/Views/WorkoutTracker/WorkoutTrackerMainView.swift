@@ -83,7 +83,7 @@ struct WorkoutTrackerMainView: View {
                     showImportPreview = true
                 } else if importedWorkout == nil {
                     // If still no workout after delay, file reading may have failed
-                    print("No workout loaded after document picker dismissed")
+                    AppLogger.lifecycle.warning("No workout loaded after document picker dismissed")
                 }
             }
         }) {

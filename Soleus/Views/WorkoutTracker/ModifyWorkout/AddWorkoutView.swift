@@ -35,6 +35,7 @@ struct AddWorkoutView: View {
 
                     if(!focusManager.isAnyTextFieldFocused){
                         Button(action: {
+                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                             withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                                 showingAddExerciseDialog = true
                             }

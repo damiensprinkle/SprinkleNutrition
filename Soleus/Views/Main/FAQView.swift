@@ -152,17 +152,6 @@ struct FAQView: View {
                         expandedQuestion: $expandedQuestion
                     )
 
-                    // Video Tutorials Section
-                    SectionHeader(title: "Video Tutorials")
-
-                    Text("Coming soon! Video tutorials will be added here to help you get the most out of Soleus.")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color(.secondarySystemGroupedBackground))
-                        .cornerRadius(8)
-
                     Spacer()
                         .frame(height: 20)
                 }

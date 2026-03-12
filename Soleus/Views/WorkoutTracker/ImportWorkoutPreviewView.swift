@@ -21,6 +21,7 @@ struct ImportWorkoutPreviewView: View {
             Form {
                 Section(header: Text("Workout Name")) {
                     TextField("Enter Workout Name", text: $workoutName)
+                        .accessibilityIdentifier(AccessibilityID.importPreviewNameField)
                 }
 
                 Section(header: Text("Exercises (\(shareableWorkout.exercises.count))")) {
@@ -87,10 +88,12 @@ struct ImportWorkoutPreviewView: View {
             .navigationBarItems(
                 leading: Button("Cancel") {
                     isPresented = false
-                },
+                }
+                .accessibilityIdentifier(AccessibilityID.importPreviewCancelButton),
                 trailing: Button("Import") {
                     importWorkout()
                 }
+                .accessibilityIdentifier(AccessibilityID.importPreviewImportButton)
             )
             .alert(isPresented: $showAlert) {
                 Alert(

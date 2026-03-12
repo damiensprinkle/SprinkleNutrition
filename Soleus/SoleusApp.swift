@@ -57,6 +57,29 @@ struct SoleusApp: App {
                     }
                     // Link achievement manager to workout manager
                     achievementManager.workoutManager = workoutManager
+
+                    // Inject a test workout for UI testing the import preview
+                    if let jsonString = ProcessInfo.processInfo.environment["UI_TEST_IMPORT_WORKOUT"],
+                       let data = jsonString.data(using: .utf8),
+                       let workout = ShareableWorkout.import(from: data) {
+                        importedWorkout = workout
+                        showImportPreview = true
+                    }
+
+                    // Pre-create a named workout so duplicate-detection tests have something to conflict with
+                    if let preCreateName = ProcessInfo.processInfo.environment["UI_TEST_PRE_CREATE_WORKOUT"] {
+                        workoutManager.addWorkoutDetail(
+                            id: UUID(),
+                            workoutTitle: preCreateName,
+                            exerciseName: "Placeholder",
+                            color: "MyBlue",
+                            orderIndex: 0,
+                            sets: [SetInput(reps: 10, weight: 100, time: 0, distance: 0, setIndex: 0)],
+                            exerciseMeasurement: "Weight",
+                            exerciseQuantifier: "Reps",
+                            notes: nil
+                        )
+                    }
                 }
                 .onOpenURL { url in
                     handleImportedFile(url)

@@ -77,6 +77,7 @@
 		08B7902B2B7090870002DA68 /* AddWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B7902A2B7090870002DA68 /* AddWorkoutView.swift */; };
 		08B790312B7138F70002DA68 /* WorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B790302B7138F70002DA68 /* WorkoutManager.swift */; };
 		08C31FFF2B82EA3A002EE8A7 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C31FFE2B82EA3A002EE8A7 /* PersistenceController.swift */; };
+		08C5DE112F6236A800FC40DB /* ImportWorkoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C5DE102F62369C00FC40DB /* ImportWorkoutTests.swift */; };
 		08EF97E32CEEBC0D00AE8196 /* CustomizeCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF97E22CEEBC0A00AE8196 /* CustomizeCardView.swift */; };
 		08EF97E82CEEC13500AE8196 /* Workouts+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF97E72CEEC13500AE8196 /* Workouts+CoreDataProperties.swift */; };
 		08EF97E92CEEC13500AE8196 /* Workouts+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF97E62CEEC13500AE8196 /* Workouts+CoreDataClass.swift */; };
@@ -92,6 +93,14 @@
 		0CA10008300000000000AA01 /* SettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10017300000000000AA01 /* SettingsTests.swift */; };
 		0CA10020300000000000AA01 /* TimeHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10022300000000000AA01 /* TimeHelperTests.swift */; };
 		0CA10021300000000000AA01 /* ShareableWorkoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10023300000000000AA01 /* ShareableWorkoutTests.swift */; };
+		0CA10025300000000000AA01 /* AchievementManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10024300000000000AA01 /* AchievementManagerTests.swift */; };
+		0CA10027300000000000AA01 /* RestTimerManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10026300000000000AA01 /* RestTimerManagerTests.swift */; };
+		0CA10029300000000000AA01 /* ExerciseInputHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10028300000000000AA01 /* ExerciseInputHelperTests.swift */; };
+		0CA1002B300000000000AA01 /* AppViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA1002A300000000000AA01 /* AppViewModelTests.swift */; };
+		0CA1002D300000000000AA01 /* ErrorHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA1002C300000000000AA01 /* ErrorHandlerTests.swift */; };
+		0CA1002F300000000000AA01 /* CoreDataErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA1002E300000000000AA01 /* CoreDataErrorTests.swift */; };
+		0CA10031300000000000AA01 /* ColorManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10030300000000000AA01 /* ColorManagerTests.swift */; };
+		0CA10033300000000000AA01 /* LogCaptureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10032300000000000AA01 /* LogCaptureTests.swift */; };
 		0CA30001300000000000CC01 /* ConfettiEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA30002300000000000CC01 /* ConfettiEffect.swift */; };
 /* End PBXBuildFile section */
 
@@ -200,6 +209,7 @@
 		08B790302B7138F70002DA68 /* WorkoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutManager.swift; sourceTree = "<group>"; };
 		08C31FFE2B82EA3A002EE8A7 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		08C5DDC72F6218F400FC40DB /* Soleus.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = Soleus.xctestplan; path = ../Soleus.xctestplan; sourceTree = "<group>"; };
+		08C5DE102F62369C00FC40DB /* ImportWorkoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportWorkoutTests.swift; sourceTree = "<group>"; };
 		08EF97E22CEEBC0A00AE8196 /* CustomizeCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeCardView.swift; sourceTree = "<group>"; };
 		08EF97E62CEEC13500AE8196 /* Workouts+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workouts+CoreDataClass.swift"; sourceTree = "<group>"; };
 		08EF97E72CEEC13500AE8196 /* Workouts+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workouts+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -215,6 +225,14 @@
 		0CA10017300000000000AA01 /* SettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTests.swift; sourceTree = "<group>"; };
 		0CA10022300000000000AA01 /* TimeHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeHelperTests.swift; sourceTree = "<group>"; };
 		0CA10023300000000000AA01 /* ShareableWorkoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareableWorkoutTests.swift; sourceTree = "<group>"; };
+		0CA10024300000000000AA01 /* AchievementManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementManagerTests.swift; sourceTree = "<group>"; };
+		0CA10026300000000000AA01 /* RestTimerManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestTimerManagerTests.swift; sourceTree = "<group>"; };
+		0CA10028300000000000AA01 /* ExerciseInputHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseInputHelperTests.swift; sourceTree = "<group>"; };
+		0CA1002A300000000000AA01 /* AppViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModelTests.swift; sourceTree = "<group>"; };
+		0CA1002C300000000000AA01 /* ErrorHandlerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandlerTests.swift; sourceTree = "<group>"; };
+		0CA1002E300000000000AA01 /* CoreDataErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataErrorTests.swift; sourceTree = "<group>"; };
+		0CA10030300000000000AA01 /* ColorManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorManagerTests.swift; sourceTree = "<group>"; };
+		0CA10032300000000000AA01 /* LogCaptureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogCaptureTests.swift; sourceTree = "<group>"; };
 		0CA30002300000000000CC01 /* ConfettiEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiEffect.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -326,6 +344,14 @@
 				088B57712EC3A1C00066CC17 /* WorkoutTrackerControllerTests.swift */,
 				0CA10022300000000000AA01 /* TimeHelperTests.swift */,
 				0CA10023300000000000AA01 /* ShareableWorkoutTests.swift */,
+				0CA10024300000000000AA01 /* AchievementManagerTests.swift */,
+				0CA10026300000000000AA01 /* RestTimerManagerTests.swift */,
+				0CA10028300000000000AA01 /* ExerciseInputHelperTests.swift */,
+				0CA1002A300000000000AA01 /* AppViewModelTests.swift */,
+				0CA1002C300000000000AA01 /* ErrorHandlerTests.swift */,
+				0CA1002E300000000000AA01 /* CoreDataErrorTests.swift */,
+				0CA10030300000000000AA01 /* ColorManagerTests.swift */,
+				0CA10032300000000000AA01 /* LogCaptureTests.swift */,
 			);
 			path = SoleusTests;
 			sourceTree = "<group>";
@@ -341,6 +367,7 @@
 		088B577C2EC3AAB30066CC17 /* SoleusUITests */ = {
 			isa = PBXGroup;
 			children = (
+				08C5DE102F62369C00FC40DB /* ImportWorkoutTests.swift */,
 				0CA10011300000000000AA01 /* TestAccessibilityIDs.swift */,
 				0CA10012300000000000AA01 /* SoleusUITestBase.swift */,
 				0CA10013300000000000AA01 /* TabNavigationTests.swift */,
@@ -735,6 +762,14 @@
 				088B57742EC3A1C00066CC17 /* MockWorkoutManager.swift in Sources */,
 				0CA10020300000000000AA01 /* TimeHelperTests.swift in Sources */,
 				0CA10021300000000000AA01 /* ShareableWorkoutTests.swift in Sources */,
+				0CA10025300000000000AA01 /* AchievementManagerTests.swift in Sources */,
+				0CA10027300000000000AA01 /* RestTimerManagerTests.swift in Sources */,
+				0CA10029300000000000AA01 /* ExerciseInputHelperTests.swift in Sources */,
+				0CA1002B300000000000AA01 /* AppViewModelTests.swift in Sources */,
+				0CA1002D300000000000AA01 /* ErrorHandlerTests.swift in Sources */,
+				0CA1002F300000000000AA01 /* CoreDataErrorTests.swift in Sources */,
+				0CA10031300000000000AA01 /* ColorManagerTests.swift in Sources */,
+				0CA10033300000000000AA01 /* LogCaptureTests.swift in Sources */,
 			);
 		};
 		08B790032B6DBA390002DA68 /* Sources */ = {
@@ -744,6 +779,7 @@
 				0CA10003300000000000AA01 /* SoleusUITestBase.swift in Sources */,
 				0CA10004300000000000AA01 /* TabNavigationTests.swift in Sources */,
 				0CA10005300000000000AA01 /* CreateWorkoutFlowTests.swift in Sources */,
+				08C5DE112F6236A800FC40DB /* ImportWorkoutTests.swift in Sources */,
 				0CA10006300000000000AA01 /* WorkoutValidationTests.swift in Sources */,
 				0CA10007300000000000AA01 /* HistoryViewTests.swift in Sources */,
 				0CA10008300000000000AA01 /* SettingsTests.swift in Sources */,

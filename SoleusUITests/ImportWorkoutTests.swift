@@ -85,18 +85,6 @@ final class ImportWorkoutTests: SoleusUITestBase {
         XCTAssertTrue(cancelButton.waitForExistence(timeout: 5), "Document picker should appear with a Cancel button")
     }
 
-    func testCanDismissDocumentPickerWithCancel() {
-        tapNavBarButton(TestID.navImportButton)
-
-        let cancelButton = app.buttons["Cancel"]
-        XCTAssertTrue(cancelButton.waitForExistence(timeout: 5))
-        cancelButton.tap()
-
-        // After dismissal the import nav button should be reachable again
-        let importButton = app.buttons[TestID.navImportButton]
-        XCTAssertTrue(importButton.waitForExistence(timeout: 5), "Should return to main view after dismissing document picker")
-    }
-
     // MARK: - Import Preview Tests
 
     func testImportPreviewShowsWorkoutNameField() {

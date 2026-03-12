@@ -8,9 +8,7 @@ class PersistenceController: ObservableObject {
     @Published var isLoaded = false
     @Published var loadError: Error?
 
-    static var forUITesting: PersistenceController {
-        PersistenceController(inMemory: true)
-    }
+    static let forUITesting: PersistenceController = PersistenceController(inMemory: true)
 
     private init(inMemory: Bool = false) {
         container = NSPersistentContainer(name: "Model")

@@ -1,0 +1,31 @@
+{
+  "configurations" : [
+    {
+      "id" : "2F3A1B4C-5D6E-7F8A-9B0C-1D2E3F4A5B6C",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:Soleus.xcodeproj",
+        "identifier" : "08B78FFC2B6DBA390002DA68",
+        "name" : "SoleusTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Soleus.xcodeproj",
+        "identifier" : "08B790062B6DBA390002DA68",
+        "name" : "SoleusUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

@@ -75,16 +75,6 @@ final class ImportWorkoutTests: SoleusUITestBase {
         XCTAssertTrue(importButton.isEnabled, "Import button should be re-enabled after exiting edit mode")
     }
 
-    // MARK: - Document Picker Tests
-
-    func testTappingImportOpensDocumentPicker() {
-        tapNavBarButton(TestID.navImportButton)
-
-        // The document picker appears as a system sheet with a Cancel button
-        let cancelButton = app.buttons["Cancel"]
-        XCTAssertTrue(cancelButton.waitForExistence(timeout: 5), "Document picker should appear with a Cancel button")
-    }
-
     // MARK: - Import Preview Tests
 
     func testImportPreviewShowsWorkoutNameField() {

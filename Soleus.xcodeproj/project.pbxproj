@@ -78,6 +78,13 @@
 		08B790312B7138F70002DA68 /* WorkoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B790302B7138F70002DA68 /* WorkoutManager.swift */; };
 		08C31FFF2B82EA3A002EE8A7 /* PersistenceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C31FFE2B82EA3A002EE8A7 /* PersistenceController.swift */; };
 		08C5DE112F6236A800FC40DB /* ImportWorkoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C5DE102F62369C00FC40DB /* ImportWorkoutTests.swift */; };
+		0CA60001300000000000FF01 /* ContactUsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA60002300000000000FF01 /* ContactUsTests.swift */; };
+		08C5DED62F632FC200FC40DB /* CHANGELOG.md in Resources */ = {isa = PBXBuildFile; fileRef = 08C5DED02F632FC200FC40DB /* CHANGELOG.md */; };
+		08C5DED72F632FC200FC40DB /* USAGE_GUIDE.md in Resources */ = {isa = PBXBuildFile; fileRef = 08C5DED42F632FC200FC40DB /* USAGE_GUIDE.md */; };
+		08C5DED82F632FC200FC40DB /* FEATURES.md in Resources */ = {isa = PBXBuildFile; fileRef = 08C5DED12F632FC200FC40DB /* FEATURES.md */; };
+		08C5DED92F632FC200FC40DB /* TESTING.md in Resources */ = {isa = PBXBuildFile; fileRef = 08C5DED32F632FC200FC40DB /* TESTING.md */; };
+		08C5DEDA2F632FC200FC40DB /* TECH_STACK.md in Resources */ = {isa = PBXBuildFile; fileRef = 08C5DED22F632FC200FC40DB /* TECH_STACK.md */; };
+		08C5DEDC2F63306C00FC40DB /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 08C5DEDB2F63306C00FC40DB /* README.md */; };
 		08EF97E32CEEBC0D00AE8196 /* CustomizeCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF97E22CEEBC0A00AE8196 /* CustomizeCardView.swift */; };
 		08EF97E82CEEC13500AE8196 /* Workouts+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF97E72CEEC13500AE8196 /* Workouts+CoreDataProperties.swift */; };
 		08EF97E92CEEC13500AE8196 /* Workouts+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF97E62CEEC13500AE8196 /* Workouts+CoreDataClass.swift */; };
@@ -102,6 +109,7 @@
 		0CA10031300000000000AA01 /* ColorManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10030300000000000AA01 /* ColorManagerTests.swift */; };
 		0CA10033300000000000AA01 /* LogCaptureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA10032300000000000AA01 /* LogCaptureTests.swift */; };
 		0CA30001300000000000CC01 /* ConfettiEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA30002300000000000CC01 /* ConfettiEffect.swift */; };
+		0CA50001300000000000EE01 /* ContactUsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA50002300000000000EE01 /* ContactUsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -210,6 +218,13 @@
 		08C31FFE2B82EA3A002EE8A7 /* PersistenceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceController.swift; sourceTree = "<group>"; };
 		08C5DDC72F6218F400FC40DB /* Soleus.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = Soleus.xctestplan; path = ../Soleus.xctestplan; sourceTree = "<group>"; };
 		08C5DE102F62369C00FC40DB /* ImportWorkoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportWorkoutTests.swift; sourceTree = "<group>"; };
+		0CA60002300000000000FF01 /* ContactUsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUsTests.swift; sourceTree = "<group>"; };
+		08C5DED02F632FC200FC40DB /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
+		08C5DED12F632FC200FC40DB /* FEATURES.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = FEATURES.md; sourceTree = "<group>"; };
+		08C5DED22F632FC200FC40DB /* TECH_STACK.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TECH_STACK.md; sourceTree = "<group>"; };
+		08C5DED32F632FC200FC40DB /* TESTING.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = TESTING.md; sourceTree = "<group>"; };
+		08C5DED42F632FC200FC40DB /* USAGE_GUIDE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = USAGE_GUIDE.md; sourceTree = "<group>"; };
+		08C5DEDB2F63306C00FC40DB /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		08EF97E22CEEBC0A00AE8196 /* CustomizeCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeCardView.swift; sourceTree = "<group>"; };
 		08EF97E62CEEC13500AE8196 /* Workouts+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workouts+CoreDataClass.swift"; sourceTree = "<group>"; };
 		08EF97E72CEEC13500AE8196 /* Workouts+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workouts+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -234,6 +249,7 @@
 		0CA10030300000000000AA01 /* ColorManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorManagerTests.swift; sourceTree = "<group>"; };
 		0CA10032300000000000AA01 /* LogCaptureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogCaptureTests.swift; sourceTree = "<group>"; };
 		0CA30002300000000000CC01 /* ConfettiEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiEffect.swift; sourceTree = "<group>"; };
+		0CA50002300000000000EE01 /* ContactUsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -319,6 +335,7 @@
 			children = (
 				081DD59B2ECA9D3D00B4074D /* FAQView.swift */,
 				081DD5992ECA1C9400B4074D /* PrivacyPolicyView.swift */,
+				0CA50002300000000000EE01 /* ContactUsView.swift */,
 				081DD5972ECA1A7900B4074D /* DashboardView.swift */,
 				081DD5952EC90F2700B4074D /* AchievementsView.swift */,
 				087111A92B77CA170054E315 /* WorkoutTrackerContentView.swift */,
@@ -368,6 +385,7 @@
 			isa = PBXGroup;
 			children = (
 				08C5DE102F62369C00FC40DB /* ImportWorkoutTests.swift */,
+				0CA60002300000000000FF01 /* ContactUsTests.swift */,
 				0CA10011300000000000AA01 /* TestAccessibilityIDs.swift */,
 				0CA10012300000000000AA01 /* SoleusUITestBase.swift */,
 				0CA10013300000000000AA01 /* TabNavigationTests.swift */,
@@ -432,6 +450,8 @@
 		08B78FE32B6DBA370002DA68 = {
 			isa = PBXGroup;
 			children = (
+				08C5DEDB2F63306C00FC40DB /* README.md */,
+				08C5DED52F632FC200FC40DB /* docs */,
 				08C5DDC72F6218F400FC40DB /* Soleus.xctestplan */,
 				088B577C2EC3AAB30066CC17 /* SoleusUITests */,
 				088B57722EC3A1C00066CC17 /* SoleusTests */,
@@ -551,6 +571,18 @@
 			path = Cards;
 			sourceTree = "<group>";
 		};
+		08C5DED52F632FC200FC40DB /* docs */ = {
+			isa = PBXGroup;
+			children = (
+				08C5DED02F632FC200FC40DB /* CHANGELOG.md */,
+				08C5DED12F632FC200FC40DB /* FEATURES.md */,
+				08C5DED22F632FC200FC40DB /* TECH_STACK.md */,
+				08C5DED32F632FC200FC40DB /* TESTING.md */,
+				08C5DED42F632FC200FC40DB /* USAGE_GUIDE.md */,
+			);
+			path = docs;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -665,6 +697,12 @@
 				08B78FF82B6DBA390002DA68 /* Preview Assets.xcassets in Resources */,
 				081DD5902EC90D8500B4074D /* achievements.json in Resources */,
 				08B78FF42B6DBA390002DA68 /* Assets.xcassets in Resources */,
+				08C5DED62F632FC200FC40DB /* CHANGELOG.md in Resources */,
+				08C5DED72F632FC200FC40DB /* USAGE_GUIDE.md in Resources */,
+				08C5DEDC2F63306C00FC40DB /* README.md in Resources */,
+				08C5DED82F632FC200FC40DB /* FEATURES.md in Resources */,
+				08C5DED92F632FC200FC40DB /* TESTING.md in Resources */,
+				08C5DEDA2F632FC200FC40DB /* TECH_STACK.md in Resources */,
 			);
 		};
 		08B78FFB2B6DBA390002DA68 /* Resources */ = {
@@ -705,6 +743,7 @@
 				085466822CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataClass.swift in Sources */,
 				085466832CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataProperties.swift in Sources */,
 				081DD59C2ECA9D3D00B4074D /* FAQView.swift in Sources */,
+				0CA50001300000000000EE01 /* ContactUsView.swift in Sources */,
 				08A2EBE12ED4BF9C00B60FF9 /* AppLogger.swift in Sources */,
 				085466842CDFAD4700136FBC /* WorkoutDetail+CoreDataProperties.swift in Sources */,
 				081DD5922EC90F0100B4074D /* AchievementManager.swift in Sources */,
@@ -780,6 +819,7 @@
 				0CA10004300000000000AA01 /* TabNavigationTests.swift in Sources */,
 				0CA10005300000000000AA01 /* CreateWorkoutFlowTests.swift in Sources */,
 				08C5DE112F6236A800FC40DB /* ImportWorkoutTests.swift in Sources */,
+				0CA60001300000000000FF01 /* ContactUsTests.swift in Sources */,
 				0CA10006300000000000AA01 /* WorkoutValidationTests.swift in Sources */,
 				0CA10007300000000000AA01 /* HistoryViewTests.swift in Sources */,
 				0CA10008300000000000AA01 /* SettingsTests.swift in Sources */,

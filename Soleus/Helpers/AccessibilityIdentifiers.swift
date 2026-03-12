@@ -44,6 +44,12 @@ enum AccessibilityID {
     static let settingsRestTimerToggle = "settings_rest_timer_toggle"
     static let settingsHelpButton = "settings_help_button"
     static let settingsPrivacyButton = "settings_privacy_button"
+    static let settingsContactUsButton = "settings_contact_us_button"
+
+    // MARK: - Contact Us View
+    static let contactUsBugReportButton = "contact_us_bug_report_button"
+    static let contactUsFeatureRequestButton = "contact_us_feature_request_button"
+    static let contactUsAttachLogsToggle = "contact_us_attach_logs_toggle"
 
     // MARK: - Import Preview
     static let importPreviewNameField = "import_preview_name_field"

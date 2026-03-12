@@ -6,7 +6,7 @@
 
 Run the test suite:
 ```bash
-xcodebuild test -scheme FlexSprinkle -destination 'platform=iOS Simulator,name=iPhone 15'
+xcodebuild test -scheme Soleus -destination 'platform=iOS Simulator,name=iPhone 16'
 ```
 
 Or use Xcode's test runner (Cmd + U)

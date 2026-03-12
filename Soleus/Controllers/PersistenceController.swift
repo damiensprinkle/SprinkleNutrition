@@ -8,12 +8,20 @@ class PersistenceController: ObservableObject {
     @Published var isLoaded = false
     @Published var loadError: Error?
 
-    static var forUITesting: PersistenceController {
-        PersistenceController(inMemory: true)
-    }
+    static let forUITesting: PersistenceController = PersistenceController(inMemory: true)
+
+    /// Single model instance shared across all containers to prevent the
+    /// "Failed to find a unique match for NSEntityDescription" error in tests.
+    private static let managedObjectModel: NSManagedObjectModel = {
+        let bundles = [Bundle(for: PersistenceController.self)]
+        guard let model = NSManagedObjectModel.mergedModel(from: bundles) else {
+            fatalError("Failed to load CoreData model")
+        }
+        return model
+    }()
 
     private init(inMemory: Bool = false) {
-        container = NSPersistentContainer(name: "Model")
+        container = NSPersistentContainer(name: "Model", managedObjectModel: Self.managedObjectModel)
 
         if inMemory {
             let description = NSPersistentStoreDescription()

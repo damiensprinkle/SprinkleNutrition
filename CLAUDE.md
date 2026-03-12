@@ -4,31 +4,29 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-FlexSprinkle is an iOS workout tracking application built with SwiftUI and CoreData. The project is currently paused and will resume in July 2025. Development is tracked on a [Trello board](https://trello.com/b/cKlOY11d/workout).
+Soleus is an iOS workout tracking application built with SwiftUI and CoreData. Development is active as of March 2026.
 
 ## Build and Development Commands
 
 ```bash
 # Build the project
-xcodebuild -scheme FlexSprinkle -configuration Debug build
+xcodebuild -scheme Soleus -configuration Debug build
 
 # Run tests
-xcodebuild -scheme FlexSprinkle -destination 'platform=iOS Simulator,name=iPhone 15' test
+xcodebuild -scheme Soleus -destination 'platform=iOS Simulator,name=iPhone 17,OS=latest' test
 
 # Clean build folder
-xcodebuild clean -scheme FlexSprinkle
+xcodebuild clean -scheme Soleus
 ```
-
-Note: The test directories (FlexSprinkleTests/ and FlexSprinkleUITests/) currently exist but contain no test files.
 
 ## Architecture Overview
 
 ### MVVM Pattern with Manager Layer
 
 The app follows MVVM architecture with an additional Manager layer:
-- **Views**: Pure SwiftUI views, no UIKit
+- **Views**: Pure SwiftUI views, no UIKit (except UIViewControllerRepresentable wrappers)
 - **Controllers**: `WorkoutTrackerController` bridges Managers and Views, manages UI state
-- **Managers**: `WorkoutManager` (600+ lines of business logic), `UserManager`, `ColorManager`, `FocusManager`
+- **Managers**: `WorkoutManager` (600+ lines of business logic), `ColorManager`, `FocusManager`, `RestTimerManager`, `AchievementManager`
 - **Models**: CoreData entities + lightweight transfer objects
 
 ### CoreData Persistence Architecture
@@ -52,6 +50,7 @@ When a workout is started, the template is copied to temporary entities. Users c
 **CoreData Stack**:
 - Managed by `PersistenceController` singleton
 - Container name: "Model"
+- `NSManagedObjectModel` is a shared static instance to prevent duplicate model registration errors in tests
 - Context injected into Managers via property observers
 - Manual save calls (no auto-save)
 - Merge policy: `NSMergeByPropertyObjectTrumpMergePolicy`
@@ -88,13 +87,16 @@ HomeView (root)
     │       ├── WorkoutHistoryView (past workouts)
     │       └── CustomizeCardView (color picker)
     └── SettingsView
+        ├── FAQView (sheet)
+        ├── PrivacyPolicyView (sheet)
+        └── ContactUsView (sheet)
 ```
 
 **Critical Navigation Rule**: Only `WorkoutContentMainView` should have a `NavigationView`. Child views must not wrap themselves in `NavigationView` or navigation will break (white screen bug when returning from empty views).
 
 ### Dependency Injection Pattern
 
-Environment objects injected from `FlexSprinkleApp`:
+Environment objects injected from `SoleusApp`:
 ```swift
 @StateObject private var persistenceController = PersistenceController.shared
 @StateObject private var appViewModel = AppViewModel()
@@ -153,12 +155,28 @@ CoreData context is injected separately:
 - Validation in controller before persistence
 - Result<Void, WorkoutSaveError> pattern for error handling
 
+### Workout Import/Export
+
+- `ShareableWorkout` is the codable transfer object for `.soleus` files
+- `DocumentPicker` (UIViewControllerRepresentable) opens the system file picker
+- `ImportWorkoutPreviewView` is presented as a sheet to confirm name and preview exercises before importing
+- Duplicate workout names are auto-resolved with a `-copy` suffix
+
+### Contact Us
+
+- `ContactUsView` is a sheet accessible from Settings
+- Bug reports open `MFMailComposeViewController` pre-filled with device/app info and optionally attach `soleus-logs.txt` from `LogCapture.shared`
+- Feature requests open a pre-filled email template (no logs attached)
+- On simulator `canSendMail()` returns false — a "Mail Not Available" alert is shown instead
+- Support email: `SoleusApp@gmail.com` (defined as `ContactUsView.supportEmail`)
+
 ## Important Conventions
 
 ### File Organization
 - CoreData entity files: Auto-generated pairs (Class + Properties extensions)
 - Helpers in global scope: `TimeHelper`, `ExerciseInputHelper`
-- View extensions for reusable components
+- Shared UI components: `Views/SharedComponents/`
+- Settings subviews: `Views/Main/`
 
 ### Navigation Bar Items
 **Always combine multiple trailing items in HStack**:
@@ -180,10 +198,36 @@ Never use multiple `.navigationBarItems(trailing:)` calls - only the last one wi
 
 `ColorManager` randomly assigns colors to new workouts. Users can customize via `CustomizeCardView`.
 
+### Logging
+- Use `AppLogger` (not `print()`) throughout production code
+- `LogCapture.shared` holds the last 500 in-memory log entries
+- In-app log viewer accessible via 5-tap secret trigger in the About section of Settings
+- Logs are categorized: workout, coreData, ui, navigation, validation, lifecycle
+
 ### Input Validation
 - Regex patterns for form validation
 - Max length constraints (typically 10 for numeric inputs)
 - `FocusManager` handles keyboard state
+
+### Accessibility Identifiers
+- All interactive elements used in UI tests must have `.accessibilityIdentifier(AccessibilityID.someKey)`
+- `AccessibilityID` (app target) and `TestID` (UI test target) must be kept in sync
+- Both files live at `Soleus/Helpers/AccessibilityIdentifiers.swift` and `SoleusUITests/TestAccessibilityIDs.swift`
+
+## Testing
+
+### Test Targets
+- `SoleusTests` — unit tests (~35 coverage on production code, ~98% self-coverage)
+- `SoleusUITests` — UI tests using `SoleusUITestBase`
+
+### CoreData in Unit Tests
+- Use `PersistenceController.forUITesting` (static `let`, not computed var) to avoid duplicate `NSManagedObjectModel` registration errors
+- Always delete test data in `tearDown` and save the context
+
+### UI Test Patterns
+- Base class: `SoleusUITestBase` — launches with `--uitesting` arg, provides `tapTab()`, `tapNavBarButton()`, `waitForElement()`
+- Inject test data via `launchEnvironment`: `UI_TEST_IMPORT_WORKOUT` (JSON), `UI_TEST_PRE_CREATE_WORKOUT` (name)
+- Toggles in Forms: use `coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5)).tap()` to avoid hitting the cell row instead of the switch handle
 
 ## Dependencies
 
@@ -193,12 +237,6 @@ Never use multiple `.navigationBarItems(trailing:)` calls - only the last one wi
 - Package: https://github.com/simibac/ConfettiSwiftUI.git
 
 ## Known Issues and Patterns
-
-### iOS 18 Migration Issues
-The project was recently updated to iOS 18. Navigation-related bugs have been identified and fixed:
-- White screen when returning from `WorkoutHistoryView` with empty workout list
-- Caused by nested `NavigationView` conflicts
-- Solution: Single `NavigationView` at `WorkoutContentMainView` level only
 
 ### Empty State Handling
 Views must handle empty states explicitly:
@@ -231,7 +269,8 @@ Workouts (1) ←→ (many) WorkoutHistory
 
 ## Project Status
 
+- Active development as of March 2026
+- Targeting TestFlight release
 - Nutrition tracking feature was removed (see commit 3e42e7b)
 - Home tab is currently a placeholder
-- No active test suite
-- Development paused until July 2025
+- CI pipeline: GitHub Actions on `macos-26`, scheme `Soleus`, posts coverage report to PRs

@@ -57,7 +57,8 @@ final class ContactUsTests: SoleusUITestBase {
 
         let toggle = app.switches[TestID.contactUsAttachLogsToggle]
         XCTAssertTrue(toggle.waitForExistence(timeout: 5))
-        toggle.tap()
+        // Tap the right side of the switch handle to avoid hitting the list cell row
+        toggle.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5)).tap()
         XCTAssertEqual(toggle.value as? String, "0", "Attach logs toggle should be off after tapping")
     }
 

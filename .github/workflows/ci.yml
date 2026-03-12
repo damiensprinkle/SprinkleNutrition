@@ -29,13 +29,13 @@ jobs:
         run: xcrun simctl list devices available iPhone
 
       - name: Resolve SPM dependencies
-        run: xcodebuild -resolvePackageDependencies -scheme FlexSprinkle -project Soleus.xcodeproj
+        run: xcodebuild -resolvePackageDependencies -scheme Soleus -project Soleus.xcodeproj
 
       - name: Build and run tests
         run: |
           set -o pipefail
           xcodebuild test \
-            -scheme FlexSprinkle \
+            -scheme Soleus \
             -project Soleus.xcodeproj \
             -destination 'platform=iOS Simulator,name=iPhone 17,OS=latest' \
             -resultBundlePath TestResults.xcresult \

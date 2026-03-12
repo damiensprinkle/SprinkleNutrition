@@ -41,7 +41,7 @@
 ## Project Structure
 
 ```
-FlexSprinkle/
+Soleus/
 ├── Models/               # Data models and Core Data entities
 │   ├── CoreData/        # Core Data classes and properties
 │   ├── AppViewModel.swift

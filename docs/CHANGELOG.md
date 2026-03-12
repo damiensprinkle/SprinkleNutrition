@@ -2,8 +2,10 @@
 
 [< Back to README](../README.md)
 
-All notable changes to FlexSprinkle will be documented in this file.
+All notable changes to Soleus will be documented in this file.
 
+## v0.1.2
+- Added Contact Form
 
 ## v0.1.1
 
@@ -37,20 +39,3 @@ All notable changes to FlexSprinkle will be documented in this file.
 - Added unit tests for core functionality
 - Implemented protocol-based architecture for better testability
 - Removed force unwrapping for safer code execution
-
-## Planned
-
-### Features
-- Home dashboard with workout statistics widgets
-- Advanced analytics and progress charts
-- Workout sharing and import/export
-- Rest timer between sets
-- Exercise library with instructions
-- Body measurement tracking
-- Custom workout categories
-
-### Technical Improvements
-- Expanded test coverage
-- Accessibility enhancements (VoiceOver, Dynamic Type)
-- CloudKit integration for data sync across devices
-- Widget support for quick workout access

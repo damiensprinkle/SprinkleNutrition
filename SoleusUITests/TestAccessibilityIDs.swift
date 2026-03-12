@@ -49,4 +49,10 @@ enum TestID {
     static let importPreviewNameField = "import_preview_name_field"
     static let importPreviewCancelButton = "import_preview_cancel_button"
     static let importPreviewImportButton = "import_preview_import_button"
+
+    // MARK: - Contact Us View
+    static let settingsContactUsButton = "settings_contact_us_button"
+    static let contactUsBugReportButton = "contact_us_bug_report_button"
+    static let contactUsFeatureRequestButton = "contact_us_feature_request_button"
+    static let contactUsAttachLogsToggle = "contact_us_attach_logs_toggle"
 }

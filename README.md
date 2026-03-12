@@ -1,10 +1,10 @@
-# FlexSprinkle
+# Soleus
 
 A comprehensive iOS fitness tracking application built with SwiftUI, focused on workout planning, tracking, and progress monitoring.
 
 ## Overview
 
-FlexSprinkle is a native iOS app that helps users create custom workout plans, track active workout sessions in real-time, and monitor their fitness progress over time. Built with modern iOS technologies, it provides a smooth and intuitive user experience for fitness enthusiasts of all levels.
+Soleus is a native iOS app that helps users create custom workout plans, track active workout sessions in real-time, and monitor their fitness progress over time. Built with modern iOS technologies, it provides a smooth and intuitive user experience for fitness enthusiasts of all levels.
 
 ## Documentation
 
@@ -26,13 +26,13 @@ FlexSprinkle is a native iOS app that helps users create custom workout plans, t
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/damiensprinkle/FlexSprinkle.git
-   cd FlexSprinkle
+   git clone https://github.com/damiensprinkle/Soleus.git
+   cd Soleus
    ```
 
 2. Open the project in Xcode:
    ```bash
-   open FlexSprinkle.xcodeproj
+   open Soleus.xcodeproj
    ```
 
 3. Select your target device or simulator

@@ -8,6 +8,7 @@ struct SettingsView: View {
 
     @State private var showingPrivacyPolicy = false
     @State private var showingFAQ = false
+    @State private var showingContactUs = false
     @State private var showingDevMenu = false
     @State private var devMenuTapCount = 0
 
@@ -98,6 +99,20 @@ struct SettingsView: View {
                 }
                 .accessibilityIdentifier(AccessibilityID.settingsPrivacyButton)
 
+                Button(action: {
+                    showingContactUs = true
+                }) {
+                    HStack {
+                        Label("Contact Us", systemImage: "envelope.fill")
+                            .foregroundColor(.primary)
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                }
+                .accessibilityIdentifier(AccessibilityID.settingsContactUsButton)
+
                 // Secret dev menu trigger (invisible)
                 Color.clear
                     .frame(height: 10)
@@ -122,6 +137,9 @@ struct SettingsView: View {
         }
         .sheet(isPresented: $showingFAQ) {
             FAQView()
+        }
+        .sheet(isPresented: $showingContactUs) {
+            ContactUsView()
         }
         .sheet(isPresented: $showingDevMenu) {
             DevMenuView()

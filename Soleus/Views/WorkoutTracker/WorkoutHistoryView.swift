@@ -156,7 +156,7 @@ struct WorkoutHistoryView: View {
             .onAppear {
                 loadHistories()
             }
-            .onChange(of: timePeriod) { _ in
+            .onChange(of: timePeriod) {
                 loadHistories()
             }
 

@@ -48,7 +48,7 @@ class WorkoutTrackerController: ObservableObject {
     
     func saveWorkoutColor(workoutId: UUID) {
         guard let color = cardColor else {
-            print("Cannot save workout color: cardColor is nil")
+            AppLogger.workout.warning("Cannot save workout color: cardColor is nil")
             return
         }
         workoutManager.updateWorkoutColor(workoutId: workoutId, color: color)
@@ -66,12 +66,12 @@ class WorkoutTrackerController: ObservableObject {
         }
         
         if update {
-            print("update workoutDetails")
+            AppLogger.workout.debug("update workoutDetails")
             updateWorkoutDetails(for: workoutId, for: title)
         } else {
             workoutDetails.forEach { detail in
                 guard let detailId = detail.id else {
-                    print("Warning: Skipping workout detail with missing id")
+                    AppLogger.workout.warning("Skipping workout detail with missing id")
                     return
                 }
                 workoutManager.addWorkoutDetail(
@@ -178,10 +178,10 @@ class WorkoutTrackerController: ObservableObject {
     
     func loadWorkoutDetails(for workoutId: UUID) {
         guard let workout = workoutManager.fetchWorkoutById(for: workoutId) else {
-            print("Could not find workout with ID \(workoutId)")
+            AppLogger.workout.warning("Could not find workout with ID \(workoutId)")
             return
         }
-        
+
         selectedWorkoutName = workout.name ?? ""
         var workoutDetailsList: [WorkoutDetailInput] = []
         
@@ -191,7 +191,7 @@ class WorkoutTrackerController: ObservableObject {
                 guard let exerciseName = detail.exerciseName,
                       let exerciseQuantifier = detail.exerciseQuantifier,
                       let exerciseMeasurement = detail.exerciseMeasurement else {
-                    print("Warning: Skipping workout detail with missing required fields")
+                    AppLogger.workout.warning("Skipping workout detail with missing required fields")
                     return nil
                 }
 
@@ -218,7 +218,7 @@ class WorkoutTrackerController: ObservableObject {
     
     func loadWorkoutColors(for workoutId: UUID) {
         guard let workout = workoutManager.fetchWorkoutById(for: workoutId) else {
-            print("Could not find workout with ID \(workoutId)")
+            AppLogger.workout.warning("Could not find workout with ID \(workoutId)")
             return
         }
         
@@ -310,7 +310,7 @@ class WorkoutTrackerController: ObservableObject {
 
     func exportWorkout(_ workoutId: UUID) -> Data? {
         guard let workout = workoutManager.fetchWorkoutById(for: workoutId) else {
-            print("Could not find workout with ID \(workoutId)")
+            AppLogger.workout.warning("Could not find workout with ID \(workoutId)")
             return nil
         }
 

@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct WorkoutHistoryCardView: View {
-    var workoutId: UUID
     let history: WorkoutHistory
     var onDelete: (() -> Void)?
     @EnvironmentObject var workoutController: WorkoutTrackerController
@@ -11,6 +10,9 @@ struct WorkoutHistoryCardView: View {
     
     @State private var isExpanded: Bool = false
     @State private var showAlert: Bool = false
+    @State private var showDeletedTooltip: Bool = false
+
+    private var isDeletedWorkout: Bool { history.workoutR == nil }
     
     private var formattedDate: String {
         guard let date = history.workoutDate else { return "N/A" }
@@ -24,10 +26,34 @@ struct WorkoutHistoryCardView: View {
             // Header with title and delete button
             HStack(alignment: .top) {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(workoutTitle)
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .lineLimit(1)
+                    HStack(spacing: 6) {
+                        Text(workoutTitle)
+                            .font(.title2)
+                            .fontWeight(.bold)
+                            .lineLimit(1)
+                            .foregroundColor(isDeletedWorkout ? .secondary : .primary)
+
+                        if isDeletedWorkout {
+                            Image(systemName: "info.circle")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        if isDeletedWorkout {
+                            withAnimation(.easeInOut(duration: 0.15)) {
+                                showDeletedTooltip.toggle()
+                            }
+                        }
+                    }
+                    .popover(isPresented: $showDeletedTooltip, arrowEdge: .bottom) {
+                        Text("This workout has been deleted")
+                            .font(.subheadline)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 10)
+                            .presentationCompactAdaptation(.popover)
+                    }
 
                     HStack(spacing: 6) {
                         Image(systemName: "calendar")
@@ -215,7 +241,7 @@ struct WorkoutHistoryCardView: View {
     
     private func calculateTotalTime(for detail: WorkoutDetail) -> Int {
         guard let sets = detail.sets?.allObjects as? [WorkoutSet] else {
-            print("No sets found for exercise \(detail.exerciseName ?? "Unknown Exercise")")
+            AppLogger.ui.warning("No sets found for exercise \(detail.exerciseName ?? "Unknown Exercise")")
             return 0
         }
         
@@ -228,11 +254,11 @@ struct WorkoutHistoryCardView: View {
                     totalTimeInMinutes += Int(set.time) * Int(set.reps)
                 }
             } else {
-                print("Invalid or missing time for set: \(set)")
+                AppLogger.ui.warning("Invalid or missing time for set: \(set)")
             }
         }
         
-        print("Total time calculated: \(totalTimeInMinutes) minutes")
+        AppLogger.ui.debug("Total time calculated: \(totalTimeInMinutes) minutes")
         
         return totalTimeInMinutes
     }

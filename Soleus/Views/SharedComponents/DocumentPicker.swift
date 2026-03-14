@@ -33,7 +33,7 @@ struct DocumentPicker: UIViewControllerRepresentable {
             guard let url = urls.first else { return }
 
             guard url.startAccessingSecurityScopedResource() else {
-                print("Failed to access security-scoped resource")
+                AppLogger.lifecycle.error("Failed to access security-scoped resource")
                 return
             }
 
@@ -50,7 +50,7 @@ struct DocumentPicker: UIViewControllerRepresentable {
                     }
                 }
             } catch {
-                print("Error reading file: \(error.localizedDescription)")
+                AppLogger.lifecycle.error("Error reading file: \(error.localizedDescription)")
             }
         }
     }

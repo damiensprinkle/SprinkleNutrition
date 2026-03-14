@@ -6,9 +6,7 @@ struct WorkoutHistoryView: View {
     @State private var histories: [WorkoutHistory] = []
     @State private var appearedCards: Set<UUID> = []
 
-    @State private var deletingWorkoutsHistory: Set<UUID> = []
-
-    @State private var selectedMonth: Int = Calendar.current.component(.month, from: Date()) - 1
+@State private var selectedMonth: Int = Calendar.current.component(.month, from: Date()) - 1
     @State private var selectedYear: Int = Calendar.current.component(.year, from: Date())
     @State private var viewMode: ViewMode = .list
     @State private var timePeriod: TimePeriod = .monthly
@@ -158,7 +156,7 @@ struct WorkoutHistoryView: View {
             .onAppear {
                 loadHistories()
             }
-            .onChange(of: timePeriod) { _ in
+            .onChange(of: timePeriod) {
                 loadHistories()
             }
 
@@ -193,8 +191,7 @@ struct WorkoutHistoryView: View {
         ScrollView(.vertical, showsIndicators: false) {
             LazyVStack(spacing: 12) {
                 ForEach(Array(histories.enumerated()), id: \.element) { index, history in
-                    if let workoutId = history.workoutR?.id,
-                       let historyId = history.id {
+                    if let historyId = history.id {
                         ZStack {
                             // Skeleton loader - shows until card appears
                             if !appearedCards.contains(historyId) {
@@ -203,7 +200,7 @@ struct WorkoutHistoryView: View {
                             }
 
                             // Actual card
-                            WorkoutHistoryCardView(workoutId: workoutId, history: history, onDelete: {
+                            WorkoutHistoryCardView(history: history, onDelete: {
                                 deleteWorkoutHistory(historyId)
                             })
                             .opacity(appearedCards.contains(historyId) ? 1 : 0)
@@ -222,14 +219,15 @@ struct WorkoutHistoryView: View {
         }
     }
 
-    private func loadHistories() {
-        appearedCards.removeAll()
+    private func loadHistories(showSkeletons: Bool = true) {
+        if showSkeletons {
+            appearedCards.removeAll()
+        }
 
         withAnimation {
             isLoading = true
         }
 
-        // Use async dispatch to show loading spinner
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             let fetchedHistories: [WorkoutHistory]?
 
@@ -241,7 +239,7 @@ struct WorkoutHistoryView: View {
                 components.month = selectedMonth + 1
 
                 guard let startDate = calendar.date(from: components) else {
-                    print("Error: Unable to create date from components - year: \(selectedYear), month: \(selectedMonth + 1)")
+                    AppLogger.ui.error("Unable to create date from components - year: \(selectedYear), month: \(selectedMonth + 1)")
                     histories = []
                     withAnimation {
                         isLoading = false
@@ -255,24 +253,29 @@ struct WorkoutHistoryView: View {
                 fetchedHistories = workoutController.workoutManager.fetchAllWorkoutHistoryAllTime()
             }
 
+            let loaded = fetchedHistories ?? []
             withAnimation {
-                histories = fetchedHistories ?? []
+                histories = loaded
                 isLoading = false
             }
-        }
-    }
-    
-    private func deleteWorkoutHistory(_ historyId: UUID) {
-        withAnimation {
-            deletingWorkoutsHistory.insert(historyId)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                withAnimation {
-                    self.workoutController.workoutManager.deleteWorkoutHistory(for: historyId)
-                    loadHistories()
-                    self.deletingWorkoutsHistory.remove(historyId)
+
+            // Fallback: LazyVStack won't re-fire .onAppear for items already in the viewport.
+            // After a short delay, mark any cards still missing from appearedCards as visible.
+            let loadedIds = Set(loaded.compactMap { $0.id })
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                withAnimation(.easeOut(duration: 0.2)) {
+                    appearedCards.formUnion(loadedIds)
                 }
             }
         }
+    }
+
+    private func deleteWorkoutHistory(_ historyId: UUID) {
+        withAnimation(.easeOut(duration: 0.2)) {
+            histories.removeAll { $0.id == historyId }
+            appearedCards.remove(historyId)
+        }
+        workoutController.workoutManager.deleteWorkoutHistory(for: historyId)
     }
 }
 

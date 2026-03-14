@@ -59,7 +59,7 @@ struct ValidatedTextField: View {
         case .float(let maxDecimals):
             let decimalPattern = "^[0-9]{0,\(maxLength)}(?:\\.[0-9]{0,\(maxDecimals)})?$"
             guard let regex = try? NSRegularExpression(pattern: decimalPattern) else {
-                print("Error: Failed to create regex with pattern: \(decimalPattern)")
+                AppLogger.validation.error("Failed to create regex with pattern: \(decimalPattern)")
                 return
             }
             let range = NSRange(location: 0, length: text.utf16.count)

@@ -18,8 +18,6 @@ struct CustomTabView: View {
                     .navigationBarTitleDisplayMode(.inline)
                     .id(selectedTab)
 
-                Spacer(minLength: 0)
-
                 Divider()
 
                 HStack {
@@ -43,6 +41,9 @@ struct CustomTabView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .navigationViewStyle(.stack)
+        // Prevent the NavigationView from resizing when the keyboard appears.
+        // Without this, keyboard dismissal can leave the tab bar stranded mid-screen.
+        .ignoresSafeArea(.keyboard)
     }
 
     @ViewBuilder

@@ -5,15 +5,16 @@ final class ShareableWorkoutTests: XCTestCase {
 
     // MARK: - Export
 
-    func testExport_ProducesValidJSON() {
+    func testExport_ProducesValidData() {
         let details = [makeDetail(name: "Bench Press", reps: 10, weight: 135)]
         let data = ShareableWorkout.export(workoutName: "Push Day", workoutColor: "MyBlue", workoutDetails: details)
 
         XCTAssertNotNil(data)
-        // Verify it's valid JSON
-        let json = try? JSONSerialization.jsonObject(with: data!, options: []) as? [String: Any]
-        XCTAssertNotNil(json)
-        XCTAssertEqual(json?["workoutName"] as? String, "Push Day")
+        // Export now uses a binary envelope (magic header + zlib-compressed JSON).
+        // Verify round-trip fidelity via import rather than raw JSON parsing.
+        let workout = ShareableWorkout.import(from: data!)
+        XCTAssertNotNil(workout)
+        XCTAssertEqual(workout?.workoutName, "Push Day")
     }
 
     func testExport_IncludesAllExercises() {

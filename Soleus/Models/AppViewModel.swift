@@ -2,7 +2,8 @@ import SwiftUI
 
 class AppViewModel: ObservableObject {
     @Published var currentView: ContentViewType = .main
-    @Published var currentTab: Tab = .home // Add this line
+    @Published var currentTab: Tab = .home
+    @Published var pendingImport: ShareableWorkout? = nil
 
     func navigateTo(_ view: ContentViewType) {
          DispatchQueue.main.async {

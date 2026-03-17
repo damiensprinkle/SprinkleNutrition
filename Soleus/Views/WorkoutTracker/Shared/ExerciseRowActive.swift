@@ -199,6 +199,7 @@ struct ExerciseRowActive: View {
                 }
             }
             .onChange(of: repsInput) {
+                if !repsInput.isEmpty { validateAndSetInputInt(&repsInput, for: &setInput.reps, maxLength: 3) }
                 if !repsInput.isEmpty {
                     let newReps = Int32(repsInput) ?? 0
                     if setInput.reps != newReps {
@@ -242,6 +243,7 @@ struct ExerciseRowActive: View {
                 }
             }
             .onChange(of: distanceInput){
+                if !distanceInput.isEmpty { validateAndSetInputFloat(&distanceInput, for: &setInput.distance, maxLength: 5, maxDecimals: 2) }
                 if(!distanceInput.isEmpty){
                     let newDistance = Float(distanceInput) ?? 0.0
                     if(setInput.distance != newDistance){
@@ -278,6 +280,7 @@ struct ExerciseRowActive: View {
                 }
             }
             .onChange(of: weightInput){
+                if !weightInput.isEmpty { validateAndSetInputFloat(&weightInput, for: &setInput.weight, maxLength: 5, maxDecimals: 2) }
                 if(!weightInput.isEmpty){
                     let newWeight = Float(weightInput) ?? 0
                     if(setInput.weight != newWeight){

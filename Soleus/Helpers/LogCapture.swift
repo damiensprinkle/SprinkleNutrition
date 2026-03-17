@@ -7,6 +7,12 @@ class LogCapture: ObservableObject {
     @Published var logs: [LogEntry] = []
     private let maxLogs = 500
 
+    // Persistent log file for error/critical entries that survive crashes
+    private static let persistedLogURL: URL = {
+        let dir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+        return dir.appendingPathComponent("soleus-persisted-errors.log")
+    }()
+
     struct LogEntry: Identifiable {
         let id = UUID()
         let timestamp: Date
@@ -29,23 +35,23 @@ class LogCapture: ObservableObject {
         case critical = "🔥"
     }
 
-    private init() {}
+    private init() {
+        loadPersistedLogs()
+    }
 
     func log(_ message: String, category: String = "General", level: LogLevel = .info) {
+        let entry = LogEntry(timestamp: Date(), category: category, level: level, message: message)
+
         DispatchQueue.main.async {
-            let entry = LogEntry(
-                timestamp: Date(),
-                category: category,
-                level: level,
-                message: message
-            )
-
             self.logs.append(entry)
-
-            // Keep only recent logs
             if self.logs.count > self.maxLogs {
                 self.logs.removeFirst(self.logs.count - self.maxLogs)
             }
+        }
+
+        // Persist error and critical logs synchronously so they survive crashes
+        if level == .error || level == .critical {
+            persistEntry(entry)
         }
     }
 
@@ -73,5 +79,76 @@ class LogCapture: ObservableObject {
         DispatchQueue.main.async {
             self.logs.removeAll()
         }
+        try? FileManager.default.removeItem(at: Self.persistedLogURL)
+    }
+
+    // MARK: - Persistence
+
+    private func persistEntry(_ entry: LogEntry) {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
+        // Escape backslashes then newlines so each entry stays on one line in the file
+        let safeMessage = entry.message
+            .replacingOccurrences(of: "\\", with: "\\\\")
+            .replacingOccurrences(of: "\n", with: "\\n")
+        let line = "[\(formatter.string(from: entry.timestamp))] [\(entry.level.rawValue)] [\(entry.category)] \(safeMessage)\n"
+        guard let data = line.data(using: .utf8) else { return }
+
+        let url = Self.persistedLogURL
+        if FileManager.default.fileExists(atPath: url.path) {
+            if let handle = try? FileHandle(forWritingTo: url) {
+                handle.seekToEndOfFile()
+                handle.write(data)
+                handle.closeFile()
+            }
+        } else {
+            try? data.write(to: url, options: .atomic)
+        }
+
+        trimPersistedLog()
+    }
+
+    private func loadPersistedLogs() {
+        guard let contents = try? String(contentsOf: Self.persistedLogURL, encoding: .utf8) else { return }
+        let lines = contents.components(separatedBy: .newlines).filter { !$0.isEmpty }
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
+
+        let entries: [LogEntry] = lines.compactMap { line in
+            // Format: [date] [emoji] [category] message
+            guard line.hasPrefix("[") else { return nil }
+            let parts = line.components(separatedBy: "] [")
+            // Minimum 3 parts: "[date", "emoji", "category] message"]
+            guard parts.count >= 3 else { return nil }
+            let dateStr = String(parts[0].dropFirst())
+            let emoji = parts[1]
+            // parts[2] contains "category] message" — split on first "] "
+            let remainder = parts[2...].joined(separator: "] [")
+            guard let closingRange = remainder.range(of: "] ") else { return nil }
+            let category = String(remainder[remainder.startIndex..<closingRange.lowerBound])
+            let rawMessage = String(remainder[closingRange.upperBound...])
+            // Unescape: restore newlines and backslashes
+            let message = rawMessage
+                .replacingOccurrences(of: "\\n", with: "\n")
+                .replacingOccurrences(of: "\\\\", with: "\\")
+            let level = LogLevel.allCases.first { $0.rawValue == emoji } ?? .error
+            let date = formatter.date(from: dateStr) ?? Date()
+            return LogEntry(timestamp: date, category: "(prev) \(category)", level: level, message: message)
+        }
+
+        if !entries.isEmpty {
+            logs = entries
+        }
+    }
+
+    private func trimPersistedLog() {
+        guard let contents = try? String(contentsOf: Self.persistedLogURL, encoding: .utf8) else { return }
+        let lines = contents.components(separatedBy: .newlines).filter { !$0.isEmpty }
+        if lines.count > 200 {
+            let trimmed = lines.suffix(200).joined(separator: "\n") + "\n"
+            try? trimmed.write(to: Self.persistedLogURL, atomically: true, encoding: .utf8)
+        }
     }
 }
+
+extension LogCapture.LogLevel: CaseIterable {}

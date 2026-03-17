@@ -137,6 +137,10 @@ class MockWorkoutManager: ObservableObject, WorkoutManaging {
         return workouts.contains { $0.name.lowercased() == title.lowercased() }
     }
 
+    func titleExists(_ title: String, excludingId: UUID) -> Bool {
+        return workouts.contains { $0.name.lowercased() == title.lowercased() && $0.id != excludingId }
+    }
+
     // MARK: - Active Workout / Temporary Data
 
     func saveOrUpdateSetsDuringActiveWorkout(

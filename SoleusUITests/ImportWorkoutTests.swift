@@ -54,6 +54,11 @@ final class ImportWorkoutTests: SoleusUITestBase {
     }
 
     func testImportButtonIsDisabledInEditMode() {
+        // Reorder button is hidden when no workouts exist — pre-create one first.
+        app.terminate()
+        app.launchEnvironment["UI_TEST_PRE_CREATE_WORKOUT"] = "Test Workout"
+        app.launch()
+
         tapNavBarButton(TestID.navReorderButton)
 
         let importButton = app.buttons[TestID.navImportButton]
@@ -62,6 +67,11 @@ final class ImportWorkoutTests: SoleusUITestBase {
     }
 
     func testImportButtonReEnabledAfterExitingEditMode() {
+        // Reorder button is hidden when no workouts exist — pre-create one first.
+        app.terminate()
+        app.launchEnvironment["UI_TEST_PRE_CREATE_WORKOUT"] = "Test Workout"
+        app.launch()
+
         // Enter edit mode
         tapNavBarButton(TestID.navReorderButton)
 

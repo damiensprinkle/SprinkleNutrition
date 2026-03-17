@@ -2,18 +2,31 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.damiensprinkle.Soleus</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>soleus</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
+			<key>CFBundleTypeIconFile</key>
+			<string>Soleus</string>
 			<key>CFBundleTypeName</key>
 			<string>Soleus Workout</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>LSHandlerRank</key>
-			<string>Default</string>
+			<string>Owner</string>
 			<key>LSItemContentTypes</key>
 			<array>
-				<string>com.damiensprinkle.Soleus</string>
+				<string>com.soleus.workout</string>
 			</array>
 		</dict>
 	</array>
@@ -22,8 +35,8 @@
 		<dict>
 			<key>UTTypeConformsTo</key>
 			<array>
-				<string>public.json</string>
 				<string>public.data</string>
+				<string>public.item</string>
 			</array>
 			<key>UTTypeDescription</key>
 			<string>Soleus Workout</string>
@@ -34,6 +47,10 @@
 				<key>public.filename-extension</key>
 				<array>
 					<string>soleus</string>
+				</array>
+				<key>public.mime-type</key>
+				<array>
+					<string>application/x-soleus-workout</string>
 				</array>
 			</dict>
 		</dict>

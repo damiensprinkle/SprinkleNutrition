@@ -6,6 +6,7 @@ struct SettingsView: View {
     @AppStorage("distancePreference") private var distancePreference: String = "mile"
     @AppStorage("defaultRestDuration") private var defaultRestDuration: Int = 90
     @AppStorage("autoStartRestTimer") private var autoStartRestTimer: Bool = true
+    @AppStorage("appearancePreference") private var appearancePreference: String = "dark"
 
     @State private var showingPrivacyPolicy = false
     @State private var showingFAQ = false
@@ -26,6 +27,12 @@ struct SettingsView: View {
     var body: some View {
         Form {
             Section(header: Text("Preferences")) {
+                Picker("Appearance", selection: $appearancePreference) {
+                    Text("Dark").tag("dark")
+                    Text("Light").tag("light")
+                    Text("System").tag("system")
+                }
+
                 Picker("Weight Preference", selection: $weightPreference) {
                     Text("lbs").tag("lbs")
                     Text("kg").tag("kg")

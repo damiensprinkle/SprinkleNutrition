@@ -55,4 +55,9 @@ enum AccessibilityID {
     static let importPreviewNameField = "import_preview_name_field"
     static let importPreviewCancelButton = "import_preview_cancel_button"
     static let importPreviewImportButton = "import_preview_import_button"
+
+    // MARK: - Template Picker
+    static let templatePickerButton = "template_picker_button"
+    static let templatePickerCancelButton = "template_picker_cancel_button"
+    static let templatePickerRow = "template_picker_row"
 }

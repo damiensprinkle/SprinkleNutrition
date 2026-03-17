@@ -167,11 +167,11 @@ struct ImportWorkoutPreviewView: View {
         case .failure(let error):
             switch error {
             case .emptyTitle:
-                alertMessage = "Please enter a workout name."
+                alertMessage = "A workout name is required, input a workout name before saving."
             case .noExerciseDetails:
                 alertMessage = "Imported workout has no exercises."
             case .titleExists:
-                alertMessage = "Workout title already exists."
+                alertMessage = "A workout with this name already exists, please input a new name."
             }
             showAlert = true
         }

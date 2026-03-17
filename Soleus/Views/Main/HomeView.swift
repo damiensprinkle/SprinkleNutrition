@@ -4,6 +4,15 @@ struct HomeView: View {
     @EnvironmentObject var appViewModel: AppViewModel
     @EnvironmentObject var persistenceController: PersistenceController
     @EnvironmentObject var workoutController: WorkoutTrackerController
+    @AppStorage("appearancePreference") private var appearancePreference: String = "dark"
+
+    private var preferredColorScheme: ColorScheme? {
+        switch appearancePreference {
+        case "light": return .light
+        case "dark":  return .dark
+        default:      return nil
+        }
+    }
 
     var body: some View {
         Group {
@@ -45,5 +54,6 @@ struct HomeView: View {
                 }
             }
         }
+        .preferredColorScheme(preferredColorScheme)
     }
 }

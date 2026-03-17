@@ -3,6 +3,47 @@ import SwiftUI
 struct FAQView: View {
     @Environment(\.dismiss) var dismiss
     @State private var expandedQuestion: String?
+    @State private var searchText: String = ""
+
+    private var allItems: [(section: String, question: String, answer: String)] = [
+        ("Getting Started", "How do I create my first workout?", "Tap the '+' icon in the top right of the Workouts tab. Give your workout a name, then add exercises by tapping 'Add Exercise'.\n\nWant a head start? Tap 'Start from Template' to pre-fill your workout with a ready-made plan (Push, Pull, Legs, and more). You can customise any template after applying it."),
+        ("Getting Started", "What's the difference between a workout and workout history?", "A workout is a template or plan that you create. When you start and complete a workout, it creates a workout history entry that tracks what you actually did. This way you can reuse the same workout template multiple times while keeping a record of each session."),
+        ("Using Workouts", "How do I start a workout?", "Tap the play button on any workout card. Review the exercises and sets, then tap 'Start Workout'. You can then track your progress by checking off completed sets."),
+        ("Using Workouts", "Can I modify a workout while it's in progress?", "Yes! During an active workout, tap the pencil icon to enter edit mode. You can then:\n\n• Add new exercises\n• Add or remove sets\n• Rearrange exercises with up/down arrows\n• Adjust weights, reps, or times\n\nAfter completing the workout, you can preview your changes before deciding whether to update the original workout template."),
+        ("Using Workouts", "What happens when I finish a workout with changes?", "If you made changes during your workout, you'll see a preview showing exactly what changed (exercises added/removed, sets modified, etc.). You can then choose to:\n\n• Update Workout - Save changes to your template\n• Keep Original - Save the workout history but don't update the template\n\nThis lets you adapt workouts on the fly without permanently changing your template if you don't want to."),
+        ("Using Workouts", "How do I rearrange my workouts?", "Tap the rearrange icon (arrows) in the top right. Then drag workout cards to reorder them. Tap the checkmark when done."),
+        ("Using Workouts", "How do I duplicate or delete a workout?", "Long press on any workout card to open the context menu. From there you can edit, duplicate, share, or delete the workout."),
+        ("Exercises & Sets", "What types of exercises can I track?", "Soleus supports four types of exercises:\n\n• Reps (like push-ups, pull-ups)\n• Weight & Reps (like bench press, squats)\n• Time (like planks, wall sits)\n• Distance (like running, cycling)\n\nEach exercise type has appropriate fields for tracking your performance."),
+        ("Exercises & Sets", "How do I add or remove sets?", "When creating or editing a workout, tap 'Add Set' to add more sets to an exercise. During an active workout, you need to enter edit mode first (tap the pencil icon). New sets automatically copy the values from your previous set for convenience.\n\nTo remove a set, swipe left on it and tap delete. In active workouts, sets can only be deleted when in edit mode."),
+        ("Exercises & Sets", "Can I add notes to exercises?", "Yes! Tap the notebook icon next to any exercise name to add notes. You can use notes to record form cues, personal records, or any reminders. Notes appear below the exercise title and are saved with your workout template."),
+        ("Exercises & Sets", "Do sets auto-complete?", "Yes! When you're tracking an active workout, sets will automatically mark as complete when you enter values in both required fields (e.g., reps AND weight). You can also manually check off sets using the slider."),
+        ("Rest Timer", "What is the rest timer?", "The rest timer automatically starts counting down after you complete a set, giving you a visual cue for when to start your next set. You can enable or disable it in Settings under Rest Timer."),
+        ("Rest Timer", "Can I adjust the rest timer duration?", "Yes! Go to Settings → Rest Timer and choose your default rest duration. Options range from 30 seconds up to 5 minutes.\n\nDuring a workout you can also adjust the timer on the fly using the +30s and -30s buttons, or skip it entirely if you're ready to go."),
+        ("Achievements & Stats", "How do achievements work?", "Achievements unlock automatically based on your workout activity. Track total weight lifted, reps completed, workout streaks, and more. View all achievements and your progress in the Dashboard tab."),
+        ("Achievements & Stats", "What is a workout streak?", "A workout streak counts consecutive days you've completed workouts. Work out every day to build your streak! Your current and longest streaks are shown in the Dashboard."),
+        ("Achievements & Stats", "Where can I see my personal records?", "The Dashboard shows your personal records including:\n\n• Heaviest single workout (total weight)\n• Most reps in one workout\n• Longest workout duration\n• Furthest distance in one session"),
+        ("Workout History", "How do I view my past workouts?", "Tap the history icon in the top right of the Workouts tab. By default you'll see the current month's workouts. Switch to 'All Time' to see every session you've ever logged."),
+        ("Workout History", "Can I see a breakdown of each past workout?", "Yes! Tap 'Show' on any history card to expand it and see a full breakdown of every exercise, including sets, reps, weight, distance, and time."),
+        ("Workout History", "What happens to history if I delete a workout?", "Deleting a workout removes the template, but your workout history is preserved. History entries from deleted workouts are shown with a 'deleted' indicator. Your achievements, stats, and personal records all remain intact."),
+        ("Data & Privacy", "Is my data synced to the cloud?", "No. All your data stays on your device. Soleus doesn't use any cloud services, which means your workout data is completely private and under your control."),
+        ("Data & Privacy", "Can I share or import workouts?", "Yes! Long press on any workout card and select 'Share' to export it as a .soleus file. You can send it to another device or save it as a backup.\n\nTo import a workout, tap the import icon (arrow) in the top right of the Workouts tab and select a .soleus file. You'll see a preview of the workout before it's added."),
+        ("Customization", "Can I change the app appearance?", "Yes! Go to Settings → Appearance and choose between Dark (default), Light, or System (follows your device setting)."),
+        ("Customization", "Can I change my weight and distance units?", "Yes! Go to Settings and choose between lbs/kg for weight and miles/km for distance. Your preference will be used throughout the app."),
+        ("Customization", "Can I change workout card colors?", "Absolutely! Long press on the workout card and select 'Customize Card'."),
+    ]
+
+    private var filteredItems: [(section: String, question: String, answer: String)] {
+        guard !searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return allItems }
+        let query = searchText.lowercased()
+        return allItems.filter {
+            $0.question.lowercased().contains(query) || $0.answer.lowercased().contains(query)
+        }
+    }
+
+    private var filteredSections: [String] {
+        var seen = Set<String>()
+        return filteredItems.compactMap { seen.insert($0.section).inserted ? $0.section : nil }
+    }
 
     var body: some View {
         NavigationView {
@@ -20,142 +61,38 @@ struct FAQView: View {
                     }
                     .padding(.bottom, 8)
 
-                    // Getting Started
-                    SectionHeader(title: "Getting Started")
-
-                    FAQItem(
-                        question: "How do I create my first workout?",
-                        answer: "Tap the '+' icon in the top right of the Workouts tab. Give your workout a name and color, then add exercises by tapping 'Add Exercise'. For each exercise, you can configure sets, reps, weight, time, or distance.",
-                        expandedQuestion: $expandedQuestion
-                    )
-
-                    FAQItem(
-                        question: "What's the difference between a workout and workout history?",
-                        answer: "A workout is a template or plan that you create. When you start and complete a workout, it creates a workout history entry that tracks what you actually did. This way you can reuse the same workout template multiple times while keeping a record of each session.",
-                        expandedQuestion: $expandedQuestion
-                    )
-
-                    // Using Workouts
-                    SectionHeader(title: "Using Workouts")
-
-                    FAQItem(
-                        question: "How do I start a workout?",
-                        answer: "Tap the play button on any workout card. Review the exercises and sets, then tap 'Start Workout'. You can then track your progress by checking off completed sets.",
-                        expandedQuestion: $expandedQuestion
-                    )
-
-                    FAQItem(
-                        question: "Can I modify a workout while it's in progress?",
-                        answer: "Yes! During an active workout, tap the pencil icon to enter edit mode. You can then:\n\n• Add new exercises\n• Add or remove sets\n• Rearrange exercises with up/down arrows\n• Adjust weights, reps, or times\n\nAfter completing the workout, you can preview your changes before deciding whether to update the original workout template.",
-                        expandedQuestion: $expandedQuestion
-                    )
-
-                    FAQItem(
-                        question: "What happens when I finish a workout with changes?",
-                        answer: "If you made changes during your workout, you'll see a preview showing exactly what changed (exercises added/removed, sets modified, etc.). You can then choose to:\n\n• Update Workout - Save changes to your template\n• Keep Original - Save the workout history but don't update the template\n\nThis lets you adapt workouts on the fly without permanently changing your template if you don't want to.",
-                        expandedQuestion: $expandedQuestion
-                    )
-
-                    FAQItem(
-                        question: "How do I rearrange my workouts?",
-                        answer: "Tap the rearrange icon (arrows) in the top right. Then swipe workout cards left or right to reorder them. Tap the checkmark when done.",
-                        expandedQuestion: $expandedQuestion
-                    )
-
-                    FAQItem(
-                        question: "How do I duplicate or delete a workout?",
-                        answer: "Long press on any workout card to open the context menu. From there you can edit, duplicate, share, or delete the workout.",
-                        expandedQuestion: $expandedQuestion
-                    )
-
-                    // Exercises & Sets
-                    SectionHeader(title: "Exercises & Sets")
-
-                    FAQItem(
-                        question: "What types of exercises can I track?",
-                        answer: "Soleus supports four types of exercises:\n\n• Reps (like push-ups, pull-ups)\n• Weight & Reps (like bench press, squats)\n• Time (like planks, wall sits)\n• Distance (like running, cycling)\n\nEach exercise type has appropriate fields for tracking your performance.",
-                        expandedQuestion: $expandedQuestion
-                    )
-
-                    FAQItem(
-                        question: "How do I add or remove sets?",
-                        answer: "When creating or editing a workout, tap 'Add Set' to add more sets to an exercise. During an active workout, you need to enter edit mode first (tap the pencil icon). New sets automatically copy the values from your previous set for convenience.\n\nTo remove a set, swipe left on it and tap delete. In active workouts, sets can only be deleted when in edit mode.",
-                        expandedQuestion: $expandedQuestion
-                    )
-
-                    FAQItem(
-                        question: "Can I add notes to exercises?",
-                        answer: "Yes! Tap the notebook icon next to any exercise name to add notes. You can use notes to record form cues, personal records, or any reminders. Notes appear below the exercise title and are saved with your workout template.",
-                        expandedQuestion: $expandedQuestion
-                    )
-
-                    FAQItem(
-                        question: "Do sets auto-complete?",
-                        answer: "Yes! When you're tracking an active workout, sets will automatically mark as complete when you enter values in both required fields (e.g., reps AND weight). You can also manually check off sets using the slider.",
-                        expandedQuestion: $expandedQuestion
-                    )
-
-                    // Achievements & Stats
-                    SectionHeader(title: "Achievements & Stats")
-
-                    FAQItem(
-                        question: "How do achievements work?",
-                        answer: "Achievements unlock automatically based on your workout activity. Track total weight lifted, reps completed, workout streaks, and more. View all achievements and your progress in the Dashboard tab.",
-                        expandedQuestion: $expandedQuestion
-                    )
-
-                    FAQItem(
-                        question: "What is a workout streak?",
-                        answer: "A workout streak counts consecutive days you've completed workouts. Work out every day to build your streak! Your current and longest streaks are shown in the Dashboard.",
-                        expandedQuestion: $expandedQuestion
-                    )
-
-                    FAQItem(
-                        question: "Where can I see my personal records?",
-                        answer: "The Dashboard shows your personal records including:\n\n• Heaviest single workout (total weight)\n• Most reps in one workout\n• Longest workout duration\n• Furthest distance in one session",
-                        expandedQuestion: $expandedQuestion
-                    )
-
-                    // Data & Privacy
-                    SectionHeader(title: "Data & Privacy")
-
-                    FAQItem(
-                        question: "Is my data synced to the cloud?",
-                        answer: "No. All your data stays on your device. Soleus doesn't use any cloud services, which means your workout data is completely private and under your control.",
-                        expandedQuestion: $expandedQuestion
-                    )
-
-                    FAQItem(
-                        question: "Can I export my workouts?",
-                        answer: "Yes! Long press on any workout card and select 'Share'. You can share the workout file with others or save it as a backup. Recipients can import the workout into their Soleus app.",
-                        expandedQuestion: $expandedQuestion
-                    )
-
-                    FAQItem(
-                        question: "What happens if I delete a workout?",
-                        answer: "Deleting a workout removes the template, but your workout history is preserved. This means your achievements, stats, and personal records remain intact even if you delete the original workout.",
-                        expandedQuestion: $expandedQuestion
-                    )
-
-                    // Customization
-                    SectionHeader(title: "Customization")
-
-                    FAQItem(
-                        question: "Can I change my weight and distance units?",
-                        answer: "Yes! Go to Settings and choose between lbs/kg for weight and miles/km for distance. Your preference will be used throughout the app.",
-                        expandedQuestion: $expandedQuestion
-                    )
-
-                    FAQItem(
-                        question: "Can I change workout card colors?",
-                        answer: "Absolutely! Long Press on the workout card and select 'Customize Card' ",
-                        expandedQuestion: $expandedQuestion
-                    )
+                    if filteredItems.isEmpty {
+                        VStack(spacing: 12) {
+                            Image(systemName: "magnifyingglass")
+                                .font(.system(size: 36))
+                                .foregroundColor(.secondary.opacity(0.6))
+                            Text("No results for \"\(searchText)\"")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.top, 40)
+                    } else {
+                        ForEach(filteredSections, id: \.self) { section in
+                            SectionHeader(title: section)
+                            ForEach(filteredItems.filter { $0.section == section }, id: \.question) { item in
+                                FAQItem(
+                                    question: item.question,
+                                    answer: item.answer,
+                                    expandedQuestion: $expandedQuestion
+                                )
+                            }
+                        }
+                    }
 
                     Spacer()
                         .frame(height: 20)
                 }
                 .padding()
+            }
+            .searchable(text: $searchText, prompt: "Search questions")
+            .onChange(of: searchText) {
+                expandedQuestion = nil
             }
             .background(Color(.systemGroupedBackground).ignoresSafeArea())
             .navigationTitle("Help & FAQ")

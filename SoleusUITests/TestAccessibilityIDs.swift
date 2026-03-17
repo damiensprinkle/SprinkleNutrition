@@ -55,4 +55,9 @@ enum TestID {
     static let contactUsBugReportButton = "contact_us_bug_report_button"
     static let contactUsFeatureRequestButton = "contact_us_feature_request_button"
     static let contactUsAttachLogsToggle = "contact_us_attach_logs_toggle"
+
+    // MARK: - Template Picker
+    static let templatePickerButton = "template_picker_button"
+    static let templatePickerCancelButton = "template_picker_cancel_button"
+    static let templatePickerRow = "template_picker_row"
 }

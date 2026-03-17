@@ -55,13 +55,7 @@ struct ExerciseRow: View {
                             }
                         }
                     }
-                    .task(id: setInput.id) {
-                        // Safely guard against invalid setInput
-                        guard setInput.id != nil else {
-                            AppLogger.validation.warning("setInput has nil ID in repsTextField task")
-                            return
-                        }
-
+                    .onAppear {
                         if repsInput.isEmpty {
                             repsInput = "\(setInput.reps)"
                             originalReps = repsInput
@@ -99,13 +93,7 @@ struct ExerciseRow: View {
                             }
                         }
                     }
-                    .task(id: setInput.id) {
-                        // Safely guard against invalid setInput
-                        guard setInput.id != nil else {
-                            AppLogger.validation.warning("setInput has nil ID in distanceTextField task")
-                            return
-                        }
-
+                    .onAppear {
                         if distanceInput.isEmpty {
                             distanceInput = String(setInput.distance)
                             originalDistance = distanceInput
@@ -136,13 +124,7 @@ struct ExerciseRow: View {
                     .onChange(of: weightInput) {
                         validateAndSetInputFloat(&weightInput, for: &setInput.weight, maxLength: 5, maxDecimals: 2)
                     }
-                    .task(id: setInput.id) {
-                        // Safely guard against invalid setInput
-                        guard setInput.id != nil else {
-                            AppLogger.validation.warning("setInput has nil ID in weightTextField task")
-                            return
-                        }
-
+                    .onAppear {
                         if weightInput.isEmpty {
                             weightInput = String(setInput.weight)
                             originalWeight = weightInput
@@ -168,13 +150,7 @@ struct ExerciseRow: View {
                     .onChange(of: timeInput) {
                         formatInput(timeInput)
                     }
-                    .task(id: setInput.id) {
-                        // Safely guard against invalid setInput
-                        guard setInput.id != nil else {
-                            AppLogger.validation.warning("setInput has nil ID in timeTextField task")
-                            return
-                        }
-
+                    .onAppear {
                         if timeInput.isEmpty {
                             let formattedTime = formatTimeFromSeconds(totalSeconds: Int(setInput.time))
                             timeInput = "\(formattedTime)"

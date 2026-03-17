@@ -22,6 +22,9 @@ struct AddWorkoutView: View {
 
     private let colorManager = ColorManager()
     @State private var showingAddExerciseDialog = false
+    @State private var showingTemplatePickerSheet = false
+    @State private var pendingTemplate: WorkoutTemplate? = nil
+    @State private var formID = UUID()
     @EnvironmentObject var appViewModel: AppViewModel
     
     var body: some View {
@@ -32,38 +35,10 @@ struct AddWorkoutView: View {
 
                 VStack(spacing: 0) {
                     addWorkoutForm
+                        .id(formID)
 
                     if(!focusManager.isAnyTextFieldFocused){
-                        Button(action: {
-                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                                showingAddExerciseDialog = true
-                            }
-                        }) {
-                            HStack(spacing: 8) {
-                                Image(systemName: "plus.circle.fill")
-                                    .font(.title3)
-                                Text("Add Exercise")
-                                    .font(.headline)
-                                    .fontWeight(.semibold)
-                            }
-                            .foregroundColor(.staticWhite)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 16)
-                            .background(
-                                LinearGradient(
-                                    gradient: Gradient(colors: [Color.myBlue, Color.myBlue.opacity(0.8)]),
-                                    startPoint: .leading,
-                                    endPoint: .trailing
-                                )
-                            )
-                            .cornerRadius(14)
-                            .shadow(color: Color.myBlue.opacity(0.3), radius: 8, x: 0, y: 4)
-                        }
-                        .padding(.horizontal, 20)
-                        .padding(.bottom, 20)
-                        .padding(.top, 12)
-                        .accessibilityIdentifier(AccessibilityID.addWorkoutAddExerciseButton)
+                        bottomButtons
                     }
                 }
                 .background(Color(.systemGroupedBackground))
@@ -122,9 +97,24 @@ struct AddWorkoutView: View {
                             showAlert = false
                         }
                     )
+                case .templateOverwriteConfirmation:
+                    return Alert(
+                        title: Text("Replace Workout?"),
+                        message: Text("This will overwrite your current title and exercises. This cannot be undone."),
+                        primaryButton: .destructive(Text("Replace")) {
+                            if let template = pendingTemplate {
+                                applyTemplate(template)
+                            }
+                            pendingTemplate = nil
+                        },
+                        secondaryButton: .cancel {
+                            pendingTemplate = nil
+                        }
+                    )
                 }
             }
             .onAppear {
+                formID = UUID()
                 if update {
                     workoutController.loadWorkoutDetails(for: workoutId)
                     workoutTitle = workoutController.selectedWorkoutName ?? ""
@@ -133,6 +123,24 @@ struct AddWorkoutView: View {
                 else{
                     workoutController.workoutDetails.removeAll()
                 }
+            }
+            .sheet(isPresented: $showingTemplatePickerSheet) {
+                TemplatePickerView(isPresented: $showingTemplatePickerSheet) { template in
+                    let hasExistingContent = !workoutController.workoutDetails.isEmpty || !workoutTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                    if hasExistingContent {
+                        showingTemplatePickerSheet = false
+                        pendingTemplate = template
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+                            activeAlert = .templateOverwriteConfirmation
+                            showAlert = true
+                        }
+                    } else {
+                        applyTemplate(template)
+                        showingTemplatePickerSheet = false
+                    }
+                }
+                .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.visible)
             }
             .sheet(isPresented: $showingAddExerciseDialog) {
                 AddExerciseDialog(
@@ -182,6 +190,59 @@ struct AddWorkoutView: View {
         }
     }
     
+    private var bottomButtons: some View {
+        VStack(spacing: 8) {
+            Button(action: {
+                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                    showingAddExerciseDialog = true
+                }
+            }) {
+                HStack(spacing: 8) {
+                    Image(systemName: "plus.circle.fill")
+                        .font(.title3)
+                    Text("Add Exercise")
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                }
+                .foregroundColor(.staticWhite)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 16)
+                .background(
+                    LinearGradient(
+                        gradient: Gradient(colors: [Color.myBlue, Color.myBlue.opacity(0.8)]),
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                )
+                .cornerRadius(14)
+                .shadow(color: Color.myBlue.opacity(0.3), radius: 8, x: 0, y: 4)
+            }
+            .accessibilityIdentifier(AccessibilityID.addWorkoutAddExerciseButton)
+
+            if !update {
+                Button(action: { showingTemplatePickerSheet = true }) {
+                    HStack(spacing: 8) {
+                        Image(systemName: "doc.plaintext")
+                            .font(.title3)
+                        Text("Start from Template")
+                            .font(.headline)
+                            .fontWeight(.semibold)
+                    }
+                    .foregroundColor(.myBlue)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 16)
+                    .background(Color.myBlue.opacity(0.1))
+                    .cornerRadius(14)
+                }
+                .accessibilityIdentifier(AccessibilityID.templatePickerButton)
+            }
+        }
+        .padding(.horizontal, 20)
+        .padding(.top, 12)
+        .padding(.bottom, 20)
+    }
+
     private var addWorkoutForm: some View {
         ScrollView {
             VStack(spacing: 16) {
@@ -205,17 +266,20 @@ struct AddWorkoutView: View {
                 .padding(.bottom, 8)
 
                 // Exercise Cards
-                ForEach(0..<workoutController.workoutDetails.count, id: \.self) { index in
+                ForEach(Array(workoutController.workoutDetails.enumerated()), id: \.element.id) { index, detail in
                     ExerciseCard(
-                        exerciseName: workoutController.workoutDetails[index].exerciseName,
-                        hasNotes: workoutController.workoutDetails[index].notes != nil && !workoutController.workoutDetails[index].notes!.isEmpty,
-                        notes: workoutController.workoutDetails[index].notes,
+                        exerciseName: detail.exerciseName,
+                        hasNotes: detail.notes != nil && !detail.notes!.isEmpty,
+                        notes: detail.notes,
                         index: index,
                         workoutCount: workoutController.workoutDetails.count,
                         isKeyboardActive: focusManager.isAnyTextFieldFocused,
-                        sets: $workoutController.workoutDetails[index].sets,
-                        exerciseQuantifier: workoutController.workoutDetails[index].exerciseQuantifier,
-                        exerciseMeasurement: workoutController.workoutDetails[index].exerciseMeasurement,
+                        sets: Binding(
+                            get: { index < workoutController.workoutDetails.count ? workoutController.workoutDetails[index].sets : detail.sets },
+                            set: { if index < workoutController.workoutDetails.count { workoutController.workoutDetails[index].sets = $0 } }
+                        ),
+                        exerciseQuantifier: detail.exerciseQuantifier,
+                        exerciseMeasurement: detail.exerciseMeasurement,
                         focusManager: focusManager,
                         moveUpAction: {
                             workoutController.moveExercise(from: index, to: index - 1)
@@ -362,11 +426,14 @@ struct AddWorkoutView: View {
                             .padding(.top, 12)
                     }
 
-                    ForEach(Array(sets.enumerated()), id: \.element.id) { setIndex, _ in
+                    ForEach(Array(sets.enumerated()), id: \.element.id) { setIndex, set in
                         VStack(spacing: 0) {
                             ExerciseRow(
                                 setIndex: setIndex + 1,
-                                setInput: $sets[setIndex],
+                                setInput: Binding(
+                                    get: { setIndex < sets.count ? sets[setIndex] : set },
+                                    set: { if setIndex < sets.count { sets[setIndex] = $0 } }
+                                ),
                                 exerciseQuantifier: exerciseQuantifier,
                                 exerciseMeasurement: exerciseMeasurement
                             )
@@ -443,6 +510,12 @@ struct AddWorkoutView: View {
         workoutController.workoutDetails.remove(atOffsets: offsets)
     }
     
+    private func applyTemplate(_ template: WorkoutTemplate) {
+        workoutTitle = template.name
+        workoutController.workoutDetails = template.toWorkoutDetails()
+        formID = UUID()
+    }
+
     private func handleSaveError(_ error: WorkoutSaveError) {
         switch error {
         case .emptyTitle:
@@ -458,5 +531,5 @@ struct AddWorkoutView: View {
 }
 
 enum ActiveAlert {
-    case error, deleteConfirmation, cancelConfirmation
+    case error, deleteConfirmation, cancelConfirmation, templateOverwriteConfirmation
 }

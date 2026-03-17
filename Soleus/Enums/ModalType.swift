@@ -1,6 +1,6 @@
 import SwiftUI
 
-enum ModalType: Identifiable {
+enum ModalType: Identifiable, Equatable {
     case add
     case edit(workoutId: UUID)
 

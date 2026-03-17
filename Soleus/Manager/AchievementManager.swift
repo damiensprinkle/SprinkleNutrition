@@ -29,9 +29,12 @@ class AchievementManager: ObservableObject {
     }
 
     func getAchievementProgress() -> [AchievementProgress] {
+        let persistedNames = getUnlockedAchievementNames()
+
         guard workoutManager != nil else {
             return achievements.map { achievement in
-                AchievementProgress(achievement: achievement, isUnlocked: false, currentProgress: 0, targetValue: 1)
+                let wasUnlocked = persistedNames.contains(achievement.name)
+                return AchievementProgress(achievement: achievement, isUnlocked: wasUnlocked, currentProgress: wasUnlocked ? 1 : 0, targetValue: 1)
             }
         }
 
@@ -39,10 +42,12 @@ class AchievementManager: ObservableObject {
 
         return achievements.map { achievement in
             let (isUnlocked, current, target) = checkAchievement(achievement, stats: stats)
+            // An achievement stays unlocked once earned, even if history is later cleared
+            let finalUnlocked = isUnlocked || persistedNames.contains(achievement.name)
             return AchievementProgress(
                 achievement: achievement,
-                isUnlocked: isUnlocked,
-                currentProgress: current,
+                isUnlocked: finalUnlocked,
+                currentProgress: finalUnlocked ? target : current,
                 targetValue: target
             )
         }
@@ -125,6 +130,10 @@ class AchievementManager: ObservableObject {
             return Set(names)
         }
         return Set()
+    }
+
+    func clearUnlockedAchievements() {
+        UserDefaults.standard.removeObject(forKey: unlockedAchievementsKey)
     }
 
     private func saveUnlockedAchievements(_ achievements: [Achievement]) {

@@ -12,22 +12,27 @@ struct WorkoutTrackerMainView: View {
     @State private var showImportPreview = false
     @State private var isLoadingImport = false
     @State private var isEditMode = false
-    
-    
+
+    private var visibleWorkouts: [WorkoutInfo] {
+        workoutController.workouts.filter { !deletingWorkouts.contains($0.id) }
+    }
+
     var body: some View {
         ScrollView {
             Divider()
             workoutGrid
         }
         .navigationBarItems(trailing: HStack(spacing: 20) {
-            Button(action: {
-                isEditMode.toggle()
-            }) {
-                Image(systemName: isEditMode ? "checkmark.circle.fill" : "arrow.up.arrow.down.circle")
-                    .foregroundColor(isEditMode ? .green : .primary)
-                    .help(isEditMode ? "Done rearranging" : "Rearrange workouts")
+            if !visibleWorkouts.isEmpty {
+                Button(action: {
+                    isEditMode.toggle()
+                }) {
+                    Image(systemName: isEditMode ? "checkmark.circle.fill" : "arrow.up.arrow.down.circle")
+                        .foregroundColor(isEditMode ? .green : .primary)
+                        .help(isEditMode ? "Done rearranging" : "Rearrange workouts")
+                }
+                .accessibilityIdentifier(AccessibilityID.navReorderButton)
             }
-            .accessibilityIdentifier(AccessibilityID.navReorderButton)
             Button(action: {
                 // Clear any previous import data
                 importedWorkout = nil
@@ -62,7 +67,13 @@ struct WorkoutTrackerMainView: View {
         }
         .glassEffect(in: Capsule())
         )
-        .onAppear(perform: workoutController.loadWorkouts)
+        .onAppear {
+            workoutController.loadWorkouts()
+            consumePendingImport()
+        }
+        .onChange(of: appViewModel.pendingImport) {
+            consumePendingImport()
+        }
         .background(Color.myWhite.ignoresSafeArea())
         .sheet(item: $presentingModal) { modal in
             switch modal {
@@ -92,6 +103,9 @@ struct WorkoutTrackerMainView: View {
         .sheet(isPresented: $showImportPreview, onDismiss: {
             // Clean up after import preview is dismissed
             importedWorkout = nil
+            // Clear stale workoutDetails left by importWorkout() so subsequent
+            // edits start from a clean state (same as any non-imported workout).
+            workoutController.workoutDetails = []
         }) {
             ImportWorkoutPreviewContent(
                 importedWorkout: $importedWorkout,
@@ -157,7 +171,7 @@ struct WorkoutTrackerMainView: View {
                 .padding(.bottom, 8)
                 .accessibilityIdentifier(AccessibilityID.activeSessionBanner)
             }
-            if workoutController.workouts.isEmpty && !isEditMode {
+            if visibleWorkouts.isEmpty && !isEditMode {
                 VStack(spacing: 24) {
                     Spacer()
                         .frame(height: 60)
@@ -247,6 +261,15 @@ struct WorkoutTrackerMainView: View {
         }
     }
     
+    private func consumePendingImport() {
+        guard let pending = appViewModel.pendingImport else { return }
+        appViewModel.pendingImport = nil
+        importedWorkout = nil
+        showImportPreview = false
+        importedWorkout = pending
+        showImportPreview = true
+    }
+
     private func duplicateWorkout(_ workoutId: UUID) {
         withAnimation {
             duplicatingWorkouts.insert(workoutId)

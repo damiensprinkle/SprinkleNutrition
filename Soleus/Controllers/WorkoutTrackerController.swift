@@ -61,8 +61,14 @@ class WorkoutTrackerController: ObservableObject {
         guard !workoutDetails.isEmpty else {
             return .failure(.noExerciseDetails)
         }
-        if workoutManager.titleExists(title) && !update {
-            return .failure(.titleExists)
+        if update {
+            if workoutManager.titleExists(title, excludingId: workoutId) {
+                return .failure(.titleExists)
+            }
+        } else {
+            if workoutManager.titleExists(title) {
+                return .failure(.titleExists)
+            }
         }
         
         if update {

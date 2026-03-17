@@ -3,6 +3,7 @@ import SwiftUI
 struct DevMenuView: View {
     @Environment(\.dismiss) var dismiss
     @EnvironmentObject var workoutController: WorkoutTrackerController
+    @EnvironmentObject var achievementManager: AchievementManager
 
     @State private var showingConfirmation = false
     @State private var confirmationAction: (() -> Void)?
@@ -121,6 +122,24 @@ struct DevMenuView: View {
                             Image(systemName: "trash.fill")
                                 .foregroundColor(.red)
                             Text("Delete All Workout History")
+                                .foregroundColor(.red)
+                        }
+                    }
+                    .disabled(isProcessing)
+
+                    Button(action: {
+                        confirmationTitle = "Reset Achievements"
+                        confirmationMessage = "⚠️ This will clear all unlocked achievements. This cannot be undone. Continue?"
+                        confirmationAction = {
+                            achievementManager.clearUnlockedAchievements()
+                            statusMessage = "✅ Achievements reset"
+                        }
+                        showingConfirmation = true
+                    }) {
+                        HStack {
+                            Image(systemName: "trophy.fill")
+                                .foregroundColor(.red)
+                            Text("Reset Achievements")
                                 .foregroundColor(.red)
                         }
                     }

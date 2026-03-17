@@ -82,7 +82,7 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
         // Add sets to the exercise detail
         for setInput in sets {
             let newSet = WorkoutSet(context: context)
-            newSet.id = UUID()
+            newSet.id = setInput.id ?? UUID()
             newSet.reps = setInput.reps
             newSet.weight = setInput.weight
             newSet.time = setInput.time
@@ -396,7 +396,7 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
 
                 let newWorkout = Workouts(context: backgroundContext)
                 newWorkout.id = UUID()
-                newWorkout.name = "\(originalWorkout.name ?? "")-copy"
+                newWorkout.name = Self.uniqueCopyName(for: originalWorkout.name ?? "", in: backgroundContext)
                 newWorkout.color = originalWorkout.color
 
                 // Copy all details from the original workout to the new workout
@@ -735,16 +735,50 @@ extension WorkoutManager {
     
     func titleExists(_ title: String) -> Bool {
         guard let context = self.context else { return false }
-        
+
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Workouts")
         request.predicate = NSPredicate(format: "name ==[c] %@", title)
         request.includesSubentities = false
-        
+
         do {
             let count = try context.count(for: request)
             return count > 0
         } catch {
             AppLogger.coreData.error("Error checking title existence: \(error.localizedDescription)")
+            return false
+        }
+    }
+
+    /// Returns a unique copy name for the given base title, e.g. "Push Day-copy", "Push Day-copy 2", etc.
+    private static func uniqueCopyName(for baseName: String, in context: NSManagedObjectContext) -> String {
+        let base = "\(baseName)-copy"
+        var candidate = base
+        var counter = 2
+
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Workouts")
+        request.includesSubentities = false
+
+        while true {
+            request.predicate = NSPredicate(format: "name ==[c] %@", candidate)
+            let count = (try? context.count(for: request)) ?? 0
+            if count == 0 { return candidate }
+            candidate = "\(base) \(counter)"
+            counter += 1
+        }
+    }
+
+    func titleExists(_ title: String, excludingId: UUID) -> Bool {
+        guard let context = self.context else { return false }
+
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Workouts")
+        request.predicate = NSPredicate(format: "name ==[c] %@ AND id != %@", title, excludingId as CVarArg)
+        request.includesSubentities = false
+
+        do {
+            let count = try context.count(for: request)
+            return count > 0
+        } catch {
+            AppLogger.coreData.error("Error checking title existence (excluding id): \(error.localizedDescription)")
             return false
         }
     }

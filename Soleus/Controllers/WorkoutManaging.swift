@@ -50,6 +50,9 @@ protocol WorkoutManaging: AnyObject, ObservableObject {
     /// Checks if a workout title already exists
     func titleExists(_ title: String) -> Bool
 
+    /// Checks if a workout title already exists, ignoring a specific workout (used during edits)
+    func titleExists(_ title: String, excludingId: UUID) -> Bool
+
     /// Saves the order of workouts by updating their orderIndex values
     func saveWorkoutOrder(workouts: [WorkoutInfo])
 

@@ -258,7 +258,7 @@ struct CardView: View {
 
         do {
             try data.write(to: tempURL)
-            shareItems = [tempURL]
+            shareItems = [WorkoutActivityItemProvider(fileURL: tempURL, workoutData: data, workoutName: workoutName)]
             showShareSheet = true
         } catch {
             alertTitle = "Failed to create shareable file"

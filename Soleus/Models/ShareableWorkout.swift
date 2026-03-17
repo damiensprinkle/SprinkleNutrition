@@ -1,14 +1,19 @@
 import Foundation
 
 /// Codable model for exporting/importing workouts as JSON
-struct ShareableWorkout: Codable {
+/// File format: 4-byte magic header "SLSE" followed by UTF-8 JSON.
+/// The binary header prevents QuickLook from rendering the file as plain text,
+/// so iMessage shows it as a tappable file bubble rather than an inline text preview.
+struct ShareableWorkout: Codable, Equatable {
+    // Magic bytes that prefix every exported .soleus file
+    private static let magic: [UInt8] = [0x53, 0x4C, 0x53, 0x45] // "SLSE"
     var version: String = "1.0"
     let workoutName: String
     let workoutColor: String?
     let exercises: [ShareableExercise]
     let exportDate: Date
 
-    struct ShareableExercise: Codable {
+    struct ShareableExercise: Codable, Equatable {
         let name: String
         let orderIndex: Int32
         let quantifier: String // "Reps" or "Distance"
@@ -17,7 +22,7 @@ struct ShareableWorkout: Codable {
         let notes: String?
     }
 
-    struct ShareableSet: Codable {
+    struct ShareableSet: Codable, Equatable {
         let setIndex: Int32
         let reps: Int32
         let weight: Float
@@ -57,17 +62,46 @@ struct ShareableWorkout: Codable {
 
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601
-        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        // Compact JSON — file has a binary header so human-readability isn't needed,
+        // and smaller JSON means shorter base64 URLs when sharing via Messages.
 
-        return try? encoder.encode(shareableWorkout)
+        guard let jsonData = try? encoder.encode(shareableWorkout) else { return nil }
+
+        // Compress the JSON payload. zlib typically halves JSON size, which cuts
+        // the base64-encoded iMessage link from ~1500 chars down to ~500-600.
+        let payload: Data
+        if let compressed = try? (jsonData as NSData).compressed(using: .zlib) {
+            payload = compressed as Data
+        } else {
+            payload = jsonData
+        }
+
+        var result = Data(magic)
+        result.append(payload)
+        return result
     }
 
-    /// Import workout from JSON data
+    /// Import workout from .soleus file data.
+    /// Handles compressed (current), uncompressed, and legacy raw-JSON formats.
     static func `import`(from data: Data) -> ShareableWorkout? {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
 
-        return try? decoder.decode(ShareableWorkout.self, from: data)
+        let jsonData: Data
+        if data.prefix(magic.count) == Data(magic) {
+            let payload = data.dropFirst(magic.count)
+            // Try zlib decompression first (current format), fall back to plain JSON.
+            if let decompressed = try? (payload as NSData).decompressed(using: .zlib) {
+                jsonData = decompressed as Data
+            } else {
+                jsonData = Data(payload)
+            }
+        } else {
+            // Legacy: raw JSON without magic header
+            jsonData = data
+        }
+
+        return try? decoder.decode(ShareableWorkout.self, from: jsonData)
     }
 
     /// Convert to WorkoutDetailInput array for saving

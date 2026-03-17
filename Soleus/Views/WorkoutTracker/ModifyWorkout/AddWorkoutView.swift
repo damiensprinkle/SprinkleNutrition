@@ -25,50 +25,63 @@ struct AddWorkoutView: View {
     @State private var showingTemplatePickerSheet = false
     @State private var pendingTemplate: WorkoutTemplate? = nil
     @State private var formID = UUID()
+    @State private var hasLoaded = false
+    @FocusState private var isTitleFocused: Bool
     @EnvironmentObject var appViewModel: AppViewModel
     
     var body: some View {
-        NavigationView {
-            ZStack {
-                Color(.systemGroupedBackground)
-                    .ignoresSafeArea()
+        ZStack {
+            Color(.systemGroupedBackground)
+                .ignoresSafeArea()
 
-                VStack(spacing: 0) {
-                    addWorkoutForm
-                        .id(formID)
-
-                    if(!focusManager.isAnyTextFieldFocused){
-                        bottomButtons
+            VStack(spacing: 0) {
+                // Custom navigation header (replaces NavigationView to avoid nested nav conflict)
+                HStack {
+                    Button("Cancel") {
+                        if initialWorkoutDetails != workoutController.workoutDetails {
+                            alertMessage = "You have unsaved changes are you sure you want to cancel?"
+                            activeAlert = .cancelConfirmation
+                            showAlert = true
+                        } else {
+                            presentationMode.wrappedValue.dismiss()
+                        }
                     }
+                    .accessibilityIdentifier(AccessibilityID.addWorkoutCancelButton)
+
+                    Spacer()
+
+                    Text(navigationTitle)
+                        .font(.headline)
+
+                    Spacer()
+
+                    Button("Save") {
+                        let result = workoutController.saveWorkout(title: workoutTitle, update: update, workoutId: workoutId)
+                        switch result {
+                        case .success:
+                            presentationMode.wrappedValue.dismiss()
+                        case .failure(let error):
+                            handleSaveError(error)
+                        }
+                    }
+                    .accessibilityIdentifier(AccessibilityID.addWorkoutSaveButton)
                 }
+                .padding(.horizontal, 20)
+                .padding(.vertical, 12)
                 .background(Color(.systemGroupedBackground))
-                
+
+                Divider()
+
+                addWorkoutForm
+                    .id(formID)
+
+                if !focusManager.isAnyTextFieldFocused {
+                    bottomButtons
+                }
             }
-            .navigationBarTitle(navigationTitle)
-            .navigationBarItems(
-                leading: Button("Cancel") {
-                    if(initialWorkoutDetails != workoutController.workoutDetails){
-                        alertMessage = "You have unsaved changes are you sure you want to cancel?"
-                        activeAlert = .cancelConfirmation
-                        showAlert = true
-                    }
-                    else{
-                        presentationMode.wrappedValue.dismiss()
-                    }
-                }
-                .accessibilityIdentifier(AccessibilityID.addWorkoutCancelButton),
-                trailing: Button("Save") {
-                    let result = workoutController.saveWorkout(title: workoutTitle, update: update, workoutId: workoutId)
-                    switch result {
-                    case .success:
-                        presentationMode.wrappedValue.dismiss()
-                    case .failure(let error):
-                        handleSaveError(error)
-                    }
-                }
-                .accessibilityIdentifier(AccessibilityID.addWorkoutSaveButton)
-            )
-            .alert(isPresented: $showAlert) {
+            .background(Color(.systemGroupedBackground))
+        }
+        .alert(isPresented: $showAlert) {
                 switch activeAlert {
                 case .error:
                     return Alert(title: Text("Error"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
@@ -114,14 +127,14 @@ struct AddWorkoutView: View {
                 }
             }
             .onAppear {
+                guard !hasLoaded else { return }
+                hasLoaded = true
+                workoutController.workoutDetails = []
                 formID = UUID()
                 if update {
                     workoutController.loadWorkoutDetails(for: workoutId)
                     workoutTitle = workoutController.selectedWorkoutName ?? ""
                     initialWorkoutDetails = workoutController.workoutDetails
-                }
-                else{
-                    workoutController.workoutDetails.removeAll()
                 }
             }
             .sheet(isPresented: $showingTemplatePickerSheet) {
@@ -187,7 +200,6 @@ struct AddWorkoutView: View {
                     .presentationDragIndicator(.visible)
                 }
             }
-        }
     }
     
     private var bottomButtons: some View {
@@ -256,6 +268,7 @@ struct AddWorkoutView: View {
                         .padding(.top, 16)
 
                     TextField("Enter Workout Title", text: $workoutTitle)
+                        .focused($isTitleFocused)
                         .font(.body)
                         .padding(16)
                         .background(Color(.secondarySystemGroupedBackground))

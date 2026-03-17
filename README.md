@@ -18,8 +18,8 @@ Soleus is a native iOS app that helps users create custom workout plans, track a
 
 ### Prerequisites
 
-- Xcode 15.0 or later
-- iOS 17.2+ device or simulator
+- Xcode 16.0 or later
+- iOS 18.0+ device or simulator
 - macOS with Apple Silicon or Intel processor
 
 ### Installation
@@ -39,9 +39,6 @@ Soleus is a native iOS app that helps users create custom workout plans, track a
 
 4. Build and run the project (Cmd + R)
 
-### First Launch
-
-On first launch, you'll be prompted to enter your user details. This is a one-time setup that personalizes your experience.
 
 ## Contributing
 
@@ -49,13 +46,15 @@ Contributions are welcome! Please feel free to submit pull requests or open issu
 
 ## License
 
-This project is private and proprietary.
+This project is open source. Feel free to explore the code, open issues, or suggest improvements.
 
 ## Project Status
 
-Active development - The app is functional and continually being improved with new features and optimizations.
+Currently in TestFlight — approaching public release on the App Store.
 
 ## Contact
 
 - Developer: Damien Sprinkle
-- Project Board: [Trello Board](https://trello.com/b/cKlOY11d/workout)
+- Support: [SoleusApp@gmail.com](mailto:SoleusApp@gmail.com)
+- Support Page: [damiensprinkle.github.io/Soleus](https://damiensprinkle.github.io/Soleus)
+- Project Board: [GitHub Projects](https://github.com/users/damiensprinkle/projects/1/views/1)

@@ -52,9 +52,9 @@ final class CreateWorkoutFlowTests: SoleusUITestBase {
         titleField.tap()
         titleField.typeText("Test Workout")
 
-        // Dismiss keyboard by tapping the non-interactive label above the field.
-        // The Add Exercise button is hidden while any text field is focused.
-        app.staticTexts["Workout Title"].tap()
+        // Dismiss keyboard — pressing Return on a SwiftUI TextField removes focus
+        // without inserting a newline. Add Exercise button is hidden while keyboard is up.
+        titleField.typeText("\n")
 
         // Tap Add Exercise button
         let addExerciseButton = app.buttons[TestID.addWorkoutAddExerciseButton]

@@ -7,7 +7,8 @@ struct AddExerciseDialog: View {
     @State private var selectedWorkoutMeasurement: String = "Weight"
     
     @State private var exerciseName: String = ""
-    
+    @FocusState private var isNameFieldFocused: Bool
+
     var body: some View {
         VStack(spacing: 0) {
             // Header
@@ -37,6 +38,16 @@ struct AddExerciseDialog: View {
                         .padding(12)
                         .background(Color(.secondarySystemGroupedBackground))
                         .cornerRadius(10)
+                        .focused($isNameFieldFocused)
+                        .toolbar {
+                            ToolbarItem(placement: .keyboard) {
+                                if isNameFieldFocused {
+                                    Button("Done") {
+                                        isNameFieldFocused = false
+                                    }
+                                }
+                            }
+                        }
                         .accessibilityIdentifier(AccessibilityID.exerciseNameField)
                 }
 

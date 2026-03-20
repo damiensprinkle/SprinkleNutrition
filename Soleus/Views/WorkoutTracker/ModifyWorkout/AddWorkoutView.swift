@@ -126,6 +126,12 @@ struct AddWorkoutView: View {
                     )
                 }
             }
+            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
+                focusManager.isAnyTextFieldFocused = true
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+                focusManager.isAnyTextFieldFocused = false
+            }
             .onAppear {
                 guard !hasLoaded else { return }
                 hasLoaded = true
@@ -256,81 +262,97 @@ struct AddWorkoutView: View {
     }
 
     private var addWorkoutForm: some View {
-        ScrollView {
-            VStack(spacing: 16) {
-                // Workout Title Card
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Workout Title")
-                        .font(.subheadline)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.secondary)
-                        .padding(.horizontal, 20)
-                        .padding(.top, 16)
+        ScrollViewReader { scrollProxy in
+            ScrollView {
+                VStack(spacing: 16) {
+                    // Workout Title Card
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("Workout Title")
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.secondary)
+                            .padding(.horizontal, 20)
+                            .padding(.top, 16)
 
-                    TextField("Enter Workout Title", text: $workoutTitle)
-                        .focused($isTitleFocused)
-                        .font(.body)
-                        .padding(16)
-                        .background(Color(.secondarySystemGroupedBackground))
-                        .cornerRadius(12)
-                        .padding(.horizontal, 20)
-                        .accessibilityIdentifier(AccessibilityID.addWorkoutTitleField)
-                }
-                .padding(.bottom, 8)
+                        TextField("Enter Workout Title", text: $workoutTitle)
+                            .focused($isTitleFocused)
+                            .font(.body)
+                            .padding(16)
+                            .background(Color(.secondarySystemGroupedBackground))
+                            .cornerRadius(12)
+                            .padding(.horizontal, 20)
+                            .toolbar {
+                                ToolbarItem(placement: .keyboard) {
+                                    if isTitleFocused {
+                                        Button("Done") {
+                                            isTitleFocused = false
+                                        }
+                                    }
+                                }
+                            }
+                            .accessibilityIdentifier(AccessibilityID.addWorkoutTitleField)
+                    }
+                    .padding(.bottom, 8)
 
-                // Exercise Cards
-                ForEach(Array(workoutController.workoutDetails.enumerated()), id: \.element.id) { index, detail in
-                    ExerciseCard(
-                        exerciseName: detail.exerciseName,
-                        hasNotes: detail.notes != nil && !detail.notes!.isEmpty,
-                        notes: detail.notes,
-                        index: index,
-                        workoutCount: workoutController.workoutDetails.count,
-                        isKeyboardActive: focusManager.isAnyTextFieldFocused,
-                        sets: Binding(
-                            get: { index < workoutController.workoutDetails.count ? workoutController.workoutDetails[index].sets : detail.sets },
-                            set: { if index < workoutController.workoutDetails.count { workoutController.workoutDetails[index].sets = $0 } }
-                        ),
-                        exerciseQuantifier: detail.exerciseQuantifier,
-                        exerciseMeasurement: detail.exerciseMeasurement,
-                        focusManager: focusManager,
-                        moveUpAction: {
-                            workoutController.moveExercise(from: index, to: index - 1)
-                        },
-                        moveDownAction: {
-                            workoutController.moveExercise(from: index, to: index + 1)
-                        },
-                        deleteAction: {
-                            indexToDelete = index
-                            alertMessage = "Are you sure you want to delete this exercise?"
-                            activeAlert = .deleteConfirmation
-                            showAlert = true
-                        },
-                        renameAction: {
-                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                                self.selectedExerciseIndexForRenaming = index
+                    // Exercise Cards
+                    ForEach(Array(workoutController.workoutDetails.enumerated()), id: \.element.id) { index, detail in
+                        ExerciseCard(
+                            exerciseName: detail.exerciseName,
+                            hasNotes: detail.notes != nil && !detail.notes!.isEmpty,
+                            notes: detail.notes,
+                            index: index,
+                            workoutCount: workoutController.workoutDetails.count,
+                            isKeyboardActive: focusManager.isAnyTextFieldFocused,
+                            sets: Binding(
+                                get: { index < workoutController.workoutDetails.count ? workoutController.workoutDetails[index].sets : detail.sets },
+                                set: { if index < workoutController.workoutDetails.count { workoutController.workoutDetails[index].sets = $0 } }
+                            ),
+                            exerciseQuantifier: detail.exerciseQuantifier,
+                            exerciseMeasurement: detail.exerciseMeasurement,
+                            focusManager: focusManager,
+                            moveUpAction: {
+                                workoutController.moveExercise(from: index, to: index - 1)
+                            },
+                            moveDownAction: {
+                                workoutController.moveExercise(from: index, to: index + 1)
+                            },
+                            deleteAction: {
+                                indexToDelete = index
+                                alertMessage = "Are you sure you want to delete this exercise?"
+                                activeAlert = .deleteConfirmation
+                                showAlert = true
+                            },
+                            renameAction: {
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                    self.selectedExerciseIndexForRenaming = index
+                                }
+                            },
+                            notesAction: {
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                    self.selectedExerciseIndexForNotes = index
+                                }
+                            },
+                            addSetAction: {
+                                workoutController.addSet(for: index)
                             }
-                        },
-                        notesAction: {
-                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                                self.selectedExerciseIndexForNotes = index
-                            }
-                        },
-                        addSetAction: {
-                            workoutController.addSet(for: index)
-                        }
-                    )
-                    .padding(.horizontal, 20)
-                    .accessibilityIdentifier("\(AccessibilityID.exerciseCard)_\(index)")
+                        )
+                        .id("exercise_\(index)")
+                        .padding(.horizontal, 20)
+                        .accessibilityIdentifier("\(AccessibilityID.exerciseCard)_\(index)")
+                    }
                 }
+                .padding(.vertical, 8)
             }
-            .padding(.vertical, 8)
-        }
-        .onTapGesture {
-            if focusManager.isAnyTextFieldFocused {
-                focusManager.isAnyTextFieldFocused = false
-                focusManager.currentlyFocusedField = nil
-                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+            .scrollDismissesKeyboard(.interactively)
+            .onChange(of: focusManager.focusedExerciseIndex) {
+                guard let idx = focusManager.focusedExerciseIndex else { return }
+                // Delay slightly so the keyboard has finished animating into place
+                // before we compute the final scroll position.
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    withAnimation(.easeInOut(duration: 0.25)) {
+                        scrollProxy.scrollTo("exercise_\(idx)", anchor: .center)
+                    }
+                }
             }
         }
     }
@@ -447,6 +469,7 @@ struct AddWorkoutView: View {
                                     get: { setIndex < sets.count ? sets[setIndex] : set },
                                     set: { if setIndex < sets.count { sets[setIndex] = $0 } }
                                 ),
+                                exerciseIndex: index,
                                 exerciseQuantifier: exerciseQuantifier,
                                 exerciseMeasurement: exerciseMeasurement
                             )

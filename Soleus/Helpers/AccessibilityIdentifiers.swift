@@ -60,4 +60,9 @@ enum AccessibilityID {
     static let templatePickerButton = "template_picker_button"
     static let templatePickerCancelButton = "template_picker_cancel_button"
     static let templatePickerRow = "template_picker_row"
+
+    // MARK: - Active Workout
+    static let startWorkoutButton = "start_workout_button"
+    // Per-set identifiers are generated dynamically in ExerciseRowActive:
+    //   "reps_set_\(setIndex)", "weight_set_\(setIndex)", "complete_set_\(setIndex)"
 }

@@ -86,6 +86,8 @@
 		08C5DEDC2F63306C00FC40DB /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 08C5DEDB2F63306C00FC40DB /* README.md */; };
 		08C5DF422F68C85500FC40DB /* TemplatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C5DF412F68C85500FC40DB /* TemplatePickerView.swift */; };
 		08C5DF442F68C8F900FC40DB /* WorkoutTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C5DF432F68C8F900FC40DB /* WorkoutTemplates.swift */; };
+		08C5DFCA2F6CB6BF00FC40DB /* ActiveWorkoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C5DFC92F6CB6BF00FC40DB /* ActiveWorkoutTests.swift */; };
+		08C5DFCC2F6CB70500FC40DB /* ActiveWorkoutSaveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C5DFCB2F6CB70500FC40DB /* ActiveWorkoutSaveTests.swift */; };
 		08EF97E32CEEBC0D00AE8196 /* CustomizeCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF97E22CEEBC0A00AE8196 /* CustomizeCardView.swift */; };
 		08EF97E82CEEC13500AE8196 /* Workouts+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF97E72CEEC13500AE8196 /* Workouts+CoreDataProperties.swift */; };
 		08EF97E92CEEC13500AE8196 /* Workouts+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF97E62CEEC13500AE8196 /* Workouts+CoreDataClass.swift */; };
@@ -228,6 +230,8 @@
 		08C5DEDB2F63306C00FC40DB /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		08C5DF412F68C85500FC40DB /* TemplatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplatePickerView.swift; sourceTree = "<group>"; };
 		08C5DF432F68C8F900FC40DB /* WorkoutTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTemplates.swift; sourceTree = "<group>"; };
+		08C5DFC92F6CB6BF00FC40DB /* ActiveWorkoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveWorkoutTests.swift; sourceTree = "<group>"; };
+		08C5DFCB2F6CB70500FC40DB /* ActiveWorkoutSaveTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveWorkoutSaveTests.swift; sourceTree = "<group>"; };
 		08EF97E22CEEBC0A00AE8196 /* CustomizeCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeCardView.swift; sourceTree = "<group>"; };
 		08EF97E62CEEC13500AE8196 /* Workouts+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workouts+CoreDataClass.swift"; sourceTree = "<group>"; };
 		08EF97E72CEEC13500AE8196 /* Workouts+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workouts+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -360,6 +364,7 @@
 		088B57722EC3A1C00066CC17 /* SoleusTests */ = {
 			isa = PBXGroup;
 			children = (
+				08C5DFCB2F6CB70500FC40DB /* ActiveWorkoutSaveTests.swift */,
 				088B576F2EC3A1C00066CC17 /* Mocks */,
 				088B57702EC3A1C00066CC17 /* README.md */,
 				088B57712EC3A1C00066CC17 /* WorkoutTrackerControllerTests.swift */,
@@ -388,6 +393,7 @@
 		088B577C2EC3AAB30066CC17 /* SoleusUITests */ = {
 			isa = PBXGroup;
 			children = (
+				08C5DFC92F6CB6BF00FC40DB /* ActiveWorkoutTests.swift */,
 				08C5DE102F62369C00FC40DB /* ImportWorkoutTests.swift */,
 				0CA60002300000000000FF01 /* ContactUsTests.swift */,
 				0CA10011300000000000AA01 /* TestAccessibilityIDs.swift */,
@@ -817,6 +823,7 @@
 				0CA1002F300000000000AA01 /* CoreDataErrorTests.swift in Sources */,
 				0CA10031300000000000AA01 /* ColorManagerTests.swift in Sources */,
 				0CA10033300000000000AA01 /* LogCaptureTests.swift in Sources */,
+				08C5DFCC2F6CB70500FC40DB /* ActiveWorkoutSaveTests.swift in Sources */,
 			);
 		};
 		08B790032B6DBA390002DA68 /* Sources */ = {
@@ -827,6 +834,7 @@
 				0CA10004300000000000AA01 /* TabNavigationTests.swift in Sources */,
 				0CA10005300000000000AA01 /* CreateWorkoutFlowTests.swift in Sources */,
 				08C5DE112F6236A800FC40DB /* ImportWorkoutTests.swift in Sources */,
+				08C5DFCA2F6CB6BF00FC40DB /* ActiveWorkoutTests.swift in Sources */,
 				0CA60001300000000000FF01 /* ContactUsTests.swift in Sources */,
 				0CA10006300000000000AA01 /* WorkoutValidationTests.swift in Sources */,
 				0CA10007300000000000AA01 /* HistoryViewTests.swift in Sources */,

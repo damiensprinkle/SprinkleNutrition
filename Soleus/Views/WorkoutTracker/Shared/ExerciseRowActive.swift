@@ -95,6 +95,7 @@ struct ExerciseRowActive: View {
             .accessibilityLabel("Set \(setIndex) completion")
             .accessibilityValue(checked ? "Completed" : "Not completed")
             .accessibilityHint("Double tap to mark set as \(checked ? "incomplete" : "complete")")
+            .accessibilityIdentifier("complete_set_\(setIndex)")
             
         }
         .onAppear{
@@ -199,16 +200,11 @@ struct ExerciseRowActive: View {
                 }
             }
             .onChange(of: repsInput) {
-                if !repsInput.isEmpty { validateAndSetInputInt(&repsInput, for: &setInput.reps, maxLength: 3) }
-                if !repsInput.isEmpty {
-                    let newReps = Int32(repsInput) ?? 0
-                    if setInput.reps != newReps {
-                        setInput.reps = newReps
-                        repsModified = true
-                        saveWorkoutDetail()
-                        checkAutoComplete()
-                    }
-                }
+                guard focusedField == .reps, !repsInput.isEmpty else { return }
+                validateAndSetInputInt(&repsInput, for: &setInput.reps, maxLength: 3)
+                repsModified = true
+                saveWorkoutDetail()
+                checkAutoComplete()
             }
             .onAppear {
                 repsInput = "\(setInput.reps)"
@@ -218,6 +214,7 @@ struct ExerciseRowActive: View {
             .accessibilityLabel("Reps for set \(setIndex)")
             .accessibilityValue("\(setInput.reps) reps")
             .accessibilityHint("Double tap to edit number of repetitions")
+            .accessibilityIdentifier("reps_set_\(setIndex)")
     }
     
     private func resetFocusedField(){
@@ -243,16 +240,11 @@ struct ExerciseRowActive: View {
                 }
             }
             .onChange(of: distanceInput){
-                if !distanceInput.isEmpty { validateAndSetInputFloat(&distanceInput, for: &setInput.distance, maxLength: 5, maxDecimals: 2) }
-                if(!distanceInput.isEmpty){
-                    let newDistance = Float(distanceInput) ?? 0.0
-                    if(setInput.distance != newDistance){
-                        setInput.distance = newDistance
-                        distanceModified = true
-                        saveWorkoutDetail()
-                        checkAutoComplete()
-                    }
-                }
+                guard focusedField == .distance, !distanceInput.isEmpty else { return }
+                validateAndSetInputFloat(&distanceInput, for: &setInput.distance, maxLength: 5, maxDecimals: 2)
+                distanceModified = true
+                saveWorkoutDetail()
+                checkAutoComplete()
             }
             .onAppear {
                 distanceInput = "\(setInput.distance)"
@@ -276,20 +268,16 @@ struct ExerciseRowActive: View {
                 } else {
                     if weightInput.isEmpty {
                         weightInput = "\(setInput.weight)"
+                        saveWorkoutDetail()
                     }
                 }
             }
             .onChange(of: weightInput){
-                if !weightInput.isEmpty { validateAndSetInputFloat(&weightInput, for: &setInput.weight, maxLength: 5, maxDecimals: 2) }
-                if(!weightInput.isEmpty){
-                    let newWeight = Float(weightInput) ?? 0
-                    if(setInput.weight != newWeight){
-                        setInput.weight = newWeight
-                        weightModified = true
-                        saveWorkoutDetail()
-                        checkAutoComplete()
-                    }
-                }
+                guard focusedField == .weight, !weightInput.isEmpty else { return }
+                validateAndSetInputFloat(&weightInput, for: &setInput.weight, maxLength: 5, maxDecimals: 2)
+                weightModified = true
+                saveWorkoutDetail()
+                checkAutoComplete()
             }
             .onAppear {
                 weightInput = "\(setInput.weight)"
@@ -299,6 +287,7 @@ struct ExerciseRowActive: View {
             .accessibilityLabel("Weight for set \(setIndex)")
             .accessibilityValue("\(setInput.weight) pounds")
             .accessibilityHint("Double tap to edit weight amount")
+            .accessibilityIdentifier("weight_set_\(setIndex)")
     }
     
     private var timeTextField : some View {
@@ -311,11 +300,10 @@ struct ExerciseRowActive: View {
                     timeInput = "00:00:00"
                     focusManager.isAnyTextFieldFocused = true
                     focusManager.currentlyFocusedField = .time
-                } else if focusedField == nil {
+                } else {
                     if timeInput == "00:00:00" {
                         timeInput = originalTimeInput
-                    }
-                    else {
+                    } else {
                         formatInput(timeInput)
                         if !timeInput.isEmpty && timeInput != originalTimeInput {
                             saveWorkoutDetail()

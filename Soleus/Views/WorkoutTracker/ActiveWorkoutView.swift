@@ -643,6 +643,7 @@ struct ActiveWorkoutView: View {
         .accessibilityLabel(workoutButtonAccessibilityLabel)
         .accessibilityHint(workoutButtonAccessibilityHint)
         .accessibilityAddTraits(.isButton)
+        .accessibilityIdentifier(AccessibilityID.startWorkoutButton)
         .padding(.horizontal, 20)
         .disabled(!viewModel.workoutStarted && showEndWorkoutOption || viewModel.isAnyOtherSessionActive())
         .confirmationDialog("Are you sure you want to end this workout?", isPresented: $endWorkoutConfirmationShown, titleVisibility: .visible) {

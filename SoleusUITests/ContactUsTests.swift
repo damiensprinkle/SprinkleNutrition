@@ -5,6 +5,9 @@ final class ContactUsTests: SoleusUITestBase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         tapTab(TestID.tabSettings)
+        // The Contact Us button is below the fold when the rest timer section is expanded.
+        // Scroll down so it enters the accessibility tree before any test assertion.
+        app.tables.firstMatch.swipeUp()
     }
 
     // MARK: - Navigation

@@ -29,6 +29,16 @@ struct AddWorkoutView: View {
     @FocusState private var isTitleFocused: Bool
     @EnvironmentObject var appViewModel: AppViewModel
     
+    private var hasUnsavedChanges: Bool {
+        if update {
+            return workoutController.workoutDetails != initialWorkoutDetails
+                || workoutTitle != (workoutController.selectedWorkoutName ?? "")
+        } else {
+            return !workoutTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                || !workoutController.workoutDetails.isEmpty
+        }
+    }
+
     var body: some View {
         ZStack {
             Color(.systemGroupedBackground)
@@ -80,6 +90,13 @@ struct AddWorkoutView: View {
                 }
             }
             .background(Color(.systemGroupedBackground))
+            .background(
+                SheetDismissProtector(isProtected: hasUnsavedChanges) {
+                    alertMessage = "You have unsaved changes. Are you sure you want to discard them?"
+                    activeAlert = .cancelConfirmation
+                    showAlert = true
+                }
+            )
         }
         .alert(isPresented: $showAlert) {
                 switch activeAlert {
@@ -563,6 +580,50 @@ struct AddWorkoutView: View {
         }
         activeAlert = .error
         showAlert = true
+    }
+}
+
+/// Intercepts the sheet's interactive swipe-down dismiss and fires a callback
+/// instead of allowing the dismiss when `isProtected` is true.
+private struct SheetDismissProtector: UIViewControllerRepresentable {
+    var isProtected: Bool
+    var onAttemptedDismiss: () -> Void
+
+    func makeUIViewController(context: Context) -> UIViewController {
+        UIViewController()
+    }
+
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+        context.coordinator.isProtected = isProtected
+        context.coordinator.onAttemptedDismiss = onAttemptedDismiss
+        // Walk up to the UIHostingController that owns the sheet presentation.
+        DispatchQueue.main.async {
+            var current: UIViewController? = uiViewController
+            while let parent = current?.parent { current = parent }
+            current?.presentationController?.delegate = context.coordinator
+        }
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(isProtected: isProtected, onAttemptedDismiss: onAttemptedDismiss)
+    }
+
+    final class Coordinator: NSObject, UIAdaptivePresentationControllerDelegate {
+        var isProtected: Bool
+        var onAttemptedDismiss: () -> Void
+
+        init(isProtected: Bool, onAttemptedDismiss: @escaping () -> Void) {
+            self.isProtected = isProtected
+            self.onAttemptedDismiss = onAttemptedDismiss
+        }
+
+        func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
+            !isProtected
+        }
+
+        func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
+            onAttemptedDismiss()
+        }
     }
 }
 

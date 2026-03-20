@@ -7,7 +7,8 @@ struct AddExerciseDialog: View {
     @State private var selectedWorkoutMeasurement: String = "Weight"
     
     @State private var exerciseName: String = ""
-    
+    @FocusState private var isNameFieldFocused: Bool
+
     var body: some View {
         VStack(spacing: 0) {
             // Header
@@ -27,16 +28,37 @@ struct AddExerciseDialog: View {
             VStack(alignment: .leading, spacing: 20) {
                 // Exercise Name
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Exercise Name")
-                        .font(.subheadline)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.primary)
+                    HStack {
+                        Text("Exercise Name")
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.primary)
+                        Spacer()
+                        Text("\(exerciseName.count)/30")
+                            .font(.caption)
+                            .foregroundColor(exerciseName.count >= 30 ? .red : .secondary)
+                    }
 
                     TextField("e.g., Bench Press", text: $exerciseName)
                         .textFieldStyle(.plain)
                         .padding(12)
                         .background(Color(.secondarySystemGroupedBackground))
                         .cornerRadius(10)
+                        .focused($isNameFieldFocused)
+                        .onChange(of: exerciseName) {
+                            if exerciseName.count > 30 {
+                                exerciseName = String(exerciseName.prefix(30))
+                            }
+                        }
+                        .toolbar {
+                            ToolbarItem(placement: .keyboard) {
+                                if isNameFieldFocused {
+                                    Button("Done") {
+                                        isNameFieldFocused = false
+                                    }
+                                }
+                            }
+                        }
                         .accessibilityIdentifier(AccessibilityID.exerciseNameField)
                 }
 
@@ -111,6 +133,8 @@ struct AddExerciseDialog: View {
         .frame(maxWidth: 400)
         .onAppear {
             hideKeyboard()
+            UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(Color.myBlue)
+            UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
         }
     }
     

@@ -22,12 +22,16 @@ struct ExerciseRow: View {
     @AppStorage("weightPreference") private var weightPreference: String = "Lbs"
     @AppStorage("distancePreference") private var distancePreference: String = "Mile"
     
+    var exerciseIndex: Int = 0
     var exerciseQuantifier: String
     var exerciseMeasurement: String
     
     var body: some View {
         HStack {
             Text("\(setIndex)")
+                .font(.subheadline)
+                .fontWeight(.semibold)
+                .foregroundColor(.secondary)
                 .frame(width: 50, alignment: .leading)
                 .padding(.leading, 8)
             Spacer()
@@ -38,12 +42,15 @@ struct ExerciseRow: View {
                     .focused($focusedField, equals: .reps)
                     .onChange(of: focusedField) {
                         if focusedField == .reps {
-                            focusManager.isAnyTextFieldFocused = true
                             focusManager.currentlyFocusedField = .reps
+                            focusManager.focusedExerciseIndex = exerciseIndex
                             originalReps = repsInput
                             repsInput = ""
-                        } else if repsInput.isEmpty {
-                            repsInput = originalReps
+                        } else {
+                            focusManager.focusedExerciseIndex = nil
+                            if repsInput.isEmpty {
+                                repsInput = originalReps
+                            }
                         }
                     }
                     .onChange(of: repsInput) {
@@ -71,17 +78,20 @@ struct ExerciseRow: View {
                     .focused($focusedField, equals: .distance)
                     .onChange(of: focusedField) {
                         if focusedField == .distance {
-                            focusManager.isAnyTextFieldFocused = true
                             focusManager.currentlyFocusedField = .distance
+                            focusManager.focusedExerciseIndex = exerciseIndex
                             originalDistance = distanceInput
                             distanceInput = ""
-                        } else if distanceInput.isEmpty {
-                            distanceInput = originalDistance
-                        } else if let floatValue = Float(distanceInput) {
-                            let numberFormatter = NumberFormatter()
-                            numberFormatter.minimumFractionDigits = 1
-                            numberFormatter.maximumFractionDigits = 2
-                            distanceInput = numberFormatter.string(from: NSNumber(value: floatValue)) ?? distanceInput
+                        } else {
+                            focusManager.focusedExerciseIndex = nil
+                            if distanceInput.isEmpty {
+                                distanceInput = originalDistance
+                            } else if let floatValue = Float(distanceInput) {
+                                let numberFormatter = NumberFormatter()
+                                numberFormatter.minimumFractionDigits = 1
+                                numberFormatter.maximumFractionDigits = 2
+                                distanceInput = numberFormatter.string(from: NSNumber(value: floatValue)) ?? distanceInput
+                            }
                         }
                     }
                     .onChange(of: distanceInput) {
@@ -111,14 +121,17 @@ struct ExerciseRow: View {
                     .focused($focusedField, equals: .weight)
                     .onChange(of: focusedField) {
                         if focusedField == .weight {
-                            focusManager.isAnyTextFieldFocused = true
                             focusManager.currentlyFocusedField = .weight
+                            focusManager.focusedExerciseIndex = exerciseIndex
                             originalWeight = weightInput
                             weightInput = ""
-                        } else if weightInput.isEmpty {
-                            weightInput = originalWeight
-                        } else if let weightValue = Float(weightInput) {
-                            weightInput = String(format: "%.1f", weightValue)
+                        } else {
+                            focusManager.focusedExerciseIndex = nil
+                            if weightInput.isEmpty {
+                                weightInput = originalWeight
+                            } else if let weightValue = Float(weightInput) {
+                                weightInput = String(format: "%.1f", weightValue)
+                            }
                         }
                     }
                     .onChange(of: weightInput) {
@@ -139,12 +152,15 @@ struct ExerciseRow: View {
                     .focused($focusedField, equals: .time)
                     .onChange(of: focusedField) {
                         if focusedField == .time {
-                            focusManager.isAnyTextFieldFocused = true
                             focusManager.currentlyFocusedField = .time
+                            focusManager.focusedExerciseIndex = exerciseIndex
                             originalTime = timeInput
                             timeInput = ""
-                        } else if timeInput.isEmpty {
-                            timeInput = originalTime
+                        } else {
+                            focusManager.focusedExerciseIndex = nil
+                            if timeInput.isEmpty {
+                                timeInput = originalTime
+                            }
                         }
                     }
                     .onChange(of: timeInput) {

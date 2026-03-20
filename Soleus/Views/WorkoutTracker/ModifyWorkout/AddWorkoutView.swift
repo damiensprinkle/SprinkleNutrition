@@ -29,6 +29,16 @@ struct AddWorkoutView: View {
     @FocusState private var isTitleFocused: Bool
     @EnvironmentObject var appViewModel: AppViewModel
     
+    private var hasUnsavedChanges: Bool {
+        if update {
+            return workoutController.workoutDetails != initialWorkoutDetails
+                || workoutTitle != (workoutController.selectedWorkoutName ?? "")
+        } else {
+            return !workoutTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                || !workoutController.workoutDetails.isEmpty
+        }
+    }
+
     var body: some View {
         ZStack {
             Color(.systemGroupedBackground)
@@ -80,6 +90,13 @@ struct AddWorkoutView: View {
                 }
             }
             .background(Color(.systemGroupedBackground))
+            .background(
+                SheetDismissProtector(isProtected: hasUnsavedChanges) {
+                    alertMessage = "You have unsaved changes. Are you sure you want to discard them?"
+                    activeAlert = .cancelConfirmation
+                    showAlert = true
+                }
+            )
         }
         .alert(isPresented: $showAlert) {
                 switch activeAlert {
@@ -125,6 +142,12 @@ struct AddWorkoutView: View {
                         }
                     )
                 }
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
+                focusManager.isAnyTextFieldFocused = true
+            }
+            .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+                focusManager.isAnyTextFieldFocused = false
             }
             .onAppear {
                 guard !hasLoaded else { return }
@@ -256,81 +279,108 @@ struct AddWorkoutView: View {
     }
 
     private var addWorkoutForm: some View {
-        ScrollView {
-            VStack(spacing: 16) {
-                // Workout Title Card
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Workout Title")
-                        .font(.subheadline)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.secondary)
+        ScrollViewReader { scrollProxy in
+            ScrollView {
+                VStack(spacing: 16) {
+                    // Workout Title Card
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack {
+                            Text("Workout Title")
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.secondary)
+                            Spacer()
+                            Text("\(workoutTitle.count)/30")
+                                .font(.caption)
+                                .foregroundColor(workoutTitle.count >= 30 ? .red : .secondary)
+                        }
                         .padding(.horizontal, 20)
                         .padding(.top, 16)
 
-                    TextField("Enter Workout Title", text: $workoutTitle)
-                        .focused($isTitleFocused)
-                        .font(.body)
-                        .padding(16)
-                        .background(Color(.secondarySystemGroupedBackground))
-                        .cornerRadius(12)
-                        .padding(.horizontal, 20)
-                        .accessibilityIdentifier(AccessibilityID.addWorkoutTitleField)
-                }
-                .padding(.bottom, 8)
+                        TextField("Enter Workout Title", text: $workoutTitle)
+                            .focused($isTitleFocused)
+                            .font(.body)
+                            .padding(16)
+                            .background(Color(.secondarySystemGroupedBackground))
+                            .cornerRadius(12)
+                            .padding(.horizontal, 20)
+                            .onChange(of: workoutTitle) {
+                                if workoutTitle.count > 30 {
+                                    workoutTitle = String(workoutTitle.prefix(30))
+                                }
+                            }
+                            .toolbar {
+                                ToolbarItem(placement: .keyboard) {
+                                    if isTitleFocused {
+                                        Button("Done") {
+                                            isTitleFocused = false
+                                        }
+                                    }
+                                }
+                            }
+                            .accessibilityIdentifier(AccessibilityID.addWorkoutTitleField)
+                    }
+                    .padding(.bottom, 8)
 
-                // Exercise Cards
-                ForEach(Array(workoutController.workoutDetails.enumerated()), id: \.element.id) { index, detail in
-                    ExerciseCard(
-                        exerciseName: detail.exerciseName,
-                        hasNotes: detail.notes != nil && !detail.notes!.isEmpty,
-                        notes: detail.notes,
-                        index: index,
-                        workoutCount: workoutController.workoutDetails.count,
-                        isKeyboardActive: focusManager.isAnyTextFieldFocused,
-                        sets: Binding(
-                            get: { index < workoutController.workoutDetails.count ? workoutController.workoutDetails[index].sets : detail.sets },
-                            set: { if index < workoutController.workoutDetails.count { workoutController.workoutDetails[index].sets = $0 } }
-                        ),
-                        exerciseQuantifier: detail.exerciseQuantifier,
-                        exerciseMeasurement: detail.exerciseMeasurement,
-                        focusManager: focusManager,
-                        moveUpAction: {
-                            workoutController.moveExercise(from: index, to: index - 1)
-                        },
-                        moveDownAction: {
-                            workoutController.moveExercise(from: index, to: index + 1)
-                        },
-                        deleteAction: {
-                            indexToDelete = index
-                            alertMessage = "Are you sure you want to delete this exercise?"
-                            activeAlert = .deleteConfirmation
-                            showAlert = true
-                        },
-                        renameAction: {
-                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                                self.selectedExerciseIndexForRenaming = index
+                    // Exercise Cards
+                    ForEach(Array(workoutController.workoutDetails.enumerated()), id: \.element.id) { index, detail in
+                        ExerciseCard(
+                            exerciseName: detail.exerciseName,
+                            hasNotes: detail.notes != nil && !detail.notes!.isEmpty,
+                            notes: detail.notes,
+                            index: index,
+                            workoutCount: workoutController.workoutDetails.count,
+                            isKeyboardActive: focusManager.isAnyTextFieldFocused,
+                            sets: Binding(
+                                get: { index < workoutController.workoutDetails.count ? workoutController.workoutDetails[index].sets : detail.sets },
+                                set: { if index < workoutController.workoutDetails.count { workoutController.workoutDetails[index].sets = $0 } }
+                            ),
+                            exerciseQuantifier: detail.exerciseQuantifier,
+                            exerciseMeasurement: detail.exerciseMeasurement,
+                            focusManager: focusManager,
+                            moveUpAction: {
+                                workoutController.moveExercise(from: index, to: index - 1)
+                            },
+                            moveDownAction: {
+                                workoutController.moveExercise(from: index, to: index + 1)
+                            },
+                            deleteAction: {
+                                indexToDelete = index
+                                alertMessage = "Are you sure you want to delete this exercise?"
+                                activeAlert = .deleteConfirmation
+                                showAlert = true
+                            },
+                            renameAction: {
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                    self.selectedExerciseIndexForRenaming = index
+                                }
+                            },
+                            notesAction: {
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                    self.selectedExerciseIndexForNotes = index
+                                }
+                            },
+                            addSetAction: {
+                                workoutController.addSet(for: index)
                             }
-                        },
-                        notesAction: {
-                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                                self.selectedExerciseIndexForNotes = index
-                            }
-                        },
-                        addSetAction: {
-                            workoutController.addSet(for: index)
-                        }
-                    )
-                    .padding(.horizontal, 20)
-                    .accessibilityIdentifier("\(AccessibilityID.exerciseCard)_\(index)")
+                        )
+                        .id("exercise_\(index)")
+                        .padding(.horizontal, 20)
+                        .accessibilityIdentifier("\(AccessibilityID.exerciseCard)_\(index)")
+                    }
                 }
+                .padding(.vertical, 8)
             }
-            .padding(.vertical, 8)
-        }
-        .onTapGesture {
-            if focusManager.isAnyTextFieldFocused {
-                focusManager.isAnyTextFieldFocused = false
-                focusManager.currentlyFocusedField = nil
-                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+            .scrollDismissesKeyboard(.interactively)
+            .onChange(of: focusManager.focusedExerciseIndex) {
+                guard let idx = focusManager.focusedExerciseIndex else { return }
+                // Delay slightly so the keyboard has finished animating into place
+                // before we compute the final scroll position.
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    withAnimation(.easeInOut(duration: 0.25)) {
+                        scrollProxy.scrollTo("exercise_\(idx)", anchor: .center)
+                    }
+                }
             }
         }
     }
@@ -447,6 +497,7 @@ struct AddWorkoutView: View {
                                     get: { setIndex < sets.count ? sets[setIndex] : set },
                                     set: { if setIndex < sets.count { sets[setIndex] = $0 } }
                                 ),
+                                exerciseIndex: index,
                                 exerciseQuantifier: exerciseQuantifier,
                                 exerciseMeasurement: exerciseMeasurement
                             )
@@ -540,6 +591,65 @@ struct AddWorkoutView: View {
         }
         activeAlert = .error
         showAlert = true
+    }
+}
+
+/// Intercepts the sheet's interactive swipe-down dismiss and fires a callback
+/// instead of allowing the dismiss when `isProtected` is true.
+private struct SheetDismissProtector: UIViewControllerRepresentable {
+    var isProtected: Bool
+    var onAttemptedDismiss: () -> Void
+
+    func makeUIViewController(context: Context) -> UIViewController {
+        UIViewController()
+    }
+
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
+        context.coordinator.isProtected = isProtected
+        context.coordinator.onAttemptedDismiss = onAttemptedDismiss
+        // Walk up to the UIHostingController that owns the sheet presentation.
+        // Only do this once — re-setting the delegate on every SwiftUI re-render
+        // can interfere with UIKit's keyboard presentation and cause a sheet flash.
+        guard !context.coordinator.delegateSet else { return }
+        DispatchQueue.main.async {
+            guard !context.coordinator.delegateSet else { return }
+            var current: UIViewController? = uiViewController
+            while let parent = current?.parent { current = parent }
+            if current?.presentationController != nil {
+                current?.presentationController?.delegate = context.coordinator
+                context.coordinator.delegateSet = true
+            }
+        }
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(isProtected: isProtected, onAttemptedDismiss: onAttemptedDismiss)
+    }
+
+    final class Coordinator: NSObject, UIAdaptivePresentationControllerDelegate {
+        var isProtected: Bool
+        var onAttemptedDismiss: () -> Void
+        var delegateSet = false
+
+        init(isProtected: Bool, onAttemptedDismiss: @escaping () -> Void) {
+            self.isProtected = isProtected
+            self.onAttemptedDismiss = onAttemptedDismiss
+        }
+
+        // Return .none to keep the current presentation style regardless of
+        // size-class changes (e.g. keyboard appearing on iPhone). Without this,
+        // UIKit may briefly switch presentation styles and cause a visible flash.
+        func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+            .none
+        }
+
+        func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
+            !isProtected
+        }
+
+        func presentationControllerDidAttemptToDismiss(_ presentationController: UIPresentationController) {
+            onAttemptedDismiss()
+        }
     }
 }
 

@@ -52,9 +52,13 @@ final class CreateWorkoutFlowTests: SoleusUITestBase {
         titleField.tap()
         titleField.typeText("Test Workout")
 
+        // Dismiss keyboard — pressing Return on a SwiftUI TextField removes focus
+        // without inserting a newline. Add Exercise button is hidden while keyboard is up.
+        titleField.typeText("\n")
+
         // Tap Add Exercise button
         let addExerciseButton = app.buttons[TestID.addWorkoutAddExerciseButton]
-        XCTAssertTrue(addExerciseButton.waitForExistence(timeout: 5))
+        XCTAssertTrue(addExerciseButton.waitForExistence(timeout: 5), "Add Exercise button should appear after keyboard dismisses")
         addExerciseButton.tap()
 
         // Fill exercise name

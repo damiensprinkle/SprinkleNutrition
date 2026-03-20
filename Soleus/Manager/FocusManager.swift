@@ -3,6 +3,7 @@ import SwiftUI
 class FocusManager: ObservableObject {
     @Published var isAnyTextFieldFocused: Bool = false
     @Published var currentlyFocusedField: FocusableField?
+    @Published var focusedExerciseIndex: Int?
     
     func clearFocus() {
         currentlyFocusedField = nil

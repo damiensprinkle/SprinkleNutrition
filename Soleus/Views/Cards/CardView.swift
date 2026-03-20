@@ -4,12 +4,13 @@ struct CardView: View {
     var workoutId: UUID
     var onDelete: (() -> Void)?
     var onDuplicate: (() -> Void)?
+    var onEdit: (() -> Void)?
     var isEditMode: Bool = false
+    var isDragging: Bool = false
 
     @EnvironmentObject var workoutController: WorkoutTrackerController
     @EnvironmentObject var appViewModel: AppViewModel
 
-    @State private var presentingModal: ModalType? = nil
     @State private var animate = false
     @State private var pulseOpacity = false
     @State private var rotation = false
@@ -53,7 +54,7 @@ struct CardView: View {
         .shadow(color: Color.black.opacity(0.15), radius: 8, x: 0, y: 4)
         .shadow(color: backgroundColor.opacity(0.3), radius: 12, x: 0, y: 6)
         .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 18))
-        .rotationEffect(.degrees(isEditMode ? shakeOffset : 0))
+        .rotationEffect(.degrees(isEditMode && !isDragging ? shakeOffset : 0))
         .onAppear {
             let manager = workoutController.workoutManager
             workout = manager.fetchWorkoutById(for: workoutId)
@@ -88,16 +89,6 @@ struct CardView: View {
                 Button("Dismiss", role: .cancel) { }
             }
             
-        }
-        .sheet(item: $presentingModal) { modal in
-            switch modal {
-            case .add:
-                AddWorkoutView(workoutId: UUID(), navigationTitle: "", update: false) // not used
-            case .edit(let workoutId):
-                AddWorkoutView(workoutId: workoutId, navigationTitle: "Edit Workout Plan", update: true)
-                    .environmentObject(appViewModel)
-                    .environmentObject(workoutController)
-            }
         }
         .sheet(isPresented: $showShareSheet) {
             if !shareItems.isEmpty {
@@ -206,7 +197,7 @@ struct CardView: View {
                 alertTitle = "You Cannot Edit a Workout That Is In Progress"
                 showAlert = true
             } else {
-                presentingModal = .edit(workoutId: workoutId)
+                onEdit?()
             }
         }) {
             Label("Edit", systemImage: "square.and.pencil")

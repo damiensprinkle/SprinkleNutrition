@@ -60,4 +60,10 @@ enum TestID {
     static let templatePickerButton = "template_picker_button"
     static let templatePickerCancelButton = "template_picker_cancel_button"
     static let templatePickerRow = "template_picker_row"
+
+    // MARK: - Active Workout
+    static let startWorkoutButton = "start_workout_button"
+    static func repsField(set setIndex: Int) -> String { "reps_set_\(setIndex)" }
+    static func weightField(set setIndex: Int) -> String { "weight_set_\(setIndex)" }
+    static func setToggle(set setIndex: Int) -> String { "complete_set_\(setIndex)" }
 }

@@ -4,24 +4,160 @@
 
 ## Creating a Workout
 
-1. Navigate to the Workout tab
-2. Tap the "+" button in the navigation bar
-3. Enter a workout title
-4. Tap "Add Exercise" to add exercises
-5. Configure sets, reps, weight, or cardio parameters
-6. Tap "Save" to create your workout template
+1. Navigate to the **Workout** tab
+2. Tap the **+** button in the top-right navigation bar
+3. Enter a workout title (up to 30 characters)
+4. Tap **Add Exercise**, enter an exercise name, and choose:
+   - **Track By**: Reps or Distance
+   - **Measure With**: Weight or Time
+5. Tap **Add Exercise** to confirm — the exercise is added with one default set
+6. Tap **Add Set** on any exercise card to add more sets
+7. Enter target values (reps, weight, time, or distance) for each set
+8. Tap **Save** to create the workout template
+
+**Tips:**
+- Use **Start from Template** to pre-fill a workout from a built-in plan (Push, Pull, Legs, Cardio, etc.)
+- Tap the **⋯** menu on any exercise to rename, reorder, delete, or add notes
+- Swipe down on the sheet to dismiss — if there are unsaved changes, you will be warned first
+
+---
+
+## Editing a Workout
+
+1. Long-press any workout card on the main screen
+2. Select **Edit** from the context menu
+3. Make changes to the title, exercises, or sets
+4. Tap **Save** to apply changes
+
+---
+
+## Reordering Workout Cards
+
+1. Tap the **↑↓** button in the top-right navigation bar to enter reorder mode
+2. Long-press any card to lift it
+3. Drag it to the desired position — other cards shift to make room
+4. Release to drop, then tap the **✓** button to exit reorder mode
+
+---
 
 ## Starting a Workout
 
-1. From the Workout tab, tap on a workout card
-2. Tap "Start Workout" to begin tracking
-3. Check off sets as you complete them
-4. Modify exercises or add sets as needed during your workout
-5. Tap "Complete Workout" when finished
+1. Tap the **play button** on any workout card
+2. Review the exercises and sets on the active workout screen
+3. Tap **Start Workout** to begin — the timer starts and sets become editable
+4. Enter your actual values (weight, reps, time, or distance) for each set
+5. Toggle the checkmark on each set to mark it complete
+   - Sets can also auto-complete when both required fields are filled and modified
+6. The rest timer starts automatically after each completed set (if enabled in Settings)
 
-## Viewing History
+---
 
-1. Navigate to the Workout tab
-2. Tap the clock icon in the navigation bar
-3. Use the month/year picker to browse past workouts
-4. Tap on any workout card to expand and view details
+## Editing During a Workout
+
+1. Tap the **pencil icon** in the top-right to enter edit mode
+2. Available actions in edit mode:
+   - Add new exercises via the **+** button
+   - Add sets with the **Add Set** button on each exercise
+   - Swipe left on a set row to delete it
+   - Use **↑ / ↓** arrows to reorder exercises
+   - Tap the notes icon to edit exercise notes
+3. Tap the **green checkmark** to exit edit mode
+
+---
+
+## Completing a Workout
+
+1. Tap **End Workout** (requires a second tap to confirm)
+2. If you modified anything during the session, a **Changes Preview** appears:
+   - **Update Workout** — saves your session changes back to the template
+   - **Keep Original** — saves history but leaves the template unchanged
+3. The **Workout Overview** screen appears with your session stats and any achievements unlocked
+4. Tap **Proceed** to return to the main screen
+
+---
+
+## Cancelling a Workout
+
+- Tap the **back arrow** while a workout is in progress — this backgrounds the session (timer keeps running, session can be resumed)
+- To fully cancel, return to the active workout via the **resume banner** and tap **Cancel Workout**
+
+---
+
+## Viewing Workout History
+
+1. Tap the **clock icon** in the Workout tab navigation bar
+2. Use **Monthly / All Time** to filter the date range
+3. For monthly view, use the month/year picker to navigate
+4. Tap any workout card to expand and view per-exercise set details
+5. Swipe left on a history card to delete that entry
+
+---
+
+## Viewing Progress Charts
+
+1. Open **Workout History** (clock icon)
+2. Tap **Progress** in the view mode selector (only visible when history exists)
+3. Each workout group shows average weight, duration, and trend direction
+4. Tap an exercise chip to drill down into that exercise's session history — showing max weight, reps, and volume trends across sessions
+
+---
+
+## Importing a Workout
+
+**From the import button:**
+1. Tap the **import button** (down-arrow icon) in the Workout tab navigation bar
+2. Navigate to the `.soleus` file in the file picker
+3. Review the exercises on the import preview screen
+4. Tap **Import** to add the workout to your library
+
+**From a share sheet or AirDrop:**
+- Tapping a `.soleus` file from Messages, Mail, AirDrop, or Files will open Soleus and trigger the import preview automatically
+
+---
+
+## Exporting / Sharing a Workout
+
+1. Long-press any workout card
+2. Select **Share Workout** from the context menu
+3. Choose a share destination (AirDrop, Messages, Files, etc.)
+
+---
+
+## Customizing a Workout Card Color
+
+1. Long-press any workout card
+2. Select **Customize Card**
+3. Choose from 15 available colors
+4. Tap **Save** — the card updates immediately
+
+---
+
+## Dashboard & Achievements
+
+- Navigate to the **Dashboard** tab (bar chart icon) to view your fitness stats and achievements
+- Tap any achievement to see its description and progress
+- Newly unlocked achievements also appear on the **Workout Overview** screen immediately after a session
+
+---
+
+## Settings
+
+Navigate to the **Settings** tab (gear icon) to configure:
+
+| Setting | Options |
+|---|---|
+| Weight units | lbs / kg |
+| Distance units | Miles / km |
+| Height units | Inches / cm |
+| Appearance | Light / Dark / System |
+| Auto-start rest timer | On / Off |
+| Default rest duration | Configurable in seconds |
+
+---
+
+## Contact & Support
+
+Navigate to **Settings → Contact Us** to:
+- Submit a bug report (optionally attaches diagnostic logs)
+- Request a new feature
+- Join the Discord community server

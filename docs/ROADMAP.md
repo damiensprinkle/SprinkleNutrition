@@ -52,16 +52,14 @@ These features build directly on existing infrastructure and can be shipped quic
 
 ---
 
-### Streak Tracking `Free`
+### Enhanced Streak Tracking `Free`
 
-**Problem:** There is no feedback loop that rewards consistent training habits or encourages users to maintain frequency.
+**Problem:** Workout streaks already exist on the Dashboard (current streak, longest streak, flame icon) but there is no warning when a streak is about to break. Users may lose a streak simply because they forgot to work out, not because they chose to skip.
 
 **Solution:**
-- Calculate the current streak by walking backwards through workout history, counting consecutive calendar days (or weeks, configurable) that contain at least one completed workout
-- Display the current streak on the Dashboard with a flame icon and streak count
-- Show a "streak at risk" indicator if the user hasn't worked out today and their streak would break at midnight
-- Record the user's longest-ever streak and display it alongside the current streak
-- Streak resets to zero if a day (or week) is missed — no grace periods to keep it meaningful
+- Add a "streak at risk" indicator on the Dashboard streak card when the user has an active streak but has not yet completed a workout today — the streak will break at midnight if no workout is logged
+- Indicator should be visually distinct (e.g., amber/yellow warning tone) so it stands out from the normal "Keep it up!" state
+- No changes to the underlying streak calculation — only surfacing the existing data in a more actionable way
 
 ---
 
@@ -130,6 +128,24 @@ These features require new screens or data models but no external dependencies.
 - User can dismiss individual suggestions or disable the feature entirely in Settings
 - Suggestions are conservative — only trigger after a fully completed session, never after a partial one
 - Requires the PRs feature (Tier 1) to be built first as it shares the same history query infrastructure
+
+---
+
+### Customizable Dashboard `Pro`
+
+**Problem:** The Dashboard currently shows a fixed set of cards in a fixed order — Achievements, Workout Streaks, Lifetime Stats, and Personal Records. Users who care more about streaks than lifetime stats have no way to rearrange or hide cards they find less useful, and there is no way to add new data widgets as the app grows.
+
+**Solution:**
+- Allow users to add, remove, and reorder Dashboard widgets via an "Edit Dashboard" mode (similar to the iOS home screen or Health app summary)
+- Initial widget library includes the four existing cards plus new widgets to be built:
+  - **This Week** — workouts completed this week vs. a configurable weekly goal
+  - **Recent Activity** — a compact list of the last 3–5 completed workouts with date and duration
+  - **Workout Frequency** — a heatmap or bar chart showing workout days over the past 30/90 days
+  - **Cardio Summary** — total distance and cardio time for the current month
+- Widget visibility and order persisted in UserDefaults or CoreData per user
+- Default layout matches the current fixed layout so existing users see no change until they opt in to customization
+- Edit mode entered via an "Edit Dashboard" button; widgets can be toggled on/off and long-press dragged to reorder
+- New widgets can be added to the library over time without requiring a layout migration
 
 ---
 
@@ -230,11 +246,12 @@ These are independent platform targets and should be built after the core app is
 | Enhanced Workout Overview | 1 | Free |
 | Personal Records | 1 | Free |
 | Rest Timer Push Notifications | 1 | Free |
-| Streak Tracking | 1 | Free |
+| Enhanced Streak Tracking | 1 | Free |
 | Weekly Workout Schedule | 2 | Free |
 | Apple Health Integration | 2 | Free |
 | Progress Charts (Exercise History Graphs) | 2 | Pro |
 | Progressive Overload Suggestions | 2 | Pro |
+| Customizable Dashboard | 2 | Pro |
 | iCloud Sync | 3 | Pro |
 | Universal Links / Server Sharing | 3 | Pro |
 | Workout Recap Shareable Card | 3 | Pro |

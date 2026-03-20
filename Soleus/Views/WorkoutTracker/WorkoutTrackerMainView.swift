@@ -12,15 +12,52 @@ struct WorkoutTrackerMainView: View {
     @State private var showImportPreview = false
     @State private var isLoadingImport = false
     @State private var isEditMode = false
+    @State private var draggingId: UUID?
+    @State private var dragPosition: CGPoint = .zero
+    @State private var draggingCardSize: CGSize = .zero
+    @State private var cardFrames: [UUID: CGRect] = [:]
+    @State private var reorderCooldown = false
+    @GestureState private var isDragActive = false
 
     private var visibleWorkouts: [WorkoutInfo] {
         workoutController.workouts.filter { !deletingWorkouts.contains($0.id) }
     }
 
     var body: some View {
-        ScrollView {
-            Divider()
-            workoutGrid
+        GeometryReader { proxy in
+            ZStack(alignment: .topLeading) {
+                ScrollView {
+                    Divider()
+                    workoutGrid
+                }
+                .scrollDisabled(draggingId != nil)
+                .onPreferenceChange(WorkoutCardFrameKey.self) { cardFrames = $0 }
+                .onChange(of: isDragActive) {
+                    // GestureState reverts to false on system cancellation — clean up any stuck drag
+                    if !isDragActive, draggingId != nil {
+                        reorderCooldown = false
+                        withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                            draggingId = nil
+                        }
+                        workoutController.workoutManager.saveWorkoutOrder(workouts: workoutController.workouts)
+                    }
+                }
+
+                // Floating card that follows the finger during a drag
+                if let id = draggingId {
+                    CardView(workoutId: id, isEditMode: true, isDragging: true)
+                        .environmentObject(workoutController)
+                        .environmentObject(appViewModel)
+                        .frame(width: draggingCardSize.width, height: draggingCardSize.height)
+                        .scaleEffect(1.05)
+                        .shadow(color: .black.opacity(0.4), radius: 20, x: 0, y: 10)
+                        .position(
+                            x: dragPosition.x - proxy.frame(in: .global).minX,
+                            y: dragPosition.y - proxy.frame(in: .global).minY
+                        )
+                        .allowsHitTesting(false)
+                }
+            }
         }
         .navigationBarItems(trailing: HStack(spacing: 20) {
             if !visibleWorkouts.isEmpty {
@@ -119,10 +156,10 @@ struct WorkoutTrackerMainView: View {
         VStack(spacing: 0) {
             if isEditMode {
                 HStack(spacing: 8) {
-                    Image(systemName: "hand.draw")
+                    Image(systemName: "hand.point.up.left")
                         .foregroundColor(.secondary)
                         .font(.subheadline)
-                    Text("Swipe cards left or right to reorder")
+                    Text("Long press a card, then drag to reorder")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
@@ -223,18 +260,52 @@ struct WorkoutTrackerMainView: View {
                             workoutId: workout.id,
                             onDelete: { deleteWorkouts(workout.id) },
                             onDuplicate: { duplicateWorkout(workout.id) },
-                            isEditMode: isEditMode
+                            isEditMode: isEditMode,
+                            isDragging: false
                         )
+                        .background(
+                            GeometryReader { geo in
+                                Color.clear.preference(
+                                    key: WorkoutCardFrameKey.self,
+                                    value: [workout.id: geo.frame(in: .global)]
+                                )
+                            }
+                        )
+                        // Hide (but preserve the slot) while this card is floating
+                        .opacity(draggingId == workout.id ? 0 : 1)
+                        .scaleEffect(isEditMode ? 0.95 : 1.0)
                         .transition(.asymmetric(insertion: .opacity.combined(with: .scale), removal: .opacity.combined(with: .scale)))
                         .environmentObject(appViewModel)
                         .environmentObject(workoutController)
-                        .scaleEffect(isEditMode ? 0.95 : 1.0)
-                        .gesture(
-                            isEditMode ? DragGesture(minimumDistance: 30)
-                                .onEnded { gesture in
-                                    handleSwipe(for: workout, gesture: gesture)
-                                } : nil
-                        )
+                        .if(isEditMode) { view in
+                            view
+                                .onLongPressGesture(minimumDuration: 0.4) {
+                                    guard draggingId == nil else { return }
+                                    if let frame = cardFrames[workout.id] {
+                                        draggingCardSize = frame.size
+                                        dragPosition = CGPoint(x: frame.midX, y: frame.midY)
+                                    }
+                                    draggingId = workout.id
+                                    HapticManager.shared.medium()
+                                }
+                                .simultaneousGesture(
+                                    DragGesture(minimumDistance: 0, coordinateSpace: .global)
+                                        .updating($isDragActive) { _, state, _ in state = true }
+                                        .onChanged { drag in
+                                            guard draggingId == workout.id else { return }
+                                            dragPosition = drag.location
+                                            checkReorder(at: drag.location, for: workout.id)
+                                        }
+                                        .onEnded { _ in
+                                            guard draggingId != nil else { return }
+                                            reorderCooldown = false
+                                            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                                                draggingId = nil
+                                            }
+                                            workoutController.workoutManager.saveWorkoutOrder(workouts: workoutController.workouts)
+                                        }
+                                )
+                        }
                     }
                 }
             }
@@ -282,38 +353,30 @@ struct WorkoutTrackerMainView: View {
         }
     }
 
-    private func handleSwipe(for workout: WorkoutInfo, gesture: DragGesture.Value) {
-        guard let currentIndex = workoutController.workouts.firstIndex(where: { $0.id == workout.id }) else { return }
+    private func checkReorder(at position: CGPoint, for dragId: UUID) {
+        guard !reorderCooldown else { return }
+        guard let fromIndex = workoutController.workouts.firstIndex(where: { $0.id == dragId }) else { return }
+        guard let targetId = cardFrames.first(where: { $0.key != dragId && $0.value.contains(position) })?.key,
+              let toIndex = workoutController.workouts.firstIndex(where: { $0.id == targetId }) else { return }
 
-        let horizontalAmount = gesture.translation.width
-        let verticalAmount = gesture.translation.height
-
-        // Only respond to horizontal swipes to avoid conflict with ScrollView
-        guard abs(horizontalAmount) > abs(verticalAmount) else { return }
-
-        var targetIndex: Int?
-
-        // Horizontal swipe
-        if horizontalAmount > 0 {
-            // Swipe right - move forward in array
-            targetIndex = currentIndex + 1
-        } else {
-            // Swipe left - move backward in array
-            targetIndex = currentIndex - 1
+        withAnimation(.spring(response: 0.2, dampingFraction: 0.8)) {
+            workoutController.workouts.move(
+                fromOffsets: IndexSet(integer: fromIndex),
+                toOffset: toIndex > fromIndex ? toIndex + 1 : toIndex
+            )
         }
-
-        // Validate target index and perform move
-        if let target = targetIndex, target >= 0, target < workoutController.workouts.count {
-            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                workoutController.workouts.move(
-                    fromOffsets: IndexSet(integer: currentIndex),
-                    toOffset: target > currentIndex ? target + 1 : target
-                )
-            }
-
-            // Save the new order
-            workoutController.workoutManager.saveWorkoutOrder(workouts: workoutController.workouts)
+        HapticManager.shared.selection()
+        reorderCooldown = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+            reorderCooldown = false
         }
+    }
+}
+
+private struct WorkoutCardFrameKey: PreferenceKey {
+    static var defaultValue: [UUID: CGRect] = [:]
+    static func reduce(value: inout [UUID: CGRect], nextValue: () -> [UUID: CGRect]) {
+        value.merge(nextValue(), uniquingKeysWith: { $1 })
     }
 }
 

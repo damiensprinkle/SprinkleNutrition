@@ -5,6 +5,7 @@ struct CardView: View {
     var onDelete: (() -> Void)?
     var onDuplicate: (() -> Void)?
     var isEditMode: Bool = false
+    var isDragging: Bool = false
 
     @EnvironmentObject var workoutController: WorkoutTrackerController
     @EnvironmentObject var appViewModel: AppViewModel
@@ -53,7 +54,7 @@ struct CardView: View {
         .shadow(color: Color.black.opacity(0.15), radius: 8, x: 0, y: 4)
         .shadow(color: backgroundColor.opacity(0.3), radius: 12, x: 0, y: 6)
         .contentShape(.contextMenuPreview, RoundedRectangle(cornerRadius: 18))
-        .rotationEffect(.degrees(isEditMode ? shakeOffset : 0))
+        .rotationEffect(.degrees(isEditMode && !isDragging ? shakeOffset : 0))
         .onAppear {
             let manager = workoutController.workoutManager
             workout = manager.fetchWorkoutById(for: workoutId)

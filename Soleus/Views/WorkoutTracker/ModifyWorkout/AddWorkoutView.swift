@@ -608,10 +608,17 @@ private struct SheetDismissProtector: UIViewControllerRepresentable {
         context.coordinator.isProtected = isProtected
         context.coordinator.onAttemptedDismiss = onAttemptedDismiss
         // Walk up to the UIHostingController that owns the sheet presentation.
+        // Only do this once — re-setting the delegate on every SwiftUI re-render
+        // can interfere with UIKit's keyboard presentation and cause a sheet flash.
+        guard !context.coordinator.delegateSet else { return }
         DispatchQueue.main.async {
+            guard !context.coordinator.delegateSet else { return }
             var current: UIViewController? = uiViewController
             while let parent = current?.parent { current = parent }
-            current?.presentationController?.delegate = context.coordinator
+            if current?.presentationController != nil {
+                current?.presentationController?.delegate = context.coordinator
+                context.coordinator.delegateSet = true
+            }
         }
     }
 
@@ -622,10 +629,18 @@ private struct SheetDismissProtector: UIViewControllerRepresentable {
     final class Coordinator: NSObject, UIAdaptivePresentationControllerDelegate {
         var isProtected: Bool
         var onAttemptedDismiss: () -> Void
+        var delegateSet = false
 
         init(isProtected: Bool, onAttemptedDismiss: @escaping () -> Void) {
             self.isProtected = isProtected
             self.onAttemptedDismiss = onAttemptedDismiss
+        }
+
+        // Return .none to keep the current presentation style regardless of
+        // size-class changes (e.g. keyboard appearing on iPhone). Without this,
+        // UIKit may briefly switch presentation styles and cause a visible flash.
+        func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+            .none
         }
 
         func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {

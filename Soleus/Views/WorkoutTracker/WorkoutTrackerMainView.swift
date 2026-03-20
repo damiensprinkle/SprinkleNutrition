@@ -260,6 +260,7 @@ struct WorkoutTrackerMainView: View {
                             workoutId: workout.id,
                             onDelete: { deleteWorkouts(workout.id) },
                             onDuplicate: { duplicateWorkout(workout.id) },
+                            onEdit: { presentingModal = .edit(workoutId: workout.id) },
                             isEditMode: isEditMode,
                             isDragging: false
                         )

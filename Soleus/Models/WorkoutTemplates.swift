@@ -6,6 +6,30 @@ struct WorkoutTemplate {
         let sets: Int
         let reps: Int32
         let weight: Float
+        let time: Int32
+        let distance: Float
+        let exerciseQuantifier: String
+        let exerciseMeasurement: String
+
+        init(
+            name: String,
+            sets: Int,
+            reps: Int32 = 0,
+            weight: Float = 0,
+            time: Int32 = 0,
+            distance: Float = 0,
+            exerciseQuantifier: String = "Reps",
+            exerciseMeasurement: String = "Weight"
+        ) {
+            self.name = name
+            self.sets = sets
+            self.reps = reps
+            self.weight = weight
+            self.time = time
+            self.distance = distance
+            self.exerciseQuantifier = exerciseQuantifier
+            self.exerciseMeasurement = exerciseMeasurement
+        }
     }
 
     let name: String
@@ -18,12 +42,12 @@ struct WorkoutTemplate {
                     id: UUID(),
                     reps: exercise.reps,
                     weight: exercise.weight,
-                    time: 0,
-                    distance: 0,
+                    time: exercise.time,
+                    distance: exercise.distance,
                     isCompleted: false,
                     setIndex: Int32(setIndex),
-                    exerciseQuantifier: "Reps",
-                    exerciseMeasurement: "Weight"
+                    exerciseQuantifier: exercise.exerciseQuantifier,
+                    exerciseMeasurement: exercise.exerciseMeasurement
                 )
             }
             return WorkoutDetailInput(
@@ -33,8 +57,8 @@ struct WorkoutTemplate {
                 notes: nil,
                 orderIndex: Int32(index),
                 sets: setInputs,
-                exerciseQuantifier: "Reps",
-                exerciseMeasurement: "Weight"
+                exerciseQuantifier: exercise.exerciseQuantifier,
+                exerciseMeasurement: exercise.exerciseMeasurement
             )
         }
     }
@@ -99,6 +123,20 @@ struct WorkoutTemplate {
             TemplateExercise(name: "Seated Cable Row",         sets: 3, reps: 10, weight: 110),
             TemplateExercise(name: "Dumbbell Lateral Raise",   sets: 3, reps: 12, weight: 15),
             TemplateExercise(name: "Hanging Leg Raise",        sets: 3, reps: 10, weight: 0),
+        ]),
+        WorkoutTemplate(name: "Warmup", exercises: [
+            TemplateExercise(name: "Jump Rope",          sets: 1, reps: 1, time: 60,  exerciseQuantifier: "Reps", exerciseMeasurement: "Time"),
+            TemplateExercise(name: "Arm Circles",        sets: 1, reps: 30),
+            TemplateExercise(name: "Bodyweight Squats",  sets: 1, reps: 15),
+            TemplateExercise(name: "Walking Lunges",     sets: 1, reps: 20),
+            TemplateExercise(name: "Push Ups",           sets: 1, reps: 10),
+            TemplateExercise(name: "Plank",              sets: 1, reps: 1, time: 30,  exerciseQuantifier: "Reps", exerciseMeasurement: "Time"),
+        ]),
+        WorkoutTemplate(name: "Cardio", exercises: [
+            TemplateExercise(name: "Treadmill Jog",  sets: 1, time: 600, distance: 0.5,  exerciseQuantifier: "Distance", exerciseMeasurement: "Time"),
+            TemplateExercise(name: "Cycling",        sets: 1, time: 600, distance: 0.5,             exerciseQuantifier: "Distance", exerciseMeasurement: "Time"),
+            TemplateExercise(name: "Rowing Machine", sets: 1, time: 400, distance: 0.5,             exerciseQuantifier: "Distance", exerciseMeasurement: "Time"),
+            TemplateExercise(name: "Burpees",        sets: 3, reps: 12, weight: 0),
         ]),
     ]
 }

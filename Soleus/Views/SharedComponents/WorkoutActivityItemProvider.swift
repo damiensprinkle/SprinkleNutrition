@@ -3,7 +3,7 @@ import UIKit
 /// Provides different sharing representations depending on the target activity.
 /// For Messages: shares a text message with a `soleus://import?data=…` deep link.
 /// For everything else (AirDrop, Mail, Files, etc.): shares the `.soleus` file directly.
-final class WorkoutActivityItemProvider: UIActivityItemProvider {
+final class WorkoutActivityItemProvider: UIActivityItemProvider, @unchecked Sendable {
     private let fileURL: URL
     private let workoutData: Data
     private let workoutName: String

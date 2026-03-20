@@ -52,9 +52,14 @@ final class CreateWorkoutFlowTests: SoleusUITestBase {
         titleField.tap()
         titleField.typeText("Test Workout")
 
+        // Dismiss keyboard — Add Exercise button is hidden while keyboard is open
+        let doneButton = app.buttons["Done"]
+        XCTAssertTrue(doneButton.waitForExistence(timeout: 3), "Keyboard Done button should appear when title field is focused")
+        doneButton.tap()
+
         // Tap Add Exercise button
         let addExerciseButton = app.buttons[TestID.addWorkoutAddExerciseButton]
-        XCTAssertTrue(addExerciseButton.waitForExistence(timeout: 5))
+        XCTAssertTrue(addExerciseButton.waitForExistence(timeout: 5), "Add Exercise button should appear after keyboard dismisses")
         addExerciseButton.tap()
 
         // Fill exercise name

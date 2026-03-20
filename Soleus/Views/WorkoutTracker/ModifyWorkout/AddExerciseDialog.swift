@@ -133,6 +133,8 @@ struct AddExerciseDialog: View {
         .frame(maxWidth: 400)
         .onAppear {
             hideKeyboard()
+            UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(Color.myBlue)
+            UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
         }
     }
     

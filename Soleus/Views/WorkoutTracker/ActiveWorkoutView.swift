@@ -290,10 +290,12 @@ struct ActiveWorkoutView: View {
                     let hasNotes = workoutController.workoutDetails[index].notes != nil && !workoutController.workoutDetails[index].notes!.isEmpty
                     Image(systemName: hasNotes ? "note.text.badge.plus" : "note.text")
                         .foregroundColor(hasNotes ? .orange : .gray)
+                        .opacity(viewModel.workoutStarted ? 1.0 : 0.4)
                         .accessibilityLabel(hasNotes ? "Exercise has notes" : "Add exercise notes")
                         .accessibilityHint("Double tap to \(hasNotes ? "view or edit" : "add") notes for this exercise")
                         .accessibilityAddTraits(.isButton)
                         .onTapGesture {
+                            guard viewModel.workoutStarted else { return }
                             selectedExerciseIndexForNotes = index
                         }
 

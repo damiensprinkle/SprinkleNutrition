@@ -6,51 +6,88 @@
 
 - **Create Custom Workouts**: Build personalized workout plans with multiple exercises
   - Add unlimited exercises to each workout
-  - Configure sets, reps, weight, time, and distance for each exercise
-  - Support for both strength training (reps/weight) and cardio (time/distance)
-  - Reorder exercises with up/down arrow controls
-  - Rename exercises with modern dialog interface
-  - Add notes to exercises for form cues, personal records, or reminders
-  - Auto-populated sets (new sets copy values from previous set)
+  - 30-character limit on workout titles and exercise names with live counter
+  - Configure each exercise with a quantifier (Reps or Distance) and measurement (Weight or Time)
+  - Support for strength training (reps/weight), cardio (distance/time), and timed exercises
+  - Reorder exercises within a workout using up/down controls
+  - Rename exercises via a dedicated dialog
+  - Add per-exercise notes for form cues, personal records, or reminders
+  - Auto-populated sets — new sets copy values from the previous set
+  - Swipe-down dismiss protection — warns before discarding unsaved changes
+  - Keyboard-aware form — auto-scrolls to the focused field so it is never hidden behind the keyboard
 
-- **Workout Templates**:
-  - Save workout plans as reusable templates
-  - Duplicate existing workouts to create variations
-  - Edit and update workout templates at any time
-  - Color-coded workout cards for easy identification
+- **Start from Template**: Bootstrap a new workout from a built-in template
+  - Templates include: Push, Pull, Legs, Chest, Back, Shoulders, Arms, Total Body I, Total Body II, Warmup, Cardio
+  - Templates support all exercise types including time-based and distance-based exercises
+  - Applying a template to a non-empty form requires explicit confirmation
 
-- **Active Workout Tracking**:
-  - Real-time workout timer with automatic time tracking
-  - Track completion of individual sets with checkboxes
-  - Auto-complete sets when both required fields are filled (e.g., reps AND weight)
-  - **Edit Mode** for advanced modifications during workouts:
-    - Add new exercises mid-workout
-    - Add or remove sets (with set pre-population)
-    - Rearrange exercises with up/down arrows
-    - Edit exercise notes
-    - Swipe-to-delete sets (only in edit mode)
-  - **Workout Changes Preview**: Review all changes before updating your template
-  - Resume workouts if you leave the app (persistent sessions)
-  - Background time tracking when app is not active
-  - Cancel or complete workouts with flexible template update options
+- **Workout Template Management**:
+  - Edit and update existing workout templates at any time
+  - Duplicate workouts to create variations
+  - Reorder workout cards on the main screen via long-press drag (iOS home screen style)
+  - Color-code workout cards — 15 color options available via the Customize Card menu
+  - Import workouts from `.soleus` files shared by other users
+  - Export and share workouts as `.soleus` files via AirDrop, Messages, or any share target
+
+## Active Workout Tracking
+
+- **Session Management**:
+  - Real-time workout timer with automatic background time tracking
+  - Single active session enforced — starting a new workout while one is active is blocked
+  - Session persists through app backgrounding, force quit, and device restart
+  - Resume banner appears on the main screen when a session is in progress
+  - Notes icon is disabled and dimmed until the workout has been started
+
+- **Set Tracking**:
+  - Toggle completion of individual sets with a checkmark
+  - Auto-complete sets when both required fields are filled and modified (e.g., reps AND weight entered)
+  - Rest timer auto-starts on set completion (configurable in Settings)
+
+- **Edit Mode (during active workout)**:
+  - Add new exercises mid-workout
+  - Add or remove sets with pre-population from the previous set
+  - Rearrange exercises using up/down arrows
+  - Edit exercise notes
+  - Swipe-to-delete sets (only available in edit mode)
+
+- **Workout Completion**:
+  - Double-confirmation required to end a workout
+  - If the workout was modified during the session, a changes preview is shown before saving
+  - User can choose to update the template with session changes or keep the original
+  - Workout history is always saved regardless of template update choice
+  - Navigate to Workout Overview on completion
 
 ## Progress Tracking
 
 - **Workout History**:
-  - View completed workouts by month and year
-  - Detailed workout summaries showing:
-    - Total workout duration
-    - Total weight lifted
-    - Total reps completed
-    - Total cardio time
-    - Total distance covered
-  - Expandable exercise details for each workout session
-  - Delete individual workout history entries
+  - View completed workouts filtered by month/year or all-time
+  - Skeleton loading animation while history loads
+  - Detailed workout summaries: total duration, total weight lifted, total reps, total cardio time, total distance
+  - Expandable exercise details showing each set's values for every session
+  - Delete individual history entries
 
-- **Workout Overview**:
-  - Celebration screen upon workout completion with confetti animation
-  - Instant display of workout statistics
-  - Visual stat cards for key metrics
+- **Progress View**:
+  - Switch between List and Progress views within workout history
+  - Progress view groups sessions by workout name
+  - Per-workout stats: average weight lifted, average duration, trend indicator (↑ / → / ↓)
+  - Drill down to any exercise using exercise chips — shows max weight, total reps, and total volume trends across sessions
+  - Last 5 sessions displayed per exercise with date, max weight, reps, and volume
+
+- **Workout Overview (post-completion)**:
+  - Confetti animation on workout completion
+  - Stat cards for: reps completed, total weight lifted, cardio time, distance covered
+  - Achievements unlocked during the session displayed as cards
+
+## Achievements & Dashboard
+
+- **Achievements**:
+  - Milestone-based achievement system (Bronze, Silver, Gold, Platinum tiers)
+  - Achievements tracked automatically based on workout history
+  - Full achievements list accessible from the Dashboard tab
+  - Newly unlocked achievements shown on the Workout Overview screen after each session
+
+- **Dashboard**:
+  - Dedicated dashboard tab showing fitness progress and achievements
 
 ## Settings & Customization
 
@@ -59,21 +96,60 @@
   - Distance: miles or km
   - Height: inches or cm
 
+- **Appearance**:
+  - Light, dark, or system appearance setting
+
+- **Rest Timer**:
+  - Auto-start rest timer on set completion (on/off)
+  - Configurable default rest duration
+
 - **User Profile**:
-  - Set and update user details
-  - Personalized fitness data
+  - Set and update personal details
+
+## Sharing & Community
+
+- **Workout Import/Export**:
+  - Export any workout as a `.soleus` file
+  - Import `.soleus` files from other users via the document picker or share sheet
+  - Duplicate workout names on import are auto-resolved with a `-copy` suffix
+  - Import preview screen shows all exercises before confirming
+
+- **Community**:
+  - Discord server for community discussion and feedback
+
+## Support & Transparency
+
+- **Contact Us**:
+  - In-app bug report form (pre-filled with device/app info, optional log attachment)
+  - In-app feature request form
+  - Join Discord link
+  - Responds within 48 hours
+
+- **FAQ**: In-app answers to common questions
+
+- **Privacy Policy**: Accessible within the app
+
+- **Diagnostics**:
+  - In-app log viewer (5-tap secret trigger in the About section of Settings)
+  - Logs contain only in-app events — no personal data
+  - Optional log attachment on bug reports
 
 ## User Interface
 
 - **Modern Design**:
   - Clean, intuitive SwiftUI interface
-  - Dark mode support
-  - Smooth animations and transitions
-  - Custom tab navigation (Home, Workout, Settings)
-  - Responsive layout adapting to different screen sizes
+  - Full dark mode support with adaptive colors
+  - Smooth animations and spring transitions throughout
+  - Custom tab navigation: Workout, Dashboard, Settings
+  - Responsive layout adapting to all iPhone screen sizes
 
-- **Visual Feedback**:
-  - Animated card appearances
-  - Smooth transitions between views
-  - Active workout indicators
-  - Progress animations
+- **Keyboard Handling**:
+  - Auto-scroll to focused field in workout editor
+  - "Done" button on all numeric keyboards
+  - Swipe-to-dismiss keyboard in scroll views
+  - Add Exercise and Start from Template buttons hide while keyboard is open
+
+- **Accessibility**:
+  - Accessibility identifiers on all interactive elements
+  - Accessibility labels and hints on key controls
+  - VoiceOver-compatible set completion toggles

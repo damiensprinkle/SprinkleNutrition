@@ -6,7 +6,7 @@
 
 Run the test suite:
 ```bash
-xcodebuild test -scheme Soleus -destination 'platform=iOS Simulator,name=iPhone 16'
+xcodebuild -scheme Soleus -destination 'platform=iOS Simulator,name=iPhone 17,OS=latest' test
 ```
 
 Or use Xcode's test runner (Cmd + U)
@@ -41,13 +41,30 @@ Or use Xcode's test runner (Cmd + U)
 - [ ] Duplicate a workout (verify all exercises and sets copied)
 - [ ] Customize workout card color
 - [ ] Delete a workout template
-- [ ] Rearrange workouts on main screen using swipe gestures
+- [ ] Enter reorder mode via ↑↓ nav button, long-press a card to lift it, drag to new position
+- [ ] Verify cards shift to accommodate the dragged card
+- [ ] Release and verify order is saved after exiting reorder mode
+- [ ] Long-press and immediately release without dragging — card should not stay stuck
+
+**Templates**
+- [ ] Tap "Start from Template" and select a template
+- [ ] Verify exercises and sets are pre-filled correctly
+- [ ] Verify time-based and distance-based templates (Warmup, Cardio) load correct field types
+
+**Import / Export**
+- [ ] Long-press a card and select "Share Workout" — verify .soleus file is generated
+- [ ] Import the file via the import button — verify import preview shows all exercises
+- [ ] Confirm import and verify workout appears in library
+- [ ] Import a workout with a duplicate name — verify "-copy" suffix is added
 
 **Validation**
 - [ ] Try to save workout with empty title (should show error)
 - [ ] Try to save workout with no exercises (should show error)
 - [ ] Try to create workout with duplicate title (should show error)
-- [ ] Cancel workout creation with unsaved changes (should show warning)
+- [ ] Cancel workout creation with unsaved changes (should show warning dialog)
+- [ ] Enter 31 characters in the workout title field — verify it truncates to 30
+- [ ] Enter 31 characters in the exercise name field — verify it truncates to 30
+- [ ] Verify character counter turns red at 30 characters
 
 ### 2. Active Workout Flow
 
@@ -137,28 +154,21 @@ Or use Xcode's test runner (Cmd + U)
 - [ ] Verify history for that workout is still preserved
 - [ ] Verify stats/achievements remain accurate
 
-### 4. Achievements & Dashboard
+### 4. Active Workout — Notes Icon
+
+- [ ] Open an active workout before tapping "Start Workout"
+- [ ] Verify the notes icon is dimmed and does not respond to taps
+- [ ] Tap "Start Workout" and verify the notes icon becomes active and tappable
+
+### 5. Achievements & Dashboard
 
 **Achievement Tracking**
 - [ ] Complete workouts to unlock achievements
-- [ ] Verify achievement notifications appear
-- [ ] Check Dashboard for unlocked achievements
-- [ ] Verify achievement progress updates correctly
+- [ ] Verify newly unlocked achievements appear on the Workout Overview screen
+- [ ] Navigate to Dashboard tab and verify all unlocked achievements are listed
+- [ ] Verify achievement progress counters update correctly
 
-**Workout Streaks**
-- [ ] Complete a workout today
-- [ ] Verify current streak increments
-- [ ] Skip a day and verify streak resets
-- [ ] Verify longest streak is preserved
-
-**Personal Records**
-- [ ] Check PR for heaviest single workout
-- [ ] Check PR for most reps in one workout
-- [ ] Check PR for longest workout duration
-- [ ] Check PR for furthest distance
-- [ ] Complete a workout that beats a PR and verify it updates
-
-### 5. Settings & Customization
+### 6. Settings & Customization
 
 **Unit Preferences**
 - [ ] Change weight units (lbs / kg)
@@ -179,17 +189,17 @@ Or use Xcode's test runner (Cmd + U)
 - [ ] Check that StaticWhite color remains white in dark mode
 - [ ] Verify text contrast is sufficient
 
-### 6. Sharing & Export
+### 7. Keyboard & Focus Behavior
 
-**Workout Export**
-- [ ] Long-press a workout card
-- [ ] Select "Share"
-- [ ] Verify workout data exports correctly
-- [ ] Share via AirDrop or save to Files
-- [ ] Import the workout on another device (if available)
-- [ ] Verify imported workout has all exercises, sets, and notes
+- [ ] Open Add/Edit workout and tap a reps field — verify keyboard appears and the exercise card scrolls into view
+- [ ] Tap a field near the bottom of a long workout — verify the card is not hidden behind the keyboard
+- [ ] Switch between fields within the same exercise — verify the Add Exercise button does not flash visible between taps
+- [ ] Swipe down on the keyboard — verify it dismisses
+- [ ] Tap the "Done" button on the keyboard toolbar — verify keyboard dismisses
+- [ ] With changes made, swipe down on the sheet — verify the unsaved changes warning appears
+- [ ] With no changes, swipe down on the sheet — verify it dismisses without warning
 
-### 7. Edge Cases & Error Handling
+### 8. Edge Cases & Error Handling
 
 **Data Integrity**
 - [ ] Create a workout with many exercises (15+)
@@ -215,7 +225,7 @@ Or use Xcode's test runner (Cmd + U)
 - [ ] Verify all dialogs appear correctly
 - [ ] Verify no UI elements are clipped or overlapping
 
-### 8. Regression Tests
+### 9. Regression Tests
 
 **Core Functionality Preservation**
 - [ ] Verify old workouts (created before updates) still load correctly

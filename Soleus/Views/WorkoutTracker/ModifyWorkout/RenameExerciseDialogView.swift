@@ -31,10 +31,16 @@ struct RenameExerciseDialogView: View {
 
             // Form Field
             VStack(alignment: .leading, spacing: 8) {
-                Text("Exercise Name")
-                    .font(.subheadline)
-                    .fontWeight(.medium)
-                    .foregroundColor(.myBlack)
+                HStack {
+                    Text("Exercise Name")
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                        .foregroundColor(.myBlack)
+                    Spacer()
+                    Text("\(temporaryName.count)/30")
+                        .font(.caption)
+                        .foregroundColor(temporaryName.count >= 30 ? .red : .secondary)
+                }
 
                 ZStack {
                     RoundedRectangle(cornerRadius: 8)
@@ -48,6 +54,11 @@ struct RenameExerciseDialogView: View {
                     TextField("Enter exercise name", text: $temporaryName)
                         .foregroundColor(.primary)
                         .padding(.horizontal, 12)
+                        .onChange(of: temporaryName) {
+                            if temporaryName.count > 30 {
+                                temporaryName = String(temporaryName.prefix(30))
+                            }
+                        }
                 }
                 .frame(height: 44)
             }

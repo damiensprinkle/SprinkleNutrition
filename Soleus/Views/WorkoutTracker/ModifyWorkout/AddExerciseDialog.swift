@@ -28,10 +28,16 @@ struct AddExerciseDialog: View {
             VStack(alignment: .leading, spacing: 20) {
                 // Exercise Name
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Exercise Name")
-                        .font(.subheadline)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.primary)
+                    HStack {
+                        Text("Exercise Name")
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.primary)
+                        Spacer()
+                        Text("\(exerciseName.count)/30")
+                            .font(.caption)
+                            .foregroundColor(exerciseName.count >= 30 ? .red : .secondary)
+                    }
 
                     TextField("e.g., Bench Press", text: $exerciseName)
                         .textFieldStyle(.plain)
@@ -39,6 +45,11 @@ struct AddExerciseDialog: View {
                         .background(Color(.secondarySystemGroupedBackground))
                         .cornerRadius(10)
                         .focused($isNameFieldFocused)
+                        .onChange(of: exerciseName) {
+                            if exerciseName.count > 30 {
+                                exerciseName = String(exerciseName.prefix(30))
+                            }
+                        }
                         .toolbar {
                             ToolbarItem(placement: .keyboard) {
                                 if isNameFieldFocused {

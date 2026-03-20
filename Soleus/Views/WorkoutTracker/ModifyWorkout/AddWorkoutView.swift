@@ -284,12 +284,18 @@ struct AddWorkoutView: View {
                 VStack(spacing: 16) {
                     // Workout Title Card
                     VStack(alignment: .leading, spacing: 8) {
-                        Text("Workout Title")
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.secondary)
-                            .padding(.horizontal, 20)
-                            .padding(.top, 16)
+                        HStack {
+                            Text("Workout Title")
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.secondary)
+                            Spacer()
+                            Text("\(workoutTitle.count)/30")
+                                .font(.caption)
+                                .foregroundColor(workoutTitle.count >= 30 ? .red : .secondary)
+                        }
+                        .padding(.horizontal, 20)
+                        .padding(.top, 16)
 
                         TextField("Enter Workout Title", text: $workoutTitle)
                             .focused($isTitleFocused)
@@ -298,6 +304,11 @@ struct AddWorkoutView: View {
                             .background(Color(.secondarySystemGroupedBackground))
                             .cornerRadius(12)
                             .padding(.horizontal, 20)
+                            .onChange(of: workoutTitle) {
+                                if workoutTitle.count > 30 {
+                                    workoutTitle = String(workoutTitle.prefix(30))
+                                }
+                            }
                             .toolbar {
                                 ToolbarItem(placement: .keyboard) {
                                     if isTitleFocused {

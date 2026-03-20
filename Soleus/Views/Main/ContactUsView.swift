@@ -10,6 +10,7 @@ struct ContactUsView: View {
     @State private var includeLogs = true
 
     static let supportEmail = "SoleusApp@gmail.com"
+    static let discordURL = URL(string: "https://discord.gg/KWDzFdqb")!
 
     struct MailParams: Identifiable {
         let id = UUID()
@@ -41,6 +42,15 @@ struct ContactUsView: View {
                         )
                     }
                     .accessibilityIdentifier(AccessibilityID.contactUsFeatureRequestButton)
+
+                    Button { UIApplication.shared.open(Self.discordURL) } label: {
+                        ContactRow(
+                            icon: "bubble.left.and.bubble.right.fill",
+                            iconColor: .purple,
+                            title: "Join our Discord",
+                            subtitle: "Chat with the community and the team"
+                        )
+                    }
                 }
 
                 Section(

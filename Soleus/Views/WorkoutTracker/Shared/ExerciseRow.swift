@@ -29,6 +29,9 @@ struct ExerciseRow: View {
     var body: some View {
         HStack {
             Text("\(setIndex)")
+                .font(.subheadline)
+                .fontWeight(.semibold)
+                .foregroundColor(.secondary)
                 .frame(width: 50, alignment: .leading)
                 .padding(.leading, 8)
             Spacer()

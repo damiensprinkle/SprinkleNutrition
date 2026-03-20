@@ -594,6 +594,36 @@
             endingLineNumber = "370"
             landmarkName = "formatInput(_:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "9793E6CD-525E-4343-ADD7-73818AE32D47 - 56d861eaa57a2d55"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Soleus.ExerciseRowActive.formatInput(Swift.String) -&gt; ()"
+                  moduleName = "Soleus.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/damiensprinkle/Desktop/Soleus/Soleus/Views/WorkoutTracker/Shared/ExerciseRowActive.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "371"
+                  endingLineNumber = "371">
+               </Location>
+               <Location
+                  uuid = "9793E6CD-525E-4343-ADD7-73818AE32D47 - 56d861eaa57a2d76"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Soleus.ExerciseRowActive.formatInput(Swift.String) -&gt; ()"
+                  moduleName = "Soleus.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/damiensprinkle/Desktop/Soleus/Soleus/Views/WorkoutTracker/Shared/ExerciseRowActive.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "370"
+                  endingLineNumber = "370">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

@@ -38,6 +38,9 @@ struct ExerciseRowActive: View {
         HStack {
             Spacer()
             Text("\(setIndex)")
+                .font(.subheadline)
+                .fontWeight(.semibold)
+                .foregroundColor(.secondary)
                 .frame(width: 50, alignment: .center)
                 .padding(.leading, 10)
             Divider()

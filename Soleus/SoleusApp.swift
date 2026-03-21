@@ -11,6 +11,8 @@ import Darwin
 
 @main
 struct SoleusApp: App {
+    @Environment(\.scenePhase) private var scenePhase
+
     @StateObject private var persistenceController: PersistenceController
     @StateObject private var appViewModel = AppViewModel()
     @StateObject private var workoutManager = WorkoutManager()
@@ -87,6 +89,24 @@ struct SoleusApp: App {
                         handleSoleusURL(url)
                     } else {
                         handleImportedFile(url)
+                    }
+                }
+                .onChange(of: scenePhase) { _, newPhase in
+                    switch newPhase {
+                    case .active:
+                        // User opened the app — cancel the active workout reminder since they're here
+                        NotificationManager.cancelActiveWorkoutReminder()
+                    case .background:
+                        // App going to background — schedule streak reminder if applicable
+                        let stats = achievementManager.getWorkoutStats()
+                        let hour = UserDefaults.standard.integer(forKey: "streakReminderHour")
+                        NotificationManager.scheduleStreakReminderIfNeeded(
+                            streakCount: stats.currentStreak,
+                            workedOutToday: stats.workedOutToday,
+                            hour: hour > 0 ? hour : 20
+                        )
+                    default:
+                        break
                     }
                 }
         }

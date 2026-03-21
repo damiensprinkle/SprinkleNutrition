@@ -41,6 +41,7 @@ enum TestID {
     // MARK: - Settings View
     static let settingsWeightPicker = "settings_weight_picker"
     static let settingsDistancePicker = "settings_distance_picker"
+    static let settingsImportButton = "settings_import_button"
     static let settingsRestTimerToggle = "settings_rest_timer_toggle"
     static let settingsHelpButton = "settings_help_button"
     static let settingsPrivacyButton = "settings_privacy_button"

@@ -71,19 +71,6 @@ struct WorkoutTrackerMainView: View {
                 .accessibilityIdentifier(AccessibilityID.navReorderButton)
             }
             Button(action: {
-                // Clear any previous import data
-                importedWorkout = nil
-                showImportPreview = false
-                isLoadingImport = false
-                showDocumentPicker = true
-            }) {
-                Image(systemName: "square.and.arrow.down")
-                    .help("Import workout")
-            }
-            .accessibilityIdentifier(AccessibilityID.navImportButton)
-            .disabled(isEditMode)
-            .opacity(isEditMode ? 0.5 : 1.0)
-            Button(action: {
                 appViewModel.navigateTo(.workoutHistoryView)
             }) {
                 Image(systemName: "clock")

@@ -161,6 +161,7 @@ class AchievementManager: ObservableObject {
             var totalReps: Int32 = 0
             var currentStreak = 0
             var longestStreak = 0
+            var workedOutToday = false
             var longestWorkoutInMinutes: Double = 0
             var hasShortWorkout = false
 
@@ -212,6 +213,7 @@ class AchievementManager: ObservableObject {
                 if let lastWorkoutDate = histories.last?.workoutDate {
                     let daysSinceLastWorkout = calendar.dateComponents([.day], from: calendar.startOfDay(for: lastWorkoutDate), to: calendar.startOfDay(for: Date())).day ?? 0
                     currentStreak = daysSinceLastWorkout <= 1 ? streak : 0
+                    workedOutToday = daysSinceLastWorkout == 0
                 }
             }
 
@@ -226,6 +228,7 @@ class AchievementManager: ObservableObject {
                 totalReps: Int(totalReps),
                 currentStreak: currentStreak,
                 longestStreak: longestStreak,
+                workedOutToday: workedOutToday,
                 longestWorkoutInMinutes: longestWorkoutInMinutes,
                 hasShortWorkout: hasShortWorkout,
                 workoutsThisWeek: workoutsThisWeek,
@@ -417,6 +420,7 @@ struct WorkoutStats {
     var totalReps: Int = 0
     var currentStreak: Int = 0
     var longestStreak: Int = 0
+    var workedOutToday: Bool = false
     var longestWorkoutInMinutes: Double = 0
     var hasShortWorkout: Bool = false // < 2 minutes
     var workoutsThisWeek: Int = 0 // Current week

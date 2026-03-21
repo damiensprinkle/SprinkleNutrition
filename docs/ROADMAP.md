@@ -149,6 +149,19 @@ These features require new screens or data models but no external dependencies.
 
 ---
 
+
+### My Exercises
+- all exercise entries are saved into a table
+- users can also create exercise outside of the add/edit workout view to speed up new workout plan creations
+
+
+### move import workout to settings page
+### Restrict the number of workout plan to 5 unless pro version
+
+### workout history should have calendar view to show what days you completed a workout, just a green checkmark on the day
+### disable workout history progress view
+### workout insights paid feature
+
 ## Tier 3 — Longer Term (Significant Effort or External Dependencies)
 
 ---

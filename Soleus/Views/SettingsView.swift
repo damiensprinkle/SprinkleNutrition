@@ -13,6 +13,10 @@ struct SettingsView: View {
     @State private var showingContactUs = false
     @State private var showingDevMenu = false
 
+    @State private var showDocumentPicker = false
+    @State private var importedWorkout: ShareableWorkout?
+    @State private var showImportPreview = false
+
     @FetchRequest(
         sortDescriptors: [],
         predicate: NSPredicate(format: "name == %@", "Soleus Developer"),
@@ -25,8 +29,34 @@ struct SettingsView: View {
     private let restDurationOptions = [30, 45, 60, 90, 120, 180, 240, 300]
 
     var body: some View {
+        NavigationStack {
         Form {
+            Section(
+                header: Text("Utilities"),
+                footer: Text("Import a .soleus file shared by another user or exported from this device. To import a workout from IMessage simply tap the link that was shared with you.")
+            ) {
+                Button(action: {
+                    importedWorkout = nil
+                    showImportPreview = false
+                    showDocumentPicker = true
+                }) {
+                    HStack {
+                        Label("Import Workout", systemImage: "square.and.arrow.down")
+                            .foregroundColor(.primary)
+                        Spacer()
+                        Image(systemName: "chevron.right")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                }
+                .accessibilityIdentifier(AccessibilityID.settingsImportButton)
+            }
+
             Section(header: Text("Preferences")) {
+                NavigationLink(destination: NotificationsSettingsView()) {
+                    Text("Notifications")
+                }
+
                 Picker("Appearance", selection: $appearancePreference) {
                     Text("Dark").tag("dark")
                     Text("Light").tag("light")
@@ -46,44 +76,21 @@ struct SettingsView: View {
                 .accessibilityIdentifier(AccessibilityID.settingsDistancePicker)
             }
 
-            Section(header: Text("Rest Timer")) {
-                Toggle("Auto-start rest timer", isOn: $autoStartRestTimer)
+            Section(
+                header: Text("Rest Timer"),
+                footer: Text("Rest timer automatically starts when you complete a set. Adjust time with +/-30s buttons or skip entirely.")
+            ) {
+                Toggle("Auto-Start Rest Timer", isOn: $autoStartRestTimer)
                     .tint(.green)
                     .accessibilityIdentifier(AccessibilityID.settingsRestTimerToggle)
 
                 if autoStartRestTimer {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("Default rest duration")
-                            .font(.subheadline)
-                            .foregroundColor(.primary)
-
-                        // Full picker for all options
-                        Picker("", selection: $defaultRestDuration) {
-                            ForEach(restDurationOptions, id: \.self) { seconds in
-                                Text(formatRestDuration(seconds)).tag(seconds)
-                            }
+                    Picker("Default Rest Duration", selection: $defaultRestDuration) {
+                        ForEach(restDurationOptions, id: \.self) { seconds in
+                            Text(formatRestDuration(seconds)).tag(seconds)
                         }
-                        .pickerStyle(.menu)
-                        .labelsHidden()
                     }
-                    .padding(.vertical, 4)
                 }
-
-                VStack(alignment: .leading, spacing: 4) {
-                    HStack {
-                        Image(systemName: "info.circle")
-                            .font(.caption)
-                            .foregroundColor(.blue)
-                        Text("How it works")
-                            .font(.caption)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.primary)
-                    }
-                    Text("Rest timer automatically starts when you complete a set. Adjust time with +/-30s buttons or skip entirely.")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-                .padding(.vertical, 4)
             }
 
             Section(header: Text("About")) {
@@ -147,6 +154,22 @@ struct SettingsView: View {
         }
         .background(Color.myWhite)
         .listStyle(.insetGrouped)
+        .sheet(isPresented: $showDocumentPicker) {
+            DocumentPicker(importedWorkout: $importedWorkout, showImportPreview: .constant(false))
+        }
+        .onChange(of: importedWorkout) { _, newValue in
+            if newValue != nil, !showDocumentPicker {
+                showImportPreview = true
+            }
+        }
+        .sheet(isPresented: $showImportPreview, onDismiss: {
+            importedWorkout = nil
+        }) {
+            ImportWorkoutPreviewContent(
+                importedWorkout: $importedWorkout,
+                showImportPreview: $showImportPreview
+            )
+        }
         .sheet(isPresented: $showingPrivacyPolicy) {
             PrivacyPolicyView()
         }
@@ -159,6 +182,7 @@ struct SettingsView: View {
         .sheet(isPresented: $showingDevMenu) {
             DevMenuView()
         }
+        } // NavigationStack
     }
 
     private func formatRestDuration(_ seconds: Int) -> String {

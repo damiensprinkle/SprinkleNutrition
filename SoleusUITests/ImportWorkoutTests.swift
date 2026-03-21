@@ -40,49 +40,19 @@ final class ImportWorkoutTests: SoleusUITestBase {
         app.launch()
     }
 
-    // MARK: - Import Button State Tests
+    // MARK: - Import Button Tests (Settings)
 
-    func testImportButtonExists() {
-        let button = app.buttons[TestID.navImportButton]
-        XCTAssertTrue(waitForElement(button), "Import button should exist in the nav bar")
+    func testImportButtonExistsInSettings() {
+        tapTab(TestID.tabSettings)
+        let button = app.buttons[TestID.settingsImportButton]
+        XCTAssertTrue(waitForElement(button), "Import Workout button should exist in the Settings Utilities section")
     }
 
-    func testImportButtonIsEnabledByDefault() {
-        let button = app.buttons[TestID.navImportButton]
+    func testImportButtonIsEnabledInSettings() {
+        tapTab(TestID.tabSettings)
+        let button = app.buttons[TestID.settingsImportButton]
         XCTAssertTrue(waitForElement(button))
-        XCTAssertTrue(button.isEnabled, "Import button should be enabled by default")
-    }
-
-    func testImportButtonIsDisabledInEditMode() {
-        // Reorder button is hidden when no workouts exist — pre-create one first.
-        app.terminate()
-        app.launchEnvironment["UI_TEST_PRE_CREATE_WORKOUT"] = "Test Workout"
-        app.launch()
-
-        tapNavBarButton(TestID.navReorderButton)
-
-        let importButton = app.buttons[TestID.navImportButton]
-        XCTAssertTrue(waitForElement(importButton))
-        XCTAssertFalse(importButton.isEnabled, "Import button should be disabled while in reorder/edit mode")
-    }
-
-    func testImportButtonReEnabledAfterExitingEditMode() {
-        // Reorder button is hidden when no workouts exist — pre-create one first.
-        app.terminate()
-        app.launchEnvironment["UI_TEST_PRE_CREATE_WORKOUT"] = "Test Workout"
-        app.launch()
-
-        // Enter edit mode
-        tapNavBarButton(TestID.navReorderButton)
-
-        let importButton = app.buttons[TestID.navImportButton]
-        XCTAssertTrue(waitForElement(importButton))
-        XCTAssertFalse(importButton.isEnabled)
-
-        // Exit edit mode
-        tapNavBarButton(TestID.navReorderButton)
-
-        XCTAssertTrue(importButton.isEnabled, "Import button should be re-enabled after exiting edit mode")
+        XCTAssertTrue(button.isEnabled, "Import Workout button should be enabled")
     }
 
     // MARK: - Import Preview Tests

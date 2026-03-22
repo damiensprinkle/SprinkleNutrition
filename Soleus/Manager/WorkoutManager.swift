@@ -911,6 +911,12 @@ extension WorkoutManager {
                             try mainContext.save()
                         }
                         AppLogger.workout.info("Workout history saved successfully")
+                        // Reschedule inactivity reminder from today and clear streak reminder
+                        // (user just completed a workout, so streak is safe for today)
+                        let days = UserDefaults.standard.integer(forKey: "inactivityReminderDays")
+                        let hour = UserDefaults.standard.integer(forKey: "inactivityReminderHour")
+                        NotificationManager.scheduleInactivityReminder(afterDays: days > 0 ? days : 3, hour: hour > 0 ? hour : 9)
+                        NotificationManager.cancelStreakReminder()
                         completion?()
                     } catch {
                         AppLogger.coreData.error("Failed to save main context: \(error.localizedDescription)")
@@ -999,11 +1005,13 @@ extension WorkoutManager {
                     newSession.startTime = Date()
                     newSession.isActive = true
                     workout.sessions = newSession
+                    NotificationManager.scheduleActiveWorkoutReminder()
                 } else {
                     if let existingSession = workout.sessions, existingSession.isActive {
                         existingSession.isActive = false
                         existingSession.endTime = Date()
                     }
+                    NotificationManager.cancelActiveWorkoutReminder()
                 }
 
                 try context.save()

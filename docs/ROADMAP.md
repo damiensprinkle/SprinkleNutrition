@@ -39,30 +39,6 @@ These features build directly on existing infrastructure and can be shipped quic
 
 ---
 
-### Rest Timer Push Notifications `Free`
-
-**Problem:** When a user locks their screen during rest, they have no way to know when the rest period ends without unlocking and checking the app.
-
-**Solution:**
-- Request `UNUserNotificationCenter` authorization on first app launch (or when rest timer is first used)
-- When the rest timer starts, schedule a local `UNTimeIntervalNotificationTrigger` for the selected duration
-- Notification content: title "Rest Complete", body "Time to get back to it — next set is ready"
-- Cancel the scheduled notification immediately if the user manually dismisses the rest timer before it fires
-- Respects the user's existing "Auto-start rest timer" setting — notifications only fire when that setting is enabled
-
----
-
-### Enhanced Streak Tracking `Free`
-
-**Problem:** Workout streaks already exist on the Dashboard (current streak, longest streak, flame icon) but there is no warning when a streak is about to break. Users may lose a streak simply because they forgot to work out, not because they chose to skip.
-
-**Solution:**
-- Add a "streak at risk" indicator on the Dashboard streak card when the user has an active streak but has not yet completed a workout today — the streak will break at midnight if no workout is logged
-- Indicator should be visually distinct (e.g., amber/yellow warning tone) so it stands out from the normal "Keep it up!" state
-- No changes to the underlying streak calculation — only surfacing the existing data in a more actionable way
-
----
-
 ## Tier 2 — Medium Term (High Impact, Moderate Effort)
 
 These features require new screens or data models but no external dependencies.
@@ -148,6 +124,17 @@ These features require new screens or data models but no external dependencies.
 - New widgets can be added to the library over time without requiring a layout migration
 
 ---
+
+
+### My Exercises
+- all exercise entries are saved into a table
+- users can also create exercise outside of the add/edit workout view to speed up new workout plan creations
+
+
+### Restrict the number of workout plan to 5 unless pro version
+
+### workout history should have calendar view to show what days you completed a workout, just a green checkmark on the day
+### workout insights paid feature
 
 ## Tier 3 — Longer Term (Significant Effort or External Dependencies)
 

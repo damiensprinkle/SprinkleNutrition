@@ -88,6 +88,10 @@
 		08C5DF442F68C8F900FC40DB /* WorkoutTemplates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C5DF432F68C8F900FC40DB /* WorkoutTemplates.swift */; };
 		08C5DFCA2F6CB6BF00FC40DB /* ActiveWorkoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C5DFC92F6CB6BF00FC40DB /* ActiveWorkoutTests.swift */; };
 		08C5DFCC2F6CB70500FC40DB /* ActiveWorkoutSaveTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C5DFCB2F6CB70500FC40DB /* ActiveWorkoutSaveTests.swift */; };
+		08C5DFFE2F6E03EF00FC40DB /* ROADMAP.md in Resources */ = {isa = PBXBuildFile; fileRef = 08C5DFFD2F6E03EF00FC40DB /* ROADMAP.md */; };
+		08C5E0002F6F0ED500FC40DB /* NotificationsSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C5DFFF2F6F0ED500FC40DB /* NotificationsSettingsView.swift */; };
+		08C5E0022F6F117700FC40DB /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C5E0012F6F117700FC40DB /* NotificationManager.swift */; };
+		08C5E0062F7056E200FC40DB /* ReleaseNotesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C5E0052F7056E200FC40DB /* ReleaseNotesView.swift */; };
 		08EF97E32CEEBC0D00AE8196 /* CustomizeCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF97E22CEEBC0A00AE8196 /* CustomizeCardView.swift */; };
 		08EF97E82CEEC13500AE8196 /* Workouts+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF97E72CEEC13500AE8196 /* Workouts+CoreDataProperties.swift */; };
 		08EF97E92CEEC13500AE8196 /* Workouts+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08EF97E62CEEC13500AE8196 /* Workouts+CoreDataClass.swift */; };
@@ -232,6 +236,10 @@
 		08C5DF432F68C8F900FC40DB /* WorkoutTemplates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTemplates.swift; sourceTree = "<group>"; };
 		08C5DFC92F6CB6BF00FC40DB /* ActiveWorkoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveWorkoutTests.swift; sourceTree = "<group>"; };
 		08C5DFCB2F6CB70500FC40DB /* ActiveWorkoutSaveTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveWorkoutSaveTests.swift; sourceTree = "<group>"; };
+		08C5DFFD2F6E03EF00FC40DB /* ROADMAP.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = ROADMAP.md; sourceTree = "<group>"; };
+		08C5DFFF2F6F0ED500FC40DB /* NotificationsSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsSettingsView.swift; sourceTree = "<group>"; };
+		08C5E0012F6F117700FC40DB /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		08C5E0052F7056E200FC40DB /* ReleaseNotesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReleaseNotesView.swift; sourceTree = "<group>"; };
 		08EF97E22CEEBC0A00AE8196 /* CustomizeCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizeCardView.swift; sourceTree = "<group>"; };
 		08EF97E62CEEC13500AE8196 /* Workouts+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workouts+CoreDataClass.swift"; sourceTree = "<group>"; };
 		08EF97E72CEEC13500AE8196 /* Workouts+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workouts+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -309,6 +317,7 @@
 		0871113B2B7306060054E315 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				08C5E0012F6F117700FC40DB /* NotificationManager.swift */,
 				08A2EC112ED8BFAA00B60FF9 /* HapticManager.swift */,
 				08A2EC022ED4C30C00B60FF9 /* RestTimerManager.swift */,
 				081DD5912EC90F0100B4074D /* AchievementManager.swift */,
@@ -341,6 +350,8 @@
 		087111AB2B77E9DB0054E315 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				08C5E0052F7056E200FC40DB /* ReleaseNotesView.swift */,
+				08C5DFFF2F6F0ED500FC40DB /* NotificationsSettingsView.swift */,
 				081DD59B2ECA9D3D00B4074D /* FAQView.swift */,
 				081DD5992ECA1C9400B4074D /* PrivacyPolicyView.swift */,
 				0CA50002300000000000EE01 /* ContactUsView.swift */,
@@ -586,6 +597,7 @@
 		08C5DED52F632FC200FC40DB /* docs */ = {
 			isa = PBXGroup;
 			children = (
+				08C5DFFD2F6E03EF00FC40DB /* ROADMAP.md */,
 				08C5DED02F632FC200FC40DB /* CHANGELOG.md */,
 				08C5DED12F632FC200FC40DB /* FEATURES.md */,
 				08C5DED22F632FC200FC40DB /* TECH_STACK.md */,
@@ -713,6 +725,7 @@
 				08C5DED72F632FC200FC40DB /* USAGE_GUIDE.md in Resources */,
 				08C5DEDC2F63306C00FC40DB /* README.md in Resources */,
 				08C5DED82F632FC200FC40DB /* FEATURES.md in Resources */,
+				08C5DFFE2F6E03EF00FC40DB /* ROADMAP.md in Resources */,
 				08C5DED92F632FC200FC40DB /* TESTING.md in Resources */,
 				08C5DEDA2F632FC200FC40DB /* TECH_STACK.md in Resources */,
 			);
@@ -743,6 +756,7 @@
 				081DD5892EC511AB00B4074D /* ShareableWorkout.swift in Sources */,
 				0847535F2CE3D59B00C6A7F9 /* WorkoutSessionModel.swift in Sources */,
 				08C31FFF2B82EA3A002EE8A7 /* PersistenceController.swift in Sources */,
+				08C5E0002F6F0ED500FC40DB /* NotificationsSettingsView.swift in Sources */,
 				08B3CFF22B810FB7002F5C92 /* WorkoutHistoryCardView.swift in Sources */,
 				0828683F2CE7E13900835C08 /* ExerciseInputHelper.swift in Sources */,
 				08B3CF7B2B7BDD0C002F5C92 /* AddExerciseDialog.swift in Sources */,
@@ -753,6 +767,7 @@
 				088B577A2EC3A7030066CC17 /* ActiveWorkoutViewModel.swift in Sources */,
 				085466812CDFAD4700136FBC /* WorkoutDetail+CoreDataClass.swift in Sources */,
 				085466822CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataClass.swift in Sources */,
+				08C5E0022F6F117700FC40DB /* NotificationManager.swift in Sources */,
 				085466832CDFAD4700136FBC /* TemporaryWorkoutDetail+CoreDataProperties.swift in Sources */,
 				081DD59C2ECA9D3D00B4074D /* FAQView.swift in Sources */,
 				0CA50001300000000000EE01 /* ContactUsView.swift in Sources */,
@@ -768,6 +783,7 @@
 				087111412B7405990054E315 /* WorkoutDetailsInput.swift in Sources */,
 				087111722B77B3120054E315 /* WorkoutOverviewView.swift in Sources */,
 				081DD59E2ECD167400B4074D /* ExerciseNotesDialogView.swift in Sources */,
+				08C5E0062F7056E200FC40DB /* ReleaseNotesView.swift in Sources */,
 				08B78FF22B6DBA370002DA68 /* HomeView.swift in Sources */,
 				087111AD2B77E9EC0054E315 /* CustomTabView.swift in Sources */,
 				081DD58B2EC511D000B4074D /* ImportWorkoutPreviewView.swift in Sources */,
@@ -1011,7 +1027,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.damiensprinkle.Soleus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -1057,7 +1073,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 1.0.1;
+				MARKETING_VERSION = 1.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.damiensprinkle.Soleus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;

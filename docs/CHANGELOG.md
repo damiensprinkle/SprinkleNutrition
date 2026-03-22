@@ -5,6 +5,11 @@
 All notable changes to Soleus will be documented in this file.
 
 
+## v1.0.2
+### Improvements
+ - Added customizable push notifications
+ - Moved Import workout to Settings View
+
 ## v1.0.1
 
 ### Bug Fixes

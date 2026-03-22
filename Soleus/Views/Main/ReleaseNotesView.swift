@@ -12,6 +12,7 @@ struct ReleaseNotesView: View {
                         items: [
                             ("bell.fill", "Push Notifications", "Stay on top of your fitness with customizable reminders — active workout alerts, inactivity nudges, and streak-at-risk warnings."),
                             ("square.and.arrow.down", "Import Workout", "Import .soleus workout files directly from Settings for a cleaner main view."),
+                            ("textformat.123", "Release Notes", "Added release notes card, so new updates display to the user"),
                         ]
                     )
 

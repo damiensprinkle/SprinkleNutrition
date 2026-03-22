@@ -31,6 +31,7 @@ final class SettingsTests: SoleusUITestBase {
     }
 
     func testPrivacyButtonExists() {
+        app.collectionViews.firstMatch.swipeUp()
         let privacyButton = app.buttons[TestID.settingsPrivacyButton]
         XCTAssertTrue(privacyButton.waitForExistence(timeout: 5), "Privacy Policy button should exist")
     }

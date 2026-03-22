@@ -93,9 +93,6 @@ struct SoleusApp: App {
                 }
                 .onChange(of: scenePhase) { _, newPhase in
                     switch newPhase {
-                    case .active:
-                        // User opened the app — cancel the active workout reminder since they're here
-                        NotificationManager.cancelActiveWorkoutReminder()
                     case .background:
                         // App going to background — schedule streak reminder if applicable
                         let stats = achievementManager.getWorkoutStats()

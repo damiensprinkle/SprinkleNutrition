@@ -21,10 +21,10 @@ struct NotificationManager {
 
         let content = UNMutableNotificationContent()
         content.title = "Workout Still Running"
-        content.body = "Your workout has been running for over 2 hours. Don't forget to end your session."
+        content.body = "Your workout has been running for over 3 hours. Don't forget to end your session."
         content.sound = .default
 
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 7200, repeats: false)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10800, repeats: false)
         let request = UNNotificationRequest(identifier: activeWorkoutID, content: content, trigger: trigger)
 
         UNUserNotificationCenter.current().add(request) { error in

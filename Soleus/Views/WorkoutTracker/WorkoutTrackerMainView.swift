@@ -12,6 +12,8 @@ struct WorkoutTrackerMainView: View {
     @State private var showImportPreview = false
     @State private var isLoadingImport = false
     @State private var isEditMode = false
+    @State private var showReleaseNotes = false
+    @AppStorage("lastSeenVersion") private var lastSeenVersion: String = ""
     @State private var draggingId: UUID?
     @State private var dragPosition: CGPoint = .zero
     @State private var draggingCardSize: CGSize = .zero
@@ -153,6 +155,10 @@ struct WorkoutTrackerMainView: View {
                 .padding(.vertical, 8)
                 .padding(.horizontal)
                 .transition(.move(edge: .top).combined(with: .opacity))
+            }
+
+            if hasNewVersion {
+                releaseNotesCard
             }
 
             if workoutController.hasActiveSession, let workoutId = workoutController.activeWorkoutId {
@@ -338,6 +344,67 @@ struct WorkoutTrackerMainView: View {
                     duplicatingWorkouts.remove(workoutId)
                 }
             }
+        }
+    }
+
+    // MARK: - Release Notes
+
+    private var currentAppVersion: String {
+        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+    }
+
+    private var hasNewVersion: Bool {
+        !currentAppVersion.isEmpty && currentAppVersion != lastSeenVersion
+    }
+
+    private var releaseNotesCard: some View {
+        ZStack(alignment: .trailing) {
+            Button(action: { showReleaseNotes = true }) {
+                HStack(spacing: 12) {
+                    Image(systemName: "sparkles")
+                        .font(.title2)
+                        .foregroundColor(.staticWhite)
+
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("What's New in \(currentAppVersion)")
+                            .font(.headline)
+                            .foregroundColor(.staticWhite)
+                        Text("Tap to see the latest updates")
+                            .font(.subheadline)
+                            .foregroundColor(.staticWhite.opacity(0.9))
+                    }
+
+                    Spacer()
+                }
+                .padding()
+                .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.plain)
+
+            Button(action: {
+                withAnimation {
+                    lastSeenVersion = currentAppVersion
+                }
+            }) {
+                Image(systemName: "xmark")
+                    .font(.body)
+                    .foregroundColor(.staticWhite.opacity(0.8))
+                    .padding(16)
+            }
+        }
+        .background(
+            LinearGradient(
+                gradient: Gradient(colors: [Color.myTan, Color.myTan.opacity(0.8)]),
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+        )
+        .cornerRadius(12)
+        .shadow(color: Color.myTan.opacity(0.3), radius: 8, x: 0, y: 4)
+        .padding(.horizontal)
+        .padding(.bottom, 8)
+        .sheet(isPresented: $showReleaseNotes) {
+            ReleaseNotesView()
         }
     }
 

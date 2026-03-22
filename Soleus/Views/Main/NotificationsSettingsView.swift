@@ -40,7 +40,7 @@ struct NotificationsSettingsView: View {
 
                 // MARK: Active Workout Reminder
                 Section(
-                    footer: Text("Sends a reminder if your workout timer has been running for over 2 hours while the app is in the background.")
+                    footer: Text("Sends a reminder if your workout has been active for over 3 hours and the app is not running.")
                 ) {
                     Toggle("Remind Me If A Workout Is Left Running", isOn: Binding(
                         get: { notifyActiveWorkout },

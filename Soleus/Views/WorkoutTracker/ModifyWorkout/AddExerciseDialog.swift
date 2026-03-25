@@ -11,6 +11,7 @@ struct AddExerciseDialog: View {
 
     var body: some View {
         VStack(spacing: 0) {
+            Spacer().frame(height: 0) // anchor top alignment when sheet grows
             // Header
             VStack(spacing: 8) {
                 Text("Add Exercise")
@@ -131,8 +132,8 @@ struct AddExerciseDialog: View {
         .cornerRadius(20)
         .shadow(color: Color.black.opacity(0.15), radius: 20, x: 0, y: 10)
         .frame(maxWidth: 400)
+        .simultaneousGesture(TapGesture().onEnded { hideKeyboard() })
         .onAppear {
-            hideKeyboard()
             UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(Color.myBlue)
             UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
         }
@@ -170,8 +171,4 @@ struct AddExerciseDialog: View {
 
     }
     
-    private func hideKeyboard()
-    {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-    }
 }

@@ -1,5 +1,10 @@
 import SwiftUI
 
+extension View {
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
 
 func validateAndSetInputFloat(_ input: inout String, for setInputField: inout Float, maxLength: Int = 10, maxDecimals: Int = 2) {
     if input.count > maxLength {

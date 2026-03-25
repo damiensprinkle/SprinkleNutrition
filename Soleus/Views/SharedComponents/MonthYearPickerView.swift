@@ -2,14 +2,15 @@ import SwiftUI
 
 struct MonthYearPickerView: View {
     private var months: [String] = Calendar.current.monthSymbols
-    private var years: [Int] = (2024...2030).map { $0 }
-    
+    private var years: [Int]
+
     @Binding var selectedMonth: Int
     @Binding var selectedYear: Int
-    
-    init(selectedMonth: Binding<Int>, selectedYear: Binding<Int>) {
+
+    init(selectedMonth: Binding<Int>, selectedYear: Binding<Int>, years: [Int]) {
         self._selectedMonth = selectedMonth
         self._selectedYear = selectedYear
+        self.years = years
     }
     
     var body: some View {

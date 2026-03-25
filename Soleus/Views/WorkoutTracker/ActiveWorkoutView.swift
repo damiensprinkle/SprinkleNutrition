@@ -30,7 +30,9 @@ struct ActiveWorkoutView: View {
     @State private var showAddExerciseConfirmation = false
     @State private var editMode: EditMode = .inactive
     @State private var showChangesPreview = false
-    @State private var selectedExerciseIndexForNotes: Int?
+    @State private var editingNotesIndex: Int? = nil
+    @State private var editingNotesText: String = ""
+    @FocusState private var isNotesFocused: Bool
     @State private var selectedExerciseIndexForDelete: Int?
     @State private var expandedExercises: Set<Int> = []
 
@@ -62,10 +64,21 @@ struct ActiveWorkoutView: View {
                             .zIndex(1)
                     }
 
-                    Form {
-                        displayExerciseDetailsAndSets
+                    ScrollViewReader { proxy in
+                        Form {
+                            displayExerciseDetailsAndSets
+                        }
+                        .scrollContentBackground(.hidden)
+                        .scrollDismissesKeyboard(.immediately)
+                        .onChange(of: editingNotesIndex) {
+                            guard let index = editingNotesIndex else { return }
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                                withAnimation(.easeInOut(duration: 0.25)) {
+                                    proxy.scrollTo("notesAnchor_\(index)", anchor: .bottom)
+                                }
+                            }
+                        }
                     }
-                    .scrollContentBackground(.hidden)
                     .onTapGesture {
                         if focusManager.isAnyTextFieldFocused {
                             focusManager.isAnyTextFieldFocused = false
@@ -76,9 +89,11 @@ struct ActiveWorkoutView: View {
 
                     Spacer()
 
-                    startWorkoutButton
-                        .padding(.top)
-                    Spacer()
+                    if !isNotesFocused {
+                        startWorkoutButton
+                            .padding(.top)
+                        Spacer()
+                    }
                 }
                 .frame(maxHeight: .infinity, alignment: .top)
                 .background(Color(.systemGroupedBackground))
@@ -236,36 +251,6 @@ struct ActiveWorkoutView: View {
                     }
                 )
             }
-            .sheet(isPresented: Binding(
-                get: { selectedExerciseIndexForNotes != nil },
-                set: { if !$0 { selectedExerciseIndexForNotes = nil } }
-            )) {
-                if let selectedIndex = selectedExerciseIndexForNotes,
-                   selectedIndex < workoutController.workoutDetails.count {
-                    ZStack {
-                        Color.black.opacity(0.4)
-                            .edgesIgnoringSafeArea(.all)
-                        ExerciseNotesDialogView(
-                            isPresented: Binding(
-                                get: { selectedExerciseIndexForNotes != nil },
-                                set: { if !$0 { selectedExerciseIndexForNotes = nil } }
-                            ),
-                            exerciseNotes: $workoutController.workoutDetails[selectedIndex].notes,
-                            onSave: { updatedNotes in
-                                // Save notes to temporary workout detail during active workout
-                                if let exerciseId = workoutController.workoutDetails[selectedIndex].exerciseId {
-                                    workoutController.workoutManager.updateExerciseNotesDuringActiveWorkout(
-                                        workoutId: workoutId,
-                                        exerciseId: exerciseId,
-                                        notes: updatedNotes
-                                    )
-                                }
-                            }
-                        )
-                        .padding()
-                    }
-                }
-            }
         }
 
     private var displayExerciseDetailsAndSets: some View {
@@ -286,18 +271,22 @@ struct ActiveWorkoutView: View {
                         .accessibilityAddTraits(.isHeader)
                     Spacer()
 
-                    // Notes icon
+                    // Notes icon (edit mode only)
                     let hasNotes = workoutController.workoutDetails[index].notes != nil && !workoutController.workoutDetails[index].notes!.isEmpty
-                    Image(systemName: hasNotes ? "note.text.badge.plus" : "note.text")
-                        .foregroundColor(hasNotes ? .orange : .gray)
-                        .opacity(viewModel.workoutStarted ? 1.0 : 0.4)
-                        .accessibilityLabel(hasNotes ? "Exercise has notes" : "Add exercise notes")
-                        .accessibilityHint("Double tap to \(hasNotes ? "view or edit" : "add") notes for this exercise")
-                        .accessibilityAddTraits(.isButton)
-                        .onTapGesture {
-                            guard viewModel.workoutStarted else { return }
-                            selectedExerciseIndexForNotes = index
-                        }
+                    if editMode == .active {
+                        Image(systemName: hasNotes ? "note.text.badge.plus" : "note.text")
+                            .foregroundColor(hasNotes ? .orange : .gray)
+                            .opacity(viewModel.workoutStarted ? 1.0 : 0.4)
+                            .accessibilityLabel(hasNotes ? "Exercise has notes" : "Add exercise notes")
+                            .accessibilityHint("Double tap to \(hasNotes ? "view or edit" : "add") notes for this exercise")
+                            .accessibilityAddTraits(.isButton)
+                            .onTapGesture {
+                                guard viewModel.workoutStarted else { return }
+                                editingNotesText = workoutController.workoutDetails[index].notes ?? ""
+                                editingNotesIndex = index
+                                isNotesFocused = true
+                            }
+                    }
 
                     if editMode == .active && viewModel.workoutStarted {
                         // Move up arrow
@@ -361,8 +350,34 @@ struct ActiveWorkoutView: View {
                 .accessibilityHint("Double tap to \(expandedExercises.contains(index) ? "collapse" : "expand") exercise details")
                 .accessibilityAddTraits(.isButton)
 
-                // Display notes if they exist
-                if let notes = workoutController.workoutDetails[index].notes, !notes.isEmpty {
+                // Notes inline edit / display
+                if editingNotesIndex == index {
+                    TextField("Add a note…", text: $editingNotesText, axis: .vertical)
+                        .font(.subheadline)
+                        .focused($isNotesFocused)
+                        .padding(10)
+                        .background(Color.orange.opacity(0.1))
+                        .cornerRadius(8)
+                        .padding(.top, 4)
+                        .id("notes_\(index)")
+                        .onChange(of: editingNotesText) {
+                            if editingNotesText.hasSuffix("\n") &&
+                               editingNotesText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                                commitActiveNotes(for: index)
+                            }
+                        }
+                        .onChange(of: isNotesFocused) {
+                            if !isNotesFocused { commitActiveNotes(for: index) }
+                        }
+                        .toolbar {
+                            ToolbarItem(placement: .keyboard) {
+                                if isNotesFocused {
+                                    Button("Done") { commitActiveNotes(for: index) }
+                                }
+                            }
+                        }
+                    Color.clear.frame(height: 24).id("notesAnchor_\(index)")
+                } else if let notes = workoutController.workoutDetails[index].notes, !notes.isEmpty {
                     HStack(alignment: .top, spacing: 6) {
                         Image(systemName: "note.text")
                             .font(.caption)
@@ -408,7 +423,23 @@ struct ActiveWorkoutView: View {
                     }
                 }
             }
+            .id("exercise_\(index)")
         }
+    }
+
+    private func commitActiveNotes(for index: Int) {
+        let trimmed = editingNotesText.trimmingCharacters(in: .whitespacesAndNewlines)
+        let newNotes: String? = trimmed.isEmpty ? nil : trimmed
+        workoutController.workoutDetails[index].notes = newNotes
+        if let exerciseId = workoutController.workoutDetails[index].exerciseId {
+            workoutController.workoutManager.updateExerciseNotesDuringActiveWorkout(
+                workoutId: workoutId,
+                exerciseId: exerciseId,
+                notes: newNotes
+            )
+        }
+        editingNotesIndex = nil
+        isNotesFocused = false
     }
 
     private func addSet(to exerciseIndex: Int) {

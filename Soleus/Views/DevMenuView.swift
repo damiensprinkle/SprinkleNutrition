@@ -96,6 +96,60 @@ struct DevMenuView: View {
                     }
                 }
 
+                Section(header: Text("App State")) {
+                    Button(action: {
+                        UserDefaults.standard.removeObject(forKey: "hasSeenLongPressTooltip")
+                        statusMessage = "Long press tooltip reset"
+                    }) {
+                        HStack {
+                            Image(systemName: "hand.tap.fill")
+                                .foregroundColor(.orange)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("Reset Long Press Tooltip")
+                                    .foregroundColor(.primary)
+                                Text("Shows tooltip again on next app launch")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                    }
+
+                    Button(action: {
+                        UserDefaults.standard.removeObject(forKey: "lastSeenVersion")
+                        statusMessage = "Release notes reset"
+                    }) {
+                        HStack {
+                            Image(systemName: "sparkles")
+                                .foregroundColor(.purple)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("Reset Release Notes Banner")
+                                    .foregroundColor(.primary)
+                                Text("Shows release notes card again on next launch")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                    }
+
+                    Button(action: {
+                        UserDefaults.standard.removeObject(forKey: "hasSeenLongPressTooltip")
+                        UserDefaults.standard.removeObject(forKey: "lastSeenVersion")
+                        statusMessage = "All app state reset"
+                    }) {
+                        HStack {
+                            Image(systemName: "arrow.counterclockwise.circle.fill")
+                                .foregroundColor(.red)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text("Reset All App State")
+                                    .foregroundColor(.primary)
+                                Text("Resets all of the above at once")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                    }
+                }
+
                 Section(header: Text("Data Management")) {
                     Button(action: {
                         confirmationTitle = "Delete All Workouts"

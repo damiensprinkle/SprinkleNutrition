@@ -136,8 +136,6 @@ struct NotificationsSettingsView: View {
                 }
             }
         }
-        .navigationTitle("Notification Settings")
-        .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             refreshAuthStatus()
         }

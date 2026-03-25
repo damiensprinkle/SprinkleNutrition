@@ -21,8 +21,10 @@ class WorkoutTrackerController: ObservableObject {
     
     func loadWorkouts() {
         workoutManager.loadWorkoutsWithId()
-        workouts = workoutManager.workouts
-        updateActiveSession()
+        DispatchQueue.main.async {
+            self.workouts = self.workoutManager.workouts
+            self.updateActiveSession()
+        }
     }
     
     func moveExercise(from source: Int, to destination: Int) {
@@ -74,6 +76,7 @@ class WorkoutTrackerController: ObservableObject {
         if update {
             AppLogger.workout.debug("update workoutDetails")
             updateWorkoutDetails(for: workoutId, for: title)
+            AnalyticsManager.logWorkoutUpdated(exerciseCount: workoutDetails.count)
         } else {
             workoutDetails.forEach { detail in
                 guard let detailId = detail.id else {
@@ -92,9 +95,10 @@ class WorkoutTrackerController: ObservableObject {
                     notes: detail.notes
                 )
             }
+            AnalyticsManager.logWorkoutCreated(exerciseCount: workoutDetails.count)
         }
         loadWorkouts()
-        
+
         return .success(())
     }
     
@@ -168,6 +172,13 @@ class WorkoutTrackerController: ObservableObject {
                 setSum + Float(setInput.distance)
             }
         }
+
+        AnalyticsManager.logWorkoutCompleted(
+            durationSeconds: convertToSeconds(elapsedTimeFormatted),
+            totalWeightLifted: Float(totalWeightLifted),
+            repsCompleted: totalReps,
+            exerciseCount: workoutDetails.count
+        )
 
         workoutManager.saveWorkoutHistory(
             workoutId: workoutId,

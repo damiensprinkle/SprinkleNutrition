@@ -213,5 +213,9 @@ class MockWorkoutManager: ObservableObject, WorkoutManaging {
     func deleteWorkoutHistory(for historyId: UUID) {
         // No-op in mock
     }
+
+    func fetchEarliestHistoryYear() -> Int? {
+        return nil
+    }
 }
 

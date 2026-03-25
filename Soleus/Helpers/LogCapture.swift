@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import FirebaseCrashlytics
 
 class LogCapture: ObservableObject {
     static let shared = LogCapture()
@@ -52,6 +53,22 @@ class LogCapture: ObservableObject {
         // Persist error and critical logs synchronously so they survive crashes
         if level == .error || level == .critical {
             persistEntry(entry)
+        }
+
+        // Forward to Crashlytics as breadcrumbs and non-fatals
+        switch level {
+        case .warning, .error, .critical:
+            Crashlytics.crashlytics().log("[\(category)] \(message)")
+        default:
+            break
+        }
+        if level == .error || level == .critical {
+            let err = NSError(
+                domain: "com.damiensprinkle.Soleus.\(category)",
+                code: 0,
+                userInfo: [NSLocalizedDescriptionKey: message]
+            )
+            Crashlytics.crashlytics().record(error: err)
         }
     }
 

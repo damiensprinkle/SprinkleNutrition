@@ -11,7 +11,6 @@ Soleus is a native iOS app that helps users create custom workout plans, track a
 - [Features](docs/FEATURES.md) - Full list of app capabilities
 - [Tech Stack](docs/TECH_STACK.md) - Architecture, technologies, and project structure
 - [Usage Guide](docs/USAGE_GUIDE.md) - How to use the app
-- [Changelog](docs/CHANGELOG.md) - Version history
 - [Roadmap](docs/ROADMAP.md) - Planned features with Free/Pro breakdown
 - [Testing](docs/TESTING.md) - Automated and manual testing guides
 

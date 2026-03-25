@@ -4,9 +4,9 @@ import CoreData
 struct SettingsView: View {
     @AppStorage("weightPreference") private var weightPreference: String = "lbs"
     @AppStorage("distancePreference") private var distancePreference: String = "mile"
-    @AppStorage("defaultRestDuration") private var defaultRestDuration: Int = 90
+    @AppStorage("defaultRestDuration") private var defaultRestDuration: Int = 60
     @AppStorage("autoStartRestTimer") private var autoStartRestTimer: Bool = true
-    @AppStorage("appearancePreference") private var appearancePreference: String = "dark"
+    @AppStorage("appearancePreference") private var appearancePreference: String = "system"
 
     @State private var showingPrivacyPolicy = false
     @State private var showingFAQ = false
@@ -26,7 +26,7 @@ struct SettingsView: View {
 
     private var isDeveloperModeEnabled: Bool { !developerWorkouts.isEmpty }
 
-    private let restDurationOptions = [30, 45, 60, 90, 120, 180, 240, 300]
+    private let restDurationOptions = [15, 30, 45, 60, 90, 120, 180, 240, 300]
 
     var body: some View {
         NavigationStack {
@@ -52,10 +52,18 @@ struct SettingsView: View {
                 .accessibilityIdentifier(AccessibilityID.settingsImportButton)
             }
 
-            Section(header: Text("Preferences")) {
+            Section(
+                header: Text("Preferences"),
+                footer: Text("Rest timer automatically starts when you complete a set. Adjust time with +/-30s buttons or skip entirely.")
+            ) {
                 NavigationLink(destination: NotificationsSettingsView()) {
                     Text("Notifications")
                 }
+
+                NavigationLink(destination: HealthKitSettingsView()) {
+                    Text("Apple Health")
+                }
+                .accessibilityIdentifier(AccessibilityID.settingsHealthKitButton)
 
                 Picker("Appearance", selection: $appearancePreference) {
                     Text("Dark").tag("dark")
@@ -74,12 +82,7 @@ struct SettingsView: View {
                     Text("km").tag("km")
                 }
                 .accessibilityIdentifier(AccessibilityID.settingsDistancePicker)
-            }
 
-            Section(
-                header: Text("Rest Timer"),
-                footer: Text("Rest timer automatically starts when you complete a set. Adjust time with +/-30s buttons or skip entirely.")
-            ) {
                 Toggle("Auto-Start Rest Timer", isOn: $autoStartRestTimer)
                     .tint(.green)
                     .accessibilityIdentifier(AccessibilityID.settingsRestTimerToggle)

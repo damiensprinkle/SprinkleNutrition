@@ -17,7 +17,6 @@ struct CardView: View {
     @State private var showAlert = false
     @State private var alertTitle = ""
     @State private var workout: Workouts?
-    @State private var showShareSheet = false
     @State private var shareItems: [Any] = []
     @State private var shakeOffset: CGFloat = 0
 
@@ -89,11 +88,6 @@ struct CardView: View {
                 Button("Dismiss", role: .cancel) { }
             }
             
-        }
-        .sheet(isPresented: $showShareSheet) {
-            if !shareItems.isEmpty {
-                ActivityViewController(activityItems: shareItems)
-            }
         }
     }
     
@@ -235,6 +229,13 @@ struct CardView: View {
         }
     }
 
+    private func presentShareSheet(items: [Any]) {
+        guard let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
+              let root = scene.windows.first(where: { $0.isKeyWindow })?.rootViewController else { return }
+        let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        root.present(activityVC, animated: true)
+    }
+
     private func shareWorkout() {
         guard let data = workoutController.exportWorkout(workoutId) else {
             alertTitle = "Failed to export workout"
@@ -249,8 +250,8 @@ struct CardView: View {
 
         do {
             try data.write(to: tempURL)
-            shareItems = [WorkoutActivityItemProvider(fileURL: tempURL, workoutData: data, workoutName: workoutName)]
-            showShareSheet = true
+            let items: [Any] = [WorkoutActivityItemProvider(fileURL: tempURL, workoutData: data, workoutName: workoutName)]
+            presentShareSheet(items: items)
         } catch {
             alertTitle = "Failed to create shareable file"
             showAlert = true

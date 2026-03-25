@@ -74,7 +74,12 @@ final class ContactUsTests: SoleusUITestBase {
 
     // MARK: - Mail Unavailable Alert (simulators cannot send mail)
 
-    func testTappingBugReportShowsMailUnavailableAlert() {
+    private var isSimulator: Bool {
+        ProcessInfo.processInfo.environment["SIMULATOR_DEVICE_NAME"] != nil
+    }
+
+    func testTappingBugReportShowsMailUnavailableAlert() throws {
+        try XCTSkipUnless(isSimulator, "Mail is available on this device — alert won't appear")
         openContactUs()
 
         app.buttons[TestID.contactUsBugReportButton].tap()
@@ -83,7 +88,8 @@ final class ContactUsTests: SoleusUITestBase {
         XCTAssertTrue(alert.waitForExistence(timeout: 5), "Mail Not Available alert should appear on simulator")
     }
 
-    func testTappingFeatureRequestShowsMailUnavailableAlert() {
+    func testTappingFeatureRequestShowsMailUnavailableAlert() throws {
+        try XCTSkipUnless(isSimulator, "Mail is available on this device — alert won't appear")
         openContactUs()
 
         app.buttons[TestID.contactUsFeatureRequestButton].tap()
@@ -92,7 +98,8 @@ final class ContactUsTests: SoleusUITestBase {
         XCTAssertTrue(alert.waitForExistence(timeout: 5), "Mail Not Available alert should appear on simulator")
     }
 
-    func testMailUnavailableAlertHasOKButton() {
+    func testMailUnavailableAlertHasOKButton() throws {
+        try XCTSkipUnless(isSimulator, "Mail is available on this device — alert won't appear")
         openContactUs()
         app.buttons[TestID.contactUsBugReportButton].tap()
 
@@ -101,7 +108,8 @@ final class ContactUsTests: SoleusUITestBase {
         XCTAssertTrue(alert.buttons["OK"].exists, "Alert should have an OK button")
     }
 
-    func testDismissingMailAlertReturnsToContactUs() {
+    func testDismissingMailAlertReturnsToContactUs() throws {
+        try XCTSkipUnless(isSimulator, "Mail is available on this device — alert won't appear")
         openContactUs()
         app.buttons[TestID.contactUsBugReportButton].tap()
 
@@ -109,12 +117,12 @@ final class ContactUsTests: SoleusUITestBase {
         XCTAssertTrue(alert.waitForExistence(timeout: 5))
         alert.buttons["OK"].tap()
 
-        // Sheet should still be open after dismissing the alert
         let navBar = app.navigationBars["Contact Us"]
         XCTAssertTrue(navBar.waitForExistence(timeout: 5), "Contact Us sheet should remain open after dismissing alert")
     }
 
-    func testBugReportAndFeatureRequestBothShowAlert() {
+    func testBugReportAndFeatureRequestBothShowAlert() throws {
+        try XCTSkipUnless(isSimulator, "Mail is available on this device — alert won't appear")
         openContactUs()
 
         // Bug report

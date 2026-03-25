@@ -37,6 +37,12 @@ struct SoleusApp: App {
         let isUITesting = CommandLine.arguments.contains("--uitesting")
         _persistenceController = StateObject(wrappedValue: isUITesting ? PersistenceController.forUITesting : PersistenceController.shared)
 
+        if isUITesting {
+            UserDefaults.standard.set(true, forKey: "hasSeenLongPressTooltip")
+            let currentVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+            UserDefaults.standard.set(currentVersion, forKey: "lastSeenVersion")
+        }
+
         // Initialize controller with the shared workoutManager instance
         let manager = WorkoutManager()
         let handler = ErrorHandler()

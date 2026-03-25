@@ -480,9 +480,14 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
                 }
                 return WorkoutInfo(id: id, name: name)
             }
-            DispatchQueue.main.async {
+            if Thread.isMainThread {
                 self.workouts = mapped
                 AppLogger.workout.debug("Loaded \(self.workouts.count) workouts")
+            } else {
+                DispatchQueue.main.async {
+                    self.workouts = mapped
+                    AppLogger.workout.debug("Loaded \(self.workouts.count) workouts")
+                }
             }
 
         } catch {

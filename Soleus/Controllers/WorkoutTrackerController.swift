@@ -21,10 +21,8 @@ class WorkoutTrackerController: ObservableObject {
     
     func loadWorkouts() {
         workoutManager.loadWorkoutsWithId()
-        DispatchQueue.main.async {
-            self.workouts = self.workoutManager.workouts
-            self.updateActiveSession()
-        }
+        workouts = workoutManager.workouts
+        updateActiveSession()
     }
     
     func moveExercise(from source: Int, to destination: Int) {

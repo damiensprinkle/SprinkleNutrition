@@ -160,4 +160,3 @@ Navigate to the **Settings** tab (gear icon) to configure:
 Navigate to **Settings → Contact Us** to:
 - Submit a bug report (optionally attaches diagnostic logs)
 - Request a new feature
-- Join the Discord community server

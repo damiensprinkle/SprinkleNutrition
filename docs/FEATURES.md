@@ -114,8 +114,6 @@
   - Duplicate workout names on import are auto-resolved with a `-copy` suffix
   - Import preview screen shows all exercises before confirming
 
-- **Community**:
-  - Discord server for community discussion and feedback
 
 ## Support & Transparency
 

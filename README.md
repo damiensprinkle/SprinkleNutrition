@@ -56,6 +56,5 @@ v1.0.1 — currently in TestFlight, approaching public release on the App Store.
 
 - Developer: Damien Sprinkle
 - Support: [SoleusApp@gmail.com](mailto:SoleusApp@gmail.com)
-- Community: [Discord](https://discord.gg/KWDzFdqb)
 - Support Page: [damiensprinkle.github.io/Soleus](https://damiensprinkle.github.io/Soleus)
 - Project Board: [GitHub Projects](https://github.com/users/damiensprinkle/projects/1/views/1)

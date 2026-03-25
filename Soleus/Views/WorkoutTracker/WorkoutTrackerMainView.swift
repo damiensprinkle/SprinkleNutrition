@@ -14,6 +14,8 @@ struct WorkoutTrackerMainView: View {
     @State private var isEditMode = false
     @State private var showReleaseNotes = false
     @AppStorage("lastSeenVersion") private var lastSeenVersion: String = ""
+    @AppStorage("hasSeenLongPressTooltip") private var hasSeenLongPressTooltip: Bool = false
+    @State private var showLongPressTooltip: Bool = false
     @State private var draggingId: UUID?
     @State private var dragPosition: CGPoint = .zero
     @State private var draggingCardSize: CGSize = .zero
@@ -33,7 +35,9 @@ struct WorkoutTrackerMainView: View {
                     workoutGrid
                 }
                 .scrollDisabled(draggingId != nil)
-                .onPreferenceChange(WorkoutCardFrameKey.self) { cardFrames = $0 }
+                .onPreferenceChange(WorkoutCardFrameKey.self) { newFrames in
+                    DispatchQueue.main.async { cardFrames = newFrames }
+                }
                 .onChange(of: isDragActive) {
                     // GestureState reverts to false on system cancellation — clean up any stuck drag
                     if !isDragActive, draggingId != nil {
@@ -96,6 +100,10 @@ struct WorkoutTrackerMainView: View {
         .onAppear {
             workoutController.loadWorkouts()
             consumePendingImport()
+            maybeShowTooltip()
+        }
+        .onChange(of: visibleWorkouts.count) {
+            maybeShowTooltip()
         }
         .onChange(of: appViewModel.pendingImport) {
             consumePendingImport()
@@ -305,9 +313,52 @@ struct WorkoutTrackerMainView: View {
             }
             .padding()
             .animation(.spring(response: 0.3, dampingFraction: 0.8), value: workoutController.workouts)
+
+            if showLongPressTooltip {
+                Button(action: dismissTooltip) {
+                    HStack(spacing: 10) {
+                        Image(systemName: "hand.tap.fill")
+                            .font(.title3)
+                            .foregroundColor(.myBlue)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text("Long press a card")
+                                .font(.subheadline)
+                                .fontWeight(.semibold)
+                                .foregroundColor(.primary)
+                            Text("Edit, duplicate, share, customize or delete your workout")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                        Spacer()
+                        Image(systemName: "xmark")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                    .padding(12)
+                    .background(Color(.secondarySystemGroupedBackground))
+                    .cornerRadius(12)
+                    .shadow(color: .black.opacity(0.08), radius: 6, x: 0, y: 2)
+                }
+                .buttonStyle(.plain)
+                .padding(.horizontal)
+                .padding(.bottom, 8)
+                .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
         }
     }
     
+    private func maybeShowTooltip() {
+        guard !hasSeenLongPressTooltip, !visibleWorkouts.isEmpty else { return }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+            withAnimation(.easeOut(duration: 0.35)) { showLongPressTooltip = true }
+        }
+    }
+
+    private func dismissTooltip() {
+        withAnimation(.easeIn(duration: 0.25)) { showLongPressTooltip = false }
+        hasSeenLongPressTooltip = true
+    }
+
     private func deleteWorkouts(_ workoutId: UUID) {
         _ = withAnimation {
             deletingWorkouts.insert(workoutId)

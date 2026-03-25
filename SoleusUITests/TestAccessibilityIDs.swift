@@ -39,6 +39,8 @@ enum TestID {
     static let historyTimePeriodAllTime = "history_time_period_all_time"
 
     // MARK: - Settings View
+    static let settingsHealthKitButton = "settings_health_kit_button"
+    static let healthKitToggle = "health_kit_toggle"
     static let settingsWeightPicker = "settings_weight_picker"
     static let settingsDistancePicker = "settings_distance_picker"
     static let settingsImportButton = "settings_import_button"

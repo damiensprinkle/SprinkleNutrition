@@ -14,8 +14,6 @@ struct AddWorkoutView: View {
     @State private var showAlert: Bool = false
     @State private var alertMessage: String = ""
     @State private var indexToDelete: Int? = nil
-    @State private var selectedExerciseIndexForRenaming: Int?
-    @State private var selectedExerciseIndexForNotes: Int?
     @State private var activeAlert: ActiveAlert = .error
     @State private var workoutSaveError: WorkoutSaveError = .emptyTitle
     @State private var initialWorkoutDetails: [WorkoutDetailInput] = []
@@ -143,6 +141,7 @@ struct AddWorkoutView: View {
                     )
                 }
             }
+            .onTapGesture { hideKeyboard() }
             .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
                 focusManager.isAnyTextFieldFocused = true
             }
@@ -183,46 +182,11 @@ struct AddWorkoutView: View {
                     workoutDetails: $workoutController.workoutDetails,
                     showingDialog: $showingAddExerciseDialog
                 )
-                .presentationDetents([.medium])
+                .presentationDetents([.height(420)])
                 .presentationDragIndicator(.visible)
+                .ignoresSafeArea(.keyboard)
             }
-            .sheet(isPresented: Binding(
-                get: { selectedExerciseIndexForRenaming != nil },
-                set: { if !$0 { selectedExerciseIndexForRenaming = nil } }
-            )) {
-                if let selectedIndex = selectedExerciseIndexForRenaming,
-                   selectedIndex < workoutController.workoutDetails.count {
-                    RenameExerciseDialogView(
-                        isPresented: .init(
-                            get: { self.selectedExerciseIndexForRenaming != nil },
-                            set: { _ in self.selectedExerciseIndexForRenaming = nil }
-                        ),
-                        exerciseName: $workoutController.workoutDetails[selectedIndex].exerciseName,
-                        onRename: { newName in
-                            workoutController.renameExercise(at: selectedIndex, to: newName)
-                        }
-                    )
-                    .presentationDetents([.medium])
-                    .presentationDragIndicator(.visible)
-                }
-            }
-            .sheet(isPresented: Binding(
-                get: { selectedExerciseIndexForNotes != nil },
-                set: { if !$0 { selectedExerciseIndexForNotes = nil } }
-            )) {
-                if let selectedIndex = selectedExerciseIndexForNotes,
-                   selectedIndex < workoutController.workoutDetails.count {
-                    ExerciseNotesDialogView(
-                        isPresented: .init(
-                            get: { self.selectedExerciseIndexForNotes != nil },
-                            set: { _ in self.selectedExerciseIndexForNotes = nil }
-                        ),
-                        exerciseNotes: $workoutController.workoutDetails[selectedIndex].notes
-                    )
-                    .presentationDetents([.medium, .large])
-                    .presentationDragIndicator(.visible)
-                }
-            }
+
     }
     
     private var bottomButtons: some View {
@@ -350,15 +314,11 @@ struct AddWorkoutView: View {
                                 activeAlert = .deleteConfirmation
                                 showAlert = true
                             },
-                            renameAction: {
-                                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                                    self.selectedExerciseIndexForRenaming = index
-                                }
+                            onRename: { newName in
+                                workoutController.renameExercise(at: index, to: newName)
                             },
-                            notesAction: {
-                                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                                    self.selectedExerciseIndexForNotes = index
-                                }
+                            onNotesChange: { newNotes in
+                                workoutController.workoutDetails[index].notes = newNotes
                             },
                             addSetAction: {
                                 workoutController.addSet(for: index)
@@ -371,7 +331,7 @@ struct AddWorkoutView: View {
                 }
                 .padding(.vertical, 8)
             }
-            .scrollDismissesKeyboard(.interactively)
+            .scrollDismissesKeyboard(.immediately)
             .onChange(of: focusManager.focusedExerciseIndex) {
                 guard let idx = focusManager.focusedExerciseIndex else { return }
                 // Delay slightly so the keyboard has finished animating into place
@@ -401,9 +361,16 @@ struct AddWorkoutView: View {
         var moveUpAction: (() -> Void)?
         var moveDownAction: (() -> Void)?
         var deleteAction: (() -> Void)?
-        var renameAction: (() -> Void)?
-        var notesAction: (() -> Void)?
+        var onRename: ((String) -> Void)?
+        var onNotesChange: ((String?) -> Void)?
         var addSetAction: (() -> Void)?
+
+        @State private var isRenaming = false
+        @State private var editingName = ""
+        @FocusState private var isRenameFocused: Bool
+        @State private var isEditingNotes = false
+        @State private var editingNotes = ""
+        @FocusState private var isNotesFocused: Bool
 
         var body: some View {
             VStack(spacing: 0) {
@@ -411,16 +378,40 @@ struct AddWorkoutView: View {
                 VStack(spacing: 12) {
                     // Title and primary actions
                     HStack {
-                        Text(exerciseName)
-                            .font(.title3)
-                            .fontWeight(.bold)
-                            .foregroundColor(.primary)
+                        if isRenaming {
+                            TextField("Exercise Name", text: $editingName)
+                                .font(.title3)
+                                .fontWeight(.bold)
+                                .focused($isRenameFocused)
+                                .onSubmit { commitRename() }
+                                .onChange(of: editingName) {
+                                    if editingName.count > 30 {
+                                        editingName = String(editingName.prefix(30))
+                                    }
+                                }
+                                .toolbar {
+                                    ToolbarItem(placement: .keyboard) {
+                                        if isRenameFocused {
+                                            Button("Done") { commitRename() }
+                                        }
+                                    }
+                                }
+                        } else {
+                            Text(exerciseName)
+                                .font(.title3)
+                                .fontWeight(.bold)
+                                .foregroundColor(.primary)
+                        }
 
                         Spacer()
 
                         HStack(spacing: 16) {
                             // Notes icon
-                            Button(action: { notesAction?() }) {
+                            Button(action: {
+                                editingNotes = notes ?? ""
+                                isEditingNotes = true
+                                isNotesFocused = true
+                            }) {
                                 Image(systemName: hasNotes ? "note.text.badge.plus" : "note.text")
                                     .font(.body)
                                     .foregroundColor(hasNotes ? .orange : .gray)
@@ -428,7 +419,11 @@ struct AddWorkoutView: View {
 
                             // More options menu
                             Menu {
-                                Button(action: { renameAction?() }) {
+                                Button(action: {
+                                    editingName = exerciseName
+                                    isRenaming = true
+                                    isRenameFocused = true
+                                }) {
                                     Label("Rename Exercise", systemImage: "pencil")
                                 }
 
@@ -459,8 +454,32 @@ struct AddWorkoutView: View {
                         }
                     }
 
-                    // Notes display
-                    if let notes = notes, !notes.isEmpty {
+                    // Notes display / inline edit
+                    if isEditingNotes {
+                        TextField("Add a note…", text: $editingNotes, axis: .vertical)
+                            .font(.subheadline)
+                            .focused($isNotesFocused)
+                            .padding(12)
+                            .background(Color.orange.opacity(0.1))
+                            .cornerRadius(10)
+                            .onChange(of: editingNotes) {
+                                if editingNotes.hasSuffix("\n") {
+                                    if editingNotes.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                                        commitNotes()
+                                    }
+                                }
+                            }
+                            .onChange(of: isNotesFocused) {
+                                if !isNotesFocused { commitNotes() }
+                            }
+                            .toolbar {
+                                ToolbarItem(placement: .keyboard) {
+                                    if isNotesFocused {
+                                        Button("Done") { commitNotes() }
+                                    }
+                                }
+                            }
+                    } else if let notes = notes, !notes.isEmpty {
                         HStack(alignment: .top, spacing: 8) {
                             Image(systemName: "quote.bubble.fill")
                                 .font(.caption)
@@ -535,6 +554,22 @@ struct AddWorkoutView: View {
             .background(Color(.secondarySystemGroupedBackground))
             .cornerRadius(16)
             .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 2)
+        }
+
+        private func commitRename() {
+            let trimmed = editingName.trimmingCharacters(in: .whitespacesAndNewlines)
+            if !trimmed.isEmpty {
+                onRename?(trimmed)
+            }
+            isRenaming = false
+            isRenameFocused = false
+        }
+
+        private func commitNotes() {
+            let trimmed = editingNotes.trimmingCharacters(in: .whitespacesAndNewlines)
+            onNotesChange?(trimmed.isEmpty ? nil : trimmed)
+            isEditingNotes = false
+            isNotesFocused = false
         }
     }
 

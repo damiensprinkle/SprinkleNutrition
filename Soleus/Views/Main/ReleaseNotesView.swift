@@ -12,7 +12,11 @@ struct ReleaseNotesView: View {
                         items: [
                             ("bell.fill", "Push Notifications", "Stay on top of your fitness with customizable reminders — active workout alerts, inactivity nudges, and streak-at-risk warnings."),
                             ("square.and.arrow.down", "Import Workout", "Import .soleus workout files directly from Settings for a cleaner main view."),
-                            ("textformat.123", "Release Notes", "Added release notes card, so new updates display to the user"),
+                            ("heart.fill", "Apple Health", "Completed workouts are now written to Apple Health. Enable it in Settings → Preferences → Apple Health."),
+                            ("note.text", "Inline Exercise Notes", "Tap the notes icon while in edit mode to add or edit notes directly on the exercise — no more dialog pop-ups."),
+                            ("calendar", "Smarter History Picker", "The year picker in Workout History now only shows years that actually have data, and never shows future years."),
+                            ("hand.tap.fill", "New User Tip", "First-time users now see a helpful hint to long-press a workout card to access editing, sharing, and more."),
+                            ("gearshape.fill", "Settings Cleanup", "Rest Timer settings are now grouped under Preferences for a tidier Settings screen."),
                         ]
                     )
 

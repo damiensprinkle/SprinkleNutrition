@@ -89,17 +89,3 @@ final class ErrorHandlerTests: XCTestCase {
     }
 }
 
-// MARK: - CoreDataError Equatable helper for tests
-extension CoreDataError: Equatable {
-    public static func == (lhs: CoreDataError, rhs: CoreDataError) -> Bool {
-        switch (lhs, rhs) {
-        case (.contextNotAvailable, .contextNotAvailable): return true
-        case (.saveFailed, .saveFailed): return true
-        case (.fetchFailed, .fetchFailed): return true
-        case (.deleteFailed, .deleteFailed): return true
-        case (.workoutNotFound(let a), .workoutNotFound(let b)): return a == b
-        case (.invalidData(let a), .invalidData(let b)): return a == b
-        default: return false
-        }
-    }
-}

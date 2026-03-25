@@ -126,6 +126,8 @@ protocol WorkoutManaging: AnyObject, ObservableObject {
     /// Fetches all workout history for all time
     func fetchAllWorkoutHistoryAllTime() -> [WorkoutHistory]?
 
+    /// Fetches the earliest year in which a workout was completed
+    func fetchEarliestHistoryYear() -> Int?
 
     /// Deletes a specific workout history entry
     func deleteWorkoutHistory(for historyId: UUID)

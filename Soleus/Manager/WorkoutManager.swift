@@ -17,6 +17,7 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
 
     @Published var workouts: [WorkoutInfo] = []
     var errorHandler: ErrorHandler?
+    var healthKitManager: HealthKitManager?
 
     // MARK: - Background Context Helpers
 
@@ -472,18 +473,25 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
         request.sortDescriptors = [NSSortDescriptor(key: "orderIndex", ascending: true)]
         do {
             let results = try context.fetch(request)
-            self.workouts = results.compactMap { workout in
+            let mapped = results.compactMap { workout -> WorkoutInfo? in
                 guard let id = workout.id, let name = workout.name else {
                     AppLogger.validation.warning("Skipping workout with missing id or name")
                     return nil
                 }
                 return WorkoutInfo(id: id, name: name)
             }
-
-            AppLogger.workout.debug("Loaded \(self.workouts.count) workouts")
+            if Thread.isMainThread {
+                self.workouts = mapped
+                AppLogger.workout.debug("Loaded \(self.workouts.count) workouts")
+            } else {
+                DispatchQueue.main.async {
+                    self.workouts = mapped
+                    AppLogger.workout.debug("Loaded \(self.workouts.count) workouts")
+                }
+            }
 
         } catch {
-            AppLogger.coreData.error("Failed to fetch workouts: \(error.localizedDescription)")
+            AppLogger.coreData.error("Failed to fetch workouts: \(error.localizedDescription)") 
             errorHandler?.handle(.fetchFailed(error))
         }
     }
@@ -549,6 +557,7 @@ class WorkoutManager: ObservableObject, WorkoutManaging {
                             try mainContext.save()
                         }
                         AppLogger.workout.info("Workout and its associated entities deleted successfully")
+                        AnalyticsManager.logWorkoutDeleted()
                     } catch {
                         AppLogger.coreData.error("Error saving main context: \(error.localizedDescription)")
                         self?.errorHandler?.handle(.deleteFailed(error))
@@ -851,6 +860,16 @@ extension WorkoutManager {
             return
         }
 
+        // Capture session start time before entering background context
+        let sessionStartTime: Date = {
+            let req: NSFetchRequest<WorkoutSession> = WorkoutSession.fetchRequest()
+            req.predicate = NSPredicate(format: "workoutsR.id == %@", workoutId as CVarArg)
+            req.fetchLimit = 1
+            let sessions = try? self.context?.fetch(req)
+            return sessions?.first?.startTime
+                ?? dateCompleted.addingTimeInterval(-Double(convertToSeconds(workoutTimeToComplete)))
+        }()
+
         // Perform heavy save operation on background thread
         backgroundContext.perform { [weak self] in
             // Fetch workout in background context
@@ -917,6 +936,12 @@ extension WorkoutManager {
                         let hour = UserDefaults.standard.integer(forKey: "inactivityReminderHour")
                         NotificationManager.scheduleInactivityReminder(afterDays: days > 0 ? days : 3, hour: hour > 0 ? hour : 9)
                         NotificationManager.cancelStreakReminder()
+                        self?.healthKitManager?.saveWorkout(
+                            startTime: sessionStartTime,
+                            endTime: dateCompleted,
+                            totalDistance: totalDistance,
+                            workoutDetailsInput: workoutDetailsInput
+                        )
                         completion?()
                     } catch {
                         AppLogger.coreData.error("Failed to save main context: \(error.localizedDescription)")
@@ -989,6 +1014,21 @@ extension WorkoutManager {
         }
     }
 
+    func fetchEarliestHistoryYear() -> Int? {
+        guard let context = self.context else { return nil }
+        let fetchRequest: NSFetchRequest<WorkoutHistory> = WorkoutHistory.fetchRequest()
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "workoutDate", ascending: true)]
+        fetchRequest.fetchLimit = 1
+        do {
+            let result = try context.fetch(fetchRequest)
+            guard let date = result.first?.workoutDate else { return nil }
+            return Calendar.current.component(.year, from: date)
+        } catch {
+            AppLogger.coreData.error("Failed to fetch earliest history year: \(error.localizedDescription)")
+            return nil
+        }
+    }
+
     func setSessionStatus(workoutId: UUID, isActive: Bool) {
         guard let context = self.context else { return }
 
@@ -1006,6 +1046,8 @@ extension WorkoutManager {
                     newSession.isActive = true
                     workout.sessions = newSession
                     NotificationManager.scheduleActiveWorkoutReminder()
+                    let exerciseCount = (workout.details as? Set<WorkoutDetail>)?.count ?? 0
+                    AnalyticsManager.logWorkoutStarted(exerciseCount: exerciseCount)
                 } else {
                     if let existingSession = workout.sessions, existingSession.isActive {
                         existingSession.isActive = false

@@ -41,8 +41,6 @@ struct CustomTabView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .navigationViewStyle(.stack)
-        // Prevent the NavigationView from resizing when the keyboard appears.
-        // Without this, keyboard dismissal can leave the tab bar stranded mid-screen.
         .ignoresSafeArea(.keyboard)
     }
 

@@ -8,9 +8,19 @@
 import SwiftUI
 import CoreData
 import Darwin
+import FirebaseCore
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
+        FirebaseApp.configure()
+        return true
+    }
+}
 
 @main
 struct SoleusApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @Environment(\.scenePhase) private var scenePhase
 
     @StateObject private var persistenceController: PersistenceController
@@ -19,12 +29,19 @@ struct SoleusApp: App {
     @StateObject private var controller: WorkoutTrackerController
     @StateObject private var errorHandler = ErrorHandler()
     @StateObject private var achievementManager = AchievementManager()
+    @StateObject private var healthKitManager = HealthKitManager()
 
 
     init() {
         SoleusApp.installCrashHandlers()
         let isUITesting = CommandLine.arguments.contains("--uitesting")
         _persistenceController = StateObject(wrappedValue: isUITesting ? PersistenceController.forUITesting : PersistenceController.shared)
+
+        if isUITesting {
+            UserDefaults.standard.set(true, forKey: "hasSeenLongPressTooltip")
+            let currentVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+            UserDefaults.standard.set(currentVersion, forKey: "lastSeenVersion")
+        }
 
         // Initialize controller with the shared workoutManager instance
         let manager = WorkoutManager()
@@ -51,6 +68,7 @@ struct SoleusApp: App {
                 .environmentObject(controller)
                 .environmentObject(errorHandler)
                 .environmentObject(achievementManager)
+                .environmentObject(healthKitManager)
                 .errorAlert(errorHandler)
                 .onAppear() {
                     // Initialize CoreData context for managers
@@ -59,6 +77,8 @@ struct SoleusApp: App {
                     }
                     // Link achievement manager to workout manager
                     achievementManager.workoutManager = workoutManager
+                    // Wire HealthKit manager to workout manager
+                    workoutManager.healthKitManager = healthKitManager
 
                     #if DEBUG
                     // Inject a test workout for UI testing the import preview

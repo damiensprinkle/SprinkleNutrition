@@ -5,45 +5,44 @@ struct AddExerciseDialog: View {
     @Binding var showingDialog: Bool
     @State private var selectedWorkoutQuantifier: String = "Reps"
     @State private var selectedWorkoutMeasurement: String = "Weight"
-    
+
     @State private var exerciseName: String = ""
     @FocusState private var isNameFieldFocused: Bool
 
     var body: some View {
         VStack(spacing: 0) {
             // Header
-            VStack(spacing: 8) {
-                Text("Add Exercise")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .foregroundColor(.primary)
-
-                Text("Configure your new exercise")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-            }
-            .padding(.top, 24)
-            .padding(.bottom, 20)
+            Text("Add Exercise")
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundColor(.primary)
+                .padding(.top, 40)
+                .padding(.bottom, 20)
 
             VStack(alignment: .leading, spacing: 20) {
+
                 // Exercise Name
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
                         Text("Exercise Name")
                             .font(.subheadline)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.primary)
+                            .fontWeight(.medium)
+                            .foregroundColor(.secondary)
                         Spacer()
                         Text("\(exerciseName.count)/30")
                             .font(.caption)
                             .foregroundColor(exerciseName.count >= 30 ? .red : .secondary)
                     }
+                    .padding(.horizontal, 20)
 
                     TextField("e.g., Bench Press", text: $exerciseName)
                         .textFieldStyle(.plain)
-                        .padding(12)
+                        .font(.body)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 12)
                         .background(Color(.secondarySystemGroupedBackground))
                         .cornerRadius(10)
+                        .padding(.horizontal, 20)
                         .focused($isNameFieldFocused)
                         .onChange(of: exerciseName) {
                             if exerciseName.count > 30 {
@@ -53,76 +52,88 @@ struct AddExerciseDialog: View {
                         .toolbar {
                             ToolbarItem(placement: .keyboard) {
                                 if isNameFieldFocused {
-                                    Button("Done") {
-                                        isNameFieldFocused = false
-                                    }
+                                    Button("Done") { isNameFieldFocused = false }
                                 }
                             }
                         }
                         .accessibilityIdentifier(AccessibilityID.exerciseNameField)
                 }
 
-                // Quantifier
-                VStack(alignment: .leading, spacing: 8) {
+                // Track By
+                VStack(alignment: .leading, spacing: 10) {
                     Text("Track By")
                         .font(.subheadline)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.primary)
+                        .fontWeight(.medium)
+                        .foregroundColor(.secondary)
+                        .padding(.horizontal, 20)
 
-                    Picker("Track By", selection: $selectedWorkoutQuantifier) {
-                        Text("Reps").tag("Reps")
-                        Text("Distance").tag("Distance")
+                    HStack(spacing: 10) {
+                        optionCard(
+                            icon: "repeat",
+                            label: "Reps",
+                            isSelected: selectedWorkoutQuantifier == "Reps"
+                        ) { selectedWorkoutQuantifier = "Reps" }
+                        .accessibilityIdentifier(AccessibilityID.exerciseTrackByPicker)
+
+                        optionCard(
+                            icon: "figure.outdoor.cycle",
+                            label: "Distance",
+                            isSelected: selectedWorkoutQuantifier == "Distance"
+                        ) { selectedWorkoutQuantifier = "Distance" }
                     }
-                    .pickerStyle(SegmentedPickerStyle())
-                    .accessibilityIdentifier(AccessibilityID.exerciseTrackByPicker)
+                    .padding(.horizontal, 20)
                 }
 
-                // Measurement
-                VStack(alignment: .leading, spacing: 8) {
+                // Measure With
+                VStack(alignment: .leading, spacing: 10) {
                     Text("Measure With")
                         .font(.subheadline)
-                        .fontWeight(.semibold)
-                        .foregroundColor(.primary)
+                        .fontWeight(.medium)
+                        .foregroundColor(.secondary)
+                        .padding(.horizontal, 20)
 
-                    Picker("Measure With", selection: $selectedWorkoutMeasurement) {
-                        Text("Weight").tag("Weight")
-                        Text("Time").tag("Time")
+                    HStack(spacing: 10) {
+                        optionCard(
+                            icon: "scalemass.fill",
+                            label: "Weight",
+                            isSelected: selectedWorkoutMeasurement == "Weight"
+                        ) { selectedWorkoutMeasurement = "Weight" }
+                        .accessibilityIdentifier(AccessibilityID.exerciseMeasureWithPicker)
+
+                        optionCard(
+                            icon: "timer",
+                            label: "Time",
+                            isSelected: selectedWorkoutMeasurement == "Time"
+                        ) { selectedWorkoutMeasurement = "Time" }
                     }
-                    .pickerStyle(SegmentedPickerStyle())
-                    .accessibilityIdentifier(AccessibilityID.exerciseMeasureWithPicker)
+                    .padding(.horizontal, 20)
                 }
             }
-            .padding(.horizontal, 20)
-            .padding(.bottom, 24)
+
+            Spacer().frame(height: 24)
 
             // Buttons
-            HStack(spacing: 12) {
-                Button(action: {
-                    self.showingDialog = false
-                }) {
-                    Text("Cancel")
-                        .font(.headline)
-                        .foregroundColor(.primary)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
-                        .background(Color(.secondarySystemGroupedBackground))
-                        .cornerRadius(10)
-                }
-                .accessibilityIdentifier(AccessibilityID.exerciseDialogCancelButton)
-
-                Button(action: {
-                    addNewExercise()
-                }) {
+            VStack(spacing: 10) {
+                Button(action: { addNewExercise() }) {
                     Text("Add Exercise")
                         .font(.headline)
                         .foregroundColor(.staticWhite)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 14)
-                        .background(exerciseName.isEmpty ? Color.gray : Color.myBlue)
-                        .cornerRadius(10)
+                        .background(exerciseName.trimmingCharacters(in: .whitespaces).isEmpty ? Color.gray : Color.myBlue)
+                        .cornerRadius(12)
                 }
                 .accessibilityIdentifier(AccessibilityID.exerciseDialogAddButton)
-                .disabled(exerciseName.isEmpty)
+                .disabled(exerciseName.trimmingCharacters(in: .whitespaces).isEmpty)
+
+                Button(action: { showingDialog = false }) {
+                    Text("Cancel")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 10)
+                }
+                .accessibilityIdentifier(AccessibilityID.exerciseDialogCancelButton)
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 20)
@@ -131,47 +142,58 @@ struct AddExerciseDialog: View {
         .cornerRadius(20)
         .shadow(color: Color.black.opacity(0.15), radius: 20, x: 0, y: 10)
         .frame(maxWidth: 400)
-        .onAppear {
-            hideKeyboard()
-            UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(Color.myBlue)
-            UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
-        }
-    }
-    
-    private func addNewExercise() {
-        if(exerciseName.isEmpty) {
-            return
-        }
-        else{
-            let measurement = selectedWorkoutMeasurement
-            let quantifier = selectedWorkoutQuantifier
-            let newIndex = workoutDetails.last?.orderIndex ?? 0
-            let newDetail = WorkoutDetailInput(
-                id: UUID(),
-                exerciseName: exerciseName,
-                orderIndex: newIndex + 1,
-                sets: [SetInput(
-                    id: UUID(),
-                    reps: 0,
-                    weight: 0,
-                    time: 0,
-                    distance: 0,
-                    isCompleted: false,
-                    setIndex: 1,
-                    exerciseQuantifier: quantifier,
-                    exerciseMeasurement: measurement
-                )],
-                exerciseQuantifier: quantifier,
-                exerciseMeasurement: measurement
-            )
-            workoutDetails.append(newDetail)
-            self.showingDialog = false
-        }
+        .simultaneousGesture(TapGesture().onEnded { hideKeyboard() })
+        .transformEffect(.identity)
 
     }
-    
-    private func hideKeyboard()
-    {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+
+    @ViewBuilder
+    private func optionCard(icon: String, label: String, isSelected: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack(spacing: 8) {
+                Image(systemName: icon)
+                    .font(.system(size: 16, weight: .medium))
+                Text(label)
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+            }
+            .foregroundColor(isSelected ? .staticWhite : .primary)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 12)
+            .background(
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(isSelected ? Color.myBlue : Color(.secondarySystemGroupedBackground))
+            )
+        }
+        .buttonStyle(.plain)
+        .animation(.easeInOut(duration: 0.15), value: isSelected)
+    }
+
+    private func addNewExercise() {
+        let trimmed = exerciseName.trimmingCharacters(in: .whitespaces)
+        guard !trimmed.isEmpty else { return }
+        let measurement = selectedWorkoutMeasurement
+        let quantifier = selectedWorkoutQuantifier
+        let newIndex = workoutDetails.last?.orderIndex ?? 0
+        let newDetail = WorkoutDetailInput(
+            id: UUID(),
+            exerciseName: trimmed,
+            orderIndex: newIndex + 1,
+            sets: [SetInput(
+                id: UUID(),
+                reps: 0,
+                weight: 0,
+                time: 0,
+                distance: 0,
+                isCompleted: false,
+                setIndex: 1,
+                exerciseQuantifier: quantifier,
+                exerciseMeasurement: measurement
+            )],
+            exerciseQuantifier: quantifier,
+            exerciseMeasurement: measurement
+        )
+        workoutDetails.append(newDetail)
+        showingDialog = false
     }
 }

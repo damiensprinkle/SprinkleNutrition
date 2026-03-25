@@ -6,8 +6,9 @@ struct WorkoutHistoryView: View {
     @State private var histories: [WorkoutHistory] = []
     @State private var appearedCards: Set<UUID> = []
 
-@State private var selectedMonth: Int = Calendar.current.component(.month, from: Date()) - 1
+    @State private var selectedMonth: Int = Calendar.current.component(.month, from: Date()) - 1
     @State private var selectedYear: Int = Calendar.current.component(.year, from: Date())
+    @State private var availableYears: [Int] = [Calendar.current.component(.year, from: Date())]
     @State private var viewMode: ViewMode = .list
     @State private var timePeriod: TimePeriod = .monthly
     @State private var isLoading: Bool = false
@@ -71,7 +72,7 @@ struct WorkoutHistoryView: View {
 
                 // Month/Year picker - only show for monthly view
                 if timePeriod == .monthly {
-                    MonthYearPickerView(selectedMonth: $selectedMonth, selectedYear: $selectedYear)
+                    MonthYearPickerView(selectedMonth: $selectedMonth, selectedYear: $selectedYear, years: availableYears)
                         .onChange(of: selectedMonth) { loadHistories() }
                         .onChange(of: selectedYear) { loadHistories() }
                         .transition(.move(edge: .top).combined(with: .opacity))
@@ -154,6 +155,7 @@ struct WorkoutHistoryView: View {
             }
             .background(Color.myWhite)
             .onAppear {
+                loadAvailableYears()
                 loadHistories()
             }
             .onChange(of: timePeriod) {
@@ -217,6 +219,12 @@ struct WorkoutHistoryView: View {
             }
             .padding()
         }
+    }
+
+    private func loadAvailableYears() {
+        let currentYear = Calendar.current.component(.year, from: Date())
+        let earliestYear = workoutController.workoutManager.fetchEarliestHistoryYear() ?? currentYear
+        availableYears = Array(earliestYear...currentYear)
     }
 
     private func loadHistories(showSkeletons: Bool = true) {

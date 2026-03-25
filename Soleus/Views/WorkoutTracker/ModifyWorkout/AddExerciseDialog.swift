@@ -11,20 +11,15 @@ struct AddExerciseDialog: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // Drag handle
-            Capsule()
-                .fill(Color(.systemFill))
-                .frame(width: 36, height: 4)
-                .padding(.top, 12)
+            // Header
+            Text("Add Exercise")
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundColor(.primary)
+                .padding(.top, 40)
                 .padding(.bottom, 20)
 
             VStack(alignment: .leading, spacing: 20) {
-                // Title
-                Text("Add Exercise")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .foregroundColor(.primary)
-                    .padding(.horizontal, 20)
 
                 // Exercise Name
                 VStack(alignment: .leading, spacing: 8) {
@@ -148,6 +143,8 @@ struct AddExerciseDialog: View {
         .shadow(color: Color.black.opacity(0.15), radius: 20, x: 0, y: 10)
         .frame(maxWidth: 400)
         .simultaneousGesture(TapGesture().onEnded { hideKeyboard() })
+        .transformEffect(.identity)
+
     }
 
     @ViewBuilder

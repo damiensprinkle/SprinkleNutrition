@@ -45,6 +45,49 @@ These features require new screens or data models but no external dependencies.
 
 ---
 
+### iCloud Sync `Pro`
+
+**Problem:** Workout data lives only on the user's current device. Switching phones, getting a new iPhone, or using an iPad means starting from scratch unless a full device backup is restored. Shipping without sync is a known gap from day one for users who upgrade devices or use multiple Apple devices.
+
+**Solution:**
+- Migrate the CoreData stack from `NSPersistentContainer` to `NSPersistentCloudKitContainer`
+- Apple's CloudKit integration handles sync automatically across all devices signed into the same Apple ID
+- Workouts, history, templates, exercise library, and settings all sync
+- Conflict resolution uses `NSMergeByPropertyObjectTrumpMergePolicy` (already in place) — most recent write wins
+- Sync is transparent to the user — no login required beyond their existing Apple ID
+- Requires CloudKit entitlement and iCloud capability in the Xcode project
+- Full regression testing required against the existing CoreData model to ensure no data loss during migration
+- **Priority note:** Intentionally scheduled before My Exercises and other CoreData-additive features so the schema is in its cleanest state at migration time. All future CoreData entities automatically sync once this is in place.
+
+---
+
+### My Exercises `Free`
+
+**Problem:** Every time a user builds or edits a workout plan they must type exercise names from scratch. There is no memory of exercises they have used before, which slows down plan creation and leads to inconsistent naming (e.g., "Bench" vs "Bench Press" vs "Flat Bench") that fragments history. Additionally, the rest timer is global — users who alternate between heavy compound lifts (needing 3 minutes) and isolation work (needing 60 seconds) must manually change the setting between exercises.
+
+**Solution:**
+
+*Exercise Library:*
+- Pre-populate the library with ~50–60 common exercises organized by muscle group category (Chest, Back, Shoulders, Arms, Legs, Core, Cardio), each with a short description and sensible defaults for quantifier and measurement
+- Maintain a persistent `ExerciseTemplate` entity in CoreData — every unique exercise name is also saved automatically the first time it is added to any workout plan
+- Users can create, rename, or delete exercises from a dedicated "My Exercises" screen accessible from Settings
+- Each library entry stores: name, description, category, default quantifier (Reps / Distance), default measurement (Weight / Time), and a usage count
+
+*Exercise Selection in Workout Builder:*
+- Tapping "Add Exercise" opens a searchable sheet with the full exercise library, filterable by category
+- Tapping an exercise pre-fills the name, quantifier, and measurement from its library defaults
+- A "Create Custom" option at the bottom of the sheet allows adding an exercise not in the library
+- Usage count surfaces frequently used exercises at the top of the list
+
+*Exercise-Specific Rest Timer:*
+- Each exercise in a workout plan can override the global rest timer with its own duration
+- Set via a "Rest: Xs" chip on each exercise card in the edit workout view — tapping opens the same duration picker used in Preferences
+- Override hierarchy: exercise-specific duration → global Preferences fallback
+- If no override is set, the exercise inherits the global setting transparently
+- Users can also adjust the rest duration per-exercise on the fly during an active workout
+
+---
+
 ### Weekly Workout Schedule `Free`
 
 **Problem:** Users have workout templates but no way to plan which workouts happen on which days. There is no structure to guide their week.
@@ -59,20 +102,18 @@ These features require new screens or data models but no external dependencies.
 
 ---
 
-### Apple Health Integration `Free`
+### Workout History Calendar View `Free`
 
-**Problem:** Soleus workout data is siloed — it does not appear in the Health app or contribute to the user's activity rings, move goals, or fitness summaries.
+**Problem:** The history view lists completed workouts chronologically but gives no spatial sense of consistency. Users cannot quickly see whether they worked out 3 days in a row, skipped a week, or are hitting their weekly goal.
 
 **Solution:**
-- Request HealthKit authorization for workout write access on first use
-- On workout completion, write a `HKWorkout` record to HealthKit with:
-  - Workout type (strength training, cardio, or mixed based on exercise types)
-  - Start and end time (derived from the existing session timer)
-  - Active energy burned (estimated from exercise type and duration using MET values)
-  - Distance covered (for cardio workouts with distance tracking)
-- Writes are one-way (Soleus → Health) — no reading from Health in this version
-- Users can disable Health sync from Settings at any time
-- Requires `NSHealthUpdateUsageDescription` in Info.plist
+- Add a calendar mode toggle to `WorkoutHistoryView` alongside the existing list view
+- Calendar renders the current month with a small green checkmark or dot on each day a workout was completed
+- Tapping a marked day expands a compact summary of the workout(s) completed that day — name, duration, key stats
+- Navigation arrows allow scrolling backward through past months
+- Forward navigation is capped at the current month (no future months)
+- The data source is the existing `WorkoutHistory` CoreData entity — no new storage required
+- Calendar and list views share the same month/year picker so switching modes preserves the selected month
 
 ---
 
@@ -125,34 +166,25 @@ These features require new screens or data models but no external dependencies.
 
 ---
 
+### Workout Insights `Pro`
 
-### My Exercises
-- all exercise entries are saved into a table
-- users can also create exercise outside of the add/edit workout view to speed up new workout plan creations
+**Problem:** Users have raw history data but no synthesized analysis of their training patterns. There is no way to answer questions like "Am I training each muscle group consistently?" or "Which day of the week do I perform best?"
 
-
-### Restrict the number of workout plan to 5 unless pro version
-
-### workout history should have calendar view to show what days you completed a workout, just a green checkmark on the day
-### workout insights paid feature
-
-## Tier 3 — Longer Term (Significant Effort or External Dependencies)
+**Solution:**
+- Add an Insights tab or section within the Dashboard available to Pro users
+- Initial insight cards include:
+  - **Training Frequency** — workouts per week over the past 4, 8, and 12 weeks with a trend arrow
+  - **Most Trained Exercises** — top 5 exercises by session frequency over the selected period
+  - **Best Day of the Week** — which weekday has the most completed workouts (and highest average volume)
+  - **Longest Streak** — all-time longest consecutive workout streak vs. current streak
+  - **Volume Trend** — total weight lifted per week as a bar chart for the past 8 weeks
+- Insights are computed on-device from CoreData history — no server required
+- Data is filtered by a configurable time range: last 30 days, 90 days, or all time
+- Each insight card includes a brief plain-language interpretation (e.g., "You've been most consistent on Tuesdays — 80% completion rate")
 
 ---
 
-### iCloud Sync `Pro`
-
-**Problem:** Workout data lives only on the user's current device. Switching phones, getting a new iPhone, or using an iPad means starting from scratch unless a full device backup is restored.
-
-**Solution:**
-- Migrate the CoreData stack from `NSPersistentContainer` to `NSPersistentCloudKitContainer`
-- Apple's CloudKit integration handles sync automatically across all devices signed into the same Apple ID
-- Workouts, history, templates, and settings all sync
-- Conflict resolution uses `NSMergeByPropertyObjectTrumpMergePolicy` (already in place) — most recent write wins
-- Sync is transparent to the user — no login required beyond their existing Apple ID
-- Requires CloudKit entitlement and iCloud capability in the Xcode project
-- Full regression testing required against the existing CoreData model to ensure no data loss during migration
-- Note: this is the most technically complex item in Tier 3 — the migration path is well-documented by Apple but must be tested thoroughly
+## Tier 3 — Longer Term (Significant Effort or External Dependencies)
 
 ---
 
@@ -232,14 +264,14 @@ These are independent platform targets and should be built after the core app is
 |---|---|---|
 | Enhanced Workout Overview | 1 | Free |
 | Personal Records | 1 | Free |
-| Rest Timer Push Notifications | 1 | Free |
-| Enhanced Streak Tracking | 1 | Free |
+| iCloud Sync | 2 | Pro |
+| My Exercises + Exercise-Specific Rest Timer | 2 | Free |
 | Weekly Workout Schedule | 2 | Free |
-| Apple Health Integration | 2 | Free |
+| Workout History Calendar View | 2 | Free |
 | Progress Charts (Exercise History Graphs) | 2 | Pro |
 | Progressive Overload Suggestions | 2 | Pro |
 | Customizable Dashboard | 2 | Pro |
-| iCloud Sync | 3 | Pro |
+| Workout Insights | 2 | Pro |
 | Universal Links / Server Sharing | 3 | Pro |
 | Workout Recap Shareable Card | 3 | Pro |
 | Home Screen Widget | 4 | Pro |
@@ -249,11 +281,11 @@ These are independent platform targets and should be built after the core app is
 
 ## Notes on Monetization
 
-The free tier covers the complete core workout loop — creating workouts, tracking sessions, viewing history, scheduling, notifications, and Health integration. A user who never pays gets a fully functional fitness tracker.
+The free tier covers the complete core workout loop — creating workouts, tracking sessions, viewing history, scheduling, notifications, Health integration, and sync. A user who never pays gets a fully functional fitness tracker that works across all their devices.
 
 Pro is positioned as an analytics and convenience upgrade:
-- **Analytics**: Progress Charts, Progressive Overload Suggestions, PRs (free, but Pro builds on them)
-- **Convenience**: iCloud Sync, Widget, Watch app
+- **Analytics**: Progress Charts, Progressive Overload Suggestions, Workout Insights, PRs (free, but Pro builds on them)
+- **Convenience**: Widget, Watch app
 - **Social**: Shareable Card, Universal Links
 
 Recommended pricing: **$2.99/year** or **$4.99 one-time**. Given the utility nature of the app, a low-friction one-time purchase may convert better than a subscription for an early-stage user base.

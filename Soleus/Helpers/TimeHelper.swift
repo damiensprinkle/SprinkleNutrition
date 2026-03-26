@@ -15,7 +15,7 @@ func formatToHHMMSS(_ totalSeconds: Int) -> String {
 }
 
 func convertToSeconds(_ input: String) -> Int {
-    let paddedInput = input.padding(toLength: 6, withPad: "0", startingAt: 0)
+    let paddedInput = String(repeating: "0", count: max(0, 6 - input.count)) + input
     let hours = Int(paddedInput.prefix(2)) ?? 0
     let minutes = Int(paddedInput.dropFirst(2).prefix(2)) ?? 0
     let seconds = Int(paddedInput.suffix(2)) ?? 0

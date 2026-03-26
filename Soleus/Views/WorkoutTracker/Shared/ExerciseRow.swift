@@ -213,10 +213,16 @@ struct ExerciseRow: View {
     
     private func formatInput(_ newValue: String) {
         let filtered = newValue.filter { "0123456789".contains($0) }
-        let constrainedInput = String(filtered.suffix(6))
-        let totalSeconds = convertToSeconds(constrainedInput)
-        timeInput = formatToHHMMSS(totalSeconds)
-        setInput.time = Int32(totalSeconds)
+        let digits = String(filtered.suffix(6))
+        let padded = String(repeating: "0", count: max(0, 6 - digits.count)) + digits
+        let h = String(padded.prefix(2))
+        let m = String(padded.dropFirst(2).prefix(2))
+        let s = String(padded.suffix(2))
+        timeInput = "\(h):\(m):\(s)"
+        let hVal = Int(h) ?? 0
+        let mVal = Int(m) ?? 0
+        let sVal = Int(s) ?? 0
+        setInput.time = Int32(hVal * 3600 + mVal * 60 + sVal)
     }
     
 }

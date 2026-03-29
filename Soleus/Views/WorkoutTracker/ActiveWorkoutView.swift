@@ -27,12 +27,14 @@ struct ActiveWorkoutView: View {
     @State private var endWorkoutConfirmationShown = false
     @State private var showTimer: Bool = false
     @State private var showAddExerciseDialog = false
-    @State private var showAddExerciseConfirmation = false
     @State private var editMode: EditMode = .inactive
     @State private var showChangesPreview = false
     @State private var editingNotesIndex: Int? = nil
     @State private var editingNotesText: String = ""
     @FocusState private var isNotesFocused: Bool
+    @State private var renamingExerciseIndex: Int? = nil
+    @State private var renamingText: String = ""
+    @FocusState private var isRenameFocused: Bool
     @State private var selectedExerciseIndexForDelete: Int?
     @State private var expandedExercises: Set<Int> = []
 
@@ -50,7 +52,7 @@ struct ActiveWorkoutView: View {
             }
             else{
                 VStack(spacing: 0) {
-                    if showTimer {
+                    if showTimer && !focusManager.isAnyTextFieldFocused {
                         TimerHeaderView(showTimer: $showTimer)
                             .frame(height: 80)
                             .background(Color.black.opacity(0.8))
@@ -62,6 +64,27 @@ struct ActiveWorkoutView: View {
                         RestTimerView(restTimer: restTimer)
                             .padding(.top, 8)
                             .zIndex(1)
+                    }
+
+                    if editMode == .active {
+                        HStack(alignment: .top, spacing: 8) {
+                            Image(systemName: "info.circle")
+                                .font(.caption)
+                                .foregroundColor(.blue)
+                                .padding(.top, 1)
+                            VStack(alignment: .leading, spacing: 3) {
+                                Text("Swipe left on a set to delete it")
+                                Text("Tap ··· to rename, reorder, or delete an exercise")
+                                Text("+ adds a new exercise")
+                            }
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                        }
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 10)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .background(Color(.secondarySystemGroupedBackground))
+                        .transition(.opacity.combined(with: .move(edge: .top)))
                     }
 
                     ScrollViewReader { proxy in
@@ -105,25 +128,22 @@ struct ActiveWorkoutView: View {
                 appViewModel.resetToWorkoutMainView()
             },
             trailing: viewModel.workoutStarted ? HStack(spacing: 20) {
+                if editMode == .active {
+                    Button(action: {
+                        showAddExerciseDialog = true
+                    }) {
+                        Image(systemName: "plus.circle")
+                            .foregroundColor(.primary)
+                    }
+                }
                 Button(action: {
-                    withAnimation {
+                    withAnimation(.easeInOut(duration: 0.2)) {
                         editMode = editMode == .active ? .inactive : .active
                     }
                 }) {
                     Image(systemName: editMode == .active ? "checkmark.circle.fill" : "pencil.circle")
                         .foregroundColor(editMode == .active ? .green : .primary)
                 }
-
-                if editMode == .active {
-                    Button(action: {
-                        activeAlert = .addExerciseConfirmation
-                        showAlert = true
-                    }) {
-                        Image(systemName: "plus.circle")
-                            .foregroundColor(.primary)
-                    }
-                }
-
                 Menu {
                     Button(action: {
                         activeAlert = .cancelWorkout
@@ -169,23 +189,6 @@ struct ActiveWorkoutView: View {
                             viewModel.completeWorkout(shouldUpdateTemplate: false)
                         }))
 
-                case .exerciseAdded:
-                    return Alert(
-                        title: Text("Exercise Added"),
-                        message: Text("This exercise has been added to your workout plan and will be saved even if you cancel this workout session."),
-                        dismissButton: .default(Text("OK"))
-                    )
-
-                case .addExerciseConfirmation:
-                    return Alert(
-                        title: Text("Add Exercise"),
-                        message: Text("This exercise will be permanently added to your workout plan, even if you cancel this workout session. Continue?"),
-                        primaryButton: .default(Text("Add Exercise"), action: {
-                            showAddExerciseDialog = true
-                        }),
-                        secondaryButton: .cancel()
-                    )
-
                 case .deleteExercise:
                     return Alert(
                         title: Text("Delete Exercise"),
@@ -227,15 +230,14 @@ struct ActiveWorkoutView: View {
                 restTimer.skipRest()
             }
             .sheet(isPresented: $showAddExerciseDialog) {
-                ZStack {
-                    Color.black.opacity(0.4)
-                        .edgesIgnoringSafeArea(.all)
-                    AddExerciseDialog(
-                        workoutDetails: $workoutController.workoutDetails,
-                        showingDialog: $showAddExerciseDialog
-                    )
-                    .padding()
-                }
+                AddExerciseDialog(
+                    workoutDetails: $workoutController.workoutDetails,
+                    showingDialog: $showAddExerciseDialog,
+                    showPermanentNote: true
+                )
+                .presentationDetents([.height(450)])
+                .presentationDragIndicator(.visible)
+                .ignoresSafeArea(.keyboard)
             }
             .sheet(isPresented: $showChangesPreview) {
                 WorkoutChangesPreviewView(
@@ -257,86 +259,108 @@ struct ActiveWorkoutView: View {
         ForEach(Array(workoutController.workoutDetails.enumerated()), id: \.element.exerciseId) { index, detail in
             Section(header: VStack(alignment: .leading, spacing: 4) {
                 HStack {
-                    // Chevron indicator
-                    Image(systemName: "chevron.right")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        .rotationEffect(.degrees(expandedExercises.contains(index) ? 90 : 0))
-                        .animation(.easeInOut(duration: 0.2), value: expandedExercises.contains(index))
-                        .accessibilityHidden(true)
+                    // Chevron indicator (hidden while renaming)
+                    if renamingExerciseIndex != index {
+                        Image(systemName: "chevron.right")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            .rotationEffect(.degrees(expandedExercises.contains(index) ? 90 : 0))
+                            .animation(.easeInOut(duration: 0.2), value: expandedExercises.contains(index))
+                            .accessibilityHidden(true)
+                    }
 
-                    Text(workoutController.workoutDetails[index].exerciseName)
-                        .font(.title2)
-                        .foregroundColor(Color.myBlack)
-                        .accessibilityAddTraits(.isHeader)
+                    // Exercise name or inline rename field
+                    if renamingExerciseIndex == index {
+                        TextField("Exercise Name", text: $renamingText)
+                            .font(.title2)
+                            .fontWeight(.semibold)
+                            .focused($isRenameFocused)
+                            .onSubmit { commitRename(for: index) }
+                            .onChange(of: renamingText) {
+                                if renamingText.count > 30 {
+                                    renamingText = String(renamingText.prefix(30))
+                                }
+                            }
+                            .onChange(of: isRenameFocused) {
+                                if !isRenameFocused { commitRename(for: index) }
+                            }
+                            .toolbar {
+                                ToolbarItem(placement: .keyboard) {
+                                    if isRenameFocused {
+                                        Button("Done") { commitRename(for: index) }
+                                    }
+                                }
+                            }
+                    } else {
+                        Text(workoutController.workoutDetails[index].exerciseName)
+                            .font(.title2)
+                            .foregroundColor(Color.myBlack)
+                            .accessibilityAddTraits(.isHeader)
+                    }
+
                     Spacer()
 
-                    // Notes icon (edit mode only)
-                    let hasNotes = workoutController.workoutDetails[index].notes != nil && !workoutController.workoutDetails[index].notes!.isEmpty
+                    // Edit mode: notes icon + ellipsis menu
                     if editMode == .active {
-                        Image(systemName: hasNotes ? "note.text.badge.plus" : "note.text")
-                            .foregroundColor(hasNotes ? .orange : .gray)
-                            .opacity(viewModel.workoutStarted ? 1.0 : 0.4)
-                            .accessibilityLabel(hasNotes ? "Exercise has notes" : "Add exercise notes")
-                            .accessibilityHint("Double tap to \(hasNotes ? "view or edit" : "add") notes for this exercise")
-                            .accessibilityAddTraits(.isButton)
-                            .onTapGesture {
+                        let hasNotes = workoutController.workoutDetails[index].notes != nil && !workoutController.workoutDetails[index].notes!.isEmpty
+                        HStack(spacing: 16) {
+                            Button(action: {
                                 guard viewModel.workoutStarted else { return }
                                 editingNotesText = workoutController.workoutDetails[index].notes ?? ""
                                 editingNotesIndex = index
                                 isNotesFocused = true
+                            }) {
+                                Image(systemName: hasNotes ? "note.text.badge.plus" : "note.text")
+                                    .font(.body)
+                                    .foregroundColor(hasNotes ? .orange : .gray)
                             }
-                    }
+                            .disabled(!viewModel.workoutStarted)
 
-                    if editMode == .active && viewModel.workoutStarted {
-                        // Move up arrow
-                        if index > 0 {
-                            Image(systemName: "arrow.up")
-                                .foregroundColor(focusManager.isAnyTextFieldFocused ? .gray : .blue)
-                                .opacity(focusManager.isAnyTextFieldFocused ? 0.5 : 1.0)
-                                .accessibilityLabel("Move exercise up")
-                                .accessibilityHint("Double tap to move \(workoutController.workoutDetails[index].exerciseName) up in the workout order")
-                                .accessibilityAddTraits(.isButton)
-                                .onTapGesture {
-                                    if !focusManager.isAnyTextFieldFocused {
-                                        moveExercise(from: index, direction: .up)
-                                    }
+                            Menu {
+                                Button(action: {
+                                    guard viewModel.workoutStarted else { return }
+                                    renamingText = workoutController.workoutDetails[index].exerciseName
+                                    renamingExerciseIndex = index
+                                    isRenameFocused = true
+                                }) {
+                                    Label("Rename Exercise", systemImage: "pencil")
                                 }
-                        }
+                                .disabled(!viewModel.workoutStarted)
 
-                        // Move down arrow
-                        if index < workoutController.workoutDetails.count - 1 {
-                            Image(systemName: "arrow.down")
-                                .foregroundColor(focusManager.isAnyTextFieldFocused ? .gray : .blue)
-                                .opacity(focusManager.isAnyTextFieldFocused ? 0.5 : 1.0)
-                                .accessibilityLabel("Move exercise down")
-                                .accessibilityHint("Double tap to move \(workoutController.workoutDetails[index].exerciseName) down in the workout order")
-                                .accessibilityAddTraits(.isButton)
-                                .onTapGesture {
-                                    if !focusManager.isAnyTextFieldFocused {
-                                        moveExercise(from: index, direction: .down)
+                                if index > 0 {
+                                    Button(action: { moveExercise(from: index, direction: .up) }) {
+                                        Label("Move Up", systemImage: "arrow.up")
                                     }
+                                    .disabled(focusManager.isAnyTextFieldFocused)
                                 }
-                        }
 
-                        // Delete button
-                        Image(systemName: "trash")
-                            .foregroundColor(focusManager.isAnyTextFieldFocused ? .gray : .red)
-                            .opacity(focusManager.isAnyTextFieldFocused ? 0.5 : 1.0)
-                            .accessibilityLabel("Delete exercise")
-                            .accessibilityHint("Double tap to permanently remove \(workoutController.workoutDetails[index].exerciseName) from this workout")
-                            .accessibilityAddTraits(.isButton)
-                            .onTapGesture {
-                                if !focusManager.isAnyTextFieldFocused {
+                                if index < workoutController.workoutDetails.count - 1 {
+                                    Button(action: { moveExercise(from: index, direction: .down) }) {
+                                        Label("Move Down", systemImage: "arrow.down")
+                                    }
+                                    .disabled(focusManager.isAnyTextFieldFocused)
+                                }
+
+                                Divider()
+
+                                Button(role: .destructive, action: {
                                     selectedExerciseIndexForDelete = index
                                     activeAlert = .deleteExercise
                                     showAlert = true
+                                }) {
+                                    Label("Delete Exercise", systemImage: "trash")
                                 }
+                            } label: {
+                                Image(systemName: "ellipsis.circle")
+                                    .font(.body)
+                                    .foregroundColor(.primary)
                             }
+                        }
                     }
                 }
                 .contentShape(Rectangle())
                 .onTapGesture {
+                    guard renamingExerciseIndex != index else { return }
                     withAnimation {
                         if expandedExercises.contains(index) {
                             expandedExercises.remove(index)
@@ -345,7 +369,6 @@ struct ActiveWorkoutView: View {
                         }
                     }
                 }
-                .accessibilityElement(children: .combine)
                 .accessibilityLabel("\(workoutController.workoutDetails[index].exerciseName), \(expandedExercises.contains(index) ? "expanded" : "collapsed")")
                 .accessibilityHint("Double tap to \(expandedExercises.contains(index) ? "collapse" : "expand") exercise details")
                 .accessibilityAddTraits(.isButton)
@@ -425,6 +448,15 @@ struct ActiveWorkoutView: View {
             }
             .id("exercise_\(index)")
         }
+    }
+
+    private func commitRename(for index: Int) {
+        let trimmed = renamingText.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !trimmed.isEmpty {
+            workoutController.renameExercise(at: index, to: trimmed)
+        }
+        renamingExerciseIndex = nil
+        isRenameFocused = false
     }
 
     private func commitActiveNotes(for index: Int) {
@@ -631,10 +663,8 @@ struct ActiveWorkoutView: View {
             }
         }
 
-        // Show alert to inform user
         if exerciseWasAdded {
-            activeAlert = .exerciseAdded
-            showAlert = true
+            AppLogger.activeWorkout.info("Exercise(s) saved to workout template")
         }
     }
 
@@ -717,7 +747,7 @@ struct ActiveWorkoutView: View {
 }
 
 enum ActiveWorkoutAlert {
-    case updateValues, cancelWorkout, exerciseAdded, addExerciseConfirmation, deleteExercise
+    case updateValues, cancelWorkout, deleteExercise
 }
 
 // MARK: - Workout Changes Preview
@@ -818,7 +848,7 @@ struct WorkoutChangesPreviewView: View {
     }
 
     private func hasChanges(original: WorkoutDetailInput, current: WorkoutDetailInput) -> Bool {
-        if original.sets.count != current.sets.count {
+        if original.notes != current.notes || original.sets.count != current.sets.count {
             return true
         }
 
@@ -854,6 +884,29 @@ struct ExerciseChangesCard: View {
             }
 
             VStack(alignment: .leading, spacing: 8) {
+                if original.notes != current.notes {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Note")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                        if let note = current.notes, !note.isEmpty {
+                            HStack(alignment: .top, spacing: 6) {
+                                Image(systemName: "note.text")
+                                    .font(.caption)
+                                    .foregroundColor(.orange)
+                                Text(note)
+                                    .font(.subheadline)
+                                    .foregroundColor(.primary)
+                            }
+                        } else {
+                            Text("(removed)")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                                .italic()
+                        }
+                    }
+                }
+
                 if original.sets.count != current.sets.count {
                     HStack {
                         Text("Sets:")

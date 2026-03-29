@@ -43,10 +43,9 @@ struct AddWorkoutView: View {
                 .ignoresSafeArea()
 
             VStack(spacing: 0) {
-                // Custom navigation header (replaces NavigationView to avoid nested nav conflict)
                 HStack {
                     Button("Cancel") {
-                        if initialWorkoutDetails != workoutController.workoutDetails {
+                        if hasUnsavedChanges {
                             alertMessage = "You have unsaved changes are you sure you want to cancel?"
                             activeAlert = .cancelConfirmation
                             showAlert = true
@@ -83,9 +82,6 @@ struct AddWorkoutView: View {
                 addWorkoutForm
                     .id(formID)
 
-                if !focusManager.isAnyTextFieldFocused {
-                    bottomButtons
-                }
             }
             .background(Color(.systemGroupedBackground))
             .background(
@@ -273,15 +269,6 @@ struct AddWorkoutView: View {
                                     workoutTitle = String(workoutTitle.prefix(30))
                                 }
                             }
-                            .toolbar {
-                                ToolbarItem(placement: .keyboard) {
-                                    if isTitleFocused {
-                                        Button("Done") {
-                                            isTitleFocused = false
-                                        }
-                                    }
-                                }
-                            }
                             .accessibilityIdentifier(AccessibilityID.addWorkoutTitleField)
                     }
                     .padding(.bottom, 8)
@@ -332,10 +319,13 @@ struct AddWorkoutView: View {
                 .padding(.vertical, 8)
             }
             .scrollDismissesKeyboard(.immediately)
+            .safeAreaInset(edge: .bottom) {
+                if !focusManager.isAnyTextFieldFocused {
+                    bottomButtons
+                }
+            }
             .onChange(of: focusManager.focusedExerciseIndex) {
                 guard let idx = focusManager.focusedExerciseIndex else { return }
-                // Delay slightly so the keyboard has finished animating into place
-                // before we compute the final scroll position.
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                     withAnimation(.easeInOut(duration: 0.25)) {
                         scrollProxy.scrollTo("exercise_\(idx)", anchor: .center)

@@ -16,6 +16,7 @@ extension WorkoutSession {
         return NSFetchRequest<WorkoutSession>(entityName: "WorkoutSession")
     }
 
+    @NSManaged public var deviceIdentifier: String?
     @NSManaged public var endTime: Date?
     @NSManaged public var id: UUID?
     @NSManaged public var isActive: Bool

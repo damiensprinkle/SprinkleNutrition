@@ -22,6 +22,8 @@ struct WorkoutTrackerMainView: View {
     @State private var cardFrames: [UUID: CGRect] = [:]
     @State private var reorderCooldown = false
     @GestureState private var isDragActive = false
+    @StateObject private var scrollController = DragScrollController()
+    @State private var autoScrollTimer: Timer?
 
     private var visibleWorkouts: [WorkoutInfo] {
         workoutController.workouts.filter { !deletingWorkouts.contains($0.id) }
@@ -32,7 +34,11 @@ struct WorkoutTrackerMainView: View {
             ZStack(alignment: .topLeading) {
                 ScrollView {
                     Divider()
-                    workoutGrid
+                    workoutGrid(proxy: proxy)
+                        .background(
+                            DragScrollProxy(controller: scrollController)
+                                .frame(height: 0)
+                        )
                 }
                 .scrollDisabled(draggingId != nil)
                 .onPreferenceChange(WorkoutCardFrameKey.self) { newFrames in
@@ -41,6 +47,7 @@ struct WorkoutTrackerMainView: View {
                 .onChange(of: isDragActive) {
                     // GestureState reverts to false on system cancellation — clean up any stuck drag
                     if !isDragActive, draggingId != nil {
+                        stopAutoScroll()
                         reorderCooldown = false
                         withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
                             draggingId = nil
@@ -149,7 +156,66 @@ struct WorkoutTrackerMainView: View {
         }
     }
     
-    private var workoutGrid: some View {
+    @ViewBuilder
+    private func cardGridItem(workout: WorkoutInfo, scrollProxy: GeometryProxy) -> some View {
+        let card = CardView(
+            workoutId: workout.id,
+            onDelete: { deleteWorkouts(workout.id) },
+            onDuplicate: { duplicateWorkout(workout.id) },
+            onEdit: { presentingModal = .edit(workoutId: workout.id) },
+            isEditMode: isEditMode,
+            isDragging: false
+        )
+        .background(
+            GeometryReader { geo in
+                Color.clear.preference(
+                    key: WorkoutCardFrameKey.self,
+                    value: [workout.id: geo.frame(in: .global)]
+                )
+            }
+        )
+        .opacity(draggingId == workout.id ? 0 : 1)
+        .scaleEffect(isEditMode ? 0.95 : 1.0)
+        .transition(.asymmetric(insertion: .opacity.combined(with: .scale), removal: .opacity.combined(with: .scale)))
+        .environmentObject(appViewModel)
+        .environmentObject(workoutController)
+
+        if isEditMode {
+            card
+                .onLongPressGesture(minimumDuration: 0.4) {
+                    guard draggingId == nil else { return }
+                    if let frame = cardFrames[workout.id] {
+                        draggingCardSize = frame.size
+                        dragPosition = CGPoint(x: frame.midX, y: frame.midY)
+                    }
+                    draggingId = workout.id
+                    HapticManager.shared.medium()
+                }
+                .simultaneousGesture(
+                    DragGesture(minimumDistance: 0, coordinateSpace: .global)
+                        .updating($isDragActive) { _, state, _ in state = true }
+                        .onChanged { drag in
+                            guard draggingId == workout.id else { return }
+                            dragPosition = drag.location
+                            checkReorder(at: drag.location, for: workout.id)
+                            updateAutoScroll(for: drag.location, in: scrollProxy.frame(in: .global))
+                        }
+                        .onEnded { _ in
+                            guard draggingId != nil else { return }
+                            stopAutoScroll()
+                            reorderCooldown = false
+                            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
+                                draggingId = nil
+                            }
+                            workoutController.workoutManager.saveWorkoutOrder(workouts: workoutController.workouts)
+                        }
+                )
+        } else {
+            card
+        }
+    }
+
+    private func workoutGrid(proxy: GeometryProxy) -> some View {
         VStack(spacing: 0) {
             if isEditMode {
                 HStack(spacing: 8) {
@@ -257,57 +323,7 @@ struct WorkoutTrackerMainView: View {
             LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
                 ForEach(workoutController.workouts) { workout in
                     if !deletingWorkouts.contains(workout.id) {
-                        CardView(
-                            workoutId: workout.id,
-                            onDelete: { deleteWorkouts(workout.id) },
-                            onDuplicate: { duplicateWorkout(workout.id) },
-                            onEdit: { presentingModal = .edit(workoutId: workout.id) },
-                            isEditMode: isEditMode,
-                            isDragging: false
-                        )
-                        .background(
-                            GeometryReader { geo in
-                                Color.clear.preference(
-                                    key: WorkoutCardFrameKey.self,
-                                    value: [workout.id: geo.frame(in: .global)]
-                                )
-                            }
-                        )
-                        // Hide (but preserve the slot) while this card is floating
-                        .opacity(draggingId == workout.id ? 0 : 1)
-                        .scaleEffect(isEditMode ? 0.95 : 1.0)
-                        .transition(.asymmetric(insertion: .opacity.combined(with: .scale), removal: .opacity.combined(with: .scale)))
-                        .environmentObject(appViewModel)
-                        .environmentObject(workoutController)
-                        .if(isEditMode) { view in
-                            view
-                                .onLongPressGesture(minimumDuration: 0.4) {
-                                    guard draggingId == nil else { return }
-                                    if let frame = cardFrames[workout.id] {
-                                        draggingCardSize = frame.size
-                                        dragPosition = CGPoint(x: frame.midX, y: frame.midY)
-                                    }
-                                    draggingId = workout.id
-                                    HapticManager.shared.medium()
-                                }
-                                .simultaneousGesture(
-                                    DragGesture(minimumDistance: 0, coordinateSpace: .global)
-                                        .updating($isDragActive) { _, state, _ in state = true }
-                                        .onChanged { drag in
-                                            guard draggingId == workout.id else { return }
-                                            dragPosition = drag.location
-                                            checkReorder(at: drag.location, for: workout.id)
-                                        }
-                                        .onEnded { _ in
-                                            guard draggingId != nil else { return }
-                                            reorderCooldown = false
-                                            withAnimation(.spring(response: 0.3, dampingFraction: 0.8)) {
-                                                draggingId = nil
-                                            }
-                                            workoutController.workoutManager.saveWorkoutOrder(workouts: workoutController.workouts)
-                                        }
-                                )
-                        }
+                        cardGridItem(workout: workout, scrollProxy: proxy)
                     }
                 }
             }
@@ -459,6 +475,33 @@ struct WorkoutTrackerMainView: View {
         }
     }
 
+    private func updateAutoScroll(for location: CGPoint, in scrollFrame: CGRect) {
+        let edgeZone: CGFloat = 90
+        if location.y < scrollFrame.minY + edgeZone {
+            let speed = (1 - (location.y - scrollFrame.minY) / edgeZone) * 8
+            startAutoScroll(delta: -speed)
+        } else if location.y > scrollFrame.maxY - edgeZone {
+            let speed = (1 - (scrollFrame.maxY - location.y) / edgeZone) * 8
+            startAutoScroll(delta: speed)
+        } else {
+            stopAutoScroll()
+        }
+    }
+
+    private func startAutoScroll(delta: CGFloat) {
+        autoScrollTimer?.invalidate()
+        autoScrollTimer = Timer.scheduledTimer(withTimeInterval: 0.016, repeats: true) { _ in
+            DispatchQueue.main.async {
+                self.scrollController.scrollBy(delta)
+            }
+        }
+    }
+
+    private func stopAutoScroll() {
+        autoScrollTimer?.invalidate()
+        autoScrollTimer = nil
+    }
+
     private func checkReorder(at position: CGPoint, for dragId: UUID) {
         guard !reorderCooldown else { return }
         guard let fromIndex = workoutController.workouts.firstIndex(where: { $0.id == dragId }) else { return }
@@ -476,6 +519,47 @@ struct WorkoutTrackerMainView: View {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
             reorderCooldown = false
         }
+    }
+}
+
+// MARK: - Programmatic scroll support for drag-to-reorder
+
+private class DragScrollController: ObservableObject {
+    weak var scrollView: UIScrollView?
+
+    func scrollBy(_ delta: CGFloat) {
+        guard let sv = scrollView else { return }
+        let maxOffsetY = sv.contentSize.height - sv.bounds.height
+        guard maxOffsetY > 0 else { return }
+        let newY = (sv.contentOffset.y + delta).clamped(to: 0...maxOffsetY)
+        sv.setContentOffset(CGPoint(x: 0, y: newY), animated: false)
+    }
+}
+
+private struct DragScrollProxy: UIViewRepresentable {
+    let controller: DragScrollController
+
+    func makeUIView(context: Context) -> UIView {
+        UIView()
+    }
+
+    func updateUIView(_ uiView: UIView, context: Context) {
+        DispatchQueue.main.async {
+            var view: UIView? = uiView.superview
+            while let v = view {
+                if let sv = v as? UIScrollView {
+                    controller.scrollView = sv
+                    return
+                }
+                view = v.superview
+            }
+        }
+    }
+}
+
+private extension Comparable {
+    func clamped(to range: ClosedRange<Self>) -> Self {
+        min(max(self, range.lowerBound), range.upperBound)
     }
 }
 

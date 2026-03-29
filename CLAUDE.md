@@ -231,10 +231,10 @@ Never use multiple `.navigationBarItems(trailing:)` calls - only the last one wi
 
 ## Dependencies
 
-**ConfettiSwiftUI**: v1.1.0
-- Only external dependency
-- Used in `WorkoutOverviewView` for workout completion celebration
-- Package: https://github.com/simibac/ConfettiSwiftUI.git
+**Firebase iOS SDK** (via SPM)
+- Includes: FirebaseAnalytics, FirebaseCrashlytics
+- Crashlytics captures and symbolicated crash reports; requires a Run Script build phase pointing to `firebase-ios-sdk/Crashlytics/run`
+- dSYM upload warnings for Firebase's pre-compiled binary frameworks (FirebaseAnalytics, GoogleAppMeasurement, etc.) appear during App Store / TestFlight distribution but are non-blocking and can be ignored — they do not affect symbolication of app crashes
 
 ## Known Issues and Patterns
 

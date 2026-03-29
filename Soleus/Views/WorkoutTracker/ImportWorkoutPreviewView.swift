@@ -67,6 +67,20 @@ struct ImportWorkoutPreviewView: View {
                                         }
                                         .padding(.leading, 8)
                                     }
+
+                                    if let notes = exercise.notes, !notes.isEmpty {
+                                        HStack(alignment: .top, spacing: 6) {
+                                            Image(systemName: "note.text")
+                                                .font(.caption)
+                                                .foregroundColor(.secondary)
+                                            Text(notes)
+                                                .font(.caption)
+                                                .foregroundColor(.secondary)
+                                                .fixedSize(horizontal: false, vertical: true)
+                                        }
+                                        .padding(.leading, 8)
+                                        .padding(.top, 2)
+                                    }
                                 }
                                 .transition(.opacity.combined(with: .move(edge: .top)))
                             }

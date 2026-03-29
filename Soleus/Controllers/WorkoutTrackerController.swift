@@ -122,6 +122,7 @@ class WorkoutTrackerController: ObservableObject {
             if originalDetail.exerciseId != updatedDetail.exerciseId ||
                 originalDetail.exerciseName != updatedDetail.exerciseName ||
                 originalDetail.orderIndex != updatedDetail.orderIndex ||
+                originalDetail.notes != updatedDetail.notes ||
                 originalDetail.sets.count != updatedDetail.sets.count {
                 return true
             }

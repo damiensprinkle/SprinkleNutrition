@@ -639,6 +639,7 @@
 				08B78FE92B6DBA370002DA68 /* Frameworks */,
 				08B78FEA2B6DBA370002DA68 /* Resources */,
 				08B3D0082B8250DA002F5C92 /* Embed Foundation Extensions */,
+				08355B362F75F4B400097621 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -768,6 +769,21 @@
 			);
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		08355B362F75F4B400097621 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			inputPaths = (
+				"$(SRCROOT)/Soleus/GoogleService-Info.plist",
+			);
+			shellPath = /bin/sh;
+			shellScript = (
+				"\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\" \"${SRCROOT}/Soleus/GoogleService-Info.plist\"  ",
+				"",
+			);
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		08B78FE82B6DBA370002DA68 /* Sources */ = {
@@ -1036,6 +1052,7 @@
 				DEVELOPMENT_TEAM = P8P8MB2RC3;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Soleus/Info.plist;
@@ -1082,6 +1099,7 @@
 				DEVELOPMENT_TEAM = P8P8MB2RC3;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Soleus/Info.plist;

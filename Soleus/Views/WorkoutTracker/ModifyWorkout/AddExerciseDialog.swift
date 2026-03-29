@@ -3,6 +3,7 @@ import SwiftUI
 struct AddExerciseDialog: View {
     @Binding var workoutDetails: [WorkoutDetailInput]
     @Binding var showingDialog: Bool
+    var showPermanentNote: Bool = false
     @State private var selectedWorkoutQuantifier: String = "Reps"
     @State private var selectedWorkoutMeasurement: String = "Weight"
 
@@ -17,7 +18,22 @@ struct AddExerciseDialog: View {
                 .fontWeight(.bold)
                 .foregroundColor(.primary)
                 .padding(.top, 40)
-                .padding(.bottom, 20)
+                .padding(.bottom, showPermanentNote ? 8 : 20)
+
+            if showPermanentNote {
+                HStack(alignment: .top, spacing: 6) {
+                    Image(systemName: "info.circle")
+                        .font(.caption)
+                        .foregroundColor(.orange)
+                        .padding(.top, 1)
+                    Text("This exercise will be permanently saved to your workout plan. Even if you cancel your active workout")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .padding(.horizontal, 20)
+                .padding(.bottom, 12)
+            }
 
             VStack(alignment: .leading, spacing: 20) {
 
@@ -47,13 +63,6 @@ struct AddExerciseDialog: View {
                         .onChange(of: exerciseName) {
                             if exerciseName.count > 30 {
                                 exerciseName = String(exerciseName.prefix(30))
-                            }
-                        }
-                        .toolbar {
-                            ToolbarItem(placement: .keyboard) {
-                                if isNameFieldFocused {
-                                    Button("Done") { isNameFieldFocused = false }
-                                }
                             }
                         }
                         .accessibilityIdentifier(AccessibilityID.exerciseNameField)

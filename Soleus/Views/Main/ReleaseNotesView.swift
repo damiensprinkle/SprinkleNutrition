@@ -8,6 +8,17 @@ struct ReleaseNotesView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
                     releaseSection(
+                        version: "v1.0.3",
+                        items: [
+                            ("icloud.fill", "iCloud Sync", "Your workouts, history, and settings now sync automatically across all your devices via iCloud. Your data is stored in your personal iCloud account — we never see it."),
+                            ("ellipsis.circle", "Exercise Menu", "Edit mode now uses a ··· menu per exercise. Rename, add a note, move up or down, or delete — all in one place."),
+                            ("arrow.up.arrow.down", "Scroll While Reordering", "Drag a workout card near the top or bottom edge and the list scrolls automatically — no more being stuck if you have more than a screenful of workouts."),
+                            ("figure.run.circle.fill", "Active Workout Indicator", "The active workout card now shows a pulsing ripple effect and a LIVE badge so it's always easy to spot at a glance."),
+                            ("note.text", "Note Changes Preview", "If you add or edit a note during a workout, the changes preview now shows it before you decide whether to save."),
+                        ]
+                    )
+
+                    releaseSection(
                         version: "v1.0.2",
                         items: [
                             ("bell.fill", "Push Notifications", "Stay on top of your fitness with customizable reminders — active workout alerts, inactivity nudges, and streak-at-risk warnings."),

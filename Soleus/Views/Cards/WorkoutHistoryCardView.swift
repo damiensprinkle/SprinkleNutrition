@@ -3,7 +3,7 @@ import SwiftUI
 struct WorkoutHistoryCardView: View {
     let history: WorkoutHistory
     var onDelete: (() -> Void)?
-    @EnvironmentObject var workoutController: WorkoutTrackerController
+    @EnvironmentObject var workoutController: WorkoutTrackerViewModel
     @State private var workoutTitle: String = ""
     @AppStorage("weightPreference") private var weightPreference: String = "Lbs"
     @AppStorage("distancePreference") private var distancePreference: String = "mile"

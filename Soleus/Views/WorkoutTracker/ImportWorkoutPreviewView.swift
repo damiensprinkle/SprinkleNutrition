@@ -8,7 +8,7 @@ struct ImportWorkoutPreviewView: View {
     @State private var expandedExercises: Set<Int> = []
     @Binding var isPresented: Bool
 
-    @EnvironmentObject var workoutController: WorkoutTrackerController
+    @EnvironmentObject var workoutController: WorkoutTrackerViewModel
 
     init(shareableWorkout: ShareableWorkout, isPresented: Binding<Bool>) {
         self.shareableWorkout = shareableWorkout

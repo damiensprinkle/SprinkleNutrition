@@ -5,7 +5,7 @@ struct AddWorkoutView: View {
     let navigationTitle: String
     var update: Bool
     @Environment(\.presentationMode) var presentationMode
-    @EnvironmentObject var workoutController: WorkoutTrackerController
+    @EnvironmentObject var workoutController: WorkoutTrackerViewModel
     @StateObject private var focusManager = FocusManager()
     
     @State private var workoutTitle: String = ""

@@ -8,7 +8,7 @@ struct CardView: View {
     var isEditMode: Bool = false
     var isDragging: Bool = false
 
-    @EnvironmentObject var workoutController: WorkoutTrackerController
+    @EnvironmentObject var workoutController: WorkoutTrackerViewModel
     @EnvironmentObject var appViewModel: AppViewModel
 
     @State private var animate = false

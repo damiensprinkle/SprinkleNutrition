@@ -27,7 +27,7 @@ struct ExerciseRowActive: View {
     @State private var saveFailedError: Bool = false
     @State private var showSaveErrorMessage: Bool = false
     @EnvironmentObject var focusManager: FocusManager
-    @EnvironmentObject var workoutController: WorkoutTrackerController
+    @EnvironmentObject var workoutController: WorkoutTrackerViewModel
     @EnvironmentObject var restTimer: RestTimerManager
 
     @AppStorage("autoStartRestTimer") private var autoStartRestTimer: Bool = true

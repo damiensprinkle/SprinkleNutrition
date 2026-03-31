@@ -7,10 +7,10 @@
 - **Language**: Swift 5
 - **Framework**: SwiftUI (no UIKit views except `UIViewControllerRepresentable` wrappers)
 - **Minimum iOS Version**: iOS 17.2+
-- **Data Persistence**: CoreData (`NSPersistentContainer`)
+- **Data Persistence**: CoreData (`NSPersistentCloudKitContainer`) with iCloud sync
 - **Architecture**: MVVM with a Manager layer
 - **Testing**: XCTest (unit tests) + XCUITest (UI tests)
-- **External Dependencies**: ConfettiSwiftUI v1.1.0
+- **External Dependencies**: Firebase iOS SDK (FirebaseAnalytics, FirebaseCrashlytics)
 
 ## Architecture
 
@@ -19,13 +19,14 @@
 | Layer | Role |
 |---|---|
 | **Views** | Pure SwiftUI. No business logic. |
-| **Controllers** | Bridge between Managers and Views. Own UI state. |
+| **ViewModels** | Bridge between Managers and Views. Own `@Published` UI state. |
 | **Managers** | All business logic and CoreData operations. |
 | **Models** | CoreData entities + lightweight transfer objects (`WorkoutDetailInput`, `SetInput`, etc.) |
+| **Protocols** | `WorkoutManaging` protocol enables dependency injection and in-memory test stores. |
 
 ### Key Classes
 
-- **`WorkoutTrackerController`** — Central controller for the workout tab. Owns `workoutDetails`, `workouts`, and session state. Passed as `@EnvironmentObject` throughout the workout flow.
+- **`WorkoutTrackerViewModel`** — Central view model for the workout tab. Owns `workoutDetails`, `workouts`, and session state. Passed as `@EnvironmentObject` throughout the workout flow.
 - **`WorkoutManager`** (~600 lines) — All CoreData reads/writes for workouts, history, sessions, and sets.
 - **`AppViewModel`** — Manages custom state-based navigation. Owns `currentView: ContentViewType`.
 - **`AchievementManager`** — Evaluates and persists milestone achievements after each workout.
@@ -33,7 +34,7 @@
 - **`FocusManager`** — Tracks keyboard/focus state across exercise row fields. Used to drive scroll-to-focused-field behavior and hide/show bottom buttons.
 - **`ColorManager`** — Randomly assigns colors to new workouts from the 15-color palette.
 - **`HapticManager`** — Centralized haptic feedback (set completion, reorder, etc.).
-- **`PersistenceController`** — CoreData stack singleton. Shared static instance prevents duplicate `NSManagedObjectModel` registration in tests.
+- **`PersistenceController`** — CoreData stack singleton using `NSPersistentCloudKitContainer`. Shared static instance prevents duplicate `NSManagedObjectModel` registration in tests. The `forUITesting` path uses a plain `NSPersistentContainer` with an in-memory store so tests have no network dependency.
 - **`LogCapture`** — Retains last 500 in-memory log entries for in-app diagnostics and bug report attachments.
 
 ### Navigation System
@@ -89,44 +90,55 @@ All interactive elements used in UI tests carry `.accessibilityIdentifier(Access
 
 ## External Dependencies
 
-| Package | Version | Purpose |
+| Package | Products Used | Purpose |
 |---|---|---|
-| [ConfettiSwiftUI](https://github.com/simibac/ConfettiSwiftUI) | 1.1.0 | Confetti cannon animation on workout completion |
+| [firebase-ios-sdk](https://github.com/firebase/firebase-ios-sdk) | FirebaseAnalytics, FirebaseCrashlytics | Analytics events and crash reporting |
+
+The Firebase SDK pulls in ~12 transitive dependencies (gRPC, abseil, leveldb, etc.) at the SPM resolution level. Only the Analytics and Crashlytics products are linked into the app binary — Firestore-related packages are resolved but not included.
 
 ## Project Structure
 
 ```
 Soleus/
+├── ViewModels/
+│   ├── WorkoutTrackerViewModel.swift  # Central workout tab view model
+│   ├── ActiveWorkoutViewModel.swift   # Active session state
+│   └── AppViewModel.swift             # Navigation state
 ├── Models/
 │   ├── CoreData/             # Auto-generated CoreData entity classes
-│   ├── AppViewModel.swift    # Navigation state
 │   ├── WorkoutTemplates.swift # Built-in workout templates
 │   └── Transfer objects      # WorkoutDetailInput, SetInput, ShareableWorkout, etc.
 ├── Views/
-│   ├── Main/                 # HomeView, CustomTabView, SettingsView, ContactUsView, FAQView, etc.
+│   ├── Main/                 # HomeView, CustomTabView, FAQView, ReleaseNotesView, etc.
+│   ├── Settings/             # SettingsView, DevMenuView, LogViewerView
 │   ├── WorkoutTracker/
-│   │   ├── ModifyWorkout/    # AddWorkoutView, AddExerciseDialog, RenameExerciseDialogView, etc.
+│   │   ├── ModifyWorkout/    # AddWorkoutView, AddExerciseDialog, TemplatePickerView
 │   │   ├── Shared/           # ExerciseRow, ExerciseRowActive, SetHeaders, etc.
-│   │   └── ActiveWorkout     # ActiveWorkoutView, WorkoutOverviewView, WorkoutHistoryView, etc.
-│   ├── Cards/                # CardView, WorkoutHistoryCardView, DataCardView, etc.
-│   └── SharedComponents/     # Reusable UI components
-├── Controllers/
-│   ├── WorkoutTrackerController.swift
-│   └── PersistenceController.swift
-├── Manager/
+│   │   └── Components/       # RestTimerView, ConfettiEffect
+│   ├── Cards/                # CardView, WorkoutHistoryCardView, DataCardView
+│   └── Components/           # Shared UI: DocumentPicker, MailComposer, DatePickerView, etc.
+├── Managers/
 │   ├── WorkoutManager.swift  # All CoreData workout operations (~600 lines)
 │   ├── AchievementManager.swift
 │   ├── RestTimerManager.swift
 │   ├── FocusManager.swift
 │   ├── ColorManager.swift
-│   └── HapticManager.swift
-├── Enums/                    # ModalType, FocusableField, ActiveAlert, etc.
+│   ├── HapticManager.swift
+│   ├── HealthKitManager.swift
+│   ├── NotificationManager.swift
+│   └── AnalyticsManager.swift
+├── Controllers/
+│   └── PersistenceController.swift   # CloudKit-backed CoreData stack
+├── Protocols/
+│   └── WorkoutManaging.swift         # Protocol for WorkoutManager (enables test injection)
+├── Enums/                    # ModalType, WorkoutSaveError, etc.
 ├── Helpers/
 │   ├── AccessibilityIdentifiers.swift
 │   ├── TimeHelper.swift
 │   ├── ExerciseInputHelper.swift
-│   ├── AppLogger.swift
 │   └── LogCapture.swift
+├── Utilities/
+│   └── AppLogger.swift
 └── Assets.xcassets/          # 15 custom colors + app icons
 ```
 

@@ -3,7 +3,7 @@ import SwiftUI
 struct HomeView: View {
     @EnvironmentObject var appViewModel: AppViewModel
     @EnvironmentObject var persistenceController: PersistenceController
-    @EnvironmentObject var workoutController: WorkoutTrackerController
+    @EnvironmentObject var workoutController: WorkoutTrackerViewModel
     @AppStorage("appearancePreference") private var appearancePreference: String = "dark"
 
     private var preferredColorScheme: ColorScheme? {

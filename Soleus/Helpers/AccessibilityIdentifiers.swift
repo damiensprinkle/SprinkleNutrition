@@ -66,6 +66,10 @@ enum AccessibilityID {
 
     // MARK: - Active Workout
     static let startWorkoutButton = "start_workout_button"
+    static let activeEditModeButton = "active_edit_mode_button"
+    static let activeAddExerciseButton = "active_add_exercise_button"
     // Per-set identifiers are generated dynamically in ExerciseRowActive:
     //   "reps_set_\(setIndex)", "weight_set_\(setIndex)", "complete_set_\(setIndex)"
+    // Per-exercise identifiers are generated dynamically in ActiveWorkoutView:
+    //   "note_button_\(index)", "exercise_menu_\(index)", "add_set_button_\(index)", "notes_field_\(index)"
 }

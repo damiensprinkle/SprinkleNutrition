@@ -36,7 +36,8 @@
 1. Tap the **↑↓** button in the top-right navigation bar to enter reorder mode
 2. Long-press any card to lift it
 3. Drag it to the desired position — other cards shift to make room
-4. Release to drop, then tap the **✓** button to exit reorder mode
+4. Drag toward the top or bottom edge of the screen to auto-scroll if you have many cards
+5. Release to drop, then tap the **✓** button to exit reorder mode
 
 ---
 
@@ -56,11 +57,11 @@
 
 1. Tap the **pencil icon** in the top-right to enter edit mode
 2. Available actions in edit mode:
-   - Add new exercises via the **+** button
+   - Add new exercises via the **+** nav button
    - Add sets with the **Add Set** button on each exercise
    - Swipe left on a set row to delete it
-   - Use **↑ / ↓** arrows to reorder exercises
-   - Tap the notes icon to edit exercise notes
+   - Tap **···** on any exercise to rename it, move it up/down, or delete it
+   - Tap the **notes icon** next to any exercise to add or edit an inline note
 3. Tap the **green checkmark** to exit edit mode
 
 ---

@@ -7,7 +7,7 @@ struct ActiveWorkoutView: View {
 
     @Environment(\.presentationMode) var presentationMode
     @EnvironmentObject var appViewModel: AppViewModel
-    @EnvironmentObject var workoutController: WorkoutTrackerController
+    @EnvironmentObject var workoutController: WorkoutTrackerViewModel
 
     @StateObject private var focusManager = FocusManager()
     @StateObject private var viewModel: ActiveWorkoutViewModel
@@ -135,6 +135,7 @@ struct ActiveWorkoutView: View {
                         Image(systemName: "plus.circle")
                             .foregroundColor(.primary)
                     }
+                    .accessibilityIdentifier(AccessibilityID.activeAddExerciseButton)
                 }
                 Button(action: {
                     withAnimation(.easeInOut(duration: 0.2)) {
@@ -144,6 +145,7 @@ struct ActiveWorkoutView: View {
                     Image(systemName: editMode == .active ? "checkmark.circle.fill" : "pencil.circle")
                         .foregroundColor(editMode == .active ? .green : .primary)
                 }
+                .accessibilityIdentifier(AccessibilityID.activeEditModeButton)
                 Menu {
                     Button(action: {
                         activeAlert = .cancelWorkout
@@ -315,6 +317,7 @@ struct ActiveWorkoutView: View {
                                     .foregroundColor(hasNotes ? .orange : .gray)
                             }
                             .disabled(!viewModel.workoutStarted)
+                            .accessibilityIdentifier("note_button_\(index)")
 
                             Menu {
                                 Button(action: {
@@ -355,6 +358,7 @@ struct ActiveWorkoutView: View {
                                     .font(.body)
                                     .foregroundColor(.primary)
                             }
+                            .accessibilityIdentifier("exercise_menu_\(index)")
                         }
                     }
                 }
@@ -383,6 +387,7 @@ struct ActiveWorkoutView: View {
                         .cornerRadius(8)
                         .padding(.top, 4)
                         .id("notes_\(index)")
+                        .accessibilityIdentifier("notes_field_\(index)")
                         .onChange(of: editingNotesText) {
                             if editingNotesText.hasSuffix("\n") &&
                                editingNotesText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
@@ -443,6 +448,7 @@ struct ActiveWorkoutView: View {
                             addSet(to: index)
                         }
                         .buttonStyle(BorderlessButtonStyle())
+                        .accessibilityIdentifier("add_set_button_\(index)")
                     }
                 }
             }

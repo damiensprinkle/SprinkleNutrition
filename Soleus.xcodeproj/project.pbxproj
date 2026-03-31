@@ -21,7 +21,7 @@
 		081F87F22B87F6ED00BBBDF2 /* CheckboxStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87F12B87F6ED00BBBDF2 /* CheckboxStyle.swift */; };
 		0828683F2CE7E13900835C08 /* ExerciseInputHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0828683E2CE7E13500835C08 /* ExerciseInputHelper.swift */; };
 		08355A8D2F72287F00097621 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 08355A8C2F72287F00097621 /* GoogleService-Info.plist */; };
-		0847535B2CE3D47D00C6A7F9 /* WorkoutTrackerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0847535A2CE3D47000C6A7F9 /* WorkoutTrackerController.swift */; };
+		0847535B2CE3D47D00C6A7F9 /* WorkoutTrackerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0847535A2CE3D47000C6A7F9 /* WorkoutTrackerViewModel.swift */; };
 		0847535F2CE3D59B00C6A7F9 /* WorkoutSessionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0847535E2CE3D59900C6A7F9 /* WorkoutSessionModel.swift */; };
 		084753632CE3F2D500C6A7F9 /* ModalType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084753622CE3F2D100C6A7F9 /* ModalType.swift */; };
 		0847536F2CE5205D00C6A7F9 /* WorkoutSaveError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0847536E2CE5205500C6A7F9 /* WorkoutSaveError.swift */; };
@@ -167,7 +167,7 @@
 		081F87F12B87F6ED00BBBDF2 /* CheckboxStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxStyle.swift; sourceTree = "<group>"; };
 		0828683E2CE7E13500835C08 /* ExerciseInputHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseInputHelper.swift; sourceTree = "<group>"; };
 		08355A8C2F72287F00097621 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		0847535A2CE3D47000C6A7F9 /* WorkoutTrackerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTrackerController.swift; sourceTree = "<group>"; };
+		0847535A2CE3D47000C6A7F9 /* WorkoutTrackerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTrackerViewModel.swift; sourceTree = "<group>"; };
 		0847535E2CE3D59900C6A7F9 /* WorkoutSessionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSessionModel.swift; sourceTree = "<group>"; };
 		084753622CE3F2D100C6A7F9 /* ModalType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalType.swift; sourceTree = "<group>"; };
 		0847536E2CE5205500C6A7F9 /* WorkoutSaveError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSaveError.swift; sourceTree = "<group>"; };
@@ -277,9 +277,9 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		084753592CE3D3D500C6A7F9 /* SharedComponents */ = {
+		084753592CE3D3D500C6A7F9 /* Components */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = SharedComponents;
+			path = Components;
 			sourceTree = "<group>";
 		};
 		085466322CB618AA00136FBC /* images */ = {
@@ -331,7 +331,7 @@
 			path = Enums;
 			sourceTree = "<group>";
 		};
-		0871113B2B7306060054E315 /* Manager */ = {
+		0871113B2B7306060054E315 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
 				08C5E0372F721DD100FC40DB /* HealthKitManager.swift */,
@@ -344,7 +344,7 @@
 				0871113C2B7306C20054E315 /* ColorManager.swift */,
 				08B3CFE62B7E6E40002F5C92 /* FocusManager.swift */,
 			);
-			path = Manager;
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		087111442B7519900054E315 /* CoreData */ = {
@@ -418,6 +418,8 @@
 			isa = PBXGroup;
 			children = (
 				088B57782EC3A7030066CC17 /* ActiveWorkoutViewModel.swift */,
+				0847535A2CE3D47000C6A7F9 /* WorkoutTrackerViewModel.swift */,
+				087111A52B77C32D0054E315 /* AppViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -496,11 +498,11 @@
 				08C5DDC72F6218F400FC40DB /* Soleus.xctestplan */,
 				088B577C2EC3AAB30066CC17 /* SoleusUITests */,
 				088B57722EC3A1C00066CC17 /* SoleusTests */,
-				085466322CB618AA00136FBC /* images */,
 				08B3D00D2B82AC7C002F5C92 /* Launch Screen.storyboard */,
 				08B78FEE2B6DBA370002DA68 /* Soleus */,
 				081A94A92F7226A100896A3E /* Frameworks */,
 				08B78FED2B6DBA370002DA68 /* Products */,
+				085466322CB618AA00136FBC /* images */,
 			);
 			sourceTree = "<group>";
 		};
@@ -523,8 +525,9 @@
 				081DD58F2EC90D7E00B4074D /* achievements.json */,
 				081DD58C2EC5121B00B4074D /* Info.plist */,
 				088B57792EC3A7030066CC17 /* ViewModels */,
+				0BCC00001300000000001201 /* Protocols */,
 				08B3CFE82B7E9F9A002F5C92 /* Helpers */,
-				0871113B2B7306060054E315 /* Manager */,
+				0871113B2B7306060054E315 /* Managers */,
 				087111352B728F810054E315 /* Enums */,
 				08B790252B6E948C0002DA68 /* Controllers */,
 				08B790242B6E94840002DA68 /* Models */,
@@ -549,10 +552,8 @@
 		08B7901C2B6E8F230002DA68 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				08A2EC0D2ED6444500B60FF9 /* LogViewerView.swift */,
-				08A2EC092ED4D53800B60FF9 /* DevMenuView.swift */,
-				084753592CE3D3D500C6A7F9 /* SharedComponents */,
-				08B7901D2B6E8F8D0002DA68 /* SettingsView.swift */,
+				084753592CE3D3D500C6A7F9 /* Components */,
+				0BCC00001300000000001101 /* Settings */,
 				087111AB2B77E9DB0054E315 /* Main */,
 				08B790342B7162740002DA68 /* Cards */,
 				08B790282B708A1F0002DA68 /* WorkoutTracker */,
@@ -571,7 +572,6 @@
 				0847535E2CE3D59900C6A7F9 /* WorkoutSessionModel.swift */,
 				087111442B7519900054E315 /* CoreData */,
 				087111402B7405990054E315 /* WorkoutDetailsInput.swift */,
-				087111A52B77C32D0054E315 /* AppViewModel.swift */,
 				087111A72B77C6DF0054E315 /* WorkoutInfo.swift */,
 			);
 			path = Models;
@@ -580,8 +580,6 @@
 		08B790252B6E948C0002DA68 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				088B57762EC3A6E40066CC17 /* WorkoutManaging.swift */,
-				0847535A2CE3D47000C6A7F9 /* WorkoutTrackerController.swift */,
 				08C31FFE2B82EA3A002EE8A7 /* PersistenceController.swift */,
 			);
 			path = Controllers;
@@ -628,6 +626,24 @@
 			path = docs;
 			sourceTree = "<group>";
 		};
+		0BCC00001300000000001101 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				08B7901D2B6E8F8D0002DA68 /* SettingsView.swift */,
+				08A2EC092ED4D53800B60FF9 /* DevMenuView.swift */,
+				08A2EC0D2ED6444500B60FF9 /* LogViewerView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		0BCC00001300000000001201 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				088B57762EC3A6E40066CC17 /* WorkoutManaging.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -644,7 +660,7 @@
 			buildRules = (
 			);
 			fileSystemSynchronizedGroups = (
-				084753592CE3D3D500C6A7F9 /* SharedComponents */,
+				084753592CE3D3D500C6A7F9 /* Components */,
 				085466322CB618AA00136FBC /* images */,
 				08EF98262CEF89A700AE8196 /* WorkoutUtilities */,
 			);
@@ -781,6 +797,7 @@
 			shellScript = (
 				"\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\" \"${SRCROOT}/Soleus/GoogleService-Info.plist\"  ",
 				"",
+				"",
 			);
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -865,7 +882,7 @@
 				08C5DF422F68C85500FC40DB /* TemplatePickerView.swift in Sources */,
 				0CA30001300000000000CC01 /* ConfettiEffect.swift in Sources */,
 				081DD5962EC90F2700B4074D /* AchievementsView.swift in Sources */,
-				0847535B2CE3D47D00C6A7F9 /* WorkoutTrackerController.swift in Sources */,
+				0847535B2CE3D47D00C6A7F9 /* WorkoutTrackerViewModel.swift in Sources */,
 			);
 		};
 		08B78FF92B6DBA390002DA68 /* Sources */ = {

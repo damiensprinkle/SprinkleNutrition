@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-class WorkoutTrackerController: ObservableObject {
+class WorkoutTrackerViewModel: ObservableObject {
     @Published var workouts: [WorkoutInfo] = []
     @Published var hasActiveSession = false
     @Published var activeWorkoutName: String?

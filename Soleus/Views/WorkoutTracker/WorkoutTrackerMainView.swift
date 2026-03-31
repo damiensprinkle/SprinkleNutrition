@@ -3,7 +3,7 @@ import SwiftData
 
 struct WorkoutTrackerMainView: View {
     @EnvironmentObject var appViewModel: AppViewModel
-    @EnvironmentObject var workoutController: WorkoutTrackerController
+    @EnvironmentObject var workoutController: WorkoutTrackerViewModel
     @State private var deletingWorkouts: Set<UUID> = []
     @State private var duplicatingWorkouts: Set<UUID> = []
     @State private var presentingModal: ModalType? = nil
@@ -574,7 +574,7 @@ private struct WorkoutCardFrameKey: PreferenceKey {
 struct ImportWorkoutPreviewContent: View {
     @Binding var importedWorkout: ShareableWorkout?
     @Binding var showImportPreview: Bool
-    @EnvironmentObject var workoutController: WorkoutTrackerController
+    @EnvironmentObject var workoutController: WorkoutTrackerViewModel
 
     var body: some View {
         Group {

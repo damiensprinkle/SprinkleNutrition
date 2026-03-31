@@ -153,7 +153,7 @@ final class ActiveWorkoutSaveTests: XCTestCase {
 
     // MARK: - Round-Trip Reload Test
 
-    /// Simulates what WorkoutTrackerController does when the view reloads:
+    /// Simulates what WorkoutTrackerViewModel does when the view reloads:
     /// 1. loadWorkoutDetails (permanent template)
     /// 2. loadTemporaryWorkoutDetails (overlay temp values)
     func test_RoundTrip_TempValuesOverlayTemplateOnReload() {

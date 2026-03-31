@@ -2,7 +2,7 @@ import SwiftUI
 
 struct CustomizeCardView: View {
     var workoutId: UUID
-    @EnvironmentObject var workoutController: WorkoutTrackerController
+    @EnvironmentObject var workoutController: WorkoutTrackerViewModel
     @EnvironmentObject var appViewModel: AppViewModel
     
     private let colorManager = ColorManager()

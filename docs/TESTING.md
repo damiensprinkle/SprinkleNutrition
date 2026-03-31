@@ -43,6 +43,8 @@ Or use Xcode's test runner (Cmd + U)
 - [ ] Delete a workout template
 - [ ] Enter reorder mode via ↑↓ nav button, long-press a card to lift it, drag to new position
 - [ ] Verify cards shift to accommodate the dragged card
+- [ ] With 8+ workout cards, drag a card to the bottom edge — verify the list auto-scrolls down
+- [ ] With 8+ workout cards, drag a card to the top edge — verify the list auto-scrolls up
 - [ ] Release and verify order is saved after exiting reorder mode
 - [ ] Long-press and immediately release without dragging — card should not stay stuck
 
@@ -74,7 +76,7 @@ Or use Xcode's test runner (Cmd + U)
 - [ ] Tap "Start Workout" button (requires double confirmation)
 - [ ] Verify timer starts and displays correctly
 - [ ] Verify timer continues when app is backgrounded
-- [ ] Verify active workout indicator appears on card (green animated icon)
+- [ ] Verify active workout card shows pulsing ripple animation and LIVE badge
 
 **Completing Sets - Manual**
 - [ ] Check off a set using the slider/toggle
@@ -93,14 +95,16 @@ Or use Xcode's test runner (Cmd + U)
 **Edit Mode - During Active Workout**
 - [ ] Tap pencil icon to enter edit mode
 - [ ] Verify pencil icon changes to green checkmark
-- [ ] Verify up/down arrows appear for exercises (when applicable)
-- [ ] Verify "Add Set" button appears
+- [ ] Verify "Add Set" button and ··· menu appear per exercise
 - [ ] Add a new set (verify it pre-populates from last set)
 - [ ] Delete a set using swipe-to-delete (only works in edit mode)
 - [ ] Try to swipe-delete when NOT in edit mode (should not work)
-- [ ] Rearrange exercises using up/down arrows
-- [ ] Tap plus icon to add a new exercise during workout
-- [ ] Add notes to an exercise during workout
+- [ ] Tap ··· on an exercise → Move Down (verify order changes)
+- [ ] Tap ··· on an exercise → Move Up (verify order changes)
+- [ ] Tap ··· on an exercise → Rename Exercise (verify name updates inline)
+- [ ] Tap ··· on an exercise → Delete Exercise → confirm alert (verify removed)
+- [ ] Tap + nav button to add a new exercise during workout
+- [ ] Tap notes icon on an exercise to add a note — verify note appears below title
 - [ ] Exit edit mode (tap checkmark)
 
 **Completing a Workout - No Changes**

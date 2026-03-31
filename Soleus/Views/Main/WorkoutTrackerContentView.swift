@@ -3,7 +3,7 @@ import SwiftUI
 struct WorkoutContentMainView: View {
     @EnvironmentObject var appViewModel: AppViewModel
     @Environment(\.managedObjectContext) var managedObjectContext
-    @EnvironmentObject var workoutController: WorkoutTrackerController
+    @EnvironmentObject var workoutController: WorkoutTrackerViewModel
 
 
     var body: some View {

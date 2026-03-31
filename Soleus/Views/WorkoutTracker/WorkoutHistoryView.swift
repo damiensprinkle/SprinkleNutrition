@@ -2,7 +2,7 @@ import SwiftUI
 
 struct WorkoutHistoryView: View {
     @EnvironmentObject var appViewModel: AppViewModel
-    @EnvironmentObject var workoutController: WorkoutTrackerController
+    @EnvironmentObject var workoutController: WorkoutTrackerViewModel
     @State private var histories: [WorkoutHistory] = []
     @State private var appearedCards: Set<UUID> = []
 

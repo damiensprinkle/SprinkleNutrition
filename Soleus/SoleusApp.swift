@@ -25,7 +25,7 @@ struct SoleusApp: App {
     @StateObject private var persistenceController: PersistenceController
     @StateObject private var appViewModel = AppViewModel()
     @StateObject private var workoutManager = WorkoutManager()
-    @StateObject private var controller: WorkoutTrackerController
+    @StateObject private var controller: WorkoutTrackerViewModel
     @StateObject private var errorHandler = ErrorHandler()
     @StateObject private var achievementManager = AchievementManager()
     @StateObject private var healthKitManager = HealthKitManager()
@@ -46,7 +46,7 @@ struct SoleusApp: App {
         let handler = ErrorHandler()
         manager.errorHandler = handler
 
-        _controller = StateObject(wrappedValue: WorkoutTrackerController(workoutManager: manager))
+        _controller = StateObject(wrappedValue: WorkoutTrackerViewModel(workoutManager: manager))
         _workoutManager = StateObject(wrappedValue: manager)
         _errorHandler = StateObject(wrappedValue: handler)
 

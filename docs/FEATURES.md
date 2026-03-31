@@ -24,7 +24,7 @@
 - **Workout Template Management**:
   - Edit and update existing workout templates at any time
   - Duplicate workouts to create variations
-  - Reorder workout cards on the main screen via long-press drag (iOS home screen style)
+  - Reorder workout cards on the main screen via long-press drag — drag near the top or bottom edge and the list auto-scrolls
   - Color-code workout cards — 15 color options available via the Customize Card menu
   - Import workouts from `.soleus` files shared by other users
   - Export and share workouts as `.soleus` files via AirDrop, Messages, or any share target
@@ -36,6 +36,7 @@
   - Single active session enforced — starting a new workout while one is active is blocked
   - Session persists through app backgrounding, force quit, and device restart
   - Resume banner appears on the main screen when a session is in progress
+  - Active workout card shows a pulsing ripple animation and a LIVE badge for at-a-glance identification
   - Notes icon is disabled and dimmed until the workout has been started
 
 - **Set Tracking**:
@@ -44,11 +45,12 @@
   - Rest timer auto-starts on set completion (configurable in Settings)
 
 - **Edit Mode (during active workout)**:
-  - Add new exercises mid-workout
+  - Add new exercises mid-workout via the + nav button
   - Add or remove sets with pre-population from the previous set
-  - Rearrange exercises using up/down arrows
-  - Edit exercise notes
+  - Tap ··· on any exercise to rename it, move it up/down, or delete it
+  - Tap the notes icon on any exercise to add or edit inline notes
   - Swipe-to-delete sets (only available in edit mode)
+  - New exercises added mid-workout are permanently saved to the template immediately
 
 - **Workout Completion**:
   - Double-confirmation required to end a workout
@@ -88,6 +90,13 @@
 
 - **Dashboard**:
   - Dedicated dashboard tab showing fitness progress and achievements
+
+## Data & Sync
+
+- **iCloud Sync**:
+  - Workouts, history, and settings sync automatically across all devices signed into the same iCloud account via CloudKit
+  - No account or login required beyond the user's existing Apple ID
+  - Data is stored in the user's personal iCloud — Soleus never accesses it
 
 ## Settings & Customization
 

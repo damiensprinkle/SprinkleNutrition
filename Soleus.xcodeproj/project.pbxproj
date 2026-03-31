@@ -21,6 +21,7 @@
 		081F87F22B87F6ED00BBBDF2 /* CheckboxStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081F87F12B87F6ED00BBBDF2 /* CheckboxStyle.swift */; };
 		0828683F2CE7E13900835C08 /* ExerciseInputHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0828683E2CE7E13500835C08 /* ExerciseInputHelper.swift */; };
 		08355A8D2F72287F00097621 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 08355A8C2F72287F00097621 /* GoogleService-Info.plist */; };
+		08355BEF2F7C696600097621 /* ActiveWorkoutEditTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08355BEE2F7C696600097621 /* ActiveWorkoutEditTests.swift */; };
 		0847535B2CE3D47D00C6A7F9 /* WorkoutTrackerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0847535A2CE3D47000C6A7F9 /* WorkoutTrackerViewModel.swift */; };
 		0847535F2CE3D59B00C6A7F9 /* WorkoutSessionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0847535E2CE3D59900C6A7F9 /* WorkoutSessionModel.swift */; };
 		084753632CE3F2D500C6A7F9 /* ModalType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084753622CE3F2D100C6A7F9 /* ModalType.swift */; };
@@ -167,6 +168,7 @@
 		081F87F12B87F6ED00BBBDF2 /* CheckboxStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxStyle.swift; sourceTree = "<group>"; };
 		0828683E2CE7E13500835C08 /* ExerciseInputHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseInputHelper.swift; sourceTree = "<group>"; };
 		08355A8C2F72287F00097621 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		08355BEE2F7C696600097621 /* ActiveWorkoutEditTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveWorkoutEditTests.swift; sourceTree = "<group>"; };
 		0847535A2CE3D47000C6A7F9 /* WorkoutTrackerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutTrackerViewModel.swift; sourceTree = "<group>"; };
 		0847535E2CE3D59900C6A7F9 /* WorkoutSessionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSessionModel.swift; sourceTree = "<group>"; };
 		084753622CE3F2D100C6A7F9 /* ModalType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalType.swift; sourceTree = "<group>"; };
@@ -427,6 +429,7 @@
 		088B577C2EC3AAB30066CC17 /* SoleusUITests */ = {
 			isa = PBXGroup;
 			children = (
+				08355BEE2F7C696600097621 /* ActiveWorkoutEditTests.swift */,
 				08C5DFC92F6CB6BF00FC40DB /* ActiveWorkoutTests.swift */,
 				08C5DE102F62369C00FC40DB /* ImportWorkoutTests.swift */,
 				0CA60002300000000000FF01 /* ContactUsTests.swift */,
@@ -907,6 +910,7 @@
 		08B790032B6DBA390002DA68 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			files = (
+				08355BEF2F7C696600097621 /* ActiveWorkoutEditTests.swift in Sources */,
 				0CA10002300000000000AA01 /* TestAccessibilityIDs.swift in Sources */,
 				0CA10003300000000000AA01 /* SoleusUITestBase.swift in Sources */,
 				0CA10004300000000000AA01 /* TabNavigationTests.swift in Sources */,

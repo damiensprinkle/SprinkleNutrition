@@ -34,6 +34,13 @@ final class ActiveWorkoutEditTests: SoleusUITestBase {
         editButton.tap()
     }
 
+    /// Returns the exercise section header button (label begins with the exercise name).
+    /// The header HStack uses .accessibilityLabel("Name, expanded/collapsed") + .isButton trait.
+    private func exerciseHeaderButton(name: String) -> XCUIElement {
+        let predicate = NSPredicate(format: "label BEGINSWITH %@", name)
+        return app.buttons.matching(predicate).firstMatch
+    }
+
     /// Opens the add-exercise dialog, types the name, taps Add, and waits for the dialog to fully dismiss.
     @discardableResult
     private func addExerciseViaDialog(name: String) -> Bool {
@@ -50,7 +57,8 @@ final class ActiveWorkoutEditTests: SoleusUITestBase {
         let cancelButton = app.buttons[TestID.exerciseDialogCancelButton]
         _ = cancelButton.waitForNonExistence(timeout: 5)
 
-        return app.staticTexts[name].waitForExistence(timeout: 8)
+        // Exercise header is a button with accessibilityLabel "Name, expanded" or "Name, collapsed"
+        return exerciseHeaderButton(name: name).waitForExistence(timeout: 8)
     }
 
     // MARK: - Add Exercise
@@ -142,8 +150,8 @@ final class ActiveWorkoutEditTests: SoleusUITestBase {
         moveDownButton.tap()
 
         // Both exercises should still be present after reordering
-        XCTAssertTrue(app.staticTexts["Placeholder"].waitForExistence(timeout: 3))
-        XCTAssertTrue(app.staticTexts["Squat"].waitForExistence(timeout: 3))
+        XCTAssertTrue(exerciseHeaderButton(name: "Placeholder").waitForExistence(timeout: 3))
+        XCTAssertTrue(exerciseHeaderButton(name: "Squat").waitForExistence(timeout: 3))
     }
 
     // MARK: - Delete Exercise
@@ -173,10 +181,10 @@ final class ActiveWorkoutEditTests: SoleusUITestBase {
 
         // "Deadlift" should no longer be present
         XCTAssertFalse(
-            app.staticTexts["Deadlift"].waitForExistence(timeout: 2),
+            exerciseHeaderButton(name: "Deadlift").waitForExistence(timeout: 2),
             "Deleted exercise should no longer be visible"
         )
         // "Placeholder" should still be there
-        XCTAssertTrue(app.staticTexts["Placeholder"].exists)
+        XCTAssertTrue(exerciseHeaderButton(name: "Placeholder").exists)
     }
 }

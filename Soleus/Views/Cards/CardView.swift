@@ -8,11 +8,12 @@ struct CardView: View {
     var isEditMode: Bool = false
     var isDragging: Bool = false
 
-    @EnvironmentObject var workoutController: WorkoutTrackerController
+    @EnvironmentObject var workoutController: WorkoutTrackerViewModel
     @EnvironmentObject var appViewModel: AppViewModel
 
     @State private var animate = false
-    @State private var pulseOpacity = false
+    @State private var ripple1 = false
+    @State private var ripple2 = false
     @State private var rotation = false
     @State private var showAlert = false
     @State private var alertTitle = ""
@@ -94,14 +95,33 @@ struct CardView: View {
     @ViewBuilder
     private func existingWorkoutCardContent(workout: Workouts?) -> some View {
         VStack(alignment: .leading, spacing: 0) {
-            // Workout name
-            Text(workout?.name ?? "Workout")
-                .font(.system(size: 22, weight: .bold, design: .rounded))
-                .foregroundColor(.staticWhite)
-                .multilineTextAlignment(.leading)
-                .lineLimit(3)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .shadow(color: Color.black.opacity(0.3), radius: 2, x: 0, y: 1)
+            // Workout name + LIVE badge
+            HStack(alignment: .top) {
+                Text(workout?.name ?? "Workout")
+                    .font(.system(size: 22, weight: .bold, design: .rounded))
+                    .foregroundColor(.staticWhite)
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(3)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .shadow(color: Color.black.opacity(0.3), radius: 2, x: 0, y: 1)
+
+                if workoutController.hasActiveSession && workoutController.activeWorkoutId == workoutId {
+                    HStack(spacing: 4) {
+                        Circle()
+                            .fill(Color.green)
+                            .frame(width: 6, height: 6)
+                            .scaleEffect(animate ? 1.4 : 0.8)
+                        Text("Active")
+                            .font(.system(size: 10, weight: .bold))
+                            .foregroundColor(.white)
+                    }
+                    .padding(.horizontal, 7)
+                    .padding(.vertical, 4)
+                    .background(Color.black.opacity(0.25))
+                    .clipShape(Capsule())
+                    .overlay(Capsule().stroke(Color.green.opacity(0.7), lineWidth: 1))
+                }
+            }
 
             Spacer()
 
@@ -129,43 +149,42 @@ struct CardView: View {
     private func playButtonContent() -> some View {
         if(workoutController.hasActiveSession && workoutController.activeWorkoutId == workoutId) {
                 ZStack {
-                    // Outer glow ring
+                    // Ripple ring 1
                     Circle()
-                        .stroke(Color.green.opacity(pulseOpacity ? 0.3 : 0.0), lineWidth: 3)
-                        .frame(width: 50, height: 50)
-                        .scaleEffect(pulseOpacity ? 1.4 : 1.0)
+                        .stroke(Color.green.opacity(ripple1 ? 0.0 : 0.55), lineWidth: 2)
+                        .frame(width: 44, height: 44)
+                        .scaleEffect(ripple1 ? 2.2 : 1.0)
 
-                    // Main icon with multiple animations
+                    // Ripple ring 2 (staggered)
+                    Circle()
+                        .stroke(Color.green.opacity(ripple2 ? 0.0 : 0.55), lineWidth: 2)
+                        .frame(width: 44, height: 44)
+                        .scaleEffect(ripple2 ? 2.2 : 1.0)
+
+                    // Black outline (slightly larger copy behind)
+                    Image(systemName: "figure.run.circle.fill")
+                        .font(.system(size: 43))
+                        .foregroundColor(.black.opacity(0.45))
+                        .scaleEffect(animate ? 1.12 : 1.0)
+
+                    // Main icon
                     Image(systemName: "figure.run.circle.fill")
                         .font(.system(size: 40))
                         .foregroundColor(.green)
-                        .scaleEffect(animate ? 1.15 : 1.0)
-                        .rotationEffect(.degrees(rotation ? 2 : -2))
-                        .shadow(color: .green.opacity(0.6), radius: animate ? 8 : 4)
+                        .scaleEffect(animate ? 1.12 : 1.0)
+                        .shadow(color: .green.opacity(0.7), radius: animate ? 10 : 5)
                 }
                 .onAppear {
-                    // Pulse scale animation
-                    withAnimation(
-                        Animation.easeInOut(duration: 0.8)
-                            .repeatForever(autoreverses: true)
-                    ) {
+                    withAnimation(.easeInOut(duration: 0.9).repeatForever(autoreverses: true)) {
                         animate = true
                     }
-
-                    // Glow ring animation
-                    withAnimation(
-                        Animation.easeOut(duration: 1.5)
-                            .repeatForever(autoreverses: false)
-                    ) {
-                        pulseOpacity = true
+                    withAnimation(.easeOut(duration: 1.4).repeatForever(autoreverses: false)) {
+                        ripple1 = true
                     }
-
-                    // Subtle rotation animation
-                    withAnimation(
-                        Animation.easeInOut(duration: 1.2)
-                            .repeatForever(autoreverses: true)
-                    ) {
-                        rotation = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+                        withAnimation(.easeOut(duration: 1.4).repeatForever(autoreverses: false)) {
+                            ripple2 = true
+                        }
                     }
                 }
         } else {

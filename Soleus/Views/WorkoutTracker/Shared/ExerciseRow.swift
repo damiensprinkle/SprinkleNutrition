@@ -136,6 +136,12 @@ struct ExerciseRow: View {
                     }
                     .onChange(of: weightInput) {
                         validateAndSetInputFloat(&weightInput, for: &setInput.weight, maxLength: 5, maxDecimals: 2)
+                        if !weightInput.isEmpty {
+                            let newWeight = Float(weightInput) ?? 0.0
+                            if setInput.weight != newWeight {
+                                setInput.weight = newWeight
+                            }
+                        }
                     }
                     .onAppear {
                         if weightInput.isEmpty {

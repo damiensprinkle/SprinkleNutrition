@@ -17,7 +17,7 @@ class ActiveWorkoutViewModel: ObservableObject {
     private var backgroundObserver: Any?
 
     private let workoutId: UUID
-    private var workoutController: WorkoutTrackerController!
+    private var workoutController: WorkoutTrackerViewModel!
     private var appViewModel: AppViewModel!
 
     // MARK: - Computed Properties
@@ -45,7 +45,7 @@ class ActiveWorkoutViewModel: ObservableObject {
         self.workoutId = workoutId
     }
 
-    func setup(workoutController: WorkoutTrackerController, appViewModel: AppViewModel) {
+    func setup(workoutController: WorkoutTrackerViewModel, appViewModel: AppViewModel) {
         self.workoutController = workoutController
         self.appViewModel = appViewModel
         setupNotificationObservers()

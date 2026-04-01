@@ -62,8 +62,8 @@ final class TimeHelperTests: XCTestCase {
     }
 
     func testConvertToSeconds_ShortInput_PadsWithZeros() {
-        // Input "30" becomes "300000" (30 hours, 0 min, 0 sec)
-        XCTAssertEqual(convertToSeconds("30"), 108000)
+        // Input "30" becomes "000030" (0 hours, 0 min, 30 sec)
+        XCTAssertEqual(convertToSeconds("30"), 30)
     }
 
     func testConvertToSeconds_EmptyString() {

@@ -2,15 +2,15 @@ import XCTest
 import Combine
 @testable import Soleus
 
-final class WorkoutTrackerControllerTests: XCTestCase {
-    var sut: WorkoutTrackerController!
+final class WorkoutTrackerViewModelTests: XCTestCase {
+    var sut: WorkoutTrackerViewModel!
     var mockManager: MockWorkoutManager!
     var cancellables: Set<AnyCancellable>!
 
     override func setUp() {
         super.setUp()
         mockManager = MockWorkoutManager()
-        sut = WorkoutTrackerController(workoutManager: mockManager)
+        sut = WorkoutTrackerViewModel(workoutManager: mockManager)
         cancellables = []
     }
 

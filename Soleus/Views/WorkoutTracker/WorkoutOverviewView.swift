@@ -7,7 +7,7 @@ struct WorkoutOverviewView: View {
     var elapsedTime: String
     var workoutDetails: [WorkoutDetailInput] = []
 
-    @EnvironmentObject var workoutController: WorkoutTrackerController
+    @EnvironmentObject var workoutController: WorkoutTrackerViewModel
     @EnvironmentObject var appViewModel: AppViewModel
     @EnvironmentObject var achievementManager: AchievementManager
     @State private var counter = 0

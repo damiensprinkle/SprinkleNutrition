@@ -39,25 +39,17 @@ These features build directly on existing infrastructure and can be shipped quic
 
 ---
 
-## Tier 2 — Medium Term (High Impact, Moderate Effort)
+## Shipped ✓
 
-These features require new screens or data models but no external dependencies.
+### iCloud Sync `Free`
+
+Workout data, history, and settings now sync automatically across all devices signed into the same iCloud account via `NSPersistentCloudKitContainer`. No login required. Data lives in the user's personal iCloud — Soleus never accesses it. Active session filtering prevents a workout started on one device from showing a spurious "Resume" banner on another device via a `deviceIdentifier` field on `WorkoutSession`.
 
 ---
 
-### iCloud Sync `Pro`
+## Tier 2 — Medium Term (High Impact, Moderate Effort)
 
-**Problem:** Workout data lives only on the user's current device. Switching phones, getting a new iPhone, or using an iPad means starting from scratch unless a full device backup is restored. Shipping without sync is a known gap from day one for users who upgrade devices or use multiple Apple devices.
-
-**Solution:**
-- Migrate the CoreData stack from `NSPersistentContainer` to `NSPersistentCloudKitContainer`
-- Apple's CloudKit integration handles sync automatically across all devices signed into the same Apple ID
-- Workouts, history, templates, exercise library, and settings all sync
-- Conflict resolution uses `NSMergeByPropertyObjectTrumpMergePolicy` (already in place) — most recent write wins
-- Sync is transparent to the user — no login required beyond their existing Apple ID
-- Requires CloudKit entitlement and iCloud capability in the Xcode project
-- Full regression testing required against the existing CoreData model to ensure no data loss during migration
-- **Priority note:** Intentionally scheduled before My Exercises and other CoreData-additive features so the schema is in its cleanest state at migration time. All future CoreData entities automatically sync once this is in place.
+These features require new screens or data models but no external dependencies.
 
 ---
 
@@ -262,9 +254,9 @@ These are independent platform targets and should be built after the core app is
 
 | Feature | Tier | Free / Pro |
 |---|---|---|
+| iCloud Sync | ✓ Shipped | Free |
 | Enhanced Workout Overview | 1 | Free |
 | Personal Records | 1 | Free |
-| iCloud Sync | 2 | Pro |
 | My Exercises + Exercise-Specific Rest Timer | 2 | Free |
 | Weekly Workout Schedule | 2 | Free |
 | Workout History Calendar View | 2 | Free |

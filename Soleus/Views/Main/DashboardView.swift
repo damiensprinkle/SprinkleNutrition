@@ -2,7 +2,7 @@ import SwiftUI
 
 struct DashboardView: View {
     @EnvironmentObject var appViewModel: AppViewModel
-    @EnvironmentObject var workoutController: WorkoutTrackerController
+    @EnvironmentObject var workoutController: WorkoutTrackerViewModel
     @EnvironmentObject var achievementManager: AchievementManager
 
     @State private var lifeStats: WorkoutStats?

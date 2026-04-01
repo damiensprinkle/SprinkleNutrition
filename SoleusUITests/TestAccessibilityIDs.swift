@@ -66,7 +66,13 @@ enum TestID {
 
     // MARK: - Active Workout
     static let startWorkoutButton = "start_workout_button"
+    static let activeEditModeButton = "active_edit_mode_button"
+    static let activeAddExerciseButton = "active_add_exercise_button"
     static func repsField(set setIndex: Int) -> String { "reps_set_\(setIndex)" }
     static func weightField(set setIndex: Int) -> String { "weight_set_\(setIndex)" }
     static func setToggle(set setIndex: Int) -> String { "complete_set_\(setIndex)" }
+    static func noteButton(exercise index: Int) -> String { "note_button_\(index)" }
+    static func exerciseMenu(exercise index: Int) -> String { "exercise_menu_\(index)" }
+    static func addSetButton(exercise index: Int) -> String { "add_set_button_\(index)" }
+    static func notesField(exercise index: Int) -> String { "notes_field_\(index)" }
 }

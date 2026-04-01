@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-class WorkoutTrackerController: ObservableObject {
+class WorkoutTrackerViewModel: ObservableObject {
     @Published var workouts: [WorkoutInfo] = []
     @Published var hasActiveSession = false
     @Published var activeWorkoutName: String?
@@ -122,6 +122,7 @@ class WorkoutTrackerController: ObservableObject {
             if originalDetail.exerciseId != updatedDetail.exerciseId ||
                 originalDetail.exerciseName != updatedDetail.exerciseName ||
                 originalDetail.orderIndex != updatedDetail.orderIndex ||
+                originalDetail.notes != updatedDetail.notes ||
                 originalDetail.sets.count != updatedDetail.sets.count {
                 return true
             }

@@ -7,7 +7,6 @@
 
 import SwiftUI
 import CoreData
-import Darwin
 import FirebaseCore
 
 class AppDelegate: NSObject, UIApplicationDelegate {
@@ -26,14 +25,13 @@ struct SoleusApp: App {
     @StateObject private var persistenceController: PersistenceController
     @StateObject private var appViewModel = AppViewModel()
     @StateObject private var workoutManager = WorkoutManager()
-    @StateObject private var controller: WorkoutTrackerController
+    @StateObject private var controller: WorkoutTrackerViewModel
     @StateObject private var errorHandler = ErrorHandler()
     @StateObject private var achievementManager = AchievementManager()
     @StateObject private var healthKitManager = HealthKitManager()
 
 
     init() {
-        SoleusApp.installCrashHandlers()
         let isUITesting = CommandLine.arguments.contains("--uitesting")
         _persistenceController = StateObject(wrappedValue: isUITesting ? PersistenceController.forUITesting : PersistenceController.shared)
 
@@ -48,7 +46,7 @@ struct SoleusApp: App {
         let handler = ErrorHandler()
         manager.errorHandler = handler
 
-        _controller = StateObject(wrappedValue: WorkoutTrackerController(workoutManager: manager))
+        _controller = StateObject(wrappedValue: WorkoutTrackerViewModel(workoutManager: manager))
         _workoutManager = StateObject(wrappedValue: manager)
         _errorHandler = StateObject(wrappedValue: handler)
 
@@ -180,34 +178,4 @@ struct SoleusApp: App {
         appViewModel.resetToWorkoutMainView()
     }
 
-    // MARK: - Crash Handlers
-
-    private static func installCrashHandlers() {
-        // Catch Objective-C exceptions (e.g. NSRangeException, NSInvalidArgumentException)
-        NSSetUncaughtExceptionHandler { exception in
-            AppLogger.lifecycle.critical("Uncaught exception: \(exception.name.rawValue) — \(exception.reason ?? "no reason") | Stack: \(exception.callStackSymbols.prefix(10).joined(separator: ", "))")
-        }
-
-        // Catch Swift-level crashes (overflow, out of bounds, force-unwrap, etc.)
-        let signals = [SIGABRT, SIGILL, SIGSEGV, SIGFPE, SIGBUS, SIGTRAP]
-        signals.forEach { sig in
-            signal(sig) { receivedSignal in
-                let name: String
-                switch receivedSignal {
-                case SIGABRT:  name = "SIGABRT (abort/assertion)"
-                case SIGILL:   name = "SIGILL (illegal instruction)"
-                case SIGSEGV:  name = "SIGSEGV (bad memory access)"
-                case SIGFPE:   name = "SIGFPE (arithmetic error/overflow)"
-                case SIGBUS:   name = "SIGBUS (bus error)"
-                case SIGTRAP:  name = "SIGTRAP (fatalError/precondition)"
-                default:       name = "signal \(receivedSignal)"
-                }
-                let stack = Thread.callStackSymbols.prefix(20).joined(separator: "\n  ")
-                AppLogger.lifecycle.critical("Fatal signal: \(name)\nStack:\n  \(stack)")
-                // Re-raise so the OS can generate the standard crash report
-                signal(receivedSignal, SIG_DFL)
-                raise(receivedSignal)
-            }
-        }
-    }
 }

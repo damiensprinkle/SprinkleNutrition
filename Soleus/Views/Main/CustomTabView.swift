@@ -3,7 +3,7 @@ import SwiftUI
 struct CustomTabView: View {
     @State private var selectedTab: Tab = .workout
     @EnvironmentObject var appViewModel: AppViewModel
-    @EnvironmentObject var workoutController: WorkoutTrackerController
+    @EnvironmentObject var workoutController: WorkoutTrackerViewModel
 
 
     enum Tab: String {

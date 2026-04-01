@@ -14,7 +14,7 @@ struct ExerciseRowActive: View {
     
     @FocusState private var focusedField: FocusableField?
     @State private var originalTimeInput: String = ""
-    @State private var hasLoaded = false
+    @State private var isExternalSync: Bool = false
     @State private var distanceInput: String = ""
     @State private var timeInput: String = ""
     @State private var weightInput: String = ""
@@ -27,7 +27,7 @@ struct ExerciseRowActive: View {
     @State private var saveFailedError: Bool = false
     @State private var showSaveErrorMessage: Bool = false
     @EnvironmentObject var focusManager: FocusManager
-    @EnvironmentObject var workoutController: WorkoutTrackerController
+    @EnvironmentObject var workoutController: WorkoutTrackerViewModel
     @EnvironmentObject var restTimer: RestTimerManager
 
     @AppStorage("autoStartRestTimer") private var autoStartRestTimer: Bool = true
@@ -71,13 +71,27 @@ struct ExerciseRowActive: View {
                 Text("")
             }
             .onAppear {
-                if hasLoaded {
+                // Sync checked from setInput on first appear (handles resume with completed sets)
+                if checked != setInput.isCompleted {
+                    isExternalSync = true
                     checked = setInput.isCompleted
                 }
             }
+            .onChange(of: setInput.isCompleted) { _, newValue in
+                // Sync when setInput changes externally (e.g., loadTemporaryWorkoutDetails)
+                if checked != newValue {
+                    isExternalSync = true
+                    checked = newValue
+                }
+            }
             .onChange(of: checked) {
+                let wasExternal = isExternalSync
+                isExternalSync = false
+
                 setInput.isCompleted = checked
-                saveWorkoutDetail()
+                if !wasExternal {
+                    saveWorkoutDetail()
+                }
 
                 // Haptic feedback for set completion
                 if checked {
@@ -86,8 +100,8 @@ struct ExerciseRowActive: View {
                     HapticManager.shared.setUncompleted()
                 }
 
-                // Auto-start rest timer when set is completed
-                if checked && autoStartRestTimer && workoutStarted {
+                // Auto-start rest timer only for user-initiated completions
+                if checked && autoStartRestTimer && workoutStarted && !wasExternal {
                     restTimer.startRest(duration: defaultRestDuration)
                 }
             }
@@ -100,11 +114,6 @@ struct ExerciseRowActive: View {
             .accessibilityHint("Double tap to mark set as \(checked ? "incomplete" : "complete")")
             .accessibilityIdentifier("complete_set_\(setIndex)")
             
-        }
-        .onAppear{
-            if (!hasLoaded){
-                hasLoaded = true
-            }
         }
         .onChange(of: workoutCancelled) {
              if workoutCancelled {
@@ -392,7 +401,7 @@ struct ExerciseRowActive: View {
         distanceInput = "\(setInput.distance)"
         weightInput = "\(setInput.weight)"
         timeInput = formatTimeFromSeconds(totalSeconds: Int(setInput.time))
-        checked = setInput.isCompleted
+        // checked is synced via onChange(of: setInput.isCompleted)
     }
 
     private func checkAutoComplete() {

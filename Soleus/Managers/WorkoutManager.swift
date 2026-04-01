@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 import CoreData
 import OSLog
 
@@ -808,8 +809,11 @@ extension WorkoutManager {
     func getWorkoutIdOfActiveSession() -> UUID? {
         guard let context = self.context else { return nil }
         let request = NSFetchRequest<WorkoutSession>(entityName: "WorkoutSession")
-        
-        request.predicate = NSPredicate(format: "isActive == %@", NSNumber(value: true))
+        let currentDeviceId = UIDevice.current.identifierForVendor?.uuidString ?? ""
+        request.predicate = NSPredicate(
+            format: "isActive == true AND (deviceIdentifier == %@ OR deviceIdentifier == nil)",
+            currentDeviceId
+        )
         
         do {
             if let activeSession = try context.fetch(request).first {
@@ -1044,6 +1048,7 @@ extension WorkoutManager {
                     newSession.workoutsR = workout
                     newSession.startTime = Date()
                     newSession.isActive = true
+                    newSession.deviceIdentifier = UIDevice.current.identifierForVendor?.uuidString
                     workout.sessions = newSession
                     NotificationManager.scheduleActiveWorkoutReminder()
                     let exerciseCount = (workout.details as? Set<WorkoutDetail>)?.count ?? 0

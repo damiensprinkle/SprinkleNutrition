@@ -2,7 +2,7 @@ import SwiftUI
 
 struct DevMenuView: View {
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var workoutController: WorkoutTrackerController
+    @EnvironmentObject var workoutController: WorkoutTrackerViewModel
     @EnvironmentObject var achievementManager: AchievementManager
 
     @State private var showingConfirmation = false

@@ -1,5 +1,6 @@
 import SwiftUI
 import CoreData
+import CloudKit
 
 class PersistenceController: ObservableObject {
     static let shared = PersistenceController()
@@ -21,9 +22,8 @@ class PersistenceController: ObservableObject {
     }()
 
     private init(inMemory: Bool = false) {
-        container = NSPersistentContainer(name: "Model", managedObjectModel: Self.managedObjectModel)
-
         if inMemory {
+            container = NSPersistentContainer(name: "Model", managedObjectModel: Self.managedObjectModel)
             let description = NSPersistentStoreDescription()
             description.type = NSInMemoryStoreType
             container.persistentStoreDescriptions = [description]
@@ -37,10 +37,17 @@ class PersistenceController: ObservableObject {
             return
         }
 
-        // Configure automatic migration
-        let description = container.persistentStoreDescriptions.first
+        let cloudContainer = NSPersistentCloudKitContainer(name: "Model", managedObjectModel: Self.managedObjectModel)
+        container = cloudContainer
+
+        // Configure automatic migration and CloudKit sync
+        let description = cloudContainer.persistentStoreDescriptions.first
         description?.shouldMigrateStoreAutomatically = true
         description?.shouldInferMappingModelAutomatically = true
+        let cloudKitOptions = NSPersistentCloudKitContainerOptions(
+            containerIdentifier: "iCloud.com.damiensprinkle.Soleus"
+        )
+        description?.cloudKitContainerOptions = cloudKitOptions
 
         DispatchQueue.global(qos: .userInitiated).async {
             self.container.loadPersistentStores { (storeDescription, error) in
@@ -51,6 +58,7 @@ class PersistenceController: ObservableObject {
                         // Still set isLoaded so app can show error UI instead of hanging
                         self.isLoaded = true
                     } else {
+                        self.container.viewContext.automaticallyMergesChangesFromParent = true
                         AppLogger.coreData.info("CoreData loaded successfully")
                         self.isLoaded = true
                     }

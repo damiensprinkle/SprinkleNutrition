@@ -34,6 +34,25 @@ final class ActiveWorkoutEditTests: SoleusUITestBase {
         editButton.tap()
     }
 
+    /// Opens the add-exercise dialog, types the name, taps Add, and waits for the dialog to fully dismiss.
+    @discardableResult
+    private func addExerciseViaDialog(name: String) -> Bool {
+        app.buttons[TestID.activeAddExerciseButton].tap()
+
+        let nameField = app.textFields[TestID.exerciseNameField]
+        guard nameField.waitForExistence(timeout: 5) else { return false }
+        nameField.tap()
+        nameField.typeText(name)
+
+        app.buttons[TestID.exerciseDialogAddButton].tap()
+
+        // Wait for the dialog to fully dismiss before continuing
+        let cancelButton = app.buttons[TestID.exerciseDialogCancelButton]
+        _ = cancelButton.waitForNonExistence(timeout: 5)
+
+        return app.staticTexts[name].waitForExistence(timeout: 8)
+    }
+
     // MARK: - Add Exercise
 
     func testEditMode_AddExercise() {
@@ -42,20 +61,8 @@ final class ActiveWorkoutEditTests: SoleusUITestBase {
         startWorkout()
         enterEditMode()
 
-        let addButton = app.buttons[TestID.activeAddExerciseButton]
-        XCTAssertTrue(addButton.waitForExistence(timeout: 3), "Add exercise button should appear in edit mode")
-        addButton.tap()
-
-        let nameField = app.textFields[TestID.exerciseNameField]
-        XCTAssertTrue(nameField.waitForExistence(timeout: 3), "Exercise name field should appear in dialog")
-        nameField.tap()
-        nameField.typeText("Bench Press")
-
-        app.buttons[TestID.exerciseDialogAddButton].tap()
-
-        // The new exercise header should appear
         XCTAssertTrue(
-            app.staticTexts["Bench Press"].waitForExistence(timeout: 3),
+            addExerciseViaDialog(name: "Bench Press"),
             "Newly added exercise 'Bench Press' should appear in the workout"
         )
     }
@@ -123,13 +130,7 @@ final class ActiveWorkoutEditTests: SoleusUITestBase {
         enterEditMode()
 
         // Add a second exercise so reordering is possible
-        app.buttons[TestID.activeAddExerciseButton].tap()
-        let nameField = app.textFields[TestID.exerciseNameField]
-        XCTAssertTrue(nameField.waitForExistence(timeout: 3))
-        nameField.tap()
-        nameField.typeText("Squat")
-        app.buttons[TestID.exerciseDialogAddButton].tap()
-        XCTAssertTrue(app.staticTexts["Squat"].waitForExistence(timeout: 3))
+        XCTAssertTrue(addExerciseViaDialog(name: "Squat"), "Squat exercise should be added")
 
         // Open the ··· menu for exercise 0 and move it down
         let menu = app.buttons[TestID.exerciseMenu(exercise: 0)]
@@ -154,13 +155,7 @@ final class ActiveWorkoutEditTests: SoleusUITestBase {
         enterEditMode()
 
         // Add a second exercise so we have something to delete without emptying the workout
-        app.buttons[TestID.activeAddExerciseButton].tap()
-        let nameField = app.textFields[TestID.exerciseNameField]
-        XCTAssertTrue(nameField.waitForExistence(timeout: 3))
-        nameField.tap()
-        nameField.typeText("Deadlift")
-        app.buttons[TestID.exerciseDialogAddButton].tap()
-        XCTAssertTrue(app.staticTexts["Deadlift"].waitForExistence(timeout: 3))
+        XCTAssertTrue(addExerciseViaDialog(name: "Deadlift"), "Deadlift exercise should be added")
 
         // Delete exercise 1 ("Deadlift")
         let menu = app.buttons[TestID.exerciseMenu(exercise: 1)]

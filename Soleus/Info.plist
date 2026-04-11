@@ -30,6 +30,10 @@
 			</array>
 		</dict>
 	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>NSHealthShareUsageDescription</key>
 	<string>Soleus reads workout data from Apple Health to keep your fitness records in sync.</string>
 	<key>NSHealthUpdateUsageDescription</key>
